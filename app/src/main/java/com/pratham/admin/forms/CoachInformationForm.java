@@ -18,7 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CoachInformationForm extends AppCompatActivity {
+public class CoachInformationForm extends AppCompatActivity{
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;

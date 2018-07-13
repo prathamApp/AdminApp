@@ -17,6 +17,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     int month;
     int day;
 
+    Button btn = null;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         this.month = monthofyear + 1;
         this.day = dayOfMonth;
 
-        Button btn = (Button) getActivity().findViewById(R.id.btn_DatePicker);
+        btn = (Button) getActivity().findViewById(R.id.btn_DatePicker);
 
         if (this.month < 10 && this.day < 10) {
             btn.setText("0" + dayOfMonth + "-0" + month + "-" + year);
@@ -53,4 +54,5 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
             btn.setText("" + dayOfMonth + "-" + month + "-" + year);
         }
     }
+
 }
