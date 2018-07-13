@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffff"
+    android:weightSum="3">
+
+
+    <TextView
+        android:id="@+id/txt_message_village"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:padding="5dp"
+        android:text="Message"
+        android:textColor="#8c0818"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@+id/btn_close_village"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="#8c0818"
+        android:padding="5dp"
+        android:layout_margin="5dp"
+        app:srcCompat="@drawable/ic_close_black_24dp" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/txt_message_village"
+        android:background="#FFB4111F" />
+    <TextView
+        android:id="@+id/txt_count_village"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:textColor="#000000"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:background="#f2dddc"
+        android:layout_below="@id/view"
+        android:textStyle="bold" />
+    <ScrollView
+        android:id="@+id/frameLayout_village"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottomControls_village"
+        android:layout_below="@id/txt_count_village">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/flowLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/bottomControls_village"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/clear_changes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="5dp"
+            android:layout_margin="10dp"
+            android:textColor="#8c0818"
+            android:text="Clear changes"
+            />
+
+        <Button
+            android:id="@+id/btn_pushData"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/btn_style"
+            android:textColor="#ffffff"
+            android:layout_weight="1"
+            android:text="Push to server" />
+
+        <TextView
+            android:id="@+id/txt_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textColor="#8c0818"
+            android:text="Skip"
+            />
+    </LinearLayout>
+</RelativeLayout>
+

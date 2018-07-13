@@ -1,0 +1,60 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#b4111f</item>
+        <item name="colorPrimaryDark">#8c0818</item>
+        <item name="colorAccent">#8c0818</item>
+    </style>
+    <style name="CustomText" >
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+ <!--   <style name="CustomRadioButton" >
+        <item name="android:textSize">15sp</item>
+    </style>
+ <style name="CustomRadioButton_hdpi" >
+        <item name="android:textSize">15sp</item>
+    </style>
+-->
+    <style name="CustomSpinner" >
+        <item name="android:textSize">25sp</item>
+        <!--<item name="android:layout_margin">100dp</item>-->
+    </style>
+
+    <style name="spinner_style">
+       <item name="android:background">@drawable/gradient_spinner</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:popupBackground">#DFFFFFFF</item>
+    </style>
+
+    <style name="swapbtnright">
+        <item name="android:background">@drawable/roundedcornerbtn</item>
+    </style>
+    <style name="CustomButton">
+        <item name="android:layout_width">270dp</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+    <style name="CustomTextView">
+        <item name="android:textSize">13sp</item>
+        <item name="android:layout_margin">3dp</item>
+    </style>
+    <style name="CustomImageButton">
+        <item name="android:layout_width">110dp</item>
+        <item name="android:layout_height">45dp</item>
+      <item name="android:textSize">10sp</item>
+    </style>
+    <style name="CustomTextProgramInfo">
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+    </style>
+</resources>

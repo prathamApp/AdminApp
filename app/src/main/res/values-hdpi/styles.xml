@@ -1,0 +1,71 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#b4111f</item>
+        <item name="colorPrimaryDark">#8c0818</item>
+        <item name="colorAccent">#8c0818</item>
+    </style>
+
+    <style name="CustomText">
+        <item name="android:textSize">15sp</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+<!--   &lt;!&ndash; <style name="CustomRadioButton">
+        <item name="android:textSize">25sp</item>
+    </style>
+&ndash;&gt;
+    <style name="CustomRadioButton_hdpi">
+        <item name="android:textSize">15sp</item>
+    </style>-->
+<!--
+    <style name="CustomSpinner">
+        <item name="android:background">@drawable/gradient_spinner</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">20dp</item>
+        <item name="android:popupBackground">#DFFFFFFF</item>
+    </style>-->
+
+    <style name="spinner_style">
+        <item name="android:background">@drawable/gradient_spinner</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:popupBackground">#DFFFFFFF</item>
+
+    </style>
+
+    <style name="swapbtnright">
+        <item name="android:background">@drawable/roundedcornerbtn</item>
+    </style>
+
+    <style name="CustomButton">
+        <item name="android:layout_width">250dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
+    <style name="CustomTextView">
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_margin">3dp</item>
+    </style>
+
+    <style name="CustomImageButton">
+        <item name="android:layout_width">90dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="CustomTextProgramInfo">
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+    </style>
+</resources>
