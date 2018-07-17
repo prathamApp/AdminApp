@@ -53,11 +53,13 @@
         <activity
             android:name=".forms.CoachInformationForm"
             android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden">
+
+        </activity>
         <activity
             android:name=".forms.CoachRetentionForm"
             android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".forms.CourseEnrollmentForm"
             android:screenOrientation="sensorLandscape"
@@ -71,8 +73,25 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".forms.CrlVisitForm"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity
+            android:name=".forms.SchoolSessionForm"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity
+            android:name=".forms.ReportingStudentsForm"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateHidden">
 
         </activity>
+        <activity
+            android:name=".forms.AttendanceForm"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateHidden"></activity>
     </application>
 
 </manifest>

@@ -11,7 +11,7 @@ import com.pratham.admin.R;
 
 import java.util.Calendar;
 
-public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class DatePickerFragmentOne extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     int year;
     int month;

@@ -5,13 +5,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.pratham.admin.R;
-import com.pratham.admin.util.DatePickerFragment;
+import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.Utility;
 
 import butterknife.BindView;
@@ -32,18 +31,12 @@ public class CoachInformationForm extends AppCompatActivity{
     Spinner sp_Occupation;
     @BindView(R.id.sp_Speciality)
     Spinner sp_Speciality;
-    @BindView(R.id.cb_Maths)
-    CheckBox cb_Maths;
-    @BindView(R.id.cb_English)
-    CheckBox cb_English;
-    @BindView(R.id.cb_Language)
-    CheckBox cb_Language;
-    @BindView(R.id.cb_Science)
-    CheckBox cb_Science;
     @BindView(R.id.sp_Education)
     Spinner sp_Education;
-    @BindView(R.id.rg_Groups)
-    RadioGroup rg_Groups;
+    @BindView(R.id.sp_SubjectExpert)
+    Spinner sp_SubjectExpert;
+    @BindView(R.id.sp_Groups)
+    Spinner sp_Groups;
     @BindView(R.id.btn_DatePicker)
     Button btn_DatePicker;
     @BindView(R.id.btn_Submit)
@@ -65,7 +58,7 @@ public class CoachInformationForm extends AppCompatActivity{
 
     @OnClick(R.id.btn_DatePicker)
     public void startDatePicker(View view) {
-        DialogFragment newFragment = new DatePickerFragment();
+        DialogFragment newFragment = new DatePickerFragmentOne();
         newFragment.show(getFragmentManager(), "DatePicker");
     }
 

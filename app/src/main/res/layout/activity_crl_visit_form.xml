@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".forms.CourseCompletionForm">
+        tools:context=".forms.CrlVisitForm">
 
         <!--Title-->
         <TextView
@@ -17,7 +17,7 @@
             android:layout_margin="32dp"
             android:fontFamily="monospace"
             android:gravity="center"
-            android:text="Course Completion"
+            android:text="CRL Visit"
             android:textColor="@color/colorAccent"
             android:textSize="28sp"
             android:textStyle="bold" />
@@ -54,155 +54,7 @@
 
         </LinearLayout>
 
-        <!--Radio Button to Select Groups Dynamically-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:orientation="horizontal"
-            android:weightSum="5">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:text="Select Groups"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <HorizontalScrollView
-                android:id="@+id/hour_scroll_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
-                android:layout_weight="1"
-                android:fillViewport="true"
-                android:scrollbars="none">
-
-                <RadioGroup
-                    android:id="@+id/rg_Groups"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" />
-            </HorizontalScrollView>
-
-        </LinearLayout>
-
-        <!--Radio Button to Select Courses 1 Dynamically-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:orientation="horizontal"
-            android:weightSum="5">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:text="Select Course One"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <HorizontalScrollView
-                android:id="@+id/hour_scroll_view2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
-                android:layout_weight="1"
-                android:fillViewport="true"
-                android:scrollbars="none">
-
-                <RadioGroup
-                    android:id="@+id/rg_CourseOne"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" />
-            </HorizontalScrollView>
-
-        </LinearLayout>
-
-        <!--Radio Button to Select Topic 1 Dynamically-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:orientation="horizontal"
-            android:weightSum="5">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:text="Select Course One"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <HorizontalScrollView
-                android:id="@+id/hour_scroll_view3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
-                android:layout_weight="1"
-                android:fillViewport="true"
-                android:scrollbars="none">
-
-                <RadioGroup
-                    android:id="@+id/rg_TopicOne"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" />
-            </HorizontalScrollView>
-
-        </LinearLayout>
-
-        <!--Radio Button to Select Science Courses Two Optional Dynamically-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:orientation="horizontal"
-            android:weightSum="5">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:text="Select Course Two (optional)"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <HorizontalScrollView
-                android:id="@+id/hour_scroll_view4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
-                android:layout_weight="2"
-                android:fillViewport="true"
-                android:scrollbars="none">
-
-                <RadioGroup
-                    android:id="@+id/rg_CourseTwo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" />
-            </HorizontalScrollView>
-
-        </LinearLayout>
-
-        <!--Start Date-->
+        <!--Visit Date-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -216,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="Select Start Date"
+                android:text="Select Visit Date"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -236,7 +88,7 @@
 
         </LinearLayout>
 
-        <!--End Date-->
+        <!--Check Box to Select Groups Dynamically-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -249,73 +101,181 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="Select Reporting Date"
+                android:layout_weight="3"
+                android:text="Select Visited Groups"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/btn_DatePickerTwo"
+            <HorizontalScrollView
+                android:id="@+id/hour_scroll_view8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:background="@color/colorPrimaryDark"
-                android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-                android:paddingLeft="16dp"
-                android:text="Date"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:layout_marginLeft="32dp"
+                android:layout_weight="2"
+                android:fillViewport="true"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/cb_VisitedGroups"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
 
         </LinearLayout>
 
-        <!--Radio Button to Select Was it an event-->
-        <RadioGroup
-            android:id="@+id/rg_Event"
+        <!--Check Box to Select Coaches Present Dynamically-->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
             android:orientation="horizontal"
-            android:weightSum="4">
+            android:weightSum="5">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="16dp"
-                android:layout_weight="1"
-                android:text="Was it an Event ?"
+                android:layout_weight="3"
+                android:text="Coaches Present in Villages"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <RadioButton
-                android:id="@+id/rb_Yes"
+            <HorizontalScrollView
+                android:id="@+id/hour_scroll_view9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_weight="1.5"
-                android:checked="true"
-                android:text="Yes"
-                android:textSize="18sp" />
+                android:layout_marginLeft="32dp"
+                android:layout_weight="2"
+                android:fillViewport="true"
+                android:scrollbars="none">
 
-            <RadioButton
-                android:id="@+id/rb_No"
+                <LinearLayout
+                    android:id="@+id/cb_PresentCoaches"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+        </LinearLayout>
+
+        <!--Check Box to Select Coaches Present with Group Dynamically-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:orientation="horizontal"
+            android:weightSum="5">
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_weight="1.5"
-                android:text="No"
-                android:textSize="18sp" />
+                android:layout_weight="3"
+                android:text="Coaches Present with Group"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        </RadioGroup>
+            <HorizontalScrollView
+                android:id="@+id/hour_scroll_view2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_weight="2"
+                android:fillViewport="true"
+                android:scrollbars="none">
 
-        <!--Parent Count-->
+                <LinearLayout
+                    android:id="@+id/cb_CoachesWithGrp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+        </LinearLayout>
+
+        <!--Check Box to Select Groups with correct Group Dynamically-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:orientation="horizontal"
+            android:weightSum="5">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="Groups sitting with their Group"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <HorizontalScrollView
+                android:id="@+id/hour_scroll_view1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_weight="2"
+                android:fillViewport="true"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/cb_GrpWithTheirGrp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+        </LinearLayout>
+
+        <!--Check Box to Select checked Groups Dynamically-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:orientation="horizontal"
+            android:weightSum="5">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="Work Crosschecked Groups"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <HorizontalScrollView
+                android:id="@+id/hour_scroll_view3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_weight="2"
+                android:fillViewport="true"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/cb_WorkCrosscheckedGrps"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+        </LinearLayout>
+
+        <!--Present Students Count-->
         <EditText
-            android:id="@+id/edt_ParentCount"
+            android:id="@+id/edt_PresentStdCount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
@@ -323,7 +283,7 @@
             android:layout_marginRight="32dp"
             android:layout_weight="1"
             android:digits="0123456789"
-            android:hint="no of parents present"
+            android:hint="no of students present"
             android:inputType="number"
             android:maxLength="2"
             android:singleLine="true"
@@ -343,7 +303,6 @@
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:textStyle="bold" />
-
 
     </LinearLayout>
 </ScrollView>

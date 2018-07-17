@@ -9,7 +9,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.pratham.admin.R;
-import com.pratham.admin.util.DatePickerFragment;
+import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.Utility;
 
 import butterknife.BindView;
@@ -20,8 +20,8 @@ public class CoachRetentionForm extends AppCompatActivity {
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;
-    @BindView(R.id.rg_SelectCoach)
-    RadioGroup rg_SelectCoach;
+    @BindView(R.id.sp_SelectCoach)
+    Spinner sp_SelectCoach;
     @BindView(R.id.rg_DropOut)
     RadioGroup rg_DropOut;
     @BindView(R.id.btn_DatePicker)
@@ -45,7 +45,7 @@ public class CoachRetentionForm extends AppCompatActivity {
 
     @OnClick(R.id.btn_DatePicker)
     public void endDatePicker(View view) {
-        DialogFragment newFragment = new DatePickerFragment();
+        DialogFragment newFragment = new DatePickerFragmentOne();
         newFragment.show(getFragmentManager(), "DatePicker");
     }
 

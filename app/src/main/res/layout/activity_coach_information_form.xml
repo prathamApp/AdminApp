@@ -1,55 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".forms.CoachInformationForm">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/custom_border"
+        android:fontFamily="monospace"
         android:gravity="center"
-        android:orientation="vertical"
-        tools:context=".forms.CoachInformationForm">
+        android:text="Coach Information"
+        android:textColor="@color/colorAccent"
+        android:textSize="28sp"
+        android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="32dp"
-            android:fontFamily="monospace"
-            android:gravity="center"
-            android:text="Coach Information"
-            android:textColor="@color/colorAccent"
-            android:textSize="28sp"
-            android:textStyle="bold" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/custom_border"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="5">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_weight="3"
-                android:text="Select Village"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+            android:weightSum="4">
 
             <!--Village-->
             <Spinner
                 android:id="@+id/sp_Village"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
+                android:layout_margin="16dp"
                 android:layout_weight="2"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/edt_Name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_weight="2"
+                android:hint="name of the coach"
+                android:inputType="textCapWords"
+                android:singleLine="true"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
 
@@ -61,27 +70,12 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <EditText
-                android:id="@+id/edt_Name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_weight="1"
-                android:hint="name of the coach"
-                android:inputType="textCapWords"
-                android:singleLine="true"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/edt_Age"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
+                android:layout_margin="16dp"
                 android:layout_weight="1"
                 android:digits="0123456789"
                 android:hint="age"
@@ -91,193 +85,85 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
 
+
+            <!--Radio Button to Select Gender-->
+            <RadioGroup
+                android:id="@+id/rg_Gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="1"
+                    android:text="Gender"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/rb_Male"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="1.5"
+                    android:checked="true"
+                    android:text="Male"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_Female"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="1.5"
+                    android:text="Female"
+                    android:textSize="18sp" />
+
+            </RadioGroup>
+
         </LinearLayout>
 
-        <!--Radio Button to Select Gender-->
-        <RadioGroup
-            android:id="@+id/rg_Gender"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:orientation="horizontal"
-            android:weightSum="4">
+    </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="16dp"
-                android:layout_weight="1"
-                android:text="Select Gender"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <RadioButton
-                android:id="@+id/rb_Male"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_weight="1.5"
-                android:checked="true"
-                android:text="Male"
-                android:textSize="18sp" />
-
-            <RadioButton
-                android:id="@+id/rb_Female"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_weight="1.5"
-                android:text="Female"
-                android:textSize="18sp" />
-
-        </RadioGroup>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:background="@drawable/custom_border"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="5">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_weight="3"
-                android:text="Select Occupation"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+            android:weightSum="2">
 
             <!--Occupation-->
             <Spinner
                 android:id="@+id/sp_Occupation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_weight="2"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="5">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_weight="3"
-                android:text="Select Speciality"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <!--Speciality-->
-            <Spinner
-                android:id="@+id/sp_Speciality"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_weight="2"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:orientation="horizontal"
-            android:weightSum="5">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Subject Expert"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <CheckBox
-                android:id="@+id/cb_Maths"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Maths"
-                android:textSize="18sp" />
-
-            <CheckBox
-                android:id="@+id/cb_English"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="English"
-                android:textSize="18sp" />
-
-            <CheckBox
-                android:id="@+id/cb_Language"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Language"
-                android:textSize="18sp" />
-
-            <CheckBox
-                android:id="@+id/cb_Science"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Science"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="5">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_weight="3"
-                android:text="Select Education"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp"
-                android:textStyle="bold" />
 
             <!--Education-->
             <Spinner
                 android:id="@+id/sp_Education"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_weight="2"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
 
@@ -286,63 +172,52 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
             android:orientation="horizontal"
-            android:weightSum="5">
+            android:weightSum="2">
 
-            <TextView
+            <!--Speciality-->
+            <Spinner
+                android:id="@+id/sp_Speciality"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:text="Select Groups"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <!--Radio Button to Select Groups Dynamically-->
-            <HorizontalScrollView
-                android:id="@+id/hour_scroll_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
+                android:layout_margin="16dp"
                 android:layout_weight="1"
-                android:fillViewport="true"
-                android:scrollbars="none">
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
 
-                <RadioGroup
-                    android:id="@+id/rg_Groups"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" />
-            </HorizontalScrollView>
-
+            <!--Select Groups-->
+            <Spinner
+                android:id="@+id/sp_Groups"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
             android:orientation="horizontal"
-            android:weightSum="5">
+            android:weightSum="2">
 
-            <TextView
+            <!--Select SubjectExpert Multiselect-->
+            <Spinner
+                android:id="@+id/sp_SubjectExpert"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="Select Start Date"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
 
             <Button
                 android:id="@+id/btn_DatePicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
                 android:background="@color/colorPrimaryDark"
                 android:drawableLeft="@android:drawable/ic_menu_my_calendar"
                 android:paddingLeft="16dp"
@@ -353,19 +228,19 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_Submit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:background="@color/colorPrimaryDark"
-            android:text="Submit"
-            android:textAllCaps="true"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
     </LinearLayout>
-</ScrollView>
+
+    <Button
+        android:id="@+id/btn_Submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:background="@color/colorPrimaryDark"
+        android:text="Submit"
+        android:textAllCaps="true"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

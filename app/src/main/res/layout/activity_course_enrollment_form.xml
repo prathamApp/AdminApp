@@ -348,6 +348,7 @@
 
         </LinearLayout>
 
+        <!--Check Box to Select Coach Dynamically-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -366,7 +367,6 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <!--Check Box to Select Coach Dynamically-->
             <HorizontalScrollView
                 android:id="@+id/hour_scroll_view8"
                 android:layout_width="match_parent"
