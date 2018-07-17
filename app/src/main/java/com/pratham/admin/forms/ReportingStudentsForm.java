@@ -1,9 +1,8 @@
 package com.pratham.admin.forms;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.pratham.admin.R;
@@ -15,10 +14,10 @@ public class ReportingStudentsForm extends AppCompatActivity {
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;
-    @BindView(R.id.rg_Groups)
-    RadioGroup rg_Groups;
-    @BindView(R.id.rg_Student)
-    RadioGroup rg_Student;
+    @BindView(R.id.sp_Groups)
+    Spinner sp_Groups;
+    @BindView(R.id.sp_Students)
+    Spinner sp_Students;
     @BindView(R.id.btn_Submit)
     Button btn_Submit;
 

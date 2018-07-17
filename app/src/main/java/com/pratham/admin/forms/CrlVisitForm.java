@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.pratham.admin.R;
@@ -23,16 +22,16 @@ public class CrlVisitForm extends AppCompatActivity {
     Spinner sp_Village;
     @BindView(R.id.btn_DatePicker)
     Button btn_DatePicker;
-    @BindView(R.id.cb_VisitedGroups)
-    LinearLayout cb_VisitedGroups;
-    @BindView(R.id.cb_PresentCoaches)
-    LinearLayout cb_PresentCoaches;
-    @BindView(R.id.cb_CoachesWithGrp)
-    LinearLayout cb_CoachesWithGrp;
-    @BindView(R.id.cb_GrpWithTheirGrp)
-    LinearLayout cb_GrpWithTheirGrp;
-    @BindView(R.id.cb_WorkCrosscheckedGrps)
-    LinearLayout cb_WorkCrosscheckedGrps;
+    @BindView(R.id.sp_VisitedGroups_multiselect)
+    Spinner sp_VisitedGroups_multiselect;
+    @BindView(R.id.sp_PresentCoaches_multiselect)
+    Spinner sp_PresentCoaches_multiselect;
+    @BindView(R.id.sp_CoachesWithGrp_multiselect)
+    Spinner sp_CoachesWithGrp_multiselect;
+    @BindView(R.id.sp_GrpWithTheirGrp_multiselect)
+    Spinner sp_GrpWithTheirGrp_multiselect;
+    @BindView(R.id.sp_WorkCrosscheckedGrps_multiselect)
+    Spinner sp_WorkCrosscheckedGrps_multiselect;
     @BindView(R.id.edt_PresentStdCount)
     EditText edt_PresentStdCount;
     @BindView(R.id.btn_Submit)

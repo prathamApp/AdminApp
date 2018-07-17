@@ -67,6 +67,10 @@
         <activity
             android:name=".forms.CourseCompletionForm"
             android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity
+            android:name=".forms.CrlVisitForm"
+            android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -75,19 +79,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".forms.CrlVisitForm"
-            android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateHidden"></activity>
-        <activity
             android:name=".forms.SchoolSessionForm"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".forms.ReportingStudentsForm"
             android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateHidden">
-
-        </activity>
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".forms.AttendanceForm"
             android:screenOrientation="sensorLandscape"

@@ -22,10 +22,10 @@ public class SchoolSessionForm extends AppCompatActivity {
     Spinner sp_Village;
     @BindView(R.id.btn_DatePicker)
     Button btn_DatePicker;
-    @BindView(R.id.rg_Groups)
-    RadioGroup rg_Groups;
-    @BindView(R.id.rg_Course)
-    RadioGroup rg_Course;
+    @BindView(R.id.sp_Groups)
+    Spinner sp_Groups;
+    @BindView(R.id.sp_Course)
+    Spinner sp_Course;
     @BindView(R.id.btn_Submit)
     Button btn_Submit;
 

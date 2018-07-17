@@ -1,78 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="#FFFFFF"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".forms.AttendanceForm">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <!--Title-->
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:background="@drawable/custom_border"
+        android:fontFamily="monospace"
         android:gravity="center"
-        android:orientation="vertical"
-        tools:context=".forms.AttendanceForm">
+        android:text="Attendance"
+        android:textColor="@color/colorAccent"
+        android:textSize="28sp"
+        android:textStyle="bold" />
 
-        <!--Title-->
-        <TextView
+    <!--Select Groups Dynamically-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:background="@drawable/custom_border"
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/sp_Groups"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="32dp"
-            android:fontFamily="monospace"
-            android:gravity="center"
-            android:text="Attendance"
-            android:textColor="@color/colorAccent"
-            android:textSize="28sp"
-            android:textStyle="bold" />
-
-        <!--Radio Button to Select Groups Dynamically-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:orientation="horizontal"
-            android:weightSum="5">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:text="Select Groups"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <HorizontalScrollView
-                android:id="@+id/hour_scroll_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
-                android:layout_weight="1"
-                android:fillViewport="true"
-                android:scrollbars="none">
-
-                <RadioGroup
-                    android:id="@+id/rg_Groups"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" />
-            </HorizontalScrollView>
-
-        </LinearLayout>
+            android:layout_margin="16dp"
+            android:orientation="horizontal" />
 
         <LinearLayout
             android:id="@+id/Line4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/Line2"
-            android:layout_below="@+id/Line3"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
             android:gravity="center"
             android:orientation="vertical">
-
 
             <TextView
                 android:id="@+id/tv_createdGrp"
@@ -80,7 +51,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
                 android:background="#000000"
                 android:gravity="center"
                 android:padding="4dp"
@@ -112,22 +82,22 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp" />
 
-
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_Submit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:background="@color/colorPrimaryDark"
-            android:text="Submit"
-            android:textAllCaps="true"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
     </LinearLayout>
-</ScrollView>
+
+
+    <Button
+        android:id="@+id/btn_Submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:background="@color/colorPrimaryDark"
+        android:text="Submit"
+        android:textAllCaps="true"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+</LinearLayout>
