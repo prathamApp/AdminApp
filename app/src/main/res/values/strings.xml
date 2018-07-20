@@ -93,4 +93,36 @@
     <string-array name="block">
         <item>SELECT BLOCK</item>
     </string-array>
+
+
+    <string-array name="array_Occupation">
+        <item>Select Occupation</item>
+        <item>Farmer</item>
+        <item>Own Business</item>
+        <item>Plumber</item>
+        <item>Gardener</item>
+        <item>Mechanic</item>
+        <item>Police</item>
+        <item>Army</item>
+        <item>Bank</item>
+        <item>Post Office</item>
+        <item>Hospital</item>
+        <item>Housewife</item>
+        <item>Electrician</item>
+        <item>Retired</item>
+        <item>Artist</item>
+        <item>Teacher</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="array_Speciality">
+        <item>Select Speciality</item>
+        <item>Singer</item>
+        <item>Dancer</item>
+        <item>Musician</item>
+        <item>Art</item>
+        <item>Potter</item>
+    </string-array>
+
+
 </resources>
