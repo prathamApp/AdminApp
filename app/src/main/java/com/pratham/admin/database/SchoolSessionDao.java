@@ -19,6 +19,6 @@ public interface SchoolSessionDao {
     public void deleteAllSchoolSession();
 
     @Query("SELECT * FROM SchoolSession")
-    public List<CRL> getAllSchoolSession();
+    public List<SchoolSession> getAllSchoolSession();
 
 }

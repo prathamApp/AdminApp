@@ -1,7 +1,6 @@
 package com.pratham.admin.activities;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,7 +11,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,10 +79,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface {
     protected void onResume() {
         //todo username password remove comment
         super.onResume();
-        //userName.setText("amolmoghe");
-        //password.setText("pratham@123");
-        userName.setText("");
-        password.setText("");
+        userName.setText("amolmoghe");
+        password.setText("pratham@123");
+//        userName.setText("");
+//        password.setText("");
         userName.requestFocus();
         SharedPreferences preferences = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
         String program = preferences.getString("program", "null");
@@ -180,6 +178,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface {
         AppDatabase.getDatabaseInstance(this).getVillageDao().deleteAllVillages();
         AppDatabase.getDatabaseInstance(this).getCRLdao().deleteAllCRLs();
         AppDatabase.getDatabaseInstance(this).getTempStudentDao().deleteTempStudent();
+        AppDatabase.getDatabaseInstance(this).getAllCoaches().deleteAllCoaches();
+        AppDatabase.getDatabaseInstance(this).getCRLVisitdao().deleteAllCRLVisits();
+        AppDatabase.getDatabaseInstance(this).getAllCommunity().deleteAllCommunity();
+        AppDatabase.getDatabaseInstance(this).getAllCompletion().deleteAllCompletion();
+        AppDatabase.getDatabaseInstance(this).getAllSchoolSession().deleteAllSchoolSession();
         AppDatabase.destroyInstance();
         SharedPreferences preferences = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -190,7 +193,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface {
 
     @Override
     public void openNextActivity() {
-        //todo show dialog
+        Intent intent = new Intent(MainActivity.this, Dashboard.class);
+        intent.putExtra("CRLid", crlID);
+        intent.putExtra("CRLname", crlName);
+        intent.putExtra("CRLnameSwapStd", crlName + "(" + crlID + ")");
+        startActivity(intent);
+
+ /*       //todo show dialog
         final Dialog dialog = new Dialog(MainActivity.this);
         dialog.setContentView(R.layout.option_dialog);
         RelativeLayout scan_qr_code = (RelativeLayout) dialog.findViewById(R.id.scan_qr_code);
@@ -216,5 +225,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface {
             }
         });
         dialog.show();
+    }*/
     }
+
 }

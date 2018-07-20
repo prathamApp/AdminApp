@@ -19,6 +19,6 @@ public interface CRLVisitdao {
     public void deleteAllCRLVisits();
 
     @Query("SELECT * FROM CRLVisit")
-    public List<CRL> getAllCRLVisits();
+    public List<CRLVisit> getAllCRLVisits();
 
 }

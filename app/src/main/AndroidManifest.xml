@@ -26,7 +26,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
@@ -53,43 +53,43 @@
         <activity
             android:name=".forms.CoachInformationForm"
             android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateHidden">
-
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".forms.CoachRetentionForm"
             android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".forms.CourseEnrollmentForm"
             android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".forms.CourseCompletionForm"
             android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".forms.CrlVisitForm"
             android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateHidden">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".forms.SchoolSessionForm"
             android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".forms.ReportingStudentsForm"
             android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".forms.AttendanceForm"
             android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activities.Dashboard"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.FormsActivity"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>
