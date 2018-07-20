@@ -11,14 +11,14 @@
         android:orientation="vertical"
         tools:context=".forms.CourseEnrollmentForm">
 
-        <!--Title-->
+        <!--Title Course Enrollment -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="32dp"
             android:fontFamily="monospace"
             android:gravity="center"
-            android:text="Course Enrollment"
+            android:text="Community Information"
             android:textColor="@color/colorAccent"
             android:textSize="28sp"
             android:textStyle="bold" />
