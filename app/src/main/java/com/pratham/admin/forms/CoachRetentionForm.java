@@ -4,13 +4,24 @@ import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.pratham.admin.R;
+import com.pratham.admin.database.AppDatabase;
+import com.pratham.admin.modalclasses.Coach;
+import com.pratham.admin.modalclasses.Groups;
+import com.pratham.admin.modalclasses.Village;
+import com.pratham.admin.util.CustomGroup;
 import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.Utility;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +39,11 @@ public class CoachRetentionForm extends AppCompatActivity {
     Button btn_DatePicker;
     @BindView(R.id.btn_Submit)
     Button btn_Submit;
+    List<Village> villageList = new ArrayList<>();
+    List<Coach> coachList = new ArrayList<>();
+
+    ArrayList groupNameList;
+    List<Groups> studGroupList;
 
 
     @Override
@@ -41,7 +57,111 @@ public class CoachRetentionForm extends AppCompatActivity {
 
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
         btn_DatePicker.setPadding(8, 8, 8, 8);
+
+        studGroupList = AppDatabase.getDatabaseInstance(this).getGroupDao().getAllGroups();
+        groupNameList = new ArrayList();
+
+        // Populate Village Spinner
+        villageList = AppDatabase.getDatabaseInstance(this).getVillageDao().getAllVillages();
+        populateVillages();
+
+        // Populate Coach Spinner
+        coachList = AppDatabase.getDatabaseInstance(this).getAllCoaches().getAllCoaches();
+        populateCoaches();
+
+        // Dropout code on Submit Click
+        int selectedId = rg_DropOut.getCheckedRadioButtonId();
+        RadioButton selectedOption = (RadioButton) findViewById(selectedId);
+        String DropOut = selectedOption.getText().toString();
+
+
     }
+
+    private void populateVillages() {
+        List VillageName = new ArrayList();
+        if (!villageList.isEmpty()) {
+            VillageName.add("Select Village");
+            for (int j = 0; j < villageList.size(); j++) {
+                VillageName.add(villageList.get(j).getVillageName() + "  (ID:: " + villageList.get(j).getVillageId() + ")");
+            }
+            ArrayAdapter villageAdapter = new ArrayAdapter(CoachRetentionForm.this, android.R.layout.simple_spinner_dropdown_item, VillageName);
+            sp_Village.setAdapter(villageAdapter);
+        }
+
+        sp_Village.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                String selectedState = sp_Village.getSelectedItem().toString();
+//                Toast.makeText(CoachInformationForm.this, "" + selectedState, Toast.LENGTH_SHORT).show();
+
+                groupNameList.clear();
+                String selected_village = adapterView.getItemAtPosition(pos).toString();
+                String selectedVillageID = "null";
+                List<Groups> villageWiseGroups = new ArrayList();
+
+                try {
+                    String splitedVillageBracetRemoved = selected_village.substring(selected_village.indexOf("(") + 1, selected_village.indexOf(")"));
+                    String[] splitedVillageData = splitedVillageBracetRemoved.split("ID::");
+                    selectedVillageID = splitedVillageData[1].trim();
+                    selectedVillageID = selectedVillageID.replace(")", "");
+                } catch (Exception e) {
+
+                }
+                for (int i = 0; i < studGroupList.size(); i++) {
+                    if (selectedVillageID.equals(studGroupList.get(i).getVillageId())) {
+                        villageWiseGroups.add(studGroupList.get(i));
+                    }
+                }
+
+                if (villageWiseGroups.size() == 0) {
+                    groupNameList.add(new CustomGroup("No Groups to Select"));
+                } else {
+                    groupNameList.add(new CustomGroup("Select Registered Groups"));
+                    for (int i = 0; i < villageWiseGroups.size(); i++) {
+                        if (villageWiseGroups.get(i).getGroupName() != null && (!"".equals(villageWiseGroups.get(i).getGroupName()))) {
+                            groupNameList.add(new CustomGroup(villageWiseGroups.get(i).getGroupName(), villageWiseGroups.get(i).getGroupId()));
+                        }
+                    }
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void populateCoaches() {
+        List CoachName = new ArrayList();
+        if (!coachList.isEmpty()) {
+            CoachName.add("Select Coach");
+            for (int j = 0; j < coachList.size(); j++) {
+                CoachName.add(coachList.get(j).getCoachName() + "  (ID:: " + coachList.get(j).getCoachID() + ")");
+            }
+            ArrayAdapter coachAdapter = new ArrayAdapter(CoachRetentionForm.this, android.R.layout.simple_spinner_dropdown_item, CoachName);
+            sp_SelectCoach.setAdapter(coachAdapter);
+        } else {
+            CoachName.add("Select Coach");
+            ArrayAdapter coachAdapter = new ArrayAdapter(CoachRetentionForm.this, android.R.layout.simple_spinner_dropdown_item, CoachName);
+            sp_SelectCoach.setAdapter(coachAdapter);
+        }
+
+        sp_SelectCoach.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                String selectedCoach = sp_SelectCoach.getSelectedItem().toString();
+//                Toast.makeText(CoachInformationForm.this, "" + selectedCoach, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
 
     @OnClick(R.id.btn_DatePicker)
     public void endDatePicker(View view) {
