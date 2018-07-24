@@ -124,5 +124,23 @@
         <item>Potter</item>
     </string-array>
 
+    <string-array name="array_Subject_Expert">
+        <item>Select Subject Expert</item>
+        <item>Maths</item>
+        <item>English</item>
+        <item>Science</item>
+        <item>Language</item>
+    </string-array>
+
+    <string-array name="array_Education">
+        <item>Select Education</item>
+        <item>Below Class 5</item>
+        <item>Class 6 - 8</item>
+        <item>Class 9 - 10</item>
+        <item>Class 11 - 12</item>
+        <item>Undergraduate</item>
+        <item>Post-Graduate</item>
+    </string-array>
+
 
 </resources>
