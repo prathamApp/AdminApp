@@ -203,14 +203,15 @@
             android:weightSum="2">
 
             <!--Select SubjectExpert Multiselect-->
-            <Spinner
+            <com.pratham.admin.custom.MultiSpinner
                 android:id="@+id/sp_SubjectExpert"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:layout_weight="1"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
+                android:paddingLeft="8dp"
+                android:textColor="#000000"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/btn_DatePicker"

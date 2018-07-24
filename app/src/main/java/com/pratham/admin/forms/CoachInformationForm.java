@@ -3,6 +3,7 @@ package com.pratham.admin.forms;
 // multispinner ref : https://github.com/thomashaertel/MultiSpinner
 
 import android.app.DialogFragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.pratham.admin.R;
+import com.pratham.admin.custom.MultiSpinner;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.Village;
@@ -47,7 +49,7 @@ public class CoachInformationForm extends AppCompatActivity {
     @BindView(R.id.sp_Education)
     Spinner sp_Education;
     @BindView(R.id.sp_SubjectExpert)
-    Spinner sp_SubjectExpert;
+    MultiSpinner sp_SubjectExpert;
     @BindView(R.id.sp_Groups)
     Spinner sp_Groups;
     @BindView(R.id.btn_DatePicker)
@@ -63,6 +65,10 @@ public class CoachInformationForm extends AppCompatActivity {
     private String registeredGroups = "";
     ArrayList groupNameList;
     List<Groups> studGroupList;
+    boolean[] selectedItems;
+    String[] ExpertSubj;
+    String[] selectedESArray;
+    String selectedExpertSubjects = "";
 
 
     @Override
@@ -99,7 +105,10 @@ public class CoachInformationForm extends AppCompatActivity {
         populateEducation();
 
         // Populate Subject Expert Multiselect Spinner
+        ExpertSubj = new String[getResources().getStringArray(R.array.array_Subject_Expert).length];
+        ExpertSubj = getResources().getStringArray(R.array.array_Subject_Expert);
         populateSubjectExpert();
+
 
     }
 
@@ -173,25 +182,35 @@ public class CoachInformationForm extends AppCompatActivity {
         });
     }
 
-    private void populateSubjectExpert() {
-        ArrayAdapter subAdapter = new ArrayAdapter(CoachInformationForm.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.array_Subject_Expert));
-        sp_SubjectExpert.setAdapter(subAdapter);
-        sp_SubjectExpert.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                String selectedSubExp = sp_SubjectExpert.getSelectedItem().toString();
-                if (selectedSubExp.contains("Select")) {
-                } else {
-                    SubjectExpert = selectedSubExp;
-                    Toast.makeText(CoachInformationForm.this, "" + SubjectExpert, Toast.LENGTH_SHORT).show();
+
+    // Listener
+    private MultiSpinner.MultiSpinnerListener onSelectedListener = new MultiSpinner.MultiSpinnerListener() {
+        public void onItemsSelected(boolean[] selected) {
+            // Do something here with the selected items
+            selectedESArray = new String[selected.length];
+            for (int i = 0; i < selected.length; i++) {
+                if (selected[i]) {
+                    selectedESArray[i] = ExpertSubj[i];
+                    selectedExpertSubjects = selectedExpertSubjects + "," + selectedESArray[i].toString();
                 }
             }
+            selectedExpertSubjects = selectedExpertSubjects.replaceFirst(",", "");
+            Toast.makeText(CoachInformationForm.this, "" + selectedExpertSubjects, Toast.LENGTH_SHORT).show();
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
 
-            }
-        });
+        }
+    };
+
+    private void populateSubjectExpert() {
+        ArrayAdapter subAdapter = new ArrayAdapter(CoachInformationForm.this, android.R.layout.simple_spinner_dropdown_item, ExpertSubj);
+        sp_SubjectExpert.setAdapter(subAdapter, false, onSelectedListener);
+        // set initial selection
+        selectedItems = new boolean[subAdapter.getCount()];
+//        selectedItems[0] = true; // select first item
+//        sp_SubjectExpert.setSelected(selectedItems);
+        sp_SubjectExpert.setHint("Select Subject Expert");
+        sp_SubjectExpert.setHintTextColor(Color.BLACK);
+
     }
 
     private void populateOccupation() {
