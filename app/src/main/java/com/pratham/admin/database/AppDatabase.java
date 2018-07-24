@@ -10,6 +10,7 @@ import com.pratham.admin.modalclasses.CRLVisit;
 import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Completion;
+import com.pratham.admin.modalclasses.Course;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.SchoolSession;
@@ -18,7 +19,7 @@ import com.pratham.admin.modalclasses.TabTrack;
 import com.pratham.admin.modalclasses.TempStudent;
 import com.pratham.admin.modalclasses.Village;
 
-@Database(entities = {CRL.class, CRLVisit.class, Coach.class, Community.class, Completion.class, Groups.class, Student.class, SchoolSession.class, Village.class, MetaData.class, TempStudent.class, TabTrack.class}, version = 3, exportSchema = false)
+@Database(entities = {CRL.class, CRLVisit.class, Coach.class, Course.class, Community.class, Completion.class, Groups.class, Student.class, SchoolSession.class, Village.class, MetaData.class, TempStudent.class, TabTrack.class}, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase DATABASEINSTANCE;
 
@@ -27,6 +28,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract CRLVisitdao getCRLVisitdao();
 
     public abstract CoachDao getAllCoaches();
+
+    public abstract CourseDao getCourses();
 
     public abstract CommunityDao getAllCommunity();
 
