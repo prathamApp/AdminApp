@@ -77,9 +77,10 @@ public class SchoolSessionForm extends AppCompatActivity {
     private void populateCourses() {
         List CourseName = new ArrayList();
         if (!courseList.isEmpty()) {
-            CourseName.add("Select Course");
+            CourseName.add(new CustomGroup("Select Course"));
             for (int j = 0; j < courseList.size(); j++) {
-                CourseName.add(courseList.get(j).getCourseName() + "  (ID:: " + courseList.get(j).getCourseID() + ")");
+                CustomGroup customGroup = new CustomGroup(courseList.get(j).getCourseName(), courseList.get(j).getCourseID());
+                CourseName.add(customGroup);
             }
             ArrayAdapter villageAdapter = new ArrayAdapter(SchoolSessionForm.this, android.R.layout.simple_spinner_dropdown_item, CourseName);
             sp_Course.setAdapter(villageAdapter);
