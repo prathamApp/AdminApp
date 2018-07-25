@@ -20,6 +20,7 @@ import com.pratham.admin.R;
 import com.pratham.admin.custom.MultiSpinner;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.modalclasses.Groups;
+import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.CustomGroup;
 import com.pratham.admin.util.DatePickerFragmentOne;
@@ -69,6 +70,9 @@ public class CoachInformationForm extends AppCompatActivity {
     String[] ExpertSubj;
     String[] selectedESArray;
     String selectedExpertSubjects = "";
+    List<Student> AllStudentsInDB = new ArrayList<>();
+    List<Groups> AllGroupsInDB;
+    List registeredGRPs;
 
 
     @Override
@@ -90,6 +94,10 @@ public class CoachInformationForm extends AppCompatActivity {
         int selectedId = rg_Gender.getCheckedRadioButtonId();
         RadioButton selectedGender = (RadioButton) findViewById(selectedId);
         String gender = selectedGender.getText().toString();
+
+        //retrive all groups from  DB
+        AllGroupsInDB = AppDatabase.getDatabaseInstance(this).getGroupDao().getAllGroups();
+
 
         // Populate Village Spinner
         villageList = AppDatabase.getDatabaseInstance(this).getVillageDao().getAllVillages();
@@ -133,25 +141,24 @@ public class CoachInformationForm extends AppCompatActivity {
         });
     }
 
-    private void populateRegisteredGroups() {
+    private void populateRegisteredGroups(String villageID) {
         // todo get registered grps
-        String[] registeredGRPs = new String[groupNameList.size()];
-        if (groupNameList != null) {
-            for (int i = 0; i < groupNameList.size(); i++) {
-                registeredGRPs[i] = groupNameList.get(i).toString();
+        registeredGRPs = new ArrayList();
+        registeredGRPs.add(new CustomGroup("Select Groups"));
+        if (AllGroupsInDB != null) {
+            for (int i = 0; i < AllGroupsInDB.size(); i++) {
+                if (AllGroupsInDB.get(i).getVillageId().equals(villageID))
+                    registeredGRPs.add(new CustomGroup(AllGroupsInDB.get(i).getGroupName(), AllGroupsInDB.get(i).getGroupId()));
             }
         }
-        ArrayAdapter specialityAdapter = new ArrayAdapter(CoachInformationForm.this, android.R.layout.simple_spinner_dropdown_item, registeredGRPs);
-        sp_Groups.setAdapter(specialityAdapter);
+
+        ArrayAdapter grpAdapter = new ArrayAdapter(CoachInformationForm.this, android.R.layout.simple_spinner_dropdown_item, registeredGRPs);
+        sp_Groups.setAdapter(grpAdapter);
         sp_Groups.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                String selectedSpeciality = sp_Groups.getSelectedItem().toString();
-                if (selectedSpeciality.contains("Select")) {
-                } else {
-                    registeredGroups = selectedSpeciality;
-                    Toast.makeText(CoachInformationForm.this, "" + registeredGroups, Toast.LENGTH_SHORT).show();
-                }
+                CustomGroup customGroup = (CustomGroup) registeredGRPs.get(pos);
+                String groupId = customGroup.getId();
             }
 
             @Override
@@ -235,12 +242,12 @@ public class CoachInformationForm extends AppCompatActivity {
     }
 
     private void populateVillages() {
-        List VillageName = new ArrayList();
+        final List VillageName = new ArrayList();
         if (!villageList.isEmpty()) {
-            VillageName.add("Select Village");
+            VillageName.add(new CustomGroup("Select Village"));
             for (int j = 0; j < villageList.size(); j++) {
-                VillageName.add(villageList.get(j).getVillageName());
-//                VillageName.add(villageList.get(j).getVillageName() + "  (ID:: " + villageList.get(j).getVillageId() + ")");
+                CustomGroup customGroup = new CustomGroup(villageList.get(j).getVillageName(), villageList.get(j).getVillageId());
+                VillageName.add(customGroup);
             }
             ArrayAdapter villageAdapter = new ArrayAdapter(CoachInformationForm.this, android.R.layout.simple_spinner_dropdown_item, VillageName);
             sp_Village.setAdapter(villageAdapter);
@@ -249,42 +256,11 @@ public class CoachInformationForm extends AppCompatActivity {
         sp_Village.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                String selectedState = sp_Village.getSelectedItem().toString();
-//                Toast.makeText(CoachInformationForm.this, "" + selectedState, Toast.LENGTH_SHORT).show();
-
-                groupNameList.clear();
-                String selected_village = adapterView.getItemAtPosition(pos).toString();
-                String selectedVillageID = "null";
-                List<Groups> villageWiseGroups = new ArrayList();
-
-                try {
-                    String splitedVillageBracetRemoved = selected_village.substring(selected_village.indexOf("(") + 1, selected_village.indexOf(")"));
-                    String[] splitedVillageData = splitedVillageBracetRemoved.split("ID::");
-                    selectedVillageID = splitedVillageData[1].trim();
-                    selectedVillageID = selectedVillageID.replace(")", "");
-                } catch (Exception e) {
-
-                }
-                for (int i = 0; i < studGroupList.size(); i++) {
-                    if (selectedVillageID.equals(studGroupList.get(i).getVillageId())) {
-                        villageWiseGroups.add(studGroupList.get(i));
-                    }
-                }
-
-                if (villageWiseGroups.size() == 0) {
-                    groupNameList.add(new CustomGroup("No Groups to Select"));
-                } else {
-                    groupNameList.add(new CustomGroup("Select Registered Groups"));
-                    for (int i = 0; i < villageWiseGroups.size(); i++) {
-                        if (villageWiseGroups.get(i).getGroupName() != null && (!"".equals(villageWiseGroups.get(i).getGroupName()))) {
-                            groupNameList.add(new CustomGroup(villageWiseGroups.get(i).getGroupName(), villageWiseGroups.get(i).getGroupId()));
-                        }
-                    }
-                }
+                CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
+                String vid = customGroup.getId();
 
                 // Populate Registered Groups Spinner
-                populateRegisteredGroups();
-
+                populateRegisteredGroups(vid);
             }
 
             @Override
