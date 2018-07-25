@@ -34,6 +34,7 @@ import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.OnSavedData;
 import com.pratham.admin.interfaces.VillageListLisner;
 import com.pratham.admin.modalclasses.CRL;
+import com.pratham.admin.modalclasses.Course;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.Village;
@@ -51,6 +52,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.pratham.admin.util.APIs.HL;
+import static com.pratham.admin.util.APIs.PullCourses;
 import static com.pratham.admin.util.APIs.village;
 
 public class SelectProgram extends AppCompatActivity implements ConnectionReceiverListener, OnSavedData, VillageListLisner {
@@ -87,6 +90,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
     private List<CRL> CRLList = new ArrayList();
     private List<Student> studentList = new ArrayList();
     private List<Groups> groupsList = new ArrayList();
+    private List<Course> CourseList = new ArrayList();
     List<Village> villageId;
     int groupLoadCount = 0;
     int studLoadCount = 0;
@@ -211,8 +215,6 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 if (!villageId.isEmpty()) {
                     if (apiLoadFlag) {
                         apiLoadFlag = false;
-
-
                         switch (selectedProgram) {
                             case APIs.HL:
                                 String url = APIs.HLpullCrlsURL + stateCode[selectedState] + "&programid=1";
@@ -229,6 +231,8 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                                 break;
 
                         }
+                        // Pull Courses
+                        pullCourses();
                     } else {
                         btn_saveData.setEnabled(false);
                         btn_saveData.clearAnimation();
@@ -245,6 +249,35 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
         } else {
             Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void pullCourses() {
+        showDialoginApiCalling(HL, "Pulling Courses !!!");
+        AndroidNetworking.get(PullCourses).build().getAsJSONArray(new JSONArrayRequestListener() {
+            @Override
+            public void onResponse(JSONArray response) {
+                String json = response.toString();
+                Gson gson = new Gson();
+                Type listType = new TypeToken<ArrayList<Course>>() {
+                }.getType();
+                ArrayList<Course> modalCoursesList = gson.fromJson(json, listType);
+                CourseList.clear();
+                CourseList.addAll(modalCoursesList);
+                dismissShownDialog();
+            }
+
+            @Override
+            public void onError(ANError error) {
+                spinner_state.setSelection(0);
+                if (!internetIsAvailable) {
+                    Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(SelectProgram.this, "Plaese check internet connection.", Toast.LENGTH_LONG).show();
+                }
+                dismissShownDialog();
+                apiLoadFlag = false;
+            }
+        });
     }
 
     public void loadAPI(final String url, final String type, final String program) {
@@ -490,6 +523,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
         AppDatabase.getDatabaseInstance(this).getStudentDao().deleteAllStudents();
         AppDatabase.getDatabaseInstance(this).getVillageDao().deleteAllVillages();
         AppDatabase.getDatabaseInstance(this).getCRLdao().deleteAllCRLs();
+        AppDatabase.getDatabaseInstance(this).getCourses().deleteAllCourses();
 
         if (groupsList.isEmpty()) {
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -505,7 +539,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
             alertDialog.show();
 
         } else {
-            new SaveDataTask(SelectProgram.this, SelectProgram.this, CRLList, studentList, groupsList, villageId).execute();
+            new SaveDataTask(SelectProgram.this, SelectProgram.this, CRLList, studentList, groupsList, villageId, CourseList).execute();
         }
 
     }

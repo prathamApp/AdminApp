@@ -67,7 +67,7 @@ public class FormsActivity extends AppCompatActivity implements DashRVClickListe
         if (DashboardItemList == null) {
             DashboardItemList = new ArrayList<DashboardItem>();
             DashboardItemList.add(new DashboardItem("Coach Information", R.drawable.ic_form));
-            DashboardItemList.add(new DashboardItem("Coach Completion", R.drawable.ic_form));
+            DashboardItemList.add(new DashboardItem("Course Completion", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Coach Retention", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Course Enrollment/ Session", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Community Information", R.drawable.ic_form));

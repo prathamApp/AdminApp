@@ -1,21 +1,35 @@
 package com.pratham.admin.modalclasses;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
+
+import com.google.gson.JsonArray;
+import com.google.gson.annotations.SerializedName;
 
 @Entity
 public class Course {
     @NonNull
     @PrimaryKey
+    @SerializedName("CourseId")
     public String CourseID;
+    @SerializedName("CourseName")
     public String CourseName;
+    @SerializedName("CourseIdInPos")
     public String CourseIdInPos;
+    @SerializedName("CourseCode")
     public String CourseCode;
+    @SerializedName("CourseSubject")
     public String CourseSubject;
+    @SerializedName("CourseLang")
     public String CourseLang;
-    public int isDelete;
-    public String listTopic;
+    @SerializedName("IsDelete")
+    public boolean isDelete;
+    @SerializedName("lstTopic")
+    @TypeConverters(JSONArrayToString.class)
+    public JsonArray listTopic;
 
     @Override
     public String toString() {
@@ -80,19 +94,19 @@ public class Course {
         CourseLang = courseLang;
     }
 
-    public int getIsDelete() {
+    public boolean isDelete() {
         return isDelete;
     }
 
-    public void setIsDelete(int isDelete) {
+    public void setIsDelete(boolean isDelete) {
         this.isDelete = isDelete;
     }
 
-    public String getListTopic() {
+    public JsonArray getListTopic() {
         return listTopic;
     }
 
-    public void setListTopic(String listTopic) {
+    public void setListTopic(JsonArray listTopic) {
         this.listTopic = listTopic;
     }
 }

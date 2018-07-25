@@ -41,4 +41,7 @@ public class APIs {
 
    // Device Tracking Push API
    public static final String TabTrackPushAPI ="http://www.swap.prathamcms.org/api/QRPush/QRPushData";
+
+   // Pull Courses
+   public static final String PullCourses ="http://www.swap.prathamcms.org/api/course/get";
 }
