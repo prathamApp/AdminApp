@@ -239,7 +239,8 @@ public class CoachInformationForm extends AppCompatActivity {
         if (!villageList.isEmpty()) {
             VillageName.add("Select Village");
             for (int j = 0; j < villageList.size(); j++) {
-                VillageName.add(villageList.get(j).getVillageName() + "  (ID:: " + villageList.get(j).getVillageId() + ")");
+                VillageName.add(villageList.get(j).getVillageName());
+//                VillageName.add(villageList.get(j).getVillageName() + "  (ID:: " + villageList.get(j).getVillageId() + ")");
             }
             ArrayAdapter villageAdapter = new ArrayAdapter(CoachInformationForm.this, android.R.layout.simple_spinner_dropdown_item, VillageName);
             sp_Village.setAdapter(villageAdapter);

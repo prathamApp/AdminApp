@@ -19,4 +19,5 @@ public interface GroupDao {
 
     @Query("SELECT * FROM Groups ")
     public List<Groups> getAllGroups();
+
 }
