@@ -55,7 +55,6 @@ public class SaveDataTask extends AsyncTask<Void, Integer, Void> {
     }
 
 
-
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);

@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.DialogInterface;
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface {
             }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
-            Toast.makeText(this, "On Exception data cleared", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ApplicationController.getInstance(), "On Exception data cleared", Toast.LENGTH_SHORT).show();
             clearData();
         }
     }
@@ -189,6 +190,19 @@ public class MainActivity extends AppCompatActivity implements DialogInterface {
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
         editor.commit();
+
+        PackageInfo pinfo = null;
+        try {
+            pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            String versionName = pinfo.versionName;
+            SharedPreferences pref = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
+            SharedPreferences.Editor ed = pref.edit();
+            ed.putString("version", versionName);
+            ed.commit();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
         programInfoLayout.setVisibility(View.INVISIBLE);
     }
 
