@@ -97,9 +97,10 @@ public class CoachRetentionForm extends AppCompatActivity {
     private void populateCoaches() {
         List CoachName = new ArrayList();
         if (!coachList.isEmpty()) {
-            CoachName.add("Select Coach");
+            CoachName.add(new CustomGroup("Select Coach"));
             for (int j = 0; j < coachList.size(); j++) {
-                CoachName.add(coachList.get(j).getCoachName() + "  (ID:: " + coachList.get(j).getCoachID() + ")");
+                CustomGroup customGroup = new CustomGroup(coachList.get(j).getCoachName(), coachList.get(j).getCoachID());
+                CoachName.add(customGroup);
             }
             ArrayAdapter coachAdapter = new ArrayAdapter(CoachRetentionForm.this, android.R.layout.simple_spinner_dropdown_item, CoachName);
             sp_SelectCoach.setAdapter(coachAdapter);

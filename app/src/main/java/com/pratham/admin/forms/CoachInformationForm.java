@@ -61,16 +61,11 @@ public class CoachInformationForm extends AppCompatActivity {
     List<Village> villageList = new ArrayList<>();
     private String occupation = "";
     private String speciality = "";
-    private String SubjectExpert = "";
     private String education = "";
-    private String registeredGroups = "";
-    ArrayList groupNameList;
-    List<Groups> studGroupList;
     boolean[] selectedItems;
     String[] ExpertSubj;
     String[] selectedESArray;
     String selectedExpertSubjects = "";
-    List<Student> AllStudentsInDB = new ArrayList<>();
     List<Groups> AllGroupsInDB;
     List registeredGRPs;
 
@@ -87,9 +82,6 @@ public class CoachInformationForm extends AppCompatActivity {
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
         btn_DatePicker.setPadding(8, 8, 8, 8);
 
-        studGroupList = AppDatabase.getDatabaseInstance(this).getGroupDao().getAllGroups();
-        groupNameList = new ArrayList();
-
         // Gender code on Submit Click
         int selectedId = rg_Gender.getCheckedRadioButtonId();
         RadioButton selectedGender = (RadioButton) findViewById(selectedId);
@@ -97,7 +89,6 @@ public class CoachInformationForm extends AppCompatActivity {
 
         //retrive all groups from  DB
         AllGroupsInDB = AppDatabase.getDatabaseInstance(this).getGroupDao().getAllGroups();
-
 
         // Populate Village Spinner
         villageList = AppDatabase.getDatabaseInstance(this).getVillageDao().getAllVillages();

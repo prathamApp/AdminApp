@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/card_view_image"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="16dp"

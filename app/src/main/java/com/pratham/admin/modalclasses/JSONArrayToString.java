@@ -4,7 +4,6 @@ import android.arch.persistence.room.TypeConverter;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 
 public class JSONArrayToString {
     @TypeConverter
@@ -18,9 +17,9 @@ public class JSONArrayToString {
         if (strings != null) {
             try {
                 Gson gson = new Gson();
-                jsonArray     = gson.fromJson(strings,JsonArray.class);
+                jsonArray = gson.fromJson(strings, JsonArray.class);
                 jsonArray.toString();
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
         }

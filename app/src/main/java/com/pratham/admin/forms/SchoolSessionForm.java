@@ -42,8 +42,6 @@ public class SchoolSessionForm extends AppCompatActivity {
     List<Village> villageList = new ArrayList<>();
     List<Course> courseList = new ArrayList<>();
 
-    private String registeredGroups = "";
-    List<Student> AllStudentsInDB = new ArrayList<>();
     List<Groups> AllGroupsInDB;
     List registeredGRPs;
 

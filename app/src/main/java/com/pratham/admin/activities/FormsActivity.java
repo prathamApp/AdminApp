@@ -69,8 +69,8 @@ public class FormsActivity extends AppCompatActivity implements DashRVClickListe
             DashboardItemList.add(new DashboardItem("Coach Information", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Course Completion", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Coach Retention", R.drawable.ic_form));
-            DashboardItemList.add(new DashboardItem("Course Enrollment/ Session", R.drawable.ic_form));
-            DashboardItemList.add(new DashboardItem("Community Information", R.drawable.ic_form));
+            DashboardItemList.add(new DashboardItem("School Session", R.drawable.ic_form));
+            DashboardItemList.add(new DashboardItem("Course Enrollment", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Reporting Students", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("CRL Visit", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Students Attendance", R.drawable.ic_form));
@@ -100,7 +100,7 @@ public class FormsActivity extends AppCompatActivity implements DashRVClickListe
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
-        } else if (name.contains("Enrollment")) {
+        } else if (name.contains("Session")) {
             Intent intent = new Intent(FormsActivity.this, SchoolSessionForm.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
@@ -124,7 +124,7 @@ public class FormsActivity extends AppCompatActivity implements DashRVClickListe
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
-        } else if (name.contains("Community")) {
+        } else if (name.contains("Enrollment")) {
             Intent intent = new Intent(FormsActivity.this, CourseEnrollmentForm.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
