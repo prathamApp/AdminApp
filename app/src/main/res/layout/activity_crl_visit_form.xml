@@ -16,6 +16,7 @@
         android:background="@drawable/custom_border"
         android:fontFamily="monospace"
         android:gravity="center"
+        android:padding="16dp"
         android:text="CRL Visit"
         android:textColor="@color/colorAccent"
         android:textSize="28sp"
@@ -24,7 +25,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
         android:background="@drawable/custom_border"
         android:orientation="vertical">
 
@@ -45,7 +47,7 @@
                 android:textSize="18sp" />
 
             <!--Multi Select Groups Dynamically-->
-            <Spinner
+            <com.pratham.admin.custom.MultiSpinner
                 android:id="@+id/sp_VisitedGroups_multiselect"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -60,17 +62,17 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <!--Multi Select Present Coach Dynamically-->
-            <Spinner
-                android:id="@+id/sp_PresentCoaches_multiselect"
+            <!--Multi Select Groups with correct Group  -->
+            <com.pratham.admin.custom.MultiSpinner
+                android:id="@+id/sp_GrpWithTheirGrp_multiselect"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:layout_weight="1" />
 
-            <!--Multi Select CoachesWithGrp-->
-            <Spinner
-                android:id="@+id/sp_CoachesWithGrp_multiselect"
+            <!--Multi Select WorkCrosscheckedGrps-->
+            <com.pratham.admin.custom.MultiSpinner
+                android:id="@+id/sp_WorkCrosscheckedGrps_multiselect"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
@@ -84,18 +86,17 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-
-            <!--Multi Select Groups with correct Group  -->
-            <Spinner
-                android:id="@+id/sp_GrpWithTheirGrp_multiselect"
+            <!--Multi Select Present Coach Dynamically-->
+            <com.pratham.admin.custom.MultiSpinner
+                android:id="@+id/sp_PresentCoaches_multiselect"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:layout_weight="1" />
 
-            <!--Multi Select WorkCrosscheckedGrps-->
-            <Spinner
-                android:id="@+id/sp_WorkCrosscheckedGrps_multiselect"
+            <!--Multi Select CoachesWithGrp-->
+            <com.pratham.admin.custom.MultiSpinner
+                android:id="@+id/sp_CoachesWithGrp_multiselect"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
@@ -149,9 +150,7 @@
         android:id="@+id/btn_Submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_margin="32dp"
         android:background="@color/colorPrimaryDark"
         android:text="Submit"
         android:textAllCaps="true"
