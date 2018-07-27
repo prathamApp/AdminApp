@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface CRLVisitdao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertAllCRLVisit(List<CRLVisit> crlVisitList);
+    public void insertCRLVisit(List<CRLVisit> crlVisitList);
 
     @Query("DELETE FROM CRLVisit")
     public void deleteAllCRLVisits();

@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.pratham.admin.R;
 import com.pratham.admin.custom.MultiSpinner;
@@ -88,6 +89,8 @@ public class CrlVisitForm extends AppCompatActivity {
     String[] selectedPCWGArray;
     String selectedPCWG = "";
 
+    java.util.UUID UUID;
+    String uniqueVisitID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +100,9 @@ public class CrlVisitForm extends AppCompatActivity {
 
         // Hide Actionbar
         getSupportActionBar().hide();
+
+        // Generate Random UUID
+        uniqueVisitID = UUID.randomUUID().toString();
 
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
         btn_DatePicker.setPadding(8, 8, 8, 8);
@@ -113,9 +119,38 @@ public class CrlVisitForm extends AppCompatActivity {
         populatePresentCoaches();
         populateCoachesWithTheirGroup();
 
-
     }
 
+
+    @OnClick(R.id.btn_Submit)
+    public void submitForm(View view) {
+        if ((sp_Village.getSelectedItemPosition() > 0) && (selectedVG.trim().length() > 0)
+                && (selectedGWTG.trim().length() > 0) && (selectedWCCG.trim().length() > 0)
+                && (selectedPC.trim().length() > 0) && (selectedPCWG.trim().length() > 0)
+                && (edt_PresentStdCount.getText().toString().trim().length() > 0)) {
+            try {
+
+
+                Toast.makeText(this, "Form Submitted !!!", Toast.LENGTH_SHORT).show();
+                resetForm();
+            } catch (Exception e) {
+
+            }
+
+        } else {
+            Toast.makeText(this, "Please fill all the fields !!!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void resetForm() {
+        populateVillages();
+        populatePresentCoaches();
+        populateCoachesWithTheirGroup();
+        edt_PresentStdCount.getText().clear();
+        btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
+        btn_DatePicker.setPadding(8, 8, 8, 8);
+        uniqueVisitID = UUID.randomUUID().toString();
+    }
 
     @OnClick(R.id.btn_DatePicker)
     public void visitDatePicker(View view) {
@@ -193,7 +228,7 @@ public class CrlVisitForm extends AppCompatActivity {
             for (int i = 0; i < selected.length; i++) {
                 if (selected[i]) {
                     selectedVGArray[i] = VG[i];
-                    selectedVG = selectedVG + "," + selectedVGArray[i].toString();
+                    selectedVG = selectedVG + "," + selectedVGArray[i];
                 }
             }
             selectedVG = selectedVG.replaceFirst(",", "");
@@ -233,7 +268,7 @@ public class CrlVisitForm extends AppCompatActivity {
             for (int i = 0; i < selected.length; i++) {
                 if (selected[i]) {
                     selectedGWTGArray[i] = GWTG[i];
-                    selectedGWTG = selectedGWTG + "," + selectedGWTGArray[i].toString();
+                    selectedGWTG = selectedGWTG + "," + selectedGWTGArray[i];
                 }
             }
             selectedGWTG = selectedGWTG.replaceFirst(",", "");
@@ -273,7 +308,7 @@ public class CrlVisitForm extends AppCompatActivity {
             for (int i = 0; i < selected.length; i++) {
                 if (selected[i]) {
                     selectedWCCGArray[i] = WCCG[i];
-                    selectedWCCG = selectedWCCG + "," + selectedWCCGArray[i].toString();
+                    selectedWCCG = selectedWCCG + "," + selectedWCCGArray[i];
                 }
             }
             selectedWCCG = selectedWCCG.replaceFirst(",", "");
@@ -284,13 +319,13 @@ public class CrlVisitForm extends AppCompatActivity {
 
     // Present Groups
     private void populatePresentCoaches() {
-        List CoachName = new ArrayList();
+        registeredPCGRPs = new ArrayList();
         for (int j = 0; j < coachList.size(); j++) {
             CustomGroup customGroup = new CustomGroup(coachList.get(j).getCoachName(), coachList.get(j).getCoachID());
-            CoachName.add(customGroup);
+            registeredPCGRPs.add(customGroup);
         }
 
-        ArrayAdapter coachAdapter = new ArrayAdapter(CrlVisitForm.this, android.R.layout.simple_spinner_dropdown_item, CoachName);
+        ArrayAdapter coachAdapter = new ArrayAdapter(CrlVisitForm.this, android.R.layout.simple_spinner_dropdown_item, registeredPCGRPs);
         sp_PresentCoaches_multiselect.setAdapter(coachAdapter, false, onPCSelectedListener);
         // set initial selection
         selectedPCItems = new boolean[coachAdapter.getCount()];
@@ -307,7 +342,7 @@ public class CrlVisitForm extends AppCompatActivity {
             for (int i = 0; i < selected.length; i++) {
                 if (selected[i]) {
                     selectedPCArray[i] = PC[i];
-                    selectedPC = selectedPC + "," + selectedPCArray[i].toString();
+                    selectedPC = selectedPC + "," + selectedPCArray[i];
                 }
             }
             selectedPC = selectedPC.replaceFirst(",", "");
@@ -317,17 +352,17 @@ public class CrlVisitForm extends AppCompatActivity {
 
     // Present Groups with their grps
     private void populateCoachesWithTheirGroup() {
-        List CoachName = new ArrayList();
+        List registeredPCWGGRPs = new ArrayList();
         for (int j = 0; j < coachList.size(); j++) {
             CustomGroup customGroup = new CustomGroup(coachList.get(j).getCoachName(), coachList.get(j).getCoachID());
-            CoachName.add(customGroup);
+            registeredPCWGGRPs.add(customGroup);
         }
 
-        ArrayAdapter coachAdapter = new ArrayAdapter(CrlVisitForm.this, android.R.layout.simple_spinner_dropdown_item, CoachName);
+        ArrayAdapter coachAdapter = new ArrayAdapter(CrlVisitForm.this, android.R.layout.simple_spinner_dropdown_item, registeredPCWGGRPs);
         sp_CoachesWithGrp_multiselect.setAdapter(coachAdapter, false, onPCWGSelectedListener);
         // set initial selection
         selectedPCWGItems = new boolean[coachAdapter.getCount()];
-        sp_CoachesWithGrp_multiselect.setHint("Select Present Coach");
+        sp_CoachesWithGrp_multiselect.setHint("Select Coach with Their Group");
         sp_CoachesWithGrp_multiselect.setHintTextColor(Color.BLACK);
 
     }
@@ -340,7 +375,7 @@ public class CrlVisitForm extends AppCompatActivity {
             for (int i = 0; i < selected.length; i++) {
                 if (selected[i]) {
                     selectedPCWGArray[i] = PCWG[i];
-                    selectedPCWG = selectedPCWG + "," + selectedPCWGArray[i].toString();
+                    selectedPCWG = selectedPCWG + "," + selectedPCWGArray[i];
                 }
             }
             selectedPCWG = selectedPCWG.replaceFirst(",", "");

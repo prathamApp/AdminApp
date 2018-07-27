@@ -195,7 +195,7 @@ public class CoachInformationForm extends AppCompatActivity {
             for (int i = 0; i < selected.length; i++) {
                 if (selected[i]) {
                     selectedESArray[i] = ExpertSubj[i];
-                    selectedExpertSubjects = selectedExpertSubjects + "," + selectedESArray[i].toString();
+                    selectedExpertSubjects = selectedExpertSubjects + "," + selectedESArray[i];
                 }
             }
             selectedExpertSubjects = selectedExpertSubjects.replaceFirst(",", "");
