@@ -27,15 +27,15 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract CRLVisitdao getCRLVisitdao();
 
-    public abstract CoachDao getAllCoaches();
+    public abstract CoachDao getCoachDao();
 
-    public abstract CourseDao getCourses();
+    public abstract CourseDao getCoursesDao();
 
-    public abstract CommunityDao getAllCommunity();
+    public abstract CommunityDao getCommunityDao();
 
-    public abstract CompletionDao getAllCompletion();
+    public abstract CompletionDao getCompletionDao();
 
-    public abstract SchoolSessionDao getAllSchoolSession();
+    public abstract SchoolSessionDao getSchoolSessionDao();
 
     public abstract TabTrackDao getTabTrackDao();
 

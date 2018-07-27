@@ -59,7 +59,7 @@ public class CoachRetentionForm extends AppCompatActivity {
         populateVillages();
 
         // Populate Coach Spinner
-        coachList = AppDatabase.getDatabaseInstance(this).getAllCoaches().getAllCoaches();
+        coachList = AppDatabase.getDatabaseInstance(this).getCoachDao().getAllCoaches();
         populateCoaches();
 
         // Dropout code on Submit Click

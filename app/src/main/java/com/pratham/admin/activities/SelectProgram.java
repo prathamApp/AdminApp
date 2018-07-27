@@ -523,7 +523,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
         AppDatabase.getDatabaseInstance(this).getStudentDao().deleteAllStudents();
         AppDatabase.getDatabaseInstance(this).getVillageDao().deleteAllVillages();
         AppDatabase.getDatabaseInstance(this).getCRLdao().deleteAllCRLs();
-        AppDatabase.getDatabaseInstance(this).getCourses().deleteAllCourses();
+        AppDatabase.getDatabaseInstance(this).getCoursesDao().deleteAllCourses();
 
         if (groupsList.isEmpty()) {
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();

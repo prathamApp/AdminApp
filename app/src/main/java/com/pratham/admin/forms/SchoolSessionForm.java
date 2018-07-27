@@ -67,7 +67,7 @@ public class SchoolSessionForm extends AppCompatActivity {
         populateVillages();
 
         // Populate Science Course Spinner
-        courseList = AppDatabase.getDatabaseInstance(this).getCourses().getAllCourse();
+        courseList = AppDatabase.getDatabaseInstance(this).getCoursesDao().getAllCourse();
         populateCourses();
 
     }

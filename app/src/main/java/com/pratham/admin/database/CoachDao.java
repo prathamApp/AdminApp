@@ -12,7 +12,7 @@ import java.util.List;
 @Dao
 public interface CoachDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertAllCoach(List<Coach> coachList);
+    public void insertCoach(List<Coach> coachList);
 
     @Query("DELETE FROM Coach")
     public void deleteAllCoaches();

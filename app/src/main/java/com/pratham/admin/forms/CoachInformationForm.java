@@ -19,15 +19,17 @@ import android.widget.Toast;
 import com.pratham.admin.R;
 import com.pratham.admin.custom.MultiSpinner;
 import com.pratham.admin.database.AppDatabase;
+import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Groups;
-import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.CustomGroup;
 import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.Utility;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,6 +45,8 @@ public class CoachInformationForm extends AppCompatActivity {
     EditText edt_Age;
     @BindView(R.id.rg_Gender)
     RadioGroup rg_Gender;
+    @BindView(R.id.rb_Male)
+    RadioButton rb_Male;
     @BindView(R.id.sp_Occupation)
     Spinner sp_Occupation;
     @BindView(R.id.sp_Speciality)
@@ -69,6 +73,10 @@ public class CoachInformationForm extends AppCompatActivity {
     List<Groups> AllGroupsInDB;
     List registeredGRPs;
 
+    UUID UUID;
+    String uniqueCoachID = "";
+    String grpID = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,14 +86,12 @@ public class CoachInformationForm extends AppCompatActivity {
         // Hide Actionbar
         getSupportActionBar().hide();
 
+        // Generate Random UUID
+        uniqueCoachID = UUID.randomUUID().toString();
+
         // Set Default Todays date
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
         btn_DatePicker.setPadding(8, 8, 8, 8);
-
-        // Gender code on Submit Click
-        int selectedId = rg_Gender.getCheckedRadioButtonId();
-        RadioButton selectedGender = (RadioButton) findViewById(selectedId);
-        String gender = selectedGender.getText().toString();
 
         //retrive all groups from  DB
         AllGroupsInDB = AppDatabase.getDatabaseInstance(this).getGroupDao().getAllGroups();
@@ -121,7 +127,7 @@ public class CoachInformationForm extends AppCompatActivity {
                 if (selectedSpeciality.contains("Select")) {
                 } else {
                     speciality = selectedSpeciality;
-                    Toast.makeText(CoachInformationForm.this, "" + speciality, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(CoachInformationForm.this, "" + speciality, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -149,7 +155,7 @@ public class CoachInformationForm extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 CustomGroup customGroup = (CustomGroup) registeredGRPs.get(pos);
-                String groupId = customGroup.getId();
+                grpID = customGroup.getId();
             }
 
             @Override
@@ -169,7 +175,7 @@ public class CoachInformationForm extends AppCompatActivity {
                 if (selectedEdu.contains("Select")) {
                 } else {
                     education = selectedEdu;
-                    Toast.makeText(CoachInformationForm.this, "" + education, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(CoachInformationForm.this, "" + education, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -193,7 +199,7 @@ public class CoachInformationForm extends AppCompatActivity {
                 }
             }
             selectedExpertSubjects = selectedExpertSubjects.replaceFirst(",", "");
-            Toast.makeText(CoachInformationForm.this, "" + selectedExpertSubjects, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(CoachInformationForm.this, "" + selectedExpertSubjects, Toast.LENGTH_SHORT).show();
 
 
         }
@@ -221,7 +227,7 @@ public class CoachInformationForm extends AppCompatActivity {
                 if (selectedOccupation.contains("Select")) {
                 } else {
                     occupation = selectedOccupation;
-                    Toast.makeText(CoachInformationForm.this, "" + occupation, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(CoachInformationForm.this, "" + occupation, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -265,6 +271,69 @@ public class CoachInformationForm extends AppCompatActivity {
     public void startDatePicker(View view) {
         DialogFragment newFragment = new DatePickerFragmentOne();
         newFragment.show(getFragmentManager(), "DatePicker");
+    }
+
+    @OnClick(R.id.btn_Submit)
+    public void submitData(View view) {
+
+        if ((sp_Village.getSelectedItemPosition() > 0) && (edt_Name.getText().toString().trim().length() > 0)
+                && (edt_Age.getText().toString().trim().length() > 0) && (sp_Education.getSelectedItemPosition() > 0)
+                && (sp_Speciality.getSelectedItemPosition() > 0) && (sp_Groups.getSelectedItemPosition() > 0)
+                && (selectedExpertSubjects.trim().length() > 0)) {
+
+            try {
+                // Gender code on Submit Click
+                int selectedId = rg_Gender.getCheckedRadioButtonId();
+                RadioButton selectedGender = (RadioButton) findViewById(selectedId);
+                String gender = selectedGender.getText().toString();
+
+                String date = btn_DatePicker.getText().toString().trim();
+
+                // DB Entry
+                Coach cObj = new Coach();
+                cObj.CoachID = uniqueCoachID;
+                cObj.CoachName = edt_Name.getText().toString().trim();
+                cObj.CoachAge = Integer.parseInt(edt_Age.getText().toString().trim());
+                cObj.CoachGender = gender;
+                cObj.CoachSubjectExpert = selectedExpertSubjects.trim();
+                cObj.CoachOccupation = occupation;
+                cObj.CoachSpeciality = speciality;
+                cObj.CoachEducation = education;
+                cObj.CoachActive = 1;
+                cObj.CoachGroupID = grpID;
+                cObj.StartDate = btn_DatePicker.getText().toString().trim();
+                cObj.EndDate = "";
+                cObj.CreatedBy = "";
+                cObj.CreatedDate = btn_DatePicker.getText().toString().trim();
+
+                AppDatabase.getDatabaseInstance(this).getCoachDao().insertCoach(Collections.singletonList(cObj));
+
+                Toast.makeText(this, "Form Submitted !!!", Toast.LENGTH_SHORT).show();
+                resetForm();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            Toast.makeText(this, "Please fill all the fields !!!", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void resetForm() {
+        populateVillages();
+        populateEducation();
+        populateOccupation();
+        sp_Groups.setSelection(0);
+        populateSpeciality();
+        edt_Name.getText().clear();
+        edt_Age.getText().clear();
+        populateSubjectExpert();
+        rg_Gender.clearCheck();
+        rb_Male.setChecked(true);
+        btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
+        btn_DatePicker.setPadding(8, 8, 8, 8);
+        uniqueCoachID = UUID.randomUUID().toString();
     }
 
 }

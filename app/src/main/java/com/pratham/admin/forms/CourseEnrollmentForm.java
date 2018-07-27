@@ -87,11 +87,11 @@ public class CourseEnrollmentForm extends AppCompatActivity {
         populateVillages();
 
         // Populate Science Course Spinner
-        courseList = AppDatabase.getDatabaseInstance(this).getCourses().getAllCourse();
+        courseList = AppDatabase.getDatabaseInstance(this).getCoursesDao().getAllCourse();
         populateCourses();
 
         // Populate Coach Spinner
-        coachList = AppDatabase.getDatabaseInstance(this).getAllCoaches().getAllCoaches();
+        coachList = AppDatabase.getDatabaseInstance(this).getCoachDao().getAllCoaches();
         populateCoaches();
 
     }
@@ -195,7 +195,7 @@ public class CourseEnrollmentForm extends AppCompatActivity {
 
     private void populateTopics(String cid) {
         // Get Topics according to Course
-        courseDetails = AppDatabase.getDatabaseInstance(this).getCourses().getAllCourseDetails(cid);
+        courseDetails = AppDatabase.getDatabaseInstance(this).getCoursesDao().getAllCourseDetails(cid);
         topicDetails = courseDetails.get(0).getListTopic();
         Gson gson = new Gson();
         Type listType = new TypeToken<List<Topic>>() {

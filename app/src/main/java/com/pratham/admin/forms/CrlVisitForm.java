@@ -109,7 +109,7 @@ public class CrlVisitForm extends AppCompatActivity {
         populateVillages();
 
         // Populate Coach Spinner
-        coachList = AppDatabase.getDatabaseInstance(this).getAllCoaches().getAllCoaches();
+        coachList = AppDatabase.getDatabaseInstance(this).getCoachDao().getAllCoaches();
         populatePresentCoaches();
         populateCoachesWithTheirGroup();
 
