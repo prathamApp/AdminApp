@@ -18,6 +18,7 @@
         android:background="@drawable/custom_border"
         android:fontFamily="monospace"
         android:gravity="center"
+        android:padding="16dp"
         android:text="Attendance"
         android:textColor="@color/colorAccent"
         android:textSize="28sp"
@@ -27,7 +28,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
         android:background="@drawable/custom_border"
         android:orientation="vertical">
 
@@ -91,8 +93,7 @@
         android:id="@+id/btn_Submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_margin="16dp"
         android:background="@color/colorPrimaryDark"
         android:text="Submit"
         android:textAllCaps="true"
