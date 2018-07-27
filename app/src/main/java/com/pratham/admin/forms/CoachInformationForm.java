@@ -301,10 +301,10 @@ public class CoachInformationForm extends AppCompatActivity {
                 cObj.CoachEducation = education;
                 cObj.CoachActive = 1;
                 cObj.CoachGroupID = grpID;
-                cObj.StartDate = btn_DatePicker.getText().toString().trim();
+                cObj.StartDate = date;
                 cObj.EndDate = "";
                 cObj.CreatedBy = "";
-                cObj.CreatedDate = btn_DatePicker.getText().toString().trim();
+                cObj.CreatedDate = date;
 
                 AppDatabase.getDatabaseInstance(this).getCoachDao().insertCoach(Collections.singletonList(cObj));
 

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.pratham.admin.R;
 import com.pratham.admin.custom.MultiSpinner;
 import com.pratham.admin.database.AppDatabase;
+import com.pratham.admin.modalclasses.CRLVisit;
 import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.Village;
@@ -23,6 +24,7 @@ import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.Utility;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -55,42 +57,41 @@ public class CrlVisitForm extends AppCompatActivity {
     List<Groups> AllGroupsInDB;
 
     // Visited Groups VG
+    List<String> selectedVGArray;
     List registeredVGGRPs;
     private boolean[] selectedVGItems;
-    String[] selectedVGArray;
-    String[] VG;
+    List<String> VG;
     String selectedVG = "";
 
     // GrpWithTheirGrp GWTG
-    List registeredGWTGGRPs;
+    List<String> selectedGWTGArray;
     private boolean[] selectedGWTGItems;
-    String[] GWTG;
-    String[] selectedGWTGArray;
+    List<String> GWTG;
     String selectedGWTG = "";
 
     // WorkCrosscheckedGrps WCCG
-    List registeredWCCGGRPs;
+    List<String> selectedWCCGArray;
     private boolean[] selectedWCCGItems;
-    String[] WCCG;
-    String[] selectedWCCGArray;
+    List<String> WCCG;
     String selectedWCCG = "";
 
     // Present Coaches PC
-    List registeredPCGRPs;
+    List<CustomGroup> registeredPCGRPs;
     private boolean[] selectedPCItems;
-    String[] PC;
-    String[] selectedPCArray;
+    List<String> PC = new ArrayList<>();
     String selectedPC = "";
 
     // PresentCoachesWithTheirGrp  PCWG
-    List registeredPCWGGRPs;
     private boolean[] selectedPCWGItems;
-    String[] PCWG;
+    List<String> PCWG;
     String[] selectedPCWGArray;
     String selectedPCWG = "";
 
     java.util.UUID UUID;
     String uniqueVisitID = "";
+    String vid;
+    private String vName = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +118,6 @@ public class CrlVisitForm extends AppCompatActivity {
         // Populate Coach Spinner
         coachList = AppDatabase.getDatabaseInstance(this).getCoachDao().getAllCoaches();
         populatePresentCoaches();
-        populateCoachesWithTheirGroup();
 
     }
 
@@ -130,9 +130,25 @@ public class CrlVisitForm extends AppCompatActivity {
                 && (edt_PresentStdCount.getText().toString().trim().length() > 0)) {
             try {
 
+                String date = btn_DatePicker.getText().toString().trim();
 
-                Toast.makeText(this, "Form Submitted !!!", Toast.LENGTH_SHORT).show();
+                CRLVisit cvObj = new CRLVisit();
+
+                cvObj.VisitID = uniqueVisitID;
+                cvObj.VillageID = Integer.parseInt(vid);
+                cvObj.DateVisited = date;
+                cvObj.GroupIDVisited = selectedVG;
+                cvObj.CoachPresentInVillage = selectedPC;
+                cvObj.CoachPresentWithGroup = selectedPCWG;
+                cvObj.PresentGroupIDs = selectedGWTG; // Select group with their grp = present grp id
+                cvObj.WorkCrosscheckedGroupIDs = selectedWCCG;
+                cvObj.PresentStudents = edt_PresentStdCount.getText().toString().trim();
+                cvObj.Village = vName;
+                cvObj.Group = "";
+
+                AppDatabase.getDatabaseInstance(this).getCRLVisitdao().insertCRLVisit(Collections.singletonList(cvObj));
                 resetForm();
+                Toast.makeText(this, "Form Submitted !!!", Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
 
             }
@@ -145,7 +161,6 @@ public class CrlVisitForm extends AppCompatActivity {
     private void resetForm() {
         populateVillages();
         populatePresentCoaches();
-        populateCoachesWithTheirGroup();
         edt_PresentStdCount.getText().clear();
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
         btn_DatePicker.setPadding(8, 8, 8, 8);
@@ -175,17 +190,11 @@ public class CrlVisitForm extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
-                String vid = customGroup.getId();
+                vid = customGroup.getId();
+                vName = customGroup.getName();
 
                 // Populate Visited Groups Spinner
                 populateVisitedGroups(vid);
-
-                // Populate GrpWithTheirGrp
-                populateGrpWithTheirGrp(vid);
-
-                // Populate WorkCrosscheckedGrps
-                populateWorkCrosscheckedGrps(vid);
-
 
             }
 
@@ -202,11 +211,13 @@ public class CrlVisitForm extends AppCompatActivity {
         // todo get registered grps
         registeredVGGRPs = new ArrayList();
         if (AllGroupsInDB != null) {
-            VG = new String[AllGroupsInDB.size()];
+//            VG = new String[AllGroupsInDB.size()];
+            VG = new ArrayList<>();
             for (int i = 0; i < AllGroupsInDB.size(); i++) {
                 if (AllGroupsInDB.get(i).getVillageId().equals(villageID)) {
                     registeredVGGRPs.add(new CustomGroup(AllGroupsInDB.get(i).getGroupName(), AllGroupsInDB.get(i).getGroupId()));
-                    VG[i] = AllGroupsInDB.get(i).getGroupName();
+//                    VG[i] = AllGroupsInDB.get(i).getGroupId();
+                    VG.add(AllGroupsInDB.get(i).getGroupId());
                 }
             }
         }
@@ -224,35 +235,57 @@ public class CrlVisitForm extends AppCompatActivity {
     private MultiSpinner.MultiSpinnerListener onVGSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
-            selectedVGArray = new String[selected.length];
+            List<String> grp_sel = new ArrayList<>();
+            selectedVGArray = new ArrayList<>();
+            selectedVG = "";
             for (int i = 0; i < selected.length; i++) {
                 if (selected[i]) {
-                    selectedVGArray[i] = VG[i];
-                    selectedVG = selectedVG + "," + selectedVGArray[i];
+                    selectedVGArray.add(VG.get(i));
+                    selectedVG = selectedVG + "," + VG.get(i);
+
                 }
             }
             selectedVG = selectedVG.replaceFirst(",", "");
 
+            // Populate GrpWithTheirGrp
+            populateGrpWithTheirGrp(selectedVGArray);
+
+            // Populate WorkCrosscheckedGrps
+            populateWorkCrosscheckedGrps(selectedVGArray);
+
+//            Toast.makeText(CrlVisitForm.this, "" + selectedVG, Toast.LENGTH_SHORT).show();
         }
     };
 
 
     // VISITED GROUPS
-    private void populateGrpWithTheirGrp(String villageID) {
+    private void populateGrpWithTheirGrp(final List<String> selectedgrpID) {
         // todo get registered grps
-        registeredGWTGGRPs = new ArrayList();
-        if (AllGroupsInDB != null) {
-            GWTG = new String[AllGroupsInDB.size()];
-            for (int i = 0; i < AllGroupsInDB.size(); i++) {
-                if (AllGroupsInDB.get(i).getVillageId().equals(villageID)) {
-                    registeredGWTGGRPs.add(new CustomGroup(AllGroupsInDB.get(i).getGroupName(), AllGroupsInDB.get(i).getGroupId()));
-                    GWTG[i] = AllGroupsInDB.get(i).getGroupName();
+        List<String> registeredGWTGGRPs = new ArrayList<>();
+
+        for (int i = 0; i < AllGroupsInDB.size(); i++) {
+            for (int j = 0; j < selectedgrpID.size(); j++) {
+                if (AllGroupsInDB.get(i).getGroupId().equalsIgnoreCase(selectedgrpID.get(j))) {
+                    registeredGWTGGRPs.add(AllGroupsInDB.get(i).getGroupName());
                 }
             }
         }
-
         ArrayAdapter grpAdapter = new ArrayAdapter(CrlVisitForm.this, android.R.layout.simple_spinner_dropdown_item, registeredGWTGGRPs);
-        sp_GrpWithTheirGrp_multiselect.setAdapter(grpAdapter, false, onGWTGSelectedListener);
+        sp_GrpWithTheirGrp_multiselect.setAdapter(grpAdapter, false, new MultiSpinner.MultiSpinnerListener() {
+            @Override
+            public void onItemsSelected(boolean[] selected) {
+                selectedGWTGArray = new ArrayList<>();
+                selectedGWTG = "";
+                for (int i = 0; i < selected.length; i++) {
+                    if (selected[i]) {
+                        selectedGWTGArray.add(selectedgrpID.get(i));
+                        selectedGWTG = selectedGWTG + "," + selectedgrpID.get(i);
+                    }
+                }
+                selectedGWTG = selectedGWTG.replaceFirst(",", "");
+//                Toast.makeText(CrlVisitForm.this, "" + selectedGWTG, Toast.LENGTH_SHORT).show();
+            }
+        });
         // set initial selection
         selectedGWTGItems = new boolean[grpAdapter.getCount()];
         sp_GrpWithTheirGrp_multiselect.setHint("Select Groups with Their Groups");
@@ -260,62 +293,41 @@ public class CrlVisitForm extends AppCompatActivity {
 
     }
 
-    // VG Listener
-    private MultiSpinner.MultiSpinnerListener onGWTGSelectedListener = new MultiSpinner.MultiSpinnerListener() {
-        public void onItemsSelected(boolean[] selected) {
-            // Do something here with the selected items
-            selectedGWTGArray = new String[selected.length];
-            for (int i = 0; i < selected.length; i++) {
-                if (selected[i]) {
-                    selectedGWTGArray[i] = GWTG[i];
-                    selectedGWTG = selectedGWTG + "," + selectedGWTGArray[i];
-                }
-            }
-            selectedGWTG = selectedGWTG.replaceFirst(",", "");
-
-        }
-    };
-
 
     // WorkCrosscheckedGrps GROUPS
-    private void populateWorkCrosscheckedGrps(String villageID) {
+    private void populateWorkCrosscheckedGrps(final List<String> selectedGrpID) {
         // todo get registered grps
-        registeredWCCGGRPs = new ArrayList();
-        if (AllGroupsInDB != null) {
-            WCCG = new String[AllGroupsInDB.size()];
-            for (int i = 0; i < AllGroupsInDB.size(); i++) {
-                if (AllGroupsInDB.get(i).getVillageId().equals(villageID)) {
-                    registeredWCCGGRPs.add(new CustomGroup(AllGroupsInDB.get(i).getGroupName(), AllGroupsInDB.get(i).getGroupId()));
-                    WCCG[i] = AllGroupsInDB.get(i).getGroupName();
+        List registeredWCCGGRPs = new ArrayList();
+
+        for (int i = 0; i < AllGroupsInDB.size(); i++) {
+            for (int j = 0; j < selectedGrpID.size(); j++) {
+                if (AllGroupsInDB.get(i).getGroupId().equalsIgnoreCase(selectedGrpID.get(j))) {
+                    registeredWCCGGRPs.add(AllGroupsInDB.get(i).getGroupName());
                 }
             }
         }
 
         ArrayAdapter grpAdapter = new ArrayAdapter(CrlVisitForm.this, android.R.layout.simple_spinner_dropdown_item, registeredWCCGGRPs);
-        sp_WorkCrosscheckedGrps_multiselect.setAdapter(grpAdapter, false, onWCCGSelectedListener);
+        sp_WorkCrosscheckedGrps_multiselect.setAdapter(grpAdapter, false, new MultiSpinner.MultiSpinnerListener() {
+            @Override
+            public void onItemsSelected(boolean[] selected) {
+                selectedWCCGArray = new ArrayList<>();
+                selectedWCCG = "";
+                for (int i = 0; i < selected.length; i++) {
+                    if (selected[i]) {
+                        selectedWCCGArray.add(selectedGrpID.get(i));
+                        selectedWCCG = selectedWCCG + "," + selectedGrpID.get(i);
+                    }
+                }
+                selectedWCCG = selectedWCCG.replaceFirst(",", "");
+//                Toast.makeText(CrlVisitForm.this, "" + selectedWCCG, Toast.LENGTH_SHORT).show();
+            }
+        });
         // set initial selection
         selectedWCCGItems = new boolean[grpAdapter.getCount()];
         sp_WorkCrosscheckedGrps_multiselect.setHint("Select Work Crosschecked Groups");
         sp_WorkCrosscheckedGrps_multiselect.setHintTextColor(Color.BLACK);
-
     }
-
-    // WorkCrosscheckedGrps Listener
-    private MultiSpinner.MultiSpinnerListener onWCCGSelectedListener = new MultiSpinner.MultiSpinnerListener() {
-        public void onItemsSelected(boolean[] selected) {
-            // Do something here with the selected items
-            selectedWCCGArray = new String[selected.length];
-            for (int i = 0; i < selected.length; i++) {
-                if (selected[i]) {
-                    selectedWCCGArray[i] = WCCG[i];
-                    selectedWCCG = selectedWCCG + "," + selectedWCCGArray[i];
-                }
-            }
-            selectedWCCG = selectedWCCG.replaceFirst(",", "");
-
-        }
-    };
-
 
     // Present Groups
     private void populatePresentCoaches() {
@@ -323,6 +335,7 @@ public class CrlVisitForm extends AppCompatActivity {
         for (int j = 0; j < coachList.size(); j++) {
             CustomGroup customGroup = new CustomGroup(coachList.get(j).getCoachName(), coachList.get(j).getCoachID());
             registeredPCGRPs.add(customGroup);
+            PC.add(coachList.get(j).getCoachID());
         }
 
         ArrayAdapter coachAdapter = new ArrayAdapter(CrlVisitForm.this, android.R.layout.simple_spinner_dropdown_item, registeredPCGRPs);
@@ -338,50 +351,49 @@ public class CrlVisitForm extends AppCompatActivity {
     private MultiSpinner.MultiSpinnerListener onPCSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
-            selectedPCArray = new String[selected.length];
+            List<String> selectedPCArray = new ArrayList<>();
+            selectedPC = "";
             for (int i = 0; i < selected.length; i++) {
                 if (selected[i]) {
-                    selectedPCArray[i] = PC[i];
-                    selectedPC = selectedPC + "," + selectedPCArray[i];
+                    selectedPCArray.add(PC.get(i));
+                    selectedPC = selectedPC + "," + PC.get(i);
                 }
             }
             selectedPC = selectedPC.replaceFirst(",", "");
-
+            populateCoachesWithTheirGroup(selectedPCArray);
         }
     };
 
     // Present Groups with their grps
-    private void populateCoachesWithTheirGroup() {
-        List registeredPCWGGRPs = new ArrayList();
-        for (int j = 0; j < coachList.size(); j++) {
-            CustomGroup customGroup = new CustomGroup(coachList.get(j).getCoachName(), coachList.get(j).getCoachID());
-            registeredPCWGGRPs.add(customGroup);
+    private void populateCoachesWithTheirGroup(final List<String> selectedPCArray) {
+        List<String> registeredPCWGGRPs = new ArrayList();
+        for (int i = 0; i < registeredPCGRPs.size(); i++) {
+            for (int j = 0; j < selectedPCArray.size(); j++) {
+                if (registeredPCGRPs.get(i).getId().equalsIgnoreCase(selectedPCArray.get(j))) {
+                    registeredPCWGGRPs.add(registeredPCGRPs.get(i).getName());
+                }
+            }
         }
 
         ArrayAdapter coachAdapter = new ArrayAdapter(CrlVisitForm.this, android.R.layout.simple_spinner_dropdown_item, registeredPCWGGRPs);
-        sp_CoachesWithGrp_multiselect.setAdapter(coachAdapter, false, onPCWGSelectedListener);
+        sp_CoachesWithGrp_multiselect.setAdapter(coachAdapter, false, new MultiSpinner.MultiSpinnerListener() {
+            @Override
+            public void onItemsSelected(boolean[] selected) {
+                selectedPCWGArray = new String[selected.length];
+                selectedPCWG = "";
+                for (int i = 0; i < selected.length; i++) {
+                    if (selected[i]) {
+                        selectedPCWGArray[i] = selectedPCArray.get(i);
+                        selectedPCWG = selectedPCWG + "," + selectedPCArray.get(i);
+                    }
+                }
+                selectedPCWG = selectedPCWG.replaceFirst(",", "");
+            }
+        });
         // set initial selection
         selectedPCWGItems = new boolean[coachAdapter.getCount()];
         sp_CoachesWithGrp_multiselect.setHint("Select Coach with Their Group");
         sp_CoachesWithGrp_multiselect.setHintTextColor(Color.BLACK);
 
     }
-
-    // PCWG Listener
-    private MultiSpinner.MultiSpinnerListener onPCWGSelectedListener = new MultiSpinner.MultiSpinnerListener() {
-        public void onItemsSelected(boolean[] selected) {
-            // Do something here with the selected items
-            selectedPCWGArray = new String[selected.length];
-            for (int i = 0; i < selected.length; i++) {
-                if (selected[i]) {
-                    selectedPCWGArray[i] = PCWG[i];
-                    selectedPCWG = selectedPCWG + "," + selectedPCWGArray[i];
-                }
-            }
-            selectedPCWG = selectedPCWG.replaceFirst(",", "");
-
-        }
-    };
-
-
 }

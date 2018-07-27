@@ -4,6 +4,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+// Select group with their grp = present grp id
+
 @Entity
 public class CRLVisit {
     @NonNull
