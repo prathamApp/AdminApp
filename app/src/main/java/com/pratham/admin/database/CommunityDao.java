@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface CommunityDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertAllCommunity(List<Community> communityList);
+    public void insertCommunity(List<Community> communityList);
 
     @Query("DELETE FROM Community")
     public void deleteAllCommunity();

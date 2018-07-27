@@ -10,15 +10,15 @@ public class Community {
     @PrimaryKey
     public String VillageID;
     public String GroupID;
-    public int CourseAdded;
-    public int TopicAdded;
+    public String CourseAdded;
+    public String TopicAdded;
     public String StartDate;
     public String EndDate;
     public String CoachID;
     public String Community; // Community/School
-    public int CompletedCourseID;
+    public String CompletedCourseID;
     public int ParentParticipation;
-    public int PresentStudent;
+    public int PresentStudent; // not available
 
     @Override
     public String toString() {
@@ -53,19 +53,19 @@ public class Community {
         GroupID = groupID;
     }
 
-    public int getCourseAdded() {
+    public String getCourseAdded() {
         return CourseAdded;
     }
 
-    public void setCourseAdded(int courseAdded) {
+    public void setCourseAdded(String courseAdded) {
         CourseAdded = courseAdded;
     }
 
-    public int getTopicAdded() {
+    public String getTopicAdded() {
         return TopicAdded;
     }
 
-    public void setTopicAdded(int topicAdded) {
+    public void setTopicAdded(String topicAdded) {
         TopicAdded = topicAdded;
     }
 
@@ -101,11 +101,11 @@ public class Community {
         Community = community;
     }
 
-    public int getCompletedCourseID() {
+    public String getCompletedCourseID() {
         return CompletedCourseID;
     }
 
-    public void setCompletedCourseID(int completedCourseID) {
+    public void setCompletedCourseID(String completedCourseID) {
         CompletedCourseID = completedCourseID;
     }
 

@@ -83,7 +83,6 @@
     </LinearLayout>
 
     <!--Radio Button to Select Drop Out-->
-
     <RadioGroup
         android:id="@+id/rg_DropOut"
         android:layout_width="match_parent"

@@ -8,7 +8,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -17,6 +21,7 @@ import com.pratham.admin.R;
 import com.pratham.admin.custom.MultiSpinner;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.modalclasses.Coach;
+import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Course;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.Topic;
@@ -27,6 +32,7 @@ import com.pratham.admin.util.Utility;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -47,6 +53,18 @@ public class CourseEnrollmentForm extends AppCompatActivity {
     Spinner sp_SelectCoach;
     @BindView(R.id.btn_DatePicker)
     Button btn_DatePicker;
+    @BindView(R.id.edt_PresentStdCount)
+    EditText edt_PresentStdCount;
+    @BindView(R.id.rg_ParentsParticipation)
+    RadioGroup rg_ParentsParticipation;
+    @BindView(R.id.rg_Community)
+    RadioGroup rg_Community;
+    @BindView(R.id.rb_Yes)
+    RadioButton rb_Yes;
+    @BindView(R.id.rb_Community)
+    RadioButton rb_Community;
+
+
     @BindView(R.id.btn_Submit)
     Button btn_Submit;
 
@@ -58,12 +76,17 @@ public class CourseEnrollmentForm extends AppCompatActivity {
     List<Course> courseDetails = new ArrayList<>();
     JsonArray topicDetails = new JsonArray();
     List<Topic> TopicList;
-    String[] TopicName;
 
     boolean[] selectedItems;
-    String[] selectedTopicsArray;
+    List<String> selectedTopicsArray;
     String selectedTopics = "";
-    String[] Topics;
+    List Topics;
+    private String selectedCoachID = "";
+    String vid = "";
+    String courseID = "";
+    String grpId = "";
+    List<String> TT;
+    private String courseName = "";
 
 
     @Override
@@ -96,6 +119,71 @@ public class CourseEnrollmentForm extends AppCompatActivity {
 
     }
 
+    @OnClick(R.id.btn_Submit)
+    public void submitForm(View view) {
+
+        if ((sp_Village.getSelectedItemPosition() > 0) && (sp_Groups.getSelectedItemPosition() > 0)
+                && (sp_SelectCoach.getSelectedItemPosition() > 0) && (sp_Course.getSelectedItemPosition() > 0)
+                && (edt_PresentStdCount.getText().toString().trim().length() > 0)) {
+
+            try {
+
+                // parentsParticipation
+                int selectedId = rg_ParentsParticipation.getCheckedRadioButtonId();
+                RadioButton selectedOption = (RadioButton) findViewById(selectedId);
+                String parentsParticipation = selectedOption.getText().toString();
+                int status;
+                if (parentsParticipation.equalsIgnoreCase("Yes")) {
+                    status = 1; // Active
+                } else {
+                    status = 0; // InActive
+                }
+
+                // Community
+                int selectedCId = rg_Community.getCheckedRadioButtonId();
+                RadioButton selectedCOption = (RadioButton) findViewById(selectedCId);
+                String Community = selectedCOption.getText().toString();
+
+                Community commObj = new Community();
+                commObj.VillageID = vid;
+                commObj.GroupID = grpId;
+                commObj.CourseAdded = courseName;
+                commObj.TopicAdded = selectedTopics;
+                commObj.StartDate = btn_DatePicker.getText().toString().trim();
+                commObj.EndDate = "";
+                commObj.CoachID = selectedCoachID;
+                commObj.Community = Community;
+                commObj.CompletedCourseID = courseID;
+                commObj.ParentParticipation = status;
+                commObj.PresentStudent = Integer.parseInt(edt_PresentStdCount.getText().toString().trim());
+
+                AppDatabase.getDatabaseInstance(this).getCommunityDao().insertCommunity(Collections.singletonList(commObj));
+
+                Toast.makeText(this, "Form Submitted !!!", Toast.LENGTH_SHORT).show();
+                resetForm();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
+
+    private void resetForm() {
+        populateVillages();
+        populateCoaches();
+        populateCourses();
+        rg_Community.clearCheck();
+        rg_ParentsParticipation.clearCheck();
+        edt_PresentStdCount.getText().clear();
+        btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
+        btn_DatePicker.setPadding(8, 8, 8, 8);
+        rb_Community.setChecked(true);
+        rb_Yes.setChecked(true);
+    }
+
+
     @OnClick(R.id.btn_DatePicker)
     public void startDatePicker(View view) {
         DialogFragment newFragment = new DatePickerFragmentOne();
@@ -118,7 +206,7 @@ public class CourseEnrollmentForm extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
-                String vid = customGroup.getId();
+                vid = customGroup.getId();
 
                 // Populate Registered Groups Spinner
                 populateRegisteredGroups(vid);
@@ -148,7 +236,7 @@ public class CourseEnrollmentForm extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 CustomGroup customGroup = (CustomGroup) registeredGRPs.get(pos);
-                String groupId = customGroup.getId();
+                grpId = customGroup.getId();
             }
 
             @Override
@@ -168,21 +256,20 @@ public class CourseEnrollmentForm extends AppCompatActivity {
             }
             ArrayAdapter villageAdapter = new ArrayAdapter(CourseEnrollmentForm.this, android.R.layout.simple_spinner_dropdown_item, CourseName);
             sp_Course.setAdapter(villageAdapter);
-        } else {
-            CourseName.add("Select Course");
-            ArrayAdapter villageAdapter = new ArrayAdapter(CourseEnrollmentForm.this, android.R.layout.simple_spinner_dropdown_item, CourseName);
-            sp_Course.setAdapter(villageAdapter);
         }
 
         sp_Course.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 CustomGroup customGroup = (CustomGroup) CourseName.get(pos);
-                String cid = customGroup.getId();
+                courseID = "";
+                courseName = "";
+                courseID = customGroup.getId();
+                courseName = customGroup.getName();
 
                 // Populate Registered Groups Spinner
-                if (cid != null)
-                    populateTopics(cid);
+                if (courseID != null)
+                    populateTopics(courseID);
             }
 
             @Override
@@ -201,20 +288,18 @@ public class CourseEnrollmentForm extends AppCompatActivity {
         Type listType = new TypeToken<List<Topic>>() {
         }.getType();
         TopicList = gson.fromJson(topicDetails.toString(), listType);
-        Topics = new String[TopicList.size()];
-        TopicName = new String[TopicList.size()];
-        for (int i = 0; i < TopicList.size(); i++) {
-            TopicName[i] = TopicList.get(i).TopicName;
-            Topics[i] = TopicList.get(i).TopicName;
 
+        TT = new ArrayList<>();
+        Topics = new ArrayList();
+
+        for (int i = 0; i < TopicList.size(); i++) {
+            Topics.add(new CustomGroup(TopicList.get(i).TopicName, TopicList.get(i).TopicID));
+            TT.add(TopicList.get(i).TopicID);
         }
 
-        ArrayAdapter subAdapter = new ArrayAdapter(CourseEnrollmentForm.this, android.R.layout.simple_spinner_dropdown_item, TopicName);
+        ArrayAdapter subAdapter = new ArrayAdapter(CourseEnrollmentForm.this, android.R.layout.simple_spinner_dropdown_item, Topics);
         ms_sp_Topics.setAdapter(subAdapter, false, onSelectedListener);
-        // set initial selection
         selectedItems = new boolean[subAdapter.getCount()];
-        //selectedItems[0] = true; // select first item
-        //sp_SubjectExpert.setSelected(selectedItems);
         ms_sp_Topics.setHint("Select Topics");
         ms_sp_Topics.setHintTextColor(Color.BLACK);
     }
@@ -222,22 +307,22 @@ public class CourseEnrollmentForm extends AppCompatActivity {
     // Listener
     private MultiSpinner.MultiSpinnerListener onSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
+            selectedTopics = "";
             // Do something here with the selected items
-            selectedTopicsArray = new String[selected.length];
+            selectedTopicsArray = new ArrayList<>();
             for (int i = 0; i < selected.length; i++) {
                 if (selected[i]) {
-                    selectedTopicsArray[i] = Topics[i];
-                    selectedTopics = selectedTopics + "," + selectedTopicsArray[i].toString();
+                    selectedTopicsArray.add(TT.get(i));
+                    selectedTopics = selectedTopics + "," + TT.get(i);
                 }
             }
             selectedTopics = selectedTopics.replaceFirst(",", "");
-            //Toast.makeText(CourseEnrollmentForm.this, "" + selectedTopics, Toast.LENGTH_SHORT).show();
         }
     };
 
 
     private void populateCoaches() {
-        List CoachName = new ArrayList();
+        final List CoachName = new ArrayList();
         if (!coachList.isEmpty()) {
             CoachName.add(new CustomGroup("Select Coach"));
             for (int j = 0; j < coachList.size(); j++) {
@@ -246,17 +331,13 @@ public class CourseEnrollmentForm extends AppCompatActivity {
             }
             ArrayAdapter coachAdapter = new ArrayAdapter(CourseEnrollmentForm.this, android.R.layout.simple_spinner_dropdown_item, CoachName);
             sp_SelectCoach.setAdapter(coachAdapter);
-        } else {
-            CoachName.add("Select Coach");
-            ArrayAdapter coachAdapter = new ArrayAdapter(CourseEnrollmentForm.this, android.R.layout.simple_spinner_dropdown_item, CoachName);
-            sp_SelectCoach.setAdapter(coachAdapter);
         }
 
         sp_SelectCoach.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                String selectedCoach = sp_SelectCoach.getSelectedItem().toString();
-//                Toast.makeText(CoachInformationForm.this, "" + selectedCoach, Toast.LENGTH_SHORT).show();
+                CustomGroup customGroup = (CustomGroup) CoachName.get(pos);
+                selectedCoachID = customGroup.getId();
             }
 
             @Override

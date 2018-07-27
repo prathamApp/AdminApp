@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
@@ -34,12 +35,15 @@ public class CoachRetentionForm extends AppCompatActivity {
     Spinner sp_SelectCoach;
     @BindView(R.id.rg_DropOut)
     RadioGroup rg_DropOut;
+    @BindView(R.id.rb_Yes)
+    RadioButton rb_Yes;
     @BindView(R.id.btn_DatePicker)
     Button btn_DatePicker;
     @BindView(R.id.btn_Submit)
     Button btn_Submit;
     List<Village> villageList = new ArrayList<>();
     List<Coach> coachList = new ArrayList<>();
+    String selectedCoachID = "";
 
 
     @Override
@@ -62,11 +66,48 @@ public class CoachRetentionForm extends AppCompatActivity {
         coachList = AppDatabase.getDatabaseInstance(this).getCoachDao().getAllCoaches();
         populateCoaches();
 
-        // Dropout code on Submit Click
-        int selectedId = rg_DropOut.getCheckedRadioButtonId();
-        RadioButton selectedOption = (RadioButton) findViewById(selectedId);
-        String DropOut = selectedOption.getText().toString();
     }
+
+    @OnClick(R.id.btn_Submit)
+    public void submitForm(View view) {
+
+        if ((sp_Village.getSelectedItemPosition() > 0) && (sp_SelectCoach.getSelectedItemPosition() > 0)) {
+
+            String endDate = btn_DatePicker.getText().toString().trim();
+
+            // Dropout code on Submit Click
+            int selectedId = rg_DropOut.getCheckedRadioButtonId();
+            RadioButton selectedOption = (RadioButton) findViewById(selectedId);
+            String DropOut = selectedOption.getText().toString();
+            int status;
+            if (DropOut.equalsIgnoreCase("Yes")) {
+                status = 0; // Inactive
+            } else {
+                status = 1; // Active
+                endDate = ""; // Still Active
+            }
+            String coachID = selectedCoachID;
+
+            AppDatabase.getDatabaseInstance(this).getCoachDao().updateCoachStatus(status, endDate, coachID);
+            resetForm();
+
+            Toast.makeText(this, "Form Submitted !!!", Toast.LENGTH_SHORT).show();
+
+        } else {
+            Toast.makeText(this, "Please Select All Fields !", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void resetForm() {
+        populateVillages();
+        populateCoaches();
+        rg_DropOut.clearCheck();
+        rb_Yes.setChecked(true);
+        btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
+        btn_DatePicker.setPadding(8, 8, 8, 8);
+    }
+
 
     private void populateVillages() {
 
@@ -95,7 +136,7 @@ public class CoachRetentionForm extends AppCompatActivity {
     }
 
     private void populateCoaches() {
-        List CoachName = new ArrayList();
+        final List CoachName = new ArrayList();
         if (!coachList.isEmpty()) {
             CoachName.add(new CustomGroup("Select Coach"));
             for (int j = 0; j < coachList.size(); j++) {
@@ -104,17 +145,13 @@ public class CoachRetentionForm extends AppCompatActivity {
             }
             ArrayAdapter coachAdapter = new ArrayAdapter(CoachRetentionForm.this, android.R.layout.simple_spinner_dropdown_item, CoachName);
             sp_SelectCoach.setAdapter(coachAdapter);
-        } else {
-            CoachName.add("Select Coach");
-            ArrayAdapter coachAdapter = new ArrayAdapter(CoachRetentionForm.this, android.R.layout.simple_spinner_dropdown_item, CoachName);
-            sp_SelectCoach.setAdapter(coachAdapter);
         }
 
         sp_SelectCoach.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                String selectedCoach = sp_SelectCoach.getSelectedItem().toString();
-//                Toast.makeText(CoachInformationForm.this, "" + selectedCoach, Toast.LENGTH_SHORT).show();
+                CustomGroup customGroup = (CustomGroup) CoachName.get(pos);
+                selectedCoachID = customGroup.getId();
             }
 
             @Override

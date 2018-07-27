@@ -242,7 +242,6 @@ public class CrlVisitForm extends AppCompatActivity {
                 if (selected[i]) {
                     selectedVGArray.add(VG.get(i));
                     selectedVG = selectedVG + "," + VG.get(i);
-
                 }
             }
             selectedVG = selectedVG.replaceFirst(",", "");

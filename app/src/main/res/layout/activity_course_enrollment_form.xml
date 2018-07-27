@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="32dp"
+        android:layout_margin="16dp"
         android:background="@drawable/custom_border"
         android:fontFamily="monospace"
         android:gravity="center"
@@ -25,8 +25,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:background="@drawable/custom_border"
         android:orientation="vertical">
 
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="2">
+            android:weightSum="3">
 
             <!--Village-->
             <Spinner
@@ -53,6 +53,16 @@
                 android:layout_margin="16dp"
                 android:layout_weight="1"
                 android:textSize="18sp" />
+
+            <!--Select Coach-->
+            <Spinner
+                android:id="@+id/sp_SelectCoach"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:textSize="18sp" />
+
 
         </LinearLayout>
 
@@ -82,6 +92,93 @@
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <!--Parents Participation-->
+            <RadioGroup
+                android:id="@+id/rg_ParentsParticipation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:text="Parents Participation"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/rb_Yes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1.5"
+                    android:checked="true"
+                    android:text="Yes"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_No"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1.5"
+                    android:text="No"
+                    android:textSize="14sp" />
+
+            </RadioGroup>
+
+            <!--Community-->
+            <RadioGroup
+                android:id="@+id/rg_Community"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Community or School"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/rb_Community"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:checked="true"
+                    android:text="Community"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_School"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1.5"
+                    android:text="School"
+                    android:textSize="14sp" />
+
+            </RadioGroup>
 
         </LinearLayout>
 
@@ -91,14 +188,21 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <!--Select Coach-->
-            <Spinner
-                android:id="@+id/sp_SelectCoach"
+            <!--Present Students-->
+            <EditText
+                android:id="@+id/edt_PresentStdCount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:layout_weight="1"
+                android:digits="0123456789"
+                android:hint="present students count ?"
+                android:inputType="number"
+                android:maxLength="3"
+                android:textAllCaps="false"
+                android:textColor="#000000"
                 android:textSize="18sp" />
+
 
             <!--Reporting Date-->
             <Button
@@ -116,13 +220,15 @@
                 android:textSize="18sp" />
 
         </LinearLayout>
+
+
     </LinearLayout>
 
     <Button
         android:id="@+id/btn_Submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="32dp"
+        android:layout_margin="16dp"
         android:background="@color/colorPrimaryDark"
         android:text="Submit"
         android:textAllCaps="true"
