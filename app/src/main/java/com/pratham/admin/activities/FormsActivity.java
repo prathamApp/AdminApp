@@ -1,6 +1,8 @@
 package com.pratham.admin.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,7 +18,6 @@ import com.pratham.admin.forms.CourseCompletionForm;
 import com.pratham.admin.forms.CourseEnrollmentForm;
 import com.pratham.admin.forms.CrlVisitForm;
 import com.pratham.admin.forms.ReportingStudentsForm;
-import com.pratham.admin.forms.SchoolSessionForm;
 import com.pratham.admin.interfaces.DashRVClickListener;
 import com.pratham.admin.modalclasses.DashboardItem;
 import com.pratham.admin.util.DashRVTouchListener;
@@ -43,6 +44,9 @@ public class FormsActivity extends AppCompatActivity implements DashRVClickListe
         LoggedcrlName = getIntent().getStringExtra("CRLname");
         LoggedCRLnameSwapStd = getIntent().getStringExtra("CRLnameSwapStd");
 
+        // Start WiFi
+        turnOnWifi();
+
         // Recycler View
         initializeItemList();
 
@@ -60,6 +64,22 @@ public class FormsActivity extends AppCompatActivity implements DashRVClickListe
 
         dashRecyclerView.addOnItemTouchListener(new DashRVTouchListener(getApplicationContext(), dashRecyclerView, FormsActivity.this));
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Start WiFi
+        turnOnWifi();
+    }
+
+    private void turnOnWifi() {
+        //enable wifi
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        boolean wifiEnabled = wifiManager.isWifiEnabled();
+        if (!wifiEnabled) {
+            wifiManager.setWifiEnabled(true);
+        }
     }
 
     /* Initialise items in list. */
@@ -106,7 +126,7 @@ public class FormsActivity extends AppCompatActivity implements DashRVClickListe
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
-        } */else if (name.contains("Reporting")) {
+        } */ else if (name.contains("Reporting")) {
             Intent intent = new Intent(FormsActivity.this, ReportingStudentsForm.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);

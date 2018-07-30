@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -55,6 +56,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        // Start WiFi
+        turnOnWifi();
+
         PackageInfo pinfo = null;
         try {
             pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -76,10 +80,24 @@ public class MainActivity extends AppCompatActivity implements DialogInterface {
         }
     }
 
+    private void turnOnWifi() {
+        //enable wifi
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        boolean wifiEnabled = wifiManager.isWifiEnabled();
+        if (!wifiEnabled) {
+            wifiManager.setWifiEnabled(true);
+        }
+    }
+
+
     @Override
     protected void onResume() {
         //todo username password remove comment
         super.onResume();
+
+        // Start WiFi
+        turnOnWifi();
+
         userName.setText("amolmoghe");
         password.setText("pratham@123");
 //        userName.setText("");
