@@ -17,145 +17,128 @@
         android:background="@drawable/custom_border"
         android:fontFamily="monospace"
         android:gravity="center"
+        android:padding="16dp"
         android:text="Coach Retention"
         android:textColor="@color/colorAccent"
         android:textSize="32sp"
         android:textStyle="bold" />
 
-
-    <!--Village-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:text="Select Village"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-        <Spinner
-            android:id="@+id/sp_Village"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp" />
-
-    </LinearLayout>
-
-    <!--Coach-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
-        android:orientation="horizontal">
+        android:background="@drawable/custom_border"
+        android:orientation="vertical">
 
-        <TextView
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:text="Select Coach"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
+            android:orientation="horizontal"
+            android:weightSum="2">
 
-        <Spinner
-            android:id="@+id/sp_SelectCoach"
+            <!--Village-->
+            <Spinner
+                android:id="@+id/sp_Village"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
+
+            <!--Coach-->
+            <Spinner
+                android:id="@+id/sp_SelectCoach"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp" />
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
+            <!--Radio Button to Select Drop Out-->
+            <RadioGroup
+                android:id="@+id/rg_DropOut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="4">
 
-    </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Drop Out"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-    <!--Radio Button to Select Drop Out-->
-    <RadioGroup
-        android:id="@+id/rg_DropOut"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:orientation="horizontal"
-        android:weightSum="4">
+                <RadioButton
+                    android:id="@+id/rb_Yes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:checked="true"
+                    android:text="Yes"
+                    android:textSize="18sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_weight="1"
-            android:text="Drop Out"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+                <RadioButton
+                    android:id="@+id/rb_No"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1.5"
+                    android:text="No"
+                    android:textSize="18sp" />
 
-        <RadioButton
-            android:id="@+id/rb_Yes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_weight="1.5"
-            android:checked="true"
-            android:text="Yes"
-            android:textSize="18sp" />
+            </RadioGroup>
 
-        <RadioButton
-            android:id="@+id/rb_No"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_weight="1.5"
-            android:text="No"
-            android:textSize="18sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-    </RadioGroup>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="End Date"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:orientation="horizontal"
-        android:weightSum="5">
+                <Button
+                    android:id="@+id/btn_DatePicker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimaryDark"
+                    android:drawableLeft="@android:drawable/ic_menu_my_calendar"
+                    android:paddingLeft="16dp"
+                    android:text="Date"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Select End Date"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/btn_DatePicker"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:background="@color/colorPrimaryDark"
-            android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-            android:paddingLeft="16dp"
-            android:text="Date"
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
-
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
 
@@ -163,9 +146,7 @@
         android:id="@+id/btn_Submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_margin="32dp"
         android:background="@color/colorPrimaryDark"
         android:text="Submit"
         android:textAllCaps="true"
