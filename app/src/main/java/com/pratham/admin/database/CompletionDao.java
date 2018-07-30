@@ -12,7 +12,7 @@ import java.util.List;
 @Dao
 public interface CompletionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertAllCompletion(List<Completion> completionList);
+    public void insertCompletion(List<Completion> completionList);
 
     @Query("DELETE FROM Completion")
     public void deleteAllCompletion();

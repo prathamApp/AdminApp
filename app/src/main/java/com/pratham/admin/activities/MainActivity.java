@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface {
         AppDatabase.getDatabaseInstance(this).getCRLVisitdao().deleteAllCRLVisits();
         AppDatabase.getDatabaseInstance(this).getCommunityDao().deleteAllCommunity();
         AppDatabase.getDatabaseInstance(this).getCompletionDao().deleteAllCompletion();
-        AppDatabase.getDatabaseInstance(this).getSchoolSessionDao().deleteAllSchoolSession();
+//        AppDatabase.getDatabaseInstance(this).getSchoolSessionDao().deleteAllSchoolSession();
         AppDatabase.destroyInstance();
         SharedPreferences preferences = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();

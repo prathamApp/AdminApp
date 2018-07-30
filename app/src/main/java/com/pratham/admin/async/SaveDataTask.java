@@ -51,7 +51,7 @@ public class SaveDataTask extends AsyncTask<Void, Integer, Void> {
         AppDatabase.getDatabaseInstance(context).getCRLdao().insertAllCRL(CRLList);
         AppDatabase.getDatabaseInstance(context).getStudentDao().insertAllStudents(studentList);
         AppDatabase.getDatabaseInstance(context).getGroupDao().insertAllGroups(groupsList);
-        AppDatabase.getDatabaseInstance(context).getCoursesDao().insertAllCourses(coursesList);
+        AppDatabase.getDatabaseInstance(context).getCoursesDao().insertCourses(coursesList);
         AppDatabase.getDatabaseInstance(context).getCoachDao().insertCoach(coachList);
         AppDatabase.getDatabaseInstance(context).getVillageDao().insertAllVillages(villageList);
         AppDatabase.destroyInstance();

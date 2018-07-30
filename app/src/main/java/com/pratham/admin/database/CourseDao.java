@@ -12,7 +12,7 @@ import java.util.List;
 @Dao
 public interface CourseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertAllCourses(List<Course> CourseList);
+    public void insertCourses(List<Course> CourseList);
 
     @Query("DELETE FROM Course")
     public void deleteAllCourses();
