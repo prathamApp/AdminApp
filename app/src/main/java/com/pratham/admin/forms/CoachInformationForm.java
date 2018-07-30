@@ -305,6 +305,7 @@ public class CoachInformationForm extends AppCompatActivity {
                 cObj.EndDate = "";
                 cObj.CreatedBy = "";
                 cObj.CreatedDate = date;
+                cObj.sentFlag = 0;
 
                 AppDatabase.getDatabaseInstance(this).getCoachDao().insertCoach(Collections.singletonList(cObj));
 

@@ -88,7 +88,10 @@ public class CoachRetentionForm extends AppCompatActivity {
             }
             String coachID = selectedCoachID;
 
+            // update flags
+            AppDatabase.getDatabaseInstance(CoachRetentionForm.this).getCoachDao().updateSentFlag(0, selectedCoachID);
             AppDatabase.getDatabaseInstance(this).getCoachDao().updateCoachStatus(status, endDate, coachID);
+
             resetForm();
 
             Toast.makeText(this, "Form Submitted !!!", Toast.LENGTH_SHORT).show();

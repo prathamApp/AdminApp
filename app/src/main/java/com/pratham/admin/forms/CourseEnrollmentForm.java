@@ -156,6 +156,7 @@ public class CourseEnrollmentForm extends AppCompatActivity {
                 commObj.CompletedCourseID = courseID;
                 commObj.ParentParticipation = status;
                 commObj.PresentStudent = Integer.parseInt(edt_PresentStdCount.getText().toString().trim());
+                commObj.sentFlag = 0;
 
                 AppDatabase.getDatabaseInstance(this).getCommunityDao().insertCommunity(Collections.singletonList(commObj));
 

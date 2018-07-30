@@ -31,6 +31,8 @@ public class ReportingStudentsForm extends AppCompatActivity {
     Spinner sp_Students;
     @BindView(R.id.btn_Submit)
     Button btn_Submit;
+    String stdId;
+
 
     List<Village> villageList = new ArrayList<>();
     List<Student> AllStudentsInDB = new ArrayList<>();
@@ -116,7 +118,7 @@ public class ReportingStudentsForm extends AppCompatActivity {
     }
 
     private void populateStudents(String grpID) {
-        List StdName = new ArrayList();
+        final List StdName = new ArrayList();
         if (!AllStudentsInDB.isEmpty()) {
             StdName.add(new CustomGroup("Select Students"));
             for (int j = 0; j < AllStudentsInDB.size(); j++) {
@@ -126,6 +128,20 @@ public class ReportingStudentsForm extends AppCompatActivity {
             ArrayAdapter stdAdapter = new ArrayAdapter(ReportingStudentsForm.this, android.R.layout.simple_spinner_dropdown_item, StdName);
             sp_Students.setAdapter(stdAdapter);
         }
+
+        sp_Students.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                CustomGroup customGroup = (CustomGroup) StdName.get(pos);
+                stdId = customGroup.getId();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
 
     }
 

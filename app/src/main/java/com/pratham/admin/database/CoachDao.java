@@ -22,4 +22,8 @@ public interface CoachDao {
 
     @Query("UPDATE Coach SET CoachActive = :cActive, EndDate = :eDate WHERE CoachID =:cID")
     void updateCoachStatus(int cActive, String eDate, String cID);
+
+    @Query("UPDATE Coach SET sentFlag=:pushStatus WHERE CoachID =:cID")
+    void updateSentFlag(int pushStatus, String cID);
+
 }
