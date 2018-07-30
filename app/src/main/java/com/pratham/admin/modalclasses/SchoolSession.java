@@ -1,6 +1,7 @@
 package com.pratham.admin.modalclasses;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -16,6 +17,7 @@ public class SchoolSession {
     public String ReportingDate;
     public String CoachID;
     public String GroupType; // Community/ School
+    public int sentFlag;
 
     @Override
     public String toString() {
@@ -28,14 +30,16 @@ public class SchoolSession {
                 ", ReportingDate='" + ReportingDate + '\'' +
                 ", CoachID='" + CoachID + '\'' +
                 ", GroupType='" + GroupType + '\'' +
+                ", sentFlag=" + sentFlag +
                 '}';
     }
 
+    @NonNull
     public String getSchoolSessionID() {
         return SchoolSessionID;
     }
 
-    public void setSchoolSessionID(String schoolSessionID) {
+    public void setSchoolSessionID(@NonNull String schoolSessionID) {
         SchoolSessionID = schoolSessionID;
     }
 
@@ -93,5 +97,13 @@ public class SchoolSession {
 
     public void setGroupType(String groupType) {
         GroupType = groupType;
+    }
+
+    public int getSentFlag() {
+        return sentFlag;
+    }
+
+    public void setSentFlag(int sentFlag) {
+        this.sentFlag = sentFlag;
     }
 }

@@ -1,6 +1,7 @@
 package com.pratham.admin.modalclasses;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -19,29 +20,32 @@ public class Community {
     public String CompletedCourseID;
     public int ParentParticipation;
     public int PresentStudent; // not available
+    public int sentFlag;
 
     @Override
     public String toString() {
         return "Community{" +
                 "VillageID='" + VillageID + '\'' +
                 ", GroupID='" + GroupID + '\'' +
-                ", CourseAdded=" + CourseAdded +
-                ", TopicAdded=" + TopicAdded +
+                ", CourseAdded='" + CourseAdded + '\'' +
+                ", TopicAdded='" + TopicAdded + '\'' +
                 ", StartDate='" + StartDate + '\'' +
                 ", EndDate='" + EndDate + '\'' +
                 ", CoachID='" + CoachID + '\'' +
                 ", Community='" + Community + '\'' +
-                ", CompletedCourseID=" + CompletedCourseID +
+                ", CompletedCourseID='" + CompletedCourseID + '\'' +
                 ", ParentParticipation=" + ParentParticipation +
                 ", PresentStudent=" + PresentStudent +
+                ", sentFlag=" + sentFlag +
                 '}';
     }
 
+    @NonNull
     public String getVillageID() {
         return VillageID;
     }
 
-    public void setVillageID(String villageID) {
+    public void setVillageID(@NonNull String villageID) {
         VillageID = villageID;
     }
 
@@ -123,5 +127,13 @@ public class Community {
 
     public void setPresentStudent(int presentStudent) {
         PresentStudent = presentStudent;
+    }
+
+    public int getSentFlag() {
+        return sentFlag;
+    }
+
+    public void setSentFlag(int sentFlag) {
+        this.sentFlag = sentFlag;
     }
 }

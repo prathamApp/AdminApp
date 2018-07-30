@@ -30,6 +30,7 @@ public class Course {
     @SerializedName("lstTopic")
     @TypeConverters(JSONArrayToString.class)
     public JsonArray listTopic;
+    public int sentFlag;
 
     @Override
     public String toString() {
@@ -41,7 +42,8 @@ public class Course {
                 ", CourseSubject='" + CourseSubject + '\'' +
                 ", CourseLang='" + CourseLang + '\'' +
                 ", isDelete=" + isDelete +
-                ", listTopic='" + listTopic + '\'' +
+                ", listTopic=" + listTopic +
+                ", sentFlag=" + sentFlag +
                 '}';
     }
 
@@ -98,8 +100,8 @@ public class Course {
         return isDelete;
     }
 
-    public void setIsDelete(boolean isDelete) {
-        this.isDelete = isDelete;
+    public void setDelete(boolean delete) {
+        isDelete = delete;
     }
 
     public JsonArray getListTopic() {
@@ -108,5 +110,13 @@ public class Course {
 
     public void setListTopic(JsonArray listTopic) {
         this.listTopic = listTopic;
+    }
+
+    public int getSentFlag() {
+        return sentFlag;
+    }
+
+    public void setSentFlag(int sentFlag) {
+        this.sentFlag = sentFlag;
     }
 }

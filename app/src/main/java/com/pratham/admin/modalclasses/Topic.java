@@ -1,5 +1,6 @@
 package com.pratham.admin.modalclasses;
 
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -23,6 +24,7 @@ public class Topic {
     public String TopicLang;
     @SerializedName("IsDelete")
     public Boolean IsDelete;
+    public int sentFlag;
 
     @Override
     public String toString() {
@@ -34,6 +36,7 @@ public class Topic {
                 ", TopicSubject='" + TopicSubject + '\'' +
                 ", TopicLang='" + TopicLang + '\'' +
                 ", IsDelete=" + IsDelete +
+                ", sentFlag=" + sentFlag +
                 '}';
     }
 
@@ -92,5 +95,13 @@ public class Topic {
 
     public void setDelete(Boolean delete) {
         IsDelete = delete;
+    }
+
+    public int getSentFlag() {
+        return sentFlag;
+    }
+
+    public void setSentFlag(int sentFlag) {
+        this.sentFlag = sentFlag;
     }
 }

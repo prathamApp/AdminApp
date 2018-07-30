@@ -1,6 +1,7 @@
 package com.pratham.admin.modalclasses;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -23,6 +24,7 @@ public class Coach {
     public int CoachActive;
     public String CreatedBy;
     public String CreatedDate;
+    public int sentFlag;
 
     @Override
     public String toString() {
@@ -41,6 +43,7 @@ public class Coach {
                 ", CoachActive=" + CoachActive +
                 ", CreatedBy='" + CreatedBy + '\'' +
                 ", CreatedDate='" + CreatedDate + '\'' +
+                ", sentFlag=" + sentFlag +
                 '}';
     }
 
@@ -155,5 +158,13 @@ public class Coach {
 
     public void setCreatedDate(String createdDate) {
         CreatedDate = createdDate;
+    }
+
+    public int getSentFlag() {
+        return sentFlag;
+    }
+
+    public void setSentFlag(int sentFlag) {
+        this.sentFlag = sentFlag;
     }
 }

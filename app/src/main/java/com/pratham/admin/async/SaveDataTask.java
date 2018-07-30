@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.OnSavedData;
+import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Course;
 
 import java.util.List;
@@ -16,17 +17,19 @@ public class SaveDataTask extends AsyncTask<Void, Integer, Void> {
     private List studentList;
     private List groupsList;
     private List coursesList;
+    private List coachList;
     private List villageList;
     private Context context;
     private ProgressDialog dialog;
     private OnSavedData onSavedData;
 
     public SaveDataTask(Context context, OnSavedData onSavedData, List CRLList, List studentList, List groupsList,
-                        List villageList, List<Course> courseList) {
+                        List villageList, List<Course> courseList, List<Coach> coachList) {
         this.CRLList = CRLList;
         this.studentList = studentList;
         this.groupsList = groupsList;
         this.coursesList = courseList;
+        this.coachList = coachList;
         this.villageList = villageList;
         this.context = context;
         this.onSavedData = onSavedData;
@@ -49,6 +52,7 @@ public class SaveDataTask extends AsyncTask<Void, Integer, Void> {
         AppDatabase.getDatabaseInstance(context).getStudentDao().insertAllStudents(studentList);
         AppDatabase.getDatabaseInstance(context).getGroupDao().insertAllGroups(groupsList);
         AppDatabase.getDatabaseInstance(context).getCoursesDao().insertAllCourses(coursesList);
+        AppDatabase.getDatabaseInstance(context).getCoachDao().insertCoach(coachList);
         AppDatabase.getDatabaseInstance(context).getVillageDao().insertAllVillages(villageList);
         AppDatabase.destroyInstance();
         return null;

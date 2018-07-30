@@ -1,9 +1,11 @@
 package com.pratham.admin.forms;
 
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,26 +14,38 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+import com.google.gson.Gson;
+import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.custom.MultiSpinner;
 import com.pratham.admin.database.AppDatabase;
+import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.modalclasses.CRLVisit;
 import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Groups;
+import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Village;
+import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.CustomGroup;
 import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.Utility;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CrlVisitForm extends AppCompatActivity {
+import static com.pratham.admin.util.APIs.PushCRLVisit;
+
+public class CrlVisitForm extends AppCompatActivity implements ConnectionReceiverListener {
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;
@@ -51,6 +65,8 @@ public class CrlVisitForm extends AppCompatActivity {
     EditText edt_PresentStdCount;
     @BindView(R.id.btn_Submit)
     Button btn_Submit;
+
+    boolean internetIsAvailable = false;
 
     List<Village> villageList = new ArrayList<>();
     List<Coach> coachList = new ArrayList<>();
@@ -99,6 +115,8 @@ public class CrlVisitForm extends AppCompatActivity {
         setContentView(R.layout.activity_crl_visit_form);
         ButterKnife.bind(this);
 
+        checkConnection();
+
         // Hide Actionbar
         getSupportActionBar().hide();
 
@@ -119,6 +137,21 @@ public class CrlVisitForm extends AppCompatActivity {
         coachList = AppDatabase.getDatabaseInstance(this).getCoachDao().getAllCoaches();
         populatePresentCoaches();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ApplicationController.getInstance().setConnectionListener(this);
+    }
+
+    private void checkConnection() {
+        boolean isConnected = ConnectionReceiver.isConnected();
+        if (!isConnected) {
+            internetIsAvailable = false;
+        } else {
+            internetIsAvailable = true;
+        }
     }
 
 
@@ -145,18 +178,89 @@ public class CrlVisitForm extends AppCompatActivity {
                 cvObj.PresentStudents = edt_PresentStdCount.getText().toString().trim();
                 cvObj.Village = vName;
                 cvObj.Group = "";
-
+                cvObj.sentFlag = 0;
                 AppDatabase.getDatabaseInstance(this).getCRLVisitdao().insertCRLVisit(Collections.singletonList(cvObj));
-                resetForm();
-                Toast.makeText(this, "Form Submitted !!!", Toast.LENGTH_SHORT).show();
-            } catch (Exception e) {
+                Toast.makeText(this, "Form Saved to Database !!!", Toast.LENGTH_SHORT).show();
 
+                Log.d("id :::", "inFillingForm " + uniqueVisitID);
+
+                // Push To Server
+                try {
+                    if (internetIsAvailable) {
+                        Gson gson = new Gson();
+                        String CRLVisitJSON = gson.toJson(Collections.singletonList(cvObj));
+
+                        MetaData metaData = new MetaData();
+                        metaData.setKeys("pushDataTime");
+                        metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+                        List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
+                        String metaDataJSON = customParse(metaDataList);
+                        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
+
+                        String json = "{ \"CRLVisitJSON\":" + CRLVisitJSON + ",\"metadata\":" + metaDataJSON + "}";
+                        Log.d("json :::", json);
+
+                        final ProgressDialog dialog = new ProgressDialog(this);
+                        dialog.setTitle("UPLOADING ... ");
+                        dialog.setCancelable(false);
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.show();
+
+                        AndroidNetworking.post(PushCRLVisit).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.d("responce", response);
+                                // update flag
+                                AppDatabase.getDatabaseInstance(CrlVisitForm.this).getCRLVisitdao().updateSentFlag(1, uniqueVisitID);
+                                Log.d("id :::", "inResponse" + uniqueVisitID);
+                                Toast.makeText(CrlVisitForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                                resetForm();
+                            }
+
+                            @Override
+                            public void onError(ANError anError) {
+                                Toast.makeText(CrlVisitForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                                AppDatabase.getDatabaseInstance(CrlVisitForm.this).getCRLVisitdao().updateSentFlag(0, uniqueVisitID);
+                                Log.d("id :::", "inErrorResponse " + uniqueVisitID);
+                                dialog.dismiss();
+                                resetForm();
+                            }
+                        });
+
+                    } else {
+                        Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
+                        resetForm();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Log.d("id :::", "inBeforeResetForm " + uniqueVisitID);
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
         } else {
             Toast.makeText(this, "Please fill all the fields !!!", Toast.LENGTH_SHORT).show();
         }
     }
+
+
+    private String customParse(List<MetaData> metaDataList) {
+        String json = "{";
+
+        for (int i = 0; i < metaDataList.size(); i++) {
+            json = json + "\"" + metaDataList.get(i).getKeys() + "\":\"" + metaDataList.get(i).getValue() + "\"";
+            if (i < metaDataList.size() - 1) {
+                json = json + ",";
+            }
+        }
+        json = json + "}";
+
+        return json;
+    }
+
 
     private void resetForm() {
         populateVillages();
@@ -165,6 +269,7 @@ public class CrlVisitForm extends AppCompatActivity {
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
         btn_DatePicker.setPadding(8, 8, 8, 8);
         uniqueVisitID = UUID.randomUUID().toString();
+        Log.d("id :::", "inResetForm " + uniqueVisitID);
     }
 
     @OnClick(R.id.btn_DatePicker)
@@ -394,5 +499,14 @@ public class CrlVisitForm extends AppCompatActivity {
         sp_CoachesWithGrp_multiselect.setHint("Select Coach with Their Group");
         sp_CoachesWithGrp_multiselect.setHintTextColor(Color.BLACK);
 
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            internetIsAvailable = false;
+        } else {
+            internetIsAvailable = true;
+        }
     }
 }

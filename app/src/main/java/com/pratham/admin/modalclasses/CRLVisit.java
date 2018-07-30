@@ -1,6 +1,7 @@
 package com.pratham.admin.modalclasses;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -21,6 +22,7 @@ public class CRLVisit {
     public String PresentStudents;
     public String Village;
     public String Group;
+    public int sentFlag;
 
     @Override
     public String toString() {
@@ -36,14 +38,16 @@ public class CRLVisit {
                 ", PresentStudents='" + PresentStudents + '\'' +
                 ", Village='" + Village + '\'' +
                 ", Group='" + Group + '\'' +
+                ", sentFlag=" + sentFlag +
                 '}';
     }
 
+    @NonNull
     public String getVisitID() {
         return VisitID;
     }
 
-    public void setVisitID(String visitID) {
+    public void setVisitID(@NonNull String visitID) {
         VisitID = visitID;
     }
 
@@ -125,5 +129,13 @@ public class CRLVisit {
 
     public void setGroup(String group) {
         Group = group;
+    }
+
+    public int getSentFlag() {
+        return sentFlag;
+    }
+
+    public void setSentFlag(int sentFlag) {
+        this.sentFlag = sentFlag;
     }
 }
