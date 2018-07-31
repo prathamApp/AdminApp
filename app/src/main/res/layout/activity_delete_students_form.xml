@@ -7,7 +7,7 @@
     android:background="#FFFFFF"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".forms.ReportingStudentsForm">
+    tools:context=".forms.DeleteStudentsForm">
 
     <!--Title-->
     <TextView
@@ -17,7 +17,7 @@
         android:background="@drawable/custom_border"
         android:fontFamily="monospace"
         android:gravity="center"
-        android:text="Reporting Students To Be Deleted"
+        android:text="Delete Students"
         android:textColor="@color/colorAccent"
         android:textSize="28sp"
         android:textStyle="bold" />

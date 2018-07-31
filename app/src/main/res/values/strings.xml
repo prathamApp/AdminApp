@@ -112,6 +112,8 @@
         <item>Retired</item>
         <item>Artist</item>
         <item>Teacher</item>
+        <item>State Govt.</item>
+        <item>Central Govt.</item>
         <item>Others</item>
     </string-array>
 
@@ -122,6 +124,8 @@
         <item>Musician</item>
         <item>Art</item>
         <item>Potter</item>
+        <item>None</item>
+        <item>Others</item>
     </string-array>
 
     <string-array name="array_Subject_Expert">
@@ -129,6 +133,7 @@
         <item>English</item>
         <item>Science</item>
         <item>Language</item>
+        <item>None</item>
     </string-array>
 
     <string-array name="array_Education">

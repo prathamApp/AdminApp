@@ -21,7 +21,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ReportingStudentsForm extends AppCompatActivity {
+public class DeleteStudentsForm extends AppCompatActivity {
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;
@@ -42,7 +42,7 @@ public class ReportingStudentsForm extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reporting_students_form);
+        setContentView(R.layout.activity_delete_students_form);
         ButterKnife.bind(this);
 
         // Hide Actionbar
@@ -68,7 +68,7 @@ public class ReportingStudentsForm extends AppCompatActivity {
                 CustomGroup customGroup = new CustomGroup(villageList.get(j).getVillageName(), villageList.get(j).getVillageId());
                 VillageName.add(customGroup);
             }
-            ArrayAdapter villageAdapter = new ArrayAdapter(ReportingStudentsForm.this, android.R.layout.simple_spinner_dropdown_item, VillageName);
+            ArrayAdapter villageAdapter = new ArrayAdapter(DeleteStudentsForm.this, android.R.layout.simple_spinner_dropdown_item, VillageName);
             sp_Village.setAdapter(villageAdapter);
         }
 
@@ -99,7 +99,7 @@ public class ReportingStudentsForm extends AppCompatActivity {
             }
         }
 
-        ArrayAdapter grpAdapter = new ArrayAdapter(ReportingStudentsForm.this, android.R.layout.simple_spinner_dropdown_item, registeredGRPs);
+        ArrayAdapter grpAdapter = new ArrayAdapter(DeleteStudentsForm.this, android.R.layout.simple_spinner_dropdown_item, registeredGRPs);
         sp_Groups.setAdapter(grpAdapter);
         sp_Groups.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -125,7 +125,7 @@ public class ReportingStudentsForm extends AppCompatActivity {
                 if (AllStudentsInDB.get(j).getGroupId().equals(grpID))
                     StdName.add(new CustomGroup(AllStudentsInDB.get(j).getFullName(), AllStudentsInDB.get(j).getStudentId()));
             }
-            ArrayAdapter stdAdapter = new ArrayAdapter(ReportingStudentsForm.this, android.R.layout.simple_spinner_dropdown_item, StdName);
+            ArrayAdapter stdAdapter = new ArrayAdapter(DeleteStudentsForm.this, android.R.layout.simple_spinner_dropdown_item, StdName);
             sp_Students.setAdapter(stdAdapter);
         }
 

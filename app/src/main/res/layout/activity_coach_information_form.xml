@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".forms.CoachInformationForm">
@@ -186,14 +186,15 @@
                 android:textSize="18sp" />
 
             <!--Select Groups-->
-            <Spinner
+            <com.pratham.admin.custom.MultiSpinner
                 android:id="@+id/sp_Groups"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:layout_weight="1"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
+                android:paddingLeft="8dp"
+                android:textColor="#000000"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout

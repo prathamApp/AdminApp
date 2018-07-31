@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -44,19 +43,19 @@ public class CourseEnrollmentForm extends AppCompatActivity {
     @BindView(R.id.sp_Village)
     Spinner sp_Village;
     @BindView(R.id.sp_Groups)
-    Spinner sp_Groups;
+    MultiSpinner sp_Groups;
     @BindView(R.id.sp_Course)
     Spinner sp_Course;
     @BindView(R.id.ms_sp_Topics)
     MultiSpinner ms_sp_Topics;
     @BindView(R.id.sp_SelectCoach)
-    Spinner sp_SelectCoach;
+    MultiSpinner sp_SelectCoach;
     @BindView(R.id.btn_DatePicker)
     Button btn_DatePicker;
-    @BindView(R.id.edt_PresentStdCount)
-    EditText edt_PresentStdCount;
-    @BindView(R.id.rg_ParentsParticipation)
-    RadioGroup rg_ParentsParticipation;
+    //    @BindView(R.id.edt_PresentStdCount)
+//    EditText edt_PresentStdCount;
+//    @BindView(R.id.rg_ParentsParticipation)
+//    RadioGroup rg_ParentsParticipation;
     @BindView(R.id.rg_Community)
     RadioGroup rg_Community;
     @BindView(R.id.rb_Yes)
@@ -81,13 +80,23 @@ public class CourseEnrollmentForm extends AppCompatActivity {
     List<String> selectedTopicsArray;
     String selectedTopics = "";
     List Topics;
-    private String selectedCoachID = "";
     String vid = "";
     String courseID = "";
-    String grpId = "";
     List<String> TT;
     private String courseName = "";
 
+    // Selected Groups
+    List<String> selectedGroupsArray;
+    List registeredGroups;
+    private boolean[] selectedGroupItems;
+    List<String> Grps;
+    String selectedGroups = "";
+
+    // Coaches PC
+    List<CustomGroup> registeredPCGRPs;
+    private boolean[] selectedPCItems;
+    List<String> PC = new ArrayList<>();
+    String selectedPC = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,13 +131,12 @@ public class CourseEnrollmentForm extends AppCompatActivity {
     @OnClick(R.id.btn_Submit)
     public void submitForm(View view) {
 
-        if ((sp_Village.getSelectedItemPosition() > 0) && (sp_Groups.getSelectedItemPosition() > 0)
-                && (sp_SelectCoach.getSelectedItemPosition() > 0) && (sp_Course.getSelectedItemPosition() > 0)
-                && (edt_PresentStdCount.getText().toString().trim().length() > 0)) {
+        if ((sp_Village.getSelectedItemPosition() > 0) && (selectedGroups.trim().length() > 0)
+                && (selectedPC.trim().length() > 0) && (sp_Course.getSelectedItemPosition() > 0)) {
 
             try {
 
-                // parentsParticipation
+/*                // parentsParticipation
                 int selectedId = rg_ParentsParticipation.getCheckedRadioButtonId();
                 RadioButton selectedOption = (RadioButton) findViewById(selectedId);
                 String parentsParticipation = selectedOption.getText().toString();
@@ -137,7 +145,7 @@ public class CourseEnrollmentForm extends AppCompatActivity {
                     status = 1; // Active
                 } else {
                     status = 0; // InActive
-                }
+                }*/
 
                 // Community
                 int selectedCId = rg_Community.getCheckedRadioButtonId();
@@ -146,16 +154,16 @@ public class CourseEnrollmentForm extends AppCompatActivity {
 
                 Community commObj = new Community();
                 commObj.VillageID = vid;
-                commObj.GroupID = grpId;
+                commObj.GroupID = selectedGroups;
                 commObj.CourseAdded = courseName;
                 commObj.TopicAdded = selectedTopics;
                 commObj.StartDate = btn_DatePicker.getText().toString().trim();
                 commObj.EndDate = "";
-                commObj.CoachID = selectedCoachID;
+                commObj.CoachID = selectedPC;
                 commObj.Community = Community;
                 commObj.CompletedCourseID = courseID;
-                commObj.ParentParticipation = status;
-                commObj.PresentStudent = Integer.parseInt(edt_PresentStdCount.getText().toString().trim());
+                commObj.ParentParticipation = 0;
+                commObj.PresentStudent = 0;
                 commObj.sentFlag = 0;
 
                 AppDatabase.getDatabaseInstance(this).getCommunityDao().insertCommunity(Collections.singletonList(commObj));
@@ -176,12 +184,12 @@ public class CourseEnrollmentForm extends AppCompatActivity {
         populateCoaches();
         populateCourses();
         rg_Community.clearCheck();
-        rg_ParentsParticipation.clearCheck();
-        edt_PresentStdCount.getText().clear();
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
         btn_DatePicker.setPadding(8, 8, 8, 8);
         rb_Community.setChecked(true);
-        rb_Yes.setChecked(true);
+//        rg_ParentsParticipation.clearCheck();
+//        edt_PresentStdCount.getText().clear();
+//        rb_Yes.setChecked(true);
     }
 
 
@@ -220,32 +228,45 @@ public class CourseEnrollmentForm extends AppCompatActivity {
         });
     }
 
+    // VISITED GROUPS
     private void populateRegisteredGroups(String villageID) {
         // todo get registered grps
-        registeredGRPs = new ArrayList();
-        registeredGRPs.add(new CustomGroup("Select Groups"));
+        registeredGroups = new ArrayList();
         if (AllGroupsInDB != null) {
+            Grps = new ArrayList<>();
             for (int i = 0; i < AllGroupsInDB.size(); i++) {
-                if (AllGroupsInDB.get(i).getVillageId().equals(villageID))
-                    registeredGRPs.add(new CustomGroup(AllGroupsInDB.get(i).getGroupName(), AllGroupsInDB.get(i).getGroupId()));
+                if (AllGroupsInDB.get(i).getVillageId().equals(villageID)) {
+                    registeredGroups.add(new CustomGroup(AllGroupsInDB.get(i).getGroupName(), AllGroupsInDB.get(i).getGroupId()));
+                    Grps.add(AllGroupsInDB.get(i).getGroupId());
+                }
             }
         }
 
-        ArrayAdapter grpAdapter = new ArrayAdapter(CourseEnrollmentForm.this, android.R.layout.simple_spinner_dropdown_item, registeredGRPs);
-        sp_Groups.setAdapter(grpAdapter);
-        sp_Groups.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                CustomGroup customGroup = (CustomGroup) registeredGRPs.get(pos);
-                grpId = customGroup.getId();
-            }
+        ArrayAdapter grpAdapter = new ArrayAdapter(CourseEnrollmentForm.this, android.R.layout.simple_spinner_dropdown_item, registeredGroups);
+        sp_Groups.setAdapter(grpAdapter, false, onVGSelectedListener);
+        // set initial selection
+        selectedGroupItems = new boolean[grpAdapter.getCount()];
+        sp_Groups.setHint("Select Groups");
+        sp_Groups.setHintTextColor(Color.BLACK);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
     }
+
+    // Groups Listener
+    private MultiSpinner.MultiSpinnerListener onVGSelectedListener = new MultiSpinner.MultiSpinnerListener() {
+        public void onItemsSelected(boolean[] selected) {
+            // Do something here with the selected items
+            List<String> grp_sel = new ArrayList<>();
+            selectedGroupsArray = new ArrayList<>();
+            selectedGroups = "";
+            for (int i = 0; i < selected.length; i++) {
+                if (selected[i]) {
+                    selectedGroupsArray.add(Grps.get(i));
+                    selectedGroups = selectedGroups + "," + Grps.get(i);
+                }
+            }
+            selectedGroups = selectedGroups.replaceFirst(",", "");
+        }
+    };
 
     private void populateCourses() {
         final List CourseName = new ArrayList();
@@ -322,30 +343,38 @@ public class CourseEnrollmentForm extends AppCompatActivity {
     };
 
 
+    // Present Groups
     private void populateCoaches() {
-        final List CoachName = new ArrayList();
-        if (!coachList.isEmpty()) {
-            CoachName.add(new CustomGroup("Select Coach"));
-            for (int j = 0; j < coachList.size(); j++) {
-                CustomGroup customGroup = new CustomGroup(coachList.get(j).getCoachName(), coachList.get(j).getCoachID());
-                CoachName.add(customGroup);
-            }
-            ArrayAdapter coachAdapter = new ArrayAdapter(CourseEnrollmentForm.this, android.R.layout.simple_spinner_dropdown_item, CoachName);
-            sp_SelectCoach.setAdapter(coachAdapter);
+        registeredPCGRPs = new ArrayList();
+        for (int j = 0; j < coachList.size(); j++) {
+            CustomGroup customGroup = new CustomGroup(coachList.get(j).getCoachName(), coachList.get(j).getCoachID());
+            registeredPCGRPs.add(customGroup);
+            PC.add(coachList.get(j).getCoachID());
         }
 
-        sp_SelectCoach.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                CustomGroup customGroup = (CustomGroup) CoachName.get(pos);
-                selectedCoachID = customGroup.getId();
-            }
+        ArrayAdapter coachAdapter = new ArrayAdapter(CourseEnrollmentForm.this, android.R.layout.simple_spinner_dropdown_item, registeredPCGRPs);
+        sp_SelectCoach.setAdapter(coachAdapter, false, onPCSelectedListener);
+        // set initial selection
+        selectedPCItems = new boolean[coachAdapter.getCount()];
+        sp_SelectCoach.setHint("Select Coach");
+        sp_SelectCoach.setHintTextColor(Color.BLACK);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
     }
+
+    // PC Listener
+    private MultiSpinner.MultiSpinnerListener onPCSelectedListener = new MultiSpinner.MultiSpinnerListener() {
+        public void onItemsSelected(boolean[] selected) {
+            // Do something here with the selected items
+            List<String> selectedPCArray = new ArrayList<>();
+            selectedPC = "";
+            for (int i = 0; i < selected.length; i++) {
+                if (selected[i]) {
+                    selectedPCArray.add(PC.get(i));
+                    selectedPC = selectedPC + "," + PC.get(i);
+                }
+            }
+            selectedPC = selectedPC.replaceFirst(",", "");
+        }
+    };
 
 }

@@ -2,10 +2,13 @@ package com.pratham.admin.forms;
 
 // multispinner ref : https://github.com/thomashaertel/MultiSpinner
 
+import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -56,7 +59,7 @@ public class CoachInformationForm extends AppCompatActivity {
     @BindView(R.id.sp_SubjectExpert)
     MultiSpinner sp_SubjectExpert;
     @BindView(R.id.sp_Groups)
-    Spinner sp_Groups;
+    MultiSpinner sp_Groups;
     @BindView(R.id.btn_DatePicker)
     Button btn_DatePicker;
     @BindView(R.id.btn_Submit)
@@ -66,16 +69,25 @@ public class CoachInformationForm extends AppCompatActivity {
     private String occupation = "";
     private String speciality = "";
     private String education = "";
+
     boolean[] selectedItems;
     String[] ExpertSubj;
     String[] selectedESArray;
     String selectedExpertSubjects = "";
+
     List<Groups> AllGroupsInDB;
     List registeredGRPs;
 
     UUID UUID;
     String uniqueCoachID = "";
     String grpID = "";
+
+    // Selected Groups
+    List<String> selectedGroupsArray;
+    List registeredGroups;
+    private boolean[] selectedGroupItems;
+    List<String> Grps;
+    String selectedGroups = "";
 
 
     @Override
@@ -125,6 +137,33 @@ public class CoachInformationForm extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 String selectedSpeciality = sp_Speciality.getSelectedItem().toString();
                 if (selectedSpeciality.contains("Select")) {
+                } else if (selectedSpeciality.equalsIgnoreCase("Others")) {
+                    // Dialog
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CoachInformationForm.this);
+                    LayoutInflater inflater = CoachInformationForm.this.getLayoutInflater();
+                    final View dialogView = inflater.inflate(R.layout.others_dialog, null);
+                    dialogBuilder.setView(dialogView);
+                    final EditText edt = (EditText) dialogView.findViewById(R.id.edt_Others);
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setTitle("Please Mention Others ");
+                    dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            speciality = edt.getText().toString().trim();
+                            if (edt.getText().toString().trim().equalsIgnoreCase("")) {
+                                populateSpeciality();
+                            } else {
+                                Toast.makeText(CoachInformationForm.this, "Speciality = " + speciality, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            //pass
+                            populateSpeciality();
+                        }
+                    });
+                    AlertDialog b = dialogBuilder.create();
+                    b.show();
                 } else {
                     speciality = selectedSpeciality;
 //                    Toast.makeText(CoachInformationForm.this, "" + speciality, Toast.LENGTH_SHORT).show();
@@ -138,32 +177,6 @@ public class CoachInformationForm extends AppCompatActivity {
         });
     }
 
-    private void populateRegisteredGroups(String villageID) {
-        // todo get registered grps
-        registeredGRPs = new ArrayList();
-        registeredGRPs.add(new CustomGroup("Select Groups"));
-        if (AllGroupsInDB != null) {
-            for (int i = 0; i < AllGroupsInDB.size(); i++) {
-                if (AllGroupsInDB.get(i).getVillageId().equals(villageID))
-                    registeredGRPs.add(new CustomGroup(AllGroupsInDB.get(i).getGroupName(), AllGroupsInDB.get(i).getGroupId()));
-            }
-        }
-
-        ArrayAdapter grpAdapter = new ArrayAdapter(CoachInformationForm.this, android.R.layout.simple_spinner_dropdown_item, registeredGRPs);
-        sp_Groups.setAdapter(grpAdapter);
-        sp_Groups.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                CustomGroup customGroup = (CustomGroup) registeredGRPs.get(pos);
-                grpID = customGroup.getId();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-    }
 
     private void populateEducation() {
         ArrayAdapter specialityAdapter = new ArrayAdapter(CoachInformationForm.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.array_Education));
@@ -186,6 +199,58 @@ public class CoachInformationForm extends AppCompatActivity {
         });
     }
 
+    // VISITED GROUPS
+    private void populateRegisteredGroups(String villageID) {
+        // todo get registered grps
+        registeredGroups = new ArrayList();
+        if (AllGroupsInDB != null) {
+            Grps = new ArrayList<>();
+            for (int i = 0; i < AllGroupsInDB.size(); i++) {
+                if (AllGroupsInDB.get(i).getVillageId().equals(villageID)) {
+                    registeredGroups.add(new CustomGroup(AllGroupsInDB.get(i).getGroupName(), AllGroupsInDB.get(i).getGroupId()));
+                    Grps.add(AllGroupsInDB.get(i).getGroupId());
+                }
+            }
+        }
+
+        ArrayAdapter grpAdapter = new ArrayAdapter(CoachInformationForm.this, android.R.layout.simple_spinner_dropdown_item, registeredGroups);
+        sp_Groups.setAdapter(grpAdapter, false, onVGSelectedListener);
+        // set initial selection
+        selectedGroupItems = new boolean[grpAdapter.getCount()];
+        sp_Groups.setHint("Select Groups");
+        sp_Groups.setHintTextColor(Color.BLACK);
+
+    }
+
+    // VG Listener
+    private MultiSpinner.MultiSpinnerListener onVGSelectedListener = new MultiSpinner.MultiSpinnerListener() {
+        public void onItemsSelected(boolean[] selected) {
+            // Do something here with the selected items
+            List<String> grp_sel = new ArrayList<>();
+            selectedGroupsArray = new ArrayList<>();
+            selectedGroups = "";
+            for (int i = 0; i < selected.length; i++) {
+                if (selected[i]) {
+                    selectedGroupsArray.add(Grps.get(i));
+                    selectedGroups = selectedGroups + "," + Grps.get(i);
+                }
+            }
+            selectedGroups = selectedGroups.replaceFirst(",", "");
+        }
+    };
+
+
+    private void populateSubjectExpert() {
+        ArrayAdapter subAdapter = new ArrayAdapter(CoachInformationForm.this, android.R.layout.simple_spinner_dropdown_item, ExpertSubj);
+        sp_SubjectExpert.setAdapter(subAdapter, false, onSelectedListener);
+        // set initial selection
+        selectedItems = new boolean[subAdapter.getCount()];
+//        selectedItems[0] = true; // select first item
+//        sp_SubjectExpert.setSelected(selectedItems);
+        sp_SubjectExpert.setHint("Select Subject Expert");
+        sp_SubjectExpert.setHintTextColor(Color.BLACK);
+
+    }
 
     // Listener
     private MultiSpinner.MultiSpinnerListener onSelectedListener = new MultiSpinner.MultiSpinnerListener() {
@@ -205,17 +270,6 @@ public class CoachInformationForm extends AppCompatActivity {
         }
     };
 
-    private void populateSubjectExpert() {
-        ArrayAdapter subAdapter = new ArrayAdapter(CoachInformationForm.this, android.R.layout.simple_spinner_dropdown_item, ExpertSubj);
-        sp_SubjectExpert.setAdapter(subAdapter, false, onSelectedListener);
-        // set initial selection
-        selectedItems = new boolean[subAdapter.getCount()];
-//        selectedItems[0] = true; // select first item
-//        sp_SubjectExpert.setSelected(selectedItems);
-        sp_SubjectExpert.setHint("Select Subject Expert");
-        sp_SubjectExpert.setHintTextColor(Color.BLACK);
-
-    }
 
     private void populateOccupation() {
         ArrayAdapter occupationAdapter = new ArrayAdapter(CoachInformationForm.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.array_Occupation));
@@ -225,6 +279,33 @@ public class CoachInformationForm extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 String selectedOccupation = sp_Occupation.getSelectedItem().toString();
                 if (selectedOccupation.contains("Select")) {
+                } else if (selectedOccupation.equalsIgnoreCase("Others")) {
+                    // Dialog
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CoachInformationForm.this);
+                    LayoutInflater inflater = CoachInformationForm.this.getLayoutInflater();
+                    final View dialogView = inflater.inflate(R.layout.others_dialog, null);
+                    dialogBuilder.setView(dialogView);
+                    final EditText edt = (EditText) dialogView.findViewById(R.id.edt_Others);
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setTitle("Please Mention Others ");
+                    dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            occupation = edt.getText().toString().trim();
+                            if (edt.getText().toString().trim().equalsIgnoreCase("")) {
+                                populateOccupation();
+                            } else {
+                                Toast.makeText(CoachInformationForm.this, "Occupation = " + occupation, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            //pass
+                            populateOccupation();
+                        }
+                    });
+                    AlertDialog b = dialogBuilder.create();
+                    b.show();
                 } else {
                     occupation = selectedOccupation;
 //                    Toast.makeText(CoachInformationForm.this, "" + occupation, Toast.LENGTH_SHORT).show();
@@ -278,7 +359,7 @@ public class CoachInformationForm extends AppCompatActivity {
 
         if ((sp_Village.getSelectedItemPosition() > 0) && (edt_Name.getText().toString().trim().length() > 0)
                 && (edt_Age.getText().toString().trim().length() > 0) && (sp_Education.getSelectedItemPosition() > 0)
-                && (sp_Speciality.getSelectedItemPosition() > 0) && (sp_Groups.getSelectedItemPosition() > 0)
+                && (sp_Speciality.getSelectedItemPosition() > 0) && (selectedGroups.trim().length() > 0)
                 && (selectedExpertSubjects.trim().length() > 0)) {
 
             try {
@@ -300,7 +381,7 @@ public class CoachInformationForm extends AppCompatActivity {
                 cObj.CoachSpeciality = speciality;
                 cObj.CoachEducation = education;
                 cObj.CoachActive = 1;
-                cObj.CoachGroupID = grpID;
+                cObj.CoachGroupID = selectedGroups;
                 cObj.StartDate = date;
                 cObj.EndDate = "";
                 cObj.CreatedBy = "";
@@ -325,7 +406,6 @@ public class CoachInformationForm extends AppCompatActivity {
         populateVillages();
         populateEducation();
         populateOccupation();
-        sp_Groups.setSelection(0);
         populateSpeciality();
         edt_Name.getText().clear();
         edt_Age.getText().clear();

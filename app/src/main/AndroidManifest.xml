@@ -79,7 +79,7 @@
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".forms.ReportingStudentsForm"
+            android:name=".forms.DeleteStudentsForm"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden" />
         <activity

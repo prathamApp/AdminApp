@@ -17,7 +17,7 @@ import com.pratham.admin.forms.CoachRetentionForm;
 import com.pratham.admin.forms.CourseCompletionForm;
 import com.pratham.admin.forms.CourseEnrollmentForm;
 import com.pratham.admin.forms.CrlVisitForm;
-import com.pratham.admin.forms.ReportingStudentsForm;
+import com.pratham.admin.forms.DeleteStudentsForm;
 import com.pratham.admin.interfaces.DashRVClickListener;
 import com.pratham.admin.modalclasses.DashboardItem;
 import com.pratham.admin.util.DashRVTouchListener;
@@ -91,7 +91,7 @@ public class FormsActivity extends AppCompatActivity implements DashRVClickListe
             DashboardItemList.add(new DashboardItem("Coach Retention", R.drawable.ic_form));
 //            DashboardItemList.add(new DashboardItem("School Session", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Course Enrollment", R.drawable.ic_form));
-            DashboardItemList.add(new DashboardItem("Reporting Students", R.drawable.ic_form));
+            DashboardItemList.add(new DashboardItem("Delete Students", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("CRL Visit", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Students Attendance", R.drawable.ic_form));
         }
@@ -126,8 +126,8 @@ public class FormsActivity extends AppCompatActivity implements DashRVClickListe
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
-        } */ else if (name.contains("Reporting")) {
-            Intent intent = new Intent(FormsActivity.this, ReportingStudentsForm.class);
+        } */ else if (name.contains("Delete")) {
+            Intent intent = new Intent(FormsActivity.this, DeleteStudentsForm.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
