@@ -48,6 +48,6 @@ public class APIs {
     // Pull Coaches
     public static final String PullCoaches = "http://swap.prathamcms.org/api/HLCoach/GetHLCoachInfo/?villageid=1&programid=1";
 
-    // Push CRLVisit
-    public static final String PushCRLVisit = "http://www.swap.prathamcms.org/api/crlvisit/crlvisitpushdata";
+    // Push API of Forms
+    public static final String PushForms = "http://www.swap.prathamcms.org/api/crlvisit/crlvisitpushdata";
 }

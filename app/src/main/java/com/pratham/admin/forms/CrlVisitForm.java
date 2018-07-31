@@ -43,7 +43,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.pratham.admin.util.APIs.PushCRLVisit;
+import static com.pratham.admin.util.APIs.PushForms;
 
 public class CrlVisitForm extends AppCompatActivity implements ConnectionReceiverListener {
 
@@ -142,6 +142,7 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
     @Override
     protected void onResume() {
         super.onResume();
+        checkConnection();
         ApplicationController.getInstance().setConnectionListener(this);
     }
 
@@ -184,6 +185,8 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
 
                 Log.d("id :::", "inFillingForm " + uniqueVisitID);
 
+                checkConnection();
+
                 // Push To Server
                 try {
                     if (internetIsAvailable) {
@@ -206,7 +209,7 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
                         dialog.setCanceledOnTouchOutside(false);
                         dialog.show();
 
-                        AndroidNetworking.post(PushCRLVisit).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
+                        AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
                             @Override
                             public void onResponse(String response) {
                                 Log.d("responce", response);
@@ -269,6 +272,7 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
         btn_DatePicker.setPadding(8, 8, 8, 8);
         uniqueVisitID = UUID.randomUUID().toString();
+        checkConnection();
         Log.d("id :::", "inResetForm " + uniqueVisitID);
     }
 

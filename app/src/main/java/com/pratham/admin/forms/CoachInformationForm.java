@@ -86,7 +86,7 @@ public class CoachInformationForm extends AppCompatActivity {
     List<String> selectedGroupsArray;
     List registeredGroups;
     private boolean[] selectedGroupItems;
-    List<String> Grps;
+    List<String> Grps = new ArrayList<>();
     String selectedGroups = "";
 
 

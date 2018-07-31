@@ -14,7 +14,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="32dp"
+        android:layout_margin="16dp"
         android:background="@drawable/custom_border"
         android:fontFamily="monospace"
         android:gravity="center"
@@ -28,11 +28,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:background="@drawable/custom_border"
         android:orientation="vertical">
 
+        <!--Village-->
+        <Spinner
+            android:id="@+id/sp_Village"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:textSize="18sp" />
+
+        <!--Select Groups-->
         <Spinner
             android:id="@+id/sp_Groups"
             android:layout_width="match_parent"
@@ -40,49 +50,76 @@
             android:layout_margin="16dp"
             android:orientation="horizontal" />
 
+        <!--Select Students-->
+        <com.pratham.admin.custom.MultiSpinner
+            android:id="@+id/sp_Students"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:paddingLeft="8dp"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
         <LinearLayout
-            android:id="@+id/Line4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_createdGrp"
+            <!--Present-->
+            <RadioGroup
+                android:id="@+id/rg_Present"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="#000000"
-                android:gravity="center"
-                android:padding="4dp"
-                android:text="Attendance Table"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="4">
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TableLayout
-                    android:id="@+id/tablelayout"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:stretchColumns="*" />
+                    android:layout_weight="1"
+                    android:text="Present"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-            </ScrollView>
+                <RadioButton
+                    android:id="@+id/rb_Yes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:checked="true"
+                    android:text="Yes"
+                    android:textSize="18sp" />
 
-            <ListView
-                android:id="@+id/LvCreatedGroups"
+                <RadioButton
+                    android:id="@+id/rb_No"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="No"
+                    android:textSize="18sp" />
+            </RadioGroup>
+
+
+            <Button
+                android:id="@+id/btn_DatePicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp" />
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimaryDark"
+                android:drawableLeft="@android:drawable/ic_menu_my_calendar"
+                android:paddingLeft="16dp"
+                android:text="Date"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
