@@ -30,6 +30,7 @@ public class Course {
     @SerializedName("lstTopic")
     @TypeConverters(JSONArrayToString.class)
     public JsonArray listTopic;
+    @SerializedName("sentFlag")
     public int sentFlag;
 
     @Override

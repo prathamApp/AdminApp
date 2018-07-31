@@ -5,23 +5,37 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
+
 // Select group with their grp = present grp id
 
 @Entity
 public class CRLVisit {
     @NonNull
     @PrimaryKey
+    @SerializedName("VisitID")
     public String VisitID;
+    @SerializedName("VillageID")
     public int VillageID;
+    @SerializedName("DateVisited")
     public String DateVisited;
+    @SerializedName("GroupIDVisited")
     public String GroupIDVisited;
+    @SerializedName("CoachPresentInVillage")
     public String CoachPresentInVillage;
+    @SerializedName("CoachPresentWithGroup")
     public String CoachPresentWithGroup;
+    @SerializedName("PresentGroupIDs")
     public String PresentGroupIDs;
+    @SerializedName("WorkCrosscheckedGroupIDs")
     public String WorkCrosscheckedGroupIDs;
+    @SerializedName("PresentStudents")
     public String PresentStudents;
+    @SerializedName("Village")
     public String Village;
+    @SerializedName("Group")
     public String Group;
+    @SerializedName("sentFlag")
     public int sentFlag;
 
     @Override

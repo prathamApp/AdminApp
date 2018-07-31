@@ -392,7 +392,7 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
         });
         // set initial selection
         selectedGWTGItems = new boolean[grpAdapter.getCount()];
-        sp_GrpWithTheirGrp_multiselect.setHint("Select Groups with Their Groups");
+        sp_GrpWithTheirGrp_multiselect.setHint("Groups which were studying at their allotted time");
         sp_GrpWithTheirGrp_multiselect.setHintTextColor(Color.BLACK);
 
     }
@@ -429,7 +429,7 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
         });
         // set initial selection
         selectedWCCGItems = new boolean[grpAdapter.getCount()];
-        sp_WorkCrosscheckedGrps_multiselect.setHint("Select Work Crosschecked Groups");
+        sp_WorkCrosscheckedGrps_multiselect.setHint("Groups whose work was crosschecked by Coach");
         sp_WorkCrosscheckedGrps_multiselect.setHintTextColor(Color.BLACK);
     }
 
@@ -446,7 +446,7 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
         sp_PresentCoaches_multiselect.setAdapter(coachAdapter, false, onPCSelectedListener);
         // set initial selection
         selectedPCItems = new boolean[coachAdapter.getCount()];
-        sp_PresentCoaches_multiselect.setHint("Select Present Coach");
+        sp_PresentCoaches_multiselect.setHint("Select the coaches who were helping their groups");
         sp_PresentCoaches_multiselect.setHintTextColor(Color.BLACK);
 
     }

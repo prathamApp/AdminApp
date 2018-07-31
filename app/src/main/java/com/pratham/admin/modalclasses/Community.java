@@ -5,21 +5,35 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
+
 @Entity
 public class Community {
     @NonNull
     @PrimaryKey
+    @SerializedName("VillageID")
     public String VillageID;
+    @SerializedName("GroupID")
     public String GroupID;
+    @SerializedName("CourseAdded")
     public String CourseAdded;
+    @SerializedName("TopicAdded")
     public String TopicAdded;
+    @SerializedName("StartDate")
     public String StartDate;
+    @SerializedName("EndDate")
     public String EndDate;
+    @SerializedName("CoachID")
     public String CoachID;
+    @SerializedName("Community")
     public String Community; // Community/School
+    @SerializedName("CompletedCourseID")
     public String CompletedCourseID;
+    @SerializedName("ParentParticipation")
     public int ParentParticipation;
+    @SerializedName("PresentStudent")
     public int PresentStudent; // not available
+    @SerializedName("sentFlag")
     public int sentFlag;
 
     @Override

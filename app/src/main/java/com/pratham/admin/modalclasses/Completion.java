@@ -5,20 +5,33 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
+
 @Entity
 public class Completion {
     @NonNull
     @PrimaryKey
+    @SerializedName("CompletionID")
     public String CompletionID;
+    @SerializedName("VillageID")
     public int VillageID;
+    @SerializedName("GroupID")
     public String GroupID;
+    @SerializedName("CourseCompleted")
     public int CourseCompleted;
+    @SerializedName("TopicCompleted")
     public int TopicCompleted;
+    @SerializedName("StartDate")
     public String StartDate;
+    @SerializedName("EndDate")
     public String EndDate;
+    @SerializedName("GroupType")
     public String GroupType; // Community/School
+    @SerializedName("ParentParticipation")
     public int ParentParticipation;
+    @SerializedName("PresentStudent")
     public int PresentStudent;
+    @SerializedName("sentFlag")
     public int sentFlag;
 
     @Override

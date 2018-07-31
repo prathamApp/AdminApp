@@ -24,6 +24,7 @@ public class Topic {
     public String TopicLang;
     @SerializedName("IsDelete")
     public Boolean IsDelete;
+    @SerializedName("sentFlag")
     public int sentFlag;
 
     @Override

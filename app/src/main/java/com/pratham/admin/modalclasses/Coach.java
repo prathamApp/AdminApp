@@ -5,25 +5,42 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
+
 @Entity
 public class Coach {
 
     @NonNull
     @PrimaryKey
+    @SerializedName("CoachID")
     public String CoachID;
+    @SerializedName("CoachName")
     public String CoachName;
+    @SerializedName("CoachAge")
     public int CoachAge;
+    @SerializedName("CoachGender")
     public String CoachGender;
+    @SerializedName("CoachOccupation")
     public String CoachOccupation;
+    @SerializedName("CoachSpeciality")
     public String CoachSpeciality;
+    @SerializedName("CoachSubjectExpert")
     public String CoachSubjectExpert;
+    @SerializedName("CoachEducation")
     public String CoachEducation;
+    @SerializedName("CoachGroupID")
     public String CoachGroupID;
+    @SerializedName("StartDate")
     public String StartDate;
+    @SerializedName("EndDate")
     public String EndDate;
+    @SerializedName("CoachActive")
     public int CoachActive;
+    @SerializedName("CreatedBy")
     public String CreatedBy;
+    @SerializedName("CreatedDate")
     public String CreatedDate;
+    @SerializedName("sentFlag")
     public int sentFlag;
 
     @Override
