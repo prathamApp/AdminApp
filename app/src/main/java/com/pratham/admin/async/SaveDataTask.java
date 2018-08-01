@@ -9,6 +9,7 @@ import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.OnSavedData;
 import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Community;
+import com.pratham.admin.modalclasses.Completion;
 import com.pratham.admin.modalclasses.Course;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class SaveDataTask extends AsyncTask<Void, Integer, Void> {
     private List groupsList;
     private List coursesList;
     private List CommunityList;
+    private List CompletionList;
     private List coachList;
     private List villageList;
     private Context context;
@@ -26,12 +28,13 @@ public class SaveDataTask extends AsyncTask<Void, Integer, Void> {
     private OnSavedData onSavedData;
 
     public SaveDataTask(Context context, OnSavedData onSavedData, List CRLList, List studentList, List groupsList,
-                        List villageList, List<Course> courseList, List<Coach> coachList, List<Community> communityList) {
+                        List villageList, List<Course> courseList, List<Coach> coachList, List<Community> communityList, List<Completion> completionList) {
         this.CRLList = CRLList;
         this.studentList = studentList;
         this.groupsList = groupsList;
         this.coursesList = courseList;
         this.CommunityList = communityList;
+        this.CompletionList = completionList;
         this.coachList = coachList;
         this.villageList = villageList;
         this.context = context;
@@ -56,6 +59,7 @@ public class SaveDataTask extends AsyncTask<Void, Integer, Void> {
         AppDatabase.getDatabaseInstance(context).getGroupDao().insertAllGroups(groupsList);
         AppDatabase.getDatabaseInstance(context).getCoursesDao().insertCourses(coursesList);
         AppDatabase.getDatabaseInstance(context).getCommunityDao().insertCommunity(CommunityList);
+        AppDatabase.getDatabaseInstance(context).getCompletionDao().insertCompletion(CompletionList);
         AppDatabase.getDatabaseInstance(context).getCoachDao().insertCoach(coachList);
         AppDatabase.getDatabaseInstance(context).getVillageDao().insertAllVillages(villageList);
         AppDatabase.destroyInstance();
