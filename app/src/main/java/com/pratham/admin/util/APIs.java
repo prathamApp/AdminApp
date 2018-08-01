@@ -45,6 +45,9 @@ public class APIs {
     // Pull Courses
     public static final String PullCourses = "http://www.swap.prathamcms.org/api/course/get";
 
+    // Pull HLCourseCommunity
+    public static final String PullHLCourseCommunity = "http://swap.prathamcms.org/api/HLCoach/GetHLCourseCommunity/?villageid=1&programid=1";
+
     // Pull Coaches
     public static final String PullCoaches = "http://swap.prathamcms.org/api/HLCoach/GetHLCoachInfo/?villageid=1&programid=1";
 

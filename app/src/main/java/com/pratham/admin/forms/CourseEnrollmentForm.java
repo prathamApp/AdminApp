@@ -1,9 +1,11 @@
 package com.pratham.admin.forms;
 
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,32 +15,46 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
+import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.custom.MultiSpinner;
 import com.pratham.admin.database.AppDatabase;
+import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Course;
 import com.pratham.admin.modalclasses.Groups;
+import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Topic;
 import com.pratham.admin.modalclasses.Village;
+import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.CustomGroup;
 import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.Utility;
 
 import java.lang.reflect.Type;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CourseEnrollmentForm extends AppCompatActivity {
+import static com.pratham.admin.util.APIs.PushForms;
+
+// CourseEnrollment = CourseCommunity
+
+public class CourseEnrollmentForm extends AppCompatActivity implements ConnectionReceiverListener {
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;
@@ -98,14 +114,24 @@ public class CourseEnrollmentForm extends AppCompatActivity {
     List<String> PC = new ArrayList<>();
     String selectedPC = "";
 
+    boolean internetIsAvailable = false;
+
+    UUID uuid;
+    String uniqueCommunityID = "";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_enrollment_form);
         ButterKnife.bind(this);
 
+        checkConnection();
+
         // Hide Actionbar
         getSupportActionBar().hide();
+
+        uniqueCommunityID = UUID.randomUUID().toString();
 
         // Set Default Todays date
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
@@ -128,6 +154,37 @@ public class CourseEnrollmentForm extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkConnection();
+        ApplicationController.getInstance().setConnectionListener(this);
+    }
+
+    private void checkConnection() {
+        boolean isConnected = ConnectionReceiver.isConnected();
+        if (!isConnected) {
+            internetIsAvailable = false;
+        } else {
+            internetIsAvailable = true;
+        }
+    }
+
+    private String customParse(List<MetaData> metaDataList) {
+        String json = "{";
+
+        for (int i = 0; i < metaDataList.size(); i++) {
+            json = json + "\"" + metaDataList.get(i).getKeys() + "\":\"" + metaDataList.get(i).getValue() + "\"";
+            if (i < metaDataList.size() - 1) {
+                json = json + ",";
+            }
+        }
+        json = json + "}";
+
+        return json;
+    }
+
+
     @OnClick(R.id.btn_Submit)
     public void submitForm(View view) {
 
@@ -135,6 +192,8 @@ public class CourseEnrollmentForm extends AppCompatActivity {
                 && (selectedPC.trim().length() > 0) && (sp_Course.getSelectedItemPosition() > 0)) {
 
             try {
+
+                checkConnection();
 
 /*                // parentsParticipation
                 int selectedId = rg_ParentsParticipation.getCheckedRadioButtonId();
@@ -153,6 +212,7 @@ public class CourseEnrollmentForm extends AppCompatActivity {
                 String Community = selectedCOption.getText().toString();
 
                 Community commObj = new Community();
+                commObj.CommunityID = uniqueCommunityID;
                 commObj.VillageID = vid;
                 commObj.GroupID = selectedGroups;
                 commObj.CourseAdded = courseName;
@@ -167,9 +227,58 @@ public class CourseEnrollmentForm extends AppCompatActivity {
                 commObj.sentFlag = 0;
 
                 AppDatabase.getDatabaseInstance(this).getCommunityDao().insertCommunity(Collections.singletonList(commObj));
+                Toast.makeText(this, "Form Saved to Database !!!", Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(this, "Form Submitted !!!", Toast.LENGTH_SHORT).show();
-                resetForm();
+                // Push To Server
+                try {
+                    if (internetIsAvailable) {
+                        Gson gson = new Gson();
+                        String CommunityJSON = gson.toJson(Collections.singletonList(commObj));
+
+                        MetaData metaData = new MetaData();
+                        metaData.setKeys("pushDataTime");
+                        metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+                        List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
+                        String metaDataJSON = customParse(metaDataList);
+                        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
+
+                        String json = "{ \"CommunityJSON\":" + CommunityJSON + ",\"metadata\":" + metaDataJSON + "}";
+                        Log.d("json :::", json);
+
+                        final ProgressDialog dialog = new ProgressDialog(this);
+                        dialog.setTitle("UPLOADING ... ");
+                        dialog.setCancelable(false);
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.show();
+
+                        AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.d("responce", response);
+                                // update flag
+                                AppDatabase.getDatabaseInstance(CourseEnrollmentForm.this).getCommunityDao().updateSentFlag(1, uniqueCommunityID);
+                                Toast.makeText(CourseEnrollmentForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                                resetForm();
+                            }
+
+                            @Override
+                            public void onError(ANError anError) {
+                                Toast.makeText(CourseEnrollmentForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                                AppDatabase.getDatabaseInstance(CourseEnrollmentForm.this).getCommunityDao().updateSentFlag(0, uniqueCommunityID);
+                                dialog.dismiss();
+                                resetForm();
+                            }
+                        });
+
+                    } else {
+                        Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
+                        resetForm();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -180,6 +289,7 @@ public class CourseEnrollmentForm extends AppCompatActivity {
     }
 
     private void resetForm() {
+        uniqueCommunityID = UUID.randomUUID().toString();
         populateVillages();
         populateCoaches();
         populateCourses();
@@ -377,4 +487,14 @@ public class CourseEnrollmentForm extends AppCompatActivity {
         }
     };
 
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            internetIsAvailable = false;
+        } else {
+            internetIsAvailable = true;
+        }
+    }
+
 }
+

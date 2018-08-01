@@ -1,8 +1,10 @@
 package com.pratham.admin.forms;
 
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,22 +14,35 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+import com.google.gson.Gson;
+import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
+import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.modalclasses.Coach;
+import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Village;
+import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.CustomGroup;
 import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.Utility;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CoachRetentionForm extends AppCompatActivity {
+import static com.pratham.admin.util.APIs.PushForms;
+
+public class CoachRetentionForm extends AppCompatActivity implements ConnectionReceiverListener {
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;
@@ -44,13 +59,16 @@ public class CoachRetentionForm extends AppCompatActivity {
     List<Village> villageList = new ArrayList<>();
     List<Coach> coachList = new ArrayList<>();
     String selectedCoachID = "";
-
+    boolean internetIsAvailable = false;
+    List<Coach> updatedCoachList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coach_retention_form);
         ButterKnife.bind(this);
+
+        checkConnection();
 
         // Hide Actionbar
         getSupportActionBar().hide();
@@ -73,6 +91,8 @@ public class CoachRetentionForm extends AppCompatActivity {
 
         if ((sp_Village.getSelectedItemPosition() > 0) && (sp_SelectCoach.getSelectedItemPosition() > 0)) {
 
+            checkConnection();
+
             String endDate = btn_DatePicker.getText().toString().trim();
 
             // Dropout code on Submit Click
@@ -88,13 +108,77 @@ public class CoachRetentionForm extends AppCompatActivity {
             }
             String coachID = selectedCoachID;
 
-            // update flags
-            AppDatabase.getDatabaseInstance(CoachRetentionForm.this).getCoachDao().updateSentFlag(0, selectedCoachID);
+            updatedCoachList = AppDatabase.getDatabaseInstance(CoachRetentionForm.this).getCoachDao().getCoachByID(selectedCoachID);
+
+            // get Coach info by id
+            Coach cObj = new Coach();
+            cObj.CoachID = updatedCoachList.get(0).CoachID;
+            cObj.CoachName = updatedCoachList.get(0).CoachName;
+            cObj.CoachAge = updatedCoachList.get(0).CoachAge;
+            cObj.CoachGender = updatedCoachList.get(0).CoachGender;
+            cObj.CoachSubjectExpert = updatedCoachList.get(0).CoachSubjectExpert;
+            cObj.CoachOccupation = updatedCoachList.get(0).CoachOccupation;
+            cObj.CoachSpeciality = updatedCoachList.get(0).CoachSpeciality;
+            cObj.CoachEducation = updatedCoachList.get(0).CoachEducation;
+            cObj.CoachActive = status; // new Values 1:Active, 0:Inactive
+            cObj.CoachGroupID = updatedCoachList.get(0).CoachGroupID;
+            cObj.StartDate = updatedCoachList.get(0).StartDate;
+            cObj.EndDate = endDate; // new Values
+            cObj.CreatedBy = updatedCoachList.get(0).CreatedBy;
+            cObj.CreatedDate = updatedCoachList.get(0).CreatedDate;
+            cObj.sentFlag = 0;
+
             AppDatabase.getDatabaseInstance(this).getCoachDao().updateCoachStatus(status, endDate, coachID);
+            Toast.makeText(this, "Form Submitted to DB !!!", Toast.LENGTH_SHORT).show();
 
-            resetForm();
+            // Push To Server
+            try {
+                if (internetIsAvailable) {
+                    Gson gson = new Gson();
+                    String CoachJSON = gson.toJson(Collections.singletonList(cObj));
 
-            Toast.makeText(this, "Form Submitted !!!", Toast.LENGTH_SHORT).show();
+                    MetaData metaData = new MetaData();
+                    metaData.setKeys("pushDataTime");
+                    metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+                    List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
+                    String metaDataJSON = customParse(metaDataList);
+                    AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
+
+                    String json = "{ \"CoachJSON\":" + CoachJSON + ",\"metadata\":" + metaDataJSON + "}";
+                    Log.d("json :::", json);
+
+                    final ProgressDialog dialog = new ProgressDialog(this);
+                    dialog.setTitle("UPLOADING ... ");
+                    dialog.setCancelable(false);
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.show();
+
+                    AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.d("responce", response);
+                            AppDatabase.getDatabaseInstance(CoachRetentionForm.this).getCoachDao().updateSentFlag(1, selectedCoachID);
+                            Toast.makeText(CoachRetentionForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                            resetForm();
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Toast.makeText(CoachRetentionForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                            AppDatabase.getDatabaseInstance(CoachRetentionForm.this).getCoachDao().updateSentFlag(0, selectedCoachID);
+                            dialog.dismiss();
+                            resetForm();
+                        }
+                    });
+
+                } else {
+                    Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
+                    resetForm();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         } else {
             Toast.makeText(this, "Please Select All Fields !", Toast.LENGTH_SHORT).show();
@@ -169,6 +253,45 @@ public class CoachRetentionForm extends AppCompatActivity {
     public void endDatePicker(View view) {
         DialogFragment newFragment = new DatePickerFragmentOne();
         newFragment.show(getFragmentManager(), "DatePicker");
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            internetIsAvailable = false;
+        } else {
+            internetIsAvailable = true;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkConnection();
+        ApplicationController.getInstance().setConnectionListener(this);
+    }
+
+    private void checkConnection() {
+        boolean isConnected = ConnectionReceiver.isConnected();
+        if (!isConnected) {
+            internetIsAvailable = false;
+        } else {
+            internetIsAvailable = true;
+        }
+    }
+
+    private String customParse(List<MetaData> metaDataList) {
+        String json = "{";
+
+        for (int i = 0; i < metaDataList.size(); i++) {
+            json = json + "\"" + metaDataList.get(i).getKeys() + "\":\"" + metaDataList.get(i).getValue() + "\"";
+            if (i < metaDataList.size() - 1) {
+                json = json + ",";
+            }
+        }
+        json = json + "}";
+
+        return json;
     }
 
 }

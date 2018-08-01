@@ -20,6 +20,9 @@ public interface CoachDao {
     @Query("SELECT * FROM Coach")
     public List<Coach> getAllCoaches();
 
+    @Query("SELECT * FROM Coach where CoachID =:cID")
+    public List<Coach> getCoachByID(String cID);
+
     @Query("UPDATE Coach SET CoachActive = :cActive, EndDate = :eDate WHERE CoachID =:cID")
     void updateCoachStatus(int cActive, String eDate, String cID);
 

@@ -35,6 +35,7 @@ import com.pratham.admin.interfaces.OnSavedData;
 import com.pratham.admin.interfaces.VillageListLisner;
 import com.pratham.admin.modalclasses.CRL;
 import com.pratham.admin.modalclasses.Coach;
+import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Course;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.Student;
@@ -56,6 +57,7 @@ import butterknife.OnClick;
 import static com.pratham.admin.util.APIs.HL;
 import static com.pratham.admin.util.APIs.PullCoaches;
 import static com.pratham.admin.util.APIs.PullCourses;
+import static com.pratham.admin.util.APIs.PullHLCourseCommunity;
 import static com.pratham.admin.util.APIs.village;
 
 public class SelectProgram extends AppCompatActivity implements ConnectionReceiverListener, OnSavedData, VillageListLisner {
@@ -93,6 +95,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
     private List<Student> studentList = new ArrayList();
     private List<Groups> groupsList = new ArrayList();
     private List<Course> CourseList = new ArrayList();
+    private List<Community> CommunityList = new ArrayList();
     private List<Coach> CoachList = new ArrayList();
     List<Village> villageId;
     int groupLoadCount = 0;
@@ -238,6 +241,8 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                         pullCourses();
                         // Pull Coaches
                         pullCoaches();
+                        // HLCourseCommunity
+                        pullHLCourseCommunity();
 
                     } else {
                         btn_saveData.setEnabled(false);
@@ -298,6 +303,35 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 ArrayList<Course> modalCoursesList = gson.fromJson(json, listType);
                 CourseList.clear();
                 CourseList.addAll(modalCoursesList);
+                dismissShownDialog();
+            }
+
+            @Override
+            public void onError(ANError error) {
+                spinner_state.setSelection(0);
+                if (!internetIsAvailable) {
+                    Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(SelectProgram.this, "Plaese check internet connection.", Toast.LENGTH_LONG).show();
+                }
+                dismissShownDialog();
+                apiLoadFlag = false;
+            }
+        });
+    }
+
+    private void pullHLCourseCommunity() {
+        showDialoginApiCalling(HL, "Pulling CourseCommunity !!!");
+        AndroidNetworking.get(PullHLCourseCommunity).build().getAsJSONArray(new JSONArrayRequestListener() {
+            @Override
+            public void onResponse(JSONArray response) {
+                String json = response.toString();
+                Gson gson = new Gson();
+                Type listType = new TypeToken<ArrayList<Course>>() {
+                }.getType();
+                ArrayList<Community> modalCommunityList = gson.fromJson(json, listType);
+                CommunityList.clear();
+                CommunityList.addAll(modalCommunityList);
                 dismissShownDialog();
             }
 
@@ -562,6 +596,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
         // Save Pulled Data
         AppDatabase.getDatabaseInstance(this).getCoursesDao().deleteAllCourses();
         AppDatabase.getDatabaseInstance(this).getCoachDao().deleteAllCoaches();
+        AppDatabase.getDatabaseInstance(this).getCommunityDao().deleteAllCommunity();
 
         if (groupsList.isEmpty()) {
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -577,7 +612,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
             alertDialog.show();
 
         } else {
-            new SaveDataTask(SelectProgram.this, SelectProgram.this, CRLList, studentList, groupsList, villageId, CourseList, CoachList).execute();
+            new SaveDataTask(SelectProgram.this, SelectProgram.this, CRLList, studentList, groupsList, villageId, CourseList, CoachList, CommunityList).execute();
         }
 
     }

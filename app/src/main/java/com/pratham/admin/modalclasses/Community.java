@@ -11,6 +11,8 @@ import com.google.gson.annotations.SerializedName;
 public class Community {
     @NonNull
     @PrimaryKey
+    @SerializedName("CommunityID")
+    public String CommunityID;
     @SerializedName("VillageID")
     public String VillageID;
     @SerializedName("GroupID")
@@ -39,7 +41,8 @@ public class Community {
     @Override
     public String toString() {
         return "Community{" +
-                "VillageID='" + VillageID + '\'' +
+                "CommunityID='" + CommunityID + '\'' +
+                ", VillageID='" + VillageID + '\'' +
                 ", GroupID='" + GroupID + '\'' +
                 ", CourseAdded='" + CourseAdded + '\'' +
                 ", TopicAdded='" + TopicAdded + '\'' +
@@ -55,11 +58,19 @@ public class Community {
     }
 
     @NonNull
+    public String getCommunityID() {
+        return CommunityID;
+    }
+
+    public void setCommunityID(@NonNull String communityID) {
+        CommunityID = communityID;
+    }
+
     public String getVillageID() {
         return VillageID;
     }
 
-    public void setVillageID(@NonNull String villageID) {
+    public void setVillageID(String villageID) {
         VillageID = villageID;
     }
 
