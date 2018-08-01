@@ -10,30 +10,48 @@ import com.google.gson.annotations.SerializedName;
 @Entity
 public class Student {
     @SerializedName("GroupId")
-    String GroupId;
+    public String GroupId;
 
     @SerializedName("GroupName")
-    String GroupName;
+    public String GroupName;
 
     @SerializedName("FullName")
-    String FullName;
+    public String FullName;
 
     @SerializedName("Class")
-    String Stud_Class;
+    public String Stud_Class;
 
     @SerializedName("Age")
-    String Age;
+    public String Age;
 
     @SerializedName("Gender")
-    String Gender;
+    public String Gender;
+
+    @SerializedName("sentFlag")
+    public int sentFlag;
 
     @NonNull
     @PrimaryKey
     @SerializedName("StudentId")
-    String StudentId;
+    public String StudentId;
 
     @Ignore
     transient boolean  isChecked =false;
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "GroupId='" + GroupId + '\'' +
+                ", GroupName='" + GroupName + '\'' +
+                ", FullName='" + FullName + '\'' +
+                ", Stud_Class='" + Stud_Class + '\'' +
+                ", Age='" + Age + '\'' +
+                ", Gender='" + Gender + '\'' +
+                ", sentFlag=" + sentFlag +
+                ", StudentId='" + StudentId + '\'' +
+                ", isChecked=" + isChecked +
+                '}';
+    }
 
     public String getGroupId() {
         return GroupId;
@@ -83,13 +101,12 @@ public class Student {
         Gender = gender;
     }
 
-    @NonNull
-    public String getStudentId() {
-        return StudentId;
+    public int getSentFlag() {
+        return sentFlag;
     }
 
-    public void setStudentId(@NonNull String studentId) {
-        StudentId = studentId;
+    public void setSentFlag(int sentFlag) {
+        this.sentFlag = sentFlag;
     }
 
     public boolean isChecked() {
@@ -99,4 +116,14 @@ public class Student {
     public void setChecked(boolean checked) {
         isChecked = checked;
     }
+
+    @NonNull
+    public String getStudentId() {
+        return StudentId;
+    }
+
+    public void setStudentId(@NonNull String studentId) {
+        StudentId = studentId;
+    }
+
 }

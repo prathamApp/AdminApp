@@ -6,7 +6,6 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-
 import com.pratham.admin.modalclasses.Student;
 
 import java.util.List;
@@ -27,4 +26,8 @@ public interface StudentDao {
 
     @Query("SELECT * FROM student WHERE GroupId=:gID")
     public List<Student> getGroupwiseStudents(String gID);
+
+    @Query("DELETE FROM Student Where StudentId=:stdID")
+    public void deleteStudentByID(String stdID);
+
 }
