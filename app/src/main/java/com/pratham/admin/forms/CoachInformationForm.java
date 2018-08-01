@@ -4,10 +4,12 @@ package com.pratham.admin.forms;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,18 +21,28 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+import com.google.gson.Gson;
+import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.custom.MultiSpinner;
 import com.pratham.admin.database.AppDatabase;
+import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Groups;
+import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Village;
+import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.CustomGroup;
 import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.Utility;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +50,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CoachInformationForm extends AppCompatActivity {
+import static com.pratham.admin.util.APIs.PushForms;
+
+public class CoachInformationForm extends AppCompatActivity implements ConnectionReceiverListener {
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;
@@ -89,6 +103,7 @@ public class CoachInformationForm extends AppCompatActivity {
     List<String> Grps = new ArrayList<>();
     String selectedGroups = "";
 
+    boolean internetIsAvailable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +112,8 @@ public class CoachInformationForm extends AppCompatActivity {
         ButterKnife.bind(this);
         // Hide Actionbar
         getSupportActionBar().hide();
+
+        checkConnection();
 
         // Generate Random UUID
         uniqueCoachID = UUID.randomUUID().toString();
@@ -363,6 +380,8 @@ public class CoachInformationForm extends AppCompatActivity {
                 && (selectedExpertSubjects.trim().length() > 0)) {
 
             try {
+                checkConnection();
+
                 // Gender code on Submit Click
                 int selectedId = rg_Gender.getCheckedRadioButtonId();
                 RadioButton selectedGender = (RadioButton) findViewById(selectedId);
@@ -389,9 +408,57 @@ public class CoachInformationForm extends AppCompatActivity {
                 cObj.sentFlag = 0;
 
                 AppDatabase.getDatabaseInstance(this).getCoachDao().insertCoach(Collections.singletonList(cObj));
+                Toast.makeText(this, "Form Submitted to DB !!!", Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(this, "Form Submitted !!!", Toast.LENGTH_SHORT).show();
-                resetForm();
+                // Push To Server
+                try {
+                    if (internetIsAvailable) {
+                        Gson gson = new Gson();
+                        String CoachInfoJSON = gson.toJson(Collections.singletonList(cObj));
+
+                        MetaData metaData = new MetaData();
+                        metaData.setKeys("pushDataTime");
+                        metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+                        List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
+                        String metaDataJSON = customParse(metaDataList);
+                        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
+
+                        String json = "{ \"CoachInfoJSON\":" + CoachInfoJSON + ",\"metadata\":" + metaDataJSON + "}";
+                        Log.d("json :::", json);
+
+                        final ProgressDialog dialog = new ProgressDialog(this);
+                        dialog.setTitle("UPLOADING ... ");
+                        dialog.setCancelable(false);
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.show();
+
+                        AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.d("responce", response);
+                                AppDatabase.getDatabaseInstance(CoachInformationForm.this).getCoachDao().updateSentFlag(1, uniqueCoachID);
+                                Toast.makeText(CoachInformationForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                                resetForm();
+                            }
+
+                            @Override
+                            public void onError(ANError anError) {
+                                Toast.makeText(CoachInformationForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                                AppDatabase.getDatabaseInstance(CoachInformationForm.this).getCoachDao().updateSentFlag(0, uniqueCoachID);
+                                dialog.dismiss();
+                                resetForm();
+                            }
+                        });
+
+                    } else {
+                        Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
+                        resetForm();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -415,6 +482,45 @@ public class CoachInformationForm extends AppCompatActivity {
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
         btn_DatePicker.setPadding(8, 8, 8, 8);
         uniqueCoachID = UUID.randomUUID().toString();
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            internetIsAvailable = false;
+        } else {
+            internetIsAvailable = true;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkConnection();
+        ApplicationController.getInstance().setConnectionListener(this);
+    }
+
+    private void checkConnection() {
+        boolean isConnected = ConnectionReceiver.isConnected();
+        if (!isConnected) {
+            internetIsAvailable = false;
+        } else {
+            internetIsAvailable = true;
+        }
+    }
+
+    private String customParse(List<MetaData> metaDataList) {
+        String json = "{";
+
+        for (int i = 0; i < metaDataList.size(); i++) {
+            json = json + "\"" + metaDataList.get(i).getKeys() + "\":\"" + metaDataList.get(i).getValue() + "\"";
+            if (i < metaDataList.size() - 1) {
+                json = json + ",";
+            }
+        }
+        json = json + "}";
+
+        return json;
     }
 
 }

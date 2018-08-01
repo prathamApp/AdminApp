@@ -135,7 +135,7 @@ public class CoachRetentionForm extends AppCompatActivity implements ConnectionR
             try {
                 if (internetIsAvailable) {
                     Gson gson = new Gson();
-                    String CoachJSON = gson.toJson(Collections.singletonList(cObj));
+                    String CoachRetentionJSON = gson.toJson(Collections.singletonList(cObj));
 
                     MetaData metaData = new MetaData();
                     metaData.setKeys("pushDataTime");
@@ -144,7 +144,7 @@ public class CoachRetentionForm extends AppCompatActivity implements ConnectionR
                     String metaDataJSON = customParse(metaDataList);
                     AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
 
-                    String json = "{ \"CoachJSON\":" + CoachJSON + ",\"metadata\":" + metaDataJSON + "}";
+                    String json = "{ \"CoachRetentionJSON\":" + CoachRetentionJSON + ",\"metadata\":" + metaDataJSON + "}";
                     Log.d("json :::", json);
 
                     final ProgressDialog dialog = new ProgressDialog(this);
