@@ -3,6 +3,8 @@ package com.pratham.admin.forms;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,12 +12,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.pratham.admin.R;
+import com.pratham.admin.adapters.CourseTopicRVDataAdapter;
 import com.pratham.admin.database.AppDatabase;
+import com.pratham.admin.interfaces.DashRVClickListener;
+import com.pratham.admin.modalclasses.Community;
+import com.pratham.admin.modalclasses.CourseTopicItem;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.CustomGroup;
+import com.pratham.admin.util.DashRVTouchListener;
 import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.DatePickerFragmentTwo;
 import com.pratham.admin.util.Utility;
@@ -27,13 +35,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CourseCompletionForm extends AppCompatActivity {
+public class CourseCompletionForm extends AppCompatActivity implements DashRVClickListener {
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;
     @BindView(R.id.sp_Groups)
     Spinner sp_Groups;
-
 
     @BindView(R.id.rg_Event)
     RadioGroup rg_Event;
@@ -48,7 +55,13 @@ public class CourseCompletionForm extends AppCompatActivity {
 
     List<Village> villageList = new ArrayList<>();
     List<Groups> AllGroupsInDB;
+    List<Community> CourseTopicsByGrp;
     List registeredGRPs;
+    RecyclerView CourseTopicsRV;
+
+    private List<CourseTopicItem> CourseTopicItemList = new ArrayList<>();
+    CourseTopicRVDataAdapter DataAdapter;
+    String topics = "";
 
 
     @Override
@@ -59,7 +72,6 @@ public class CourseCompletionForm extends AppCompatActivity {
 
         // Hide Actionbar
         getSupportActionBar().hide();
-
 
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
         btn_DatePicker.setPadding(8, 8, 8, 8);
@@ -73,6 +85,31 @@ public class CourseCompletionForm extends AppCompatActivity {
         villageList = AppDatabase.getDatabaseInstance(this).getVillageDao().getAllVillages();
         populateVillages();
 
+        // Create the recyclerview.
+        CourseTopicsRV = (RecyclerView) findViewById(R.id.card_view_recycler_list);
+        // Create the grid layout manager with 2 columns.
+        CourseTopicsRV.addOnItemTouchListener(new DashRVTouchListener(getApplicationContext(), CourseTopicsRV, CourseCompletionForm.this));
+    }
+
+    /* Initialise items in list. */
+    private void initializeItemList(String groupId) {
+        CourseTopicItemList.clear();
+        CourseTopicsByGrp = AppDatabase.getDatabaseInstance(this).getCommunityDao().getCommunityByGroupID(groupId);
+        for (int i = 0; i < CourseTopicsByGrp.size(); i++) {
+
+            CourseTopicItemList.add(new CourseTopicItem(CourseTopicsByGrp.get(i).CourseAdded, CourseTopicsByGrp.get(i).TopicAdded));
+        }
+        if (DataAdapter == null) {
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+            // Set layout manager.
+            CourseTopicsRV.setLayoutManager(gridLayoutManager);
+            // Create recycler view data adapter with item list.
+            DataAdapter = new CourseTopicRVDataAdapter(CourseTopicItemList);
+            // Set data adapter.
+            CourseTopicsRV.setAdapter(DataAdapter);
+        } else {
+            DataAdapter.notifyDataSetChanged();
+        }
     }
 
     @OnClick(R.id.btn_DatePicker)
@@ -134,6 +171,11 @@ public class CourseCompletionForm extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 CustomGroup customGroup = (CustomGroup) registeredGRPs.get(pos);
                 String groupId = customGroup.getId();
+
+                // Populate Courses of grps
+                // Recycler View
+                initializeItemList(groupId);
+
             }
 
             @Override
@@ -144,5 +186,16 @@ public class CourseCompletionForm extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onClick(View view, int position) {
+        CourseTopicItem item = CourseTopicItemList.get(position);
+        String Course = item.getCourse();
+        String Topic = item.getTopic();
+        Toast.makeText(this, "" + Course + "\n" + Topic, Toast.LENGTH_SHORT).show();
+    }
 
+    @Override
+    public void onLongClick(View view, int position) {
+
+    }
 }

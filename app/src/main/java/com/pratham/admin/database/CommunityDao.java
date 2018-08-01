@@ -20,6 +20,9 @@ public interface CommunityDao {
     @Query("SELECT * FROM Community")
     public List<Community> getAllCommunity();
 
+    @Query("SELECT * FROM Community Where GroupID=:gid")
+    public List<Community> getCommunityByGroupID(String gid);
+
     @Query("UPDATE Community SET sentFlag=:pushStatus WHERE CommunityID =:cID")
     void updateSentFlag(int pushStatus, String cID);
 

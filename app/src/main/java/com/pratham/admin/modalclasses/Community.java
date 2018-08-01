@@ -29,8 +29,10 @@ public class Community {
     public String CoachID;
     @SerializedName("Community")
     public String Community; // Community/School
-    @SerializedName("CompletedCourseID")
-    public String CompletedCourseID;
+    @SerializedName("AddedCourseID")
+    public String AddedCourseID;// Courses IDs
+    @SerializedName("AddedTopicsID")
+    public String AddedTopicsID;// Topics IDs
     @SerializedName("ParentParticipation")
     public int ParentParticipation;
     @SerializedName("PresentStudent")
@@ -50,7 +52,8 @@ public class Community {
                 ", EndDate='" + EndDate + '\'' +
                 ", CoachID='" + CoachID + '\'' +
                 ", Community='" + Community + '\'' +
-                ", CompletedCourseID='" + CompletedCourseID + '\'' +
+                ", AddedCourseID='" + AddedCourseID + '\'' +
+                ", AddedTopicsID='" + AddedTopicsID + '\'' +
                 ", ParentParticipation=" + ParentParticipation +
                 ", PresentStudent=" + PresentStudent +
                 ", sentFlag=" + sentFlag +
@@ -130,12 +133,20 @@ public class Community {
         Community = community;
     }
 
-    public String getCompletedCourseID() {
-        return CompletedCourseID;
+    public String getAddedCourseID() {
+        return AddedCourseID;
     }
 
-    public void setCompletedCourseID(String completedCourseID) {
-        CompletedCourseID = completedCourseID;
+    public void setAddedCourseID(String addedCourseID) {
+        AddedCourseID = addedCourseID;
+    }
+
+    public String getAddedTopicsID() {
+        return AddedTopicsID;
+    }
+
+    public void setAddedTopicsID(String addedTopicsID) {
+        AddedTopicsID = addedTopicsID;
     }
 
     public int getParentParticipation() {

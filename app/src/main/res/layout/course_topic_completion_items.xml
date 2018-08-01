@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:hint="Topic 1, Topic 2, ..."
+                android:hint="no topics available"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="normal" />

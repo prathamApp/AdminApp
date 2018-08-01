@@ -95,10 +95,12 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
     boolean[] selectedItems;
     List<String> selectedTopicsArray;
     String selectedTopics = "";
+    String selectedTopicNames = "";
     List Topics;
     String vid = "";
     String courseID = "";
     List<String> TT;
+    List<String> TopicNames;
     private String courseName = "";
 
     // Selected Groups
@@ -216,12 +218,13 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
                 commObj.VillageID = vid;
                 commObj.GroupID = selectedGroups;
                 commObj.CourseAdded = courseName;
-                commObj.TopicAdded = selectedTopics;
+                commObj.TopicAdded = selectedTopicNames;
+                commObj.AddedTopicsID = selectedTopics;
                 commObj.StartDate = btn_DatePicker.getText().toString().trim();
                 commObj.EndDate = "";
                 commObj.CoachID = selectedPC;
                 commObj.Community = Community;
-                commObj.CompletedCourseID = courseID;
+                commObj.AddedCourseID = courseID;
                 commObj.ParentParticipation = 0;
                 commObj.PresentStudent = 0;
                 commObj.sentFlag = 0;
@@ -283,6 +286,8 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            Toast.makeText(this, "Please enter all the fields !!!", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -422,11 +427,13 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
         TopicList = gson.fromJson(topicDetails.toString(), listType);
 
         TT = new ArrayList<>();
+        TopicNames = new ArrayList<>();
         Topics = new ArrayList();
 
         for (int i = 0; i < TopicList.size(); i++) {
             Topics.add(new CustomGroup(TopicList.get(i).TopicName, TopicList.get(i).TopicID));
             TT.add(TopicList.get(i).TopicID);
+            TopicNames.add(TopicList.get(i).TopicName);
         }
 
         ArrayAdapter subAdapter = new ArrayAdapter(CourseEnrollmentForm.this, android.R.layout.simple_spinner_dropdown_item, Topics);
@@ -440,15 +447,18 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
     private MultiSpinner.MultiSpinnerListener onSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
             selectedTopics = "";
+            selectedTopicNames = "";
             // Do something here with the selected items
             selectedTopicsArray = new ArrayList<>();
             for (int i = 0; i < selected.length; i++) {
                 if (selected[i]) {
                     selectedTopicsArray.add(TT.get(i));
                     selectedTopics = selectedTopics + "," + TT.get(i);
+                    selectedTopicNames = selectedTopicNames + ",\n" + TopicNames.get(i);
                 }
             }
             selectedTopics = selectedTopics.replaceFirst(",", "");
+            selectedTopicNames = selectedTopicNames.replaceFirst(",\n", "");
         }
     };
 
