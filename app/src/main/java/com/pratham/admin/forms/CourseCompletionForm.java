@@ -96,7 +96,6 @@ public class CourseCompletionForm extends AppCompatActivity implements DashRVCli
         CourseTopicItemList.clear();
         CourseTopicsByGrp = AppDatabase.getDatabaseInstance(this).getCommunityDao().getCommunityByGroupID(groupId);
         for (int i = 0; i < CourseTopicsByGrp.size(); i++) {
-
             CourseTopicItemList.add(new CourseTopicItem(CourseTopicsByGrp.get(i).CourseAdded, CourseTopicsByGrp.get(i).TopicAdded));
         }
         if (DataAdapter == null) {
