@@ -1,7 +1,9 @@
 package com.pratham.admin.forms;
 
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -107,19 +109,24 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
     List<String> selectedGroupsArray;
     List registeredGroups;
     private boolean[] selectedGroupItems;
-    List<String> Grps;
+    List<String> Grps = new ArrayList<>();
+    List<String> GrpsNames = new ArrayList<>();
     String selectedGroups = "";
+    String selectedGroupNames = "";
 
     // Coaches PC
     List<CustomGroup> registeredPCGRPs;
     private boolean[] selectedPCItems;
     List<String> PC = new ArrayList<>();
+    List<String> PCNames = new ArrayList<>();
     String selectedPC = "";
+    String selectedPCNames = "";
 
     boolean internetIsAvailable = false;
 
     UUID uuid;
     String uniqueCommunityID = "";
+    private String villageName;
 
 
     @Override
@@ -229,59 +236,85 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
                 commObj.PresentStudent = 0;
                 commObj.sentFlag = 0;
 
-                AppDatabase.getDatabaseInstance(this).getCommunityDao().insertCommunity(Collections.singletonList(commObj));
-                Toast.makeText(this, "Form Saved to Database !!!", Toast.LENGTH_SHORT).show();
+                if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
+                    AppDatabase.getDatabaseInstance(this).getCommunityDao().insertCommunity(Collections.singletonList(commObj));
+                    Toast.makeText(this, "Form Saved to Database !!!", Toast.LENGTH_SHORT).show();
 
-                // Push To Server
-                try {
-                    if (internetIsAvailable) {
-                        Gson gson = new Gson();
-                        String CommunityJSON = gson.toJson(Collections.singletonList(commObj));
+                    // Push To Server
+                    try {
+                        if (internetIsAvailable) {
+                            Gson gson = new Gson();
+                            String CommunityJSON = gson.toJson(Collections.singletonList(commObj));
 
-                        MetaData metaData = new MetaData();
-                        metaData.setKeys("pushDataTime");
-                        metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
-                        List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
-                        String metaDataJSON = customParse(metaDataList);
-                        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
+                            MetaData metaData = new MetaData();
+                            metaData.setKeys("pushDataTime");
+                            metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+                            List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
+                            String metaDataJSON = customParse(metaDataList);
+                            AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
 
-                        String json = "{ \"CommunityJSON\":" + CommunityJSON + ",\"metadata\":" + metaDataJSON + "}";
-                        Log.d("json :::", json);
+                            String json = "{ \"CommunityJSON\":" + CommunityJSON + ",\"metadata\":" + metaDataJSON + "}";
+                            Log.d("json :::", json);
 
-                        final ProgressDialog dialog = new ProgressDialog(this);
-                        dialog.setTitle("UPLOADING ... ");
-                        dialog.setCancelable(false);
-                        dialog.setCanceledOnTouchOutside(false);
-                        dialog.show();
+                            final ProgressDialog dialog = new ProgressDialog(this);
+                            dialog.setTitle("UPLOADING ... ");
+                            dialog.setCancelable(false);
+                            dialog.setCanceledOnTouchOutside(false);
+                            dialog.show();
 
-                        AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
-                            @Override
-                            public void onResponse(String response) {
-                                Log.d("responce", response);
-                                // update flag
-                                AppDatabase.getDatabaseInstance(CourseEnrollmentForm.this).getCommunityDao().updateSentFlag(1, uniqueCommunityID);
-                                Toast.makeText(CourseEnrollmentForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
-                                dialog.dismiss();
-                                resetForm();
-                            }
+                            AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Log.d("responce", response);
+                                    // update flag
+                                    AppDatabase.getDatabaseInstance(CourseEnrollmentForm.this).getCommunityDao().updateSentFlag(1, uniqueCommunityID);
+                                    Toast.makeText(CourseEnrollmentForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                    resetForm();
+                                }
 
-                            @Override
-                            public void onError(ANError anError) {
-                                Toast.makeText(CourseEnrollmentForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                                AppDatabase.getDatabaseInstance(CourseEnrollmentForm.this).getCommunityDao().updateSentFlag(0, uniqueCommunityID);
-                                dialog.dismiss();
-                                resetForm();
-                            }
-                        });
+                                @Override
+                                public void onError(ANError anError) {
+                                    Toast.makeText(CourseEnrollmentForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                                    AppDatabase.getDatabaseInstance(CourseEnrollmentForm.this).getCommunityDao().updateSentFlag(0, uniqueCommunityID);
+                                    dialog.dismiss();
+                                    resetForm();
+                                }
+                            });
 
-                    } else {
-                        Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
-                        resetForm();
+                        } else {
+                            Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
+                            resetForm();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                } else {
+                    // Preview Dialog
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CourseEnrollmentForm.this, android.R.style.Theme_Material_Light_Dialog);
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setTitle("Form Data Preview");
+                    dialogBuilder.setMessage("Village Name : " + villageName
+                            + "\nSelected Groups : " + selectedGroupNames
+                            + "\nSelected Courses : " + courseName
+                            + "\nSelected Topics : " + selectedTopicNames
+                            + "\nStart Date : " + btn_DatePicker.getText().toString().trim()
+                            + "\nCoach Name : " + selectedPCNames
+                            + "\nGroupType : " + Community);
 
+                    dialogBuilder.setPositiveButton("Correct", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            btn_Submit.setText("Submit");
+                        }
+                    });
+                    dialogBuilder.setNegativeButton("Wrong", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            btn_Submit.setText("Preview");
+                        }
+                    });
+                    AlertDialog b = dialogBuilder.create();
+                    b.show();
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -294,6 +327,7 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
     }
 
     private void resetForm() {
+        btn_Submit.setText("Preview");
         uniqueCommunityID = UUID.randomUUID().toString();
         populateVillages();
         populateCoaches();
@@ -331,6 +365,7 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
                 vid = customGroup.getId();
+                villageName = customGroup.getName();
 
                 // Populate Registered Groups Spinner
                 populateRegisteredGroups(vid);
@@ -353,6 +388,7 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
                 if (AllGroupsInDB.get(i).getVillageId().equals(villageID)) {
                     registeredGroups.add(new CustomGroup(AllGroupsInDB.get(i).getGroupName(), AllGroupsInDB.get(i).getGroupId()));
                     Grps.add(AllGroupsInDB.get(i).getGroupId());
+                    GrpsNames.add(AllGroupsInDB.get(i).getGroupName());
                 }
             }
         }
@@ -370,16 +406,18 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
     private MultiSpinner.MultiSpinnerListener onVGSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
-            List<String> grp_sel = new ArrayList<>();
             selectedGroupsArray = new ArrayList<>();
             selectedGroups = "";
+            selectedGroupNames = "";
             for (int i = 0; i < selected.length; i++) {
                 if (selected[i]) {
                     selectedGroupsArray.add(Grps.get(i));
                     selectedGroups = selectedGroups + "," + Grps.get(i);
+                    selectedGroupNames = selectedGroupNames + "," + GrpsNames.get(i);
                 }
             }
             selectedGroups = selectedGroups.replaceFirst(",", "");
+            selectedGroupNames = selectedGroupNames.replaceFirst(",", "");
         }
     };
 
@@ -470,6 +508,7 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
             CustomGroup customGroup = new CustomGroup(coachList.get(j).getCoachName(), coachList.get(j).getCoachID());
             registeredPCGRPs.add(customGroup);
             PC.add(coachList.get(j).getCoachID());
+            PCNames.add(coachList.get(j).getCoachName());
         }
 
         ArrayAdapter coachAdapter = new ArrayAdapter(CourseEnrollmentForm.this, android.R.layout.simple_spinner_dropdown_item, registeredPCGRPs);
@@ -487,13 +526,16 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
             // Do something here with the selected items
             List<String> selectedPCArray = new ArrayList<>();
             selectedPC = "";
+            selectedPCNames = "";
             for (int i = 0; i < selected.length; i++) {
                 if (selected[i]) {
                     selectedPCArray.add(PC.get(i));
                     selectedPC = selectedPC + "," + PC.get(i);
+                    selectedPCNames = selectedPCNames + "," + PCNames.get(i);
                 }
             }
             selectedPC = selectedPC.replaceFirst(",", "");
+            selectedPCNames = selectedPCNames.replaceFirst(",", "");
         }
     };
 
