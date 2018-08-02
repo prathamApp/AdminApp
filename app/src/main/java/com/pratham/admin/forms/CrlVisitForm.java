@@ -1,7 +1,9 @@
 package com.pratham.admin.forms;
 
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -74,34 +76,42 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
 
     // Visited Groups VG
     List<String> selectedVGArray;
+    List<String> selectedVGArrayName;
     List registeredVGGRPs;
     private boolean[] selectedVGItems;
     List<String> VG;
+    List<String> VGNames;
     String selectedVG = "";
+    String selectedVGNames = "";
 
     // GrpWithTheirGrp GWTG
     List<String> selectedGWTGArray;
     private boolean[] selectedGWTGItems;
     List<String> GWTG;
     String selectedGWTG = "";
+    String selectedGWTGNames = "";
 
     // WorkCrosscheckedGrps WCCG
     List<String> selectedWCCGArray;
     private boolean[] selectedWCCGItems;
     List<String> WCCG;
     String selectedWCCG = "";
+    String selectedWCCGNames = "";
 
     // Present Coaches PC
     List<CustomGroup> registeredPCGRPs;
     private boolean[] selectedPCItems;
     List<String> PC = new ArrayList<>();
+    List<String> PCNames = new ArrayList<>();
     String selectedPC = "";
+    String selectedPCNames = "";
 
     // PresentCoachesWithTheirGrp  PCWG
     private boolean[] selectedPCWGItems;
     List<String> PCWG;
     String[] selectedPCWGArray;
     String selectedPCWG = "";
+    String selectedPCWGNames = "";
 
     java.util.UUID UUID;
     String uniqueVisitID = "";
@@ -164,6 +174,8 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
                 && (edt_PresentStdCount.getText().toString().trim().length() > 0)) {
             try {
 
+                checkConnection();
+
                 String date = btn_DatePicker.getText().toString().trim();
 
                 CRLVisit cvObj = new CRLVisit();
@@ -180,65 +192,90 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
                 cvObj.Village = vName;
                 cvObj.Group = "";
                 cvObj.sentFlag = 0;
-                AppDatabase.getDatabaseInstance(this).getCRLVisitdao().insertCRLVisit(Collections.singletonList(cvObj));
-                Toast.makeText(this, "Form Saved to Database !!!", Toast.LENGTH_SHORT).show();
 
-                Log.d("id :::", "inFillingForm " + uniqueVisitID);
+                if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
 
-                checkConnection();
+                    AppDatabase.getDatabaseInstance(this).getCRLVisitdao().insertCRLVisit(Collections.singletonList(cvObj));
+                    Toast.makeText(this, "Form Saved to Database !!!", Toast.LENGTH_SHORT).show();
 
-                // Push To Server
-                try {
-                    if (internetIsAvailable) {
-                        Gson gson = new Gson();
-                        String CRLVisitJSON = gson.toJson(Collections.singletonList(cvObj));
+                    // Push To Server
+                    try {
+                        if (internetIsAvailable) {
+                            Gson gson = new Gson();
+                            String CRLVisitJSON = gson.toJson(Collections.singletonList(cvObj));
 
-                        MetaData metaData = new MetaData();
-                        metaData.setKeys("pushDataTime");
-                        metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
-                        List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
-                        String metaDataJSON = customParse(metaDataList);
-                        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
+                            MetaData metaData = new MetaData();
+                            metaData.setKeys("pushDataTime");
+                            metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+                            List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
+                            String metaDataJSON = customParse(metaDataList);
+                            AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
 
-                        String json = "{ \"CRLVisitJSON\":" + CRLVisitJSON + ",\"metadata\":" + metaDataJSON + "}";
-                        Log.d("json :::", json);
+                            String json = "{ \"CRLVisitJSON\":" + CRLVisitJSON + ",\"metadata\":" + metaDataJSON + "}";
+                            Log.d("json :::", json);
 
-                        final ProgressDialog dialog = new ProgressDialog(this);
-                        dialog.setTitle("UPLOADING ... ");
-                        dialog.setCancelable(false);
-                        dialog.setCanceledOnTouchOutside(false);
-                        dialog.show();
+                            final ProgressDialog dialog = new ProgressDialog(this);
+                            dialog.setTitle("UPLOADING ... ");
+                            dialog.setCancelable(false);
+                            dialog.setCanceledOnTouchOutside(false);
+                            dialog.show();
 
-                        AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
-                            @Override
-                            public void onResponse(String response) {
-                                Log.d("responce", response);
-                                // update flag
-                                AppDatabase.getDatabaseInstance(CrlVisitForm.this).getCRLVisitdao().updateSentFlag(1, uniqueVisitID);
-                                Log.d("id :::", "inResponse" + uniqueVisitID);
-                                Toast.makeText(CrlVisitForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
-                                dialog.dismiss();
-                                resetForm();
-                            }
+                            AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Log.d("responce", response);
+                                    // update flag
+                                    AppDatabase.getDatabaseInstance(CrlVisitForm.this).getCRLVisitdao().updateSentFlag(1, uniqueVisitID);
+                                    Log.d("id :::", "inResponse" + uniqueVisitID);
+                                    Toast.makeText(CrlVisitForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                    resetForm();
+                                }
 
-                            @Override
-                            public void onError(ANError anError) {
-                                Toast.makeText(CrlVisitForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                                AppDatabase.getDatabaseInstance(CrlVisitForm.this).getCRLVisitdao().updateSentFlag(0, uniqueVisitID);
-                                Log.d("id :::", "inErrorResponse " + uniqueVisitID);
-                                dialog.dismiss();
-                                resetForm();
-                            }
-                        });
+                                @Override
+                                public void onError(ANError anError) {
+                                    Toast.makeText(CrlVisitForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                                    AppDatabase.getDatabaseInstance(CrlVisitForm.this).getCRLVisitdao().updateSentFlag(0, uniqueVisitID);
+                                    Log.d("id :::", "inErrorResponse " + uniqueVisitID);
+                                    dialog.dismiss();
+                                    resetForm();
+                                }
+                            });
 
-                    } else {
-                        Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
-                        resetForm();
+                        } else {
+                            Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
+                            resetForm();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } else {
+                    // Preview Dialog
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CrlVisitForm.this, android.R.style.Theme_Material_Light_Dialog);
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setTitle("Form Data Preview");
+                    dialogBuilder.setMessage("Village Name : " + vName
+                            + "\nDate Visited : " + date
+                            + "\nNo of Students Present : " + edt_PresentStdCount.getText().toString().trim()
+                            + "\nVisited Groups : " + selectedVGNames
+                            + "\nGroups which were studying at their Allotted time : " + selectedGWTGNames
+                            + "\nGroups whose work was crosschecked by Coach : " + selectedWCCGNames
+                            + "\nCoaches who were helping their Groups : " + selectedPCNames
+                            + "\nCoach with their Group : " + selectedPCWGNames);
+
+                    dialogBuilder.setPositiveButton("Correct", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            btn_Submit.setText("Submit");
+                        }
+                    });
+                    dialogBuilder.setNegativeButton("Wrong", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            btn_Submit.setText("Preview");
+                        }
+                    });
+                    AlertDialog b = dialogBuilder.create();
+                    b.show();
                 }
-                Log.d("id :::", "inBeforeResetForm " + uniqueVisitID);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -266,14 +303,14 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
 
 
     private void resetForm() {
+        checkConnection();
+        btn_Submit.setText("Preview");
         populateVillages();
         populatePresentCoaches();
         edt_PresentStdCount.getText().clear();
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
         btn_DatePicker.setPadding(8, 8, 8, 8);
         uniqueVisitID = UUID.randomUUID().toString();
-        checkConnection();
-        Log.d("id :::", "inResetForm " + uniqueVisitID);
     }
 
     @OnClick(R.id.btn_DatePicker)
@@ -322,11 +359,13 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
         if (AllGroupsInDB != null) {
 //            VG = new String[AllGroupsInDB.size()];
             VG = new ArrayList<>();
+            VGNames = new ArrayList<>();
             for (int i = 0; i < AllGroupsInDB.size(); i++) {
                 if (AllGroupsInDB.get(i).getVillageId().equals(villageID)) {
                     registeredVGGRPs.add(new CustomGroup(AllGroupsInDB.get(i).getGroupName(), AllGroupsInDB.get(i).getGroupId()));
 //                    VG[i] = AllGroupsInDB.get(i).getGroupId();
                     VG.add(AllGroupsInDB.get(i).getGroupId());
+                    VGNames.add(AllGroupsInDB.get(i).getGroupName());
                 }
             }
         }
@@ -346,20 +385,25 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
             // Do something here with the selected items
             List<String> grp_sel = new ArrayList<>();
             selectedVGArray = new ArrayList<>();
+            selectedVGArrayName = new ArrayList<>();
             selectedVG = "";
+            selectedVGNames = "";
             for (int i = 0; i < selected.length; i++) {
                 if (selected[i]) {
                     selectedVGArray.add(VG.get(i));
+                    selectedVGArrayName.add(VGNames.get(i));
                     selectedVG = selectedVG + "," + VG.get(i);
+                    selectedVGNames = selectedVGNames + "," + VGNames.get(i);
                 }
             }
             selectedVG = selectedVG.replaceFirst(",", "");
+            selectedVGNames = selectedVGNames.replaceFirst(",", "");
 
             // Populate GrpWithTheirGrp
-            populateGrpWithTheirGrp(selectedVGArray);
+            populateGrpWithTheirGrp(selectedVGArray, selectedVGArrayName);
 
             // Populate WorkCrosscheckedGrps
-            populateWorkCrosscheckedGrps(selectedVGArray);
+            populateWorkCrosscheckedGrps(selectedVGArray, selectedVGArrayName);
 
 //            Toast.makeText(CrlVisitForm.this, "" + selectedVG, Toast.LENGTH_SHORT).show();
         }
@@ -367,7 +411,7 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
 
 
     // VISITED GROUPS
-    private void populateGrpWithTheirGrp(final List<String> selectedgrpID) {
+    private void populateGrpWithTheirGrp(final List<String> selectedgrpID, final List<String> selectedgrpName) {
         // todo get registered grps
         List<String> registeredGWTGGRPs = new ArrayList<>();
 
@@ -384,13 +428,16 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
             public void onItemsSelected(boolean[] selected) {
                 selectedGWTGArray = new ArrayList<>();
                 selectedGWTG = "";
+                selectedGWTGNames = "";
                 for (int i = 0; i < selected.length; i++) {
                     if (selected[i]) {
                         selectedGWTGArray.add(selectedgrpID.get(i));
                         selectedGWTG = selectedGWTG + "," + selectedgrpID.get(i);
+                        selectedGWTGNames = selectedGWTGNames + "," + selectedgrpName.get(i);
                     }
                 }
                 selectedGWTG = selectedGWTG.replaceFirst(",", "");
+                selectedGWTGNames = selectedGWTGNames.replaceFirst(",", "");
 //                Toast.makeText(CrlVisitForm.this, "" + selectedGWTG, Toast.LENGTH_SHORT).show();
             }
         });
@@ -403,7 +450,7 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
 
 
     // WorkCrosscheckedGrps GROUPS
-    private void populateWorkCrosscheckedGrps(final List<String> selectedGrpID) {
+    private void populateWorkCrosscheckedGrps(final List<String> selectedGrpID, final List<String> selectedgrpName) {
         // todo get registered grps
         List registeredWCCGGRPs = new ArrayList();
 
@@ -421,13 +468,16 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
             public void onItemsSelected(boolean[] selected) {
                 selectedWCCGArray = new ArrayList<>();
                 selectedWCCG = "";
+                selectedWCCGNames = "";
                 for (int i = 0; i < selected.length; i++) {
                     if (selected[i]) {
                         selectedWCCGArray.add(selectedGrpID.get(i));
                         selectedWCCG = selectedWCCG + "," + selectedGrpID.get(i);
+                        selectedWCCGNames = selectedWCCGNames + "," + selectedgrpName.get(i);
                     }
                 }
                 selectedWCCG = selectedWCCG.replaceFirst(",", "");
+                selectedWCCGNames = selectedWCCGNames.replaceFirst(",", "");
 //                Toast.makeText(CrlVisitForm.this, "" + selectedWCCG, Toast.LENGTH_SHORT).show();
             }
         });
@@ -444,6 +494,7 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
             CustomGroup customGroup = new CustomGroup(coachList.get(j).getCoachName(), coachList.get(j).getCoachID());
             registeredPCGRPs.add(customGroup);
             PC.add(coachList.get(j).getCoachID());
+            PCNames.add(coachList.get(j).getCoachName());
         }
 
         ArrayAdapter coachAdapter = new ArrayAdapter(CrlVisitForm.this, android.R.layout.simple_spinner_dropdown_item, registeredPCGRPs);
@@ -460,20 +511,26 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
             List<String> selectedPCArray = new ArrayList<>();
+            List<String> selectedPCArrayNames = new ArrayList<>();
             selectedPC = "";
+            selectedPCNames = "";
             for (int i = 0; i < selected.length; i++) {
                 if (selected[i]) {
                     selectedPCArray.add(PC.get(i));
+                    selectedPCArrayNames.add(PCNames.get(i));
                     selectedPC = selectedPC + "," + PC.get(i);
+                    selectedPCNames = selectedPCNames + "," + PCNames.get(i);
                 }
             }
             selectedPC = selectedPC.replaceFirst(",", "");
-            populateCoachesWithTheirGroup(selectedPCArray);
+            selectedPCNames = selectedPCNames.replaceFirst(",", "");
+
+            populateCoachesWithTheirGroup(selectedPCArray, selectedPCArrayNames);
         }
     };
 
     // Present Groups with their grps
-    private void populateCoachesWithTheirGroup(final List<String> selectedPCArray) {
+    private void populateCoachesWithTheirGroup(final List<String> selectedPCArray, final List<String> selectedPCArrayNames) {
         List<String> registeredPCWGGRPs = new ArrayList();
         for (int i = 0; i < registeredPCGRPs.size(); i++) {
             for (int j = 0; j < selectedPCArray.size(); j++) {
@@ -489,13 +546,16 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
             public void onItemsSelected(boolean[] selected) {
                 selectedPCWGArray = new String[selected.length];
                 selectedPCWG = "";
+                selectedPCWGNames = "";
                 for (int i = 0; i < selected.length; i++) {
                     if (selected[i]) {
                         selectedPCWGArray[i] = selectedPCArray.get(i);
                         selectedPCWG = selectedPCWG + "," + selectedPCArray.get(i);
+                        selectedPCWGNames = selectedPCWGNames + "," + selectedPCArrayNames.get(i);
                     }
                 }
                 selectedPCWG = selectedPCWG.replaceFirst(",", "");
+                selectedPCWGNames = selectedPCWGNames.replaceFirst(",", "");
             }
         });
         // set initial selection
