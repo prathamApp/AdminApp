@@ -239,7 +239,7 @@
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         android:background="@color/colorPrimaryDark"
-        android:text="Submit"
+        android:text="Preview"
         android:textAllCaps="true"
         android:textColor="#FFFFFF"
         android:textSize="20sp"

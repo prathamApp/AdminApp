@@ -101,7 +101,9 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
     List registeredGroups;
     private boolean[] selectedGroupItems;
     List<String> Grps = new ArrayList<>();
+    List<String> GrpsNames = new ArrayList<>();
     String selectedGroups = "";
+    String selectedGroupNames = "";
 
     boolean internetIsAvailable = false;
 
@@ -222,10 +224,12 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
         registeredGroups = new ArrayList();
         if (AllGroupsInDB != null) {
             Grps = new ArrayList<>();
+            GrpsNames = new ArrayList<>();
             for (int i = 0; i < AllGroupsInDB.size(); i++) {
                 if (AllGroupsInDB.get(i).getVillageId().equals(villageID)) {
                     registeredGroups.add(new CustomGroup(AllGroupsInDB.get(i).getGroupName(), AllGroupsInDB.get(i).getGroupId()));
                     Grps.add(AllGroupsInDB.get(i).getGroupId());
+                    GrpsNames.add(AllGroupsInDB.get(i).getGroupName());
                 }
             }
         }
@@ -243,16 +247,18 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
     private MultiSpinner.MultiSpinnerListener onVGSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
-            List<String> grp_sel = new ArrayList<>();
             selectedGroupsArray = new ArrayList<>();
             selectedGroups = "";
+            selectedGroupNames = "";
             for (int i = 0; i < selected.length; i++) {
                 if (selected[i]) {
                     selectedGroupsArray.add(Grps.get(i));
                     selectedGroups = selectedGroups + "," + Grps.get(i);
+                    selectedGroupNames = selectedGroupNames + "," + GrpsNames.get(i);
                 }
             }
             selectedGroups = selectedGroups.replaceFirst(",", "");
+            selectedGroupNames = selectedGroupNames.replaceFirst(",", "");
         }
     };
 
@@ -273,6 +279,7 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
     private MultiSpinner.MultiSpinnerListener onSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
+            selectedExpertSubjects = "";
             selectedESArray = new String[selected.length];
             for (int i = 0; i < selected.length; i++) {
                 if (selected[i]) {
@@ -282,7 +289,6 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
             }
             selectedExpertSubjects = selectedExpertSubjects.replaceFirst(",", "");
 //            Toast.makeText(CoachInformationForm.this, "" + selectedExpertSubjects, Toast.LENGTH_SHORT).show();
-
 
         }
     };
@@ -380,8 +386,6 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
                 && (selectedExpertSubjects.trim().length() > 0)) {
 
             try {
-                checkConnection();
-
                 // Gender code on Submit Click
                 int selectedId = rg_Gender.getCheckedRadioButtonId();
                 RadioButton selectedGender = (RadioButton) findViewById(selectedId);
@@ -407,57 +411,88 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
                 cObj.CreatedDate = date;
                 cObj.sentFlag = 0;
 
-                AppDatabase.getDatabaseInstance(this).getCoachDao().insertCoach(Collections.singletonList(cObj));
-                Toast.makeText(this, "Form Submitted to DB !!!", Toast.LENGTH_SHORT).show();
+                if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
 
-                // Push To Server
-                try {
-                    if (internetIsAvailable) {
-                        Gson gson = new Gson();
-                        String CoachInfoJSON = gson.toJson(Collections.singletonList(cObj));
+                    checkConnection();
 
-                        MetaData metaData = new MetaData();
-                        metaData.setKeys("pushDataTime");
-                        metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
-                        List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
-                        String metaDataJSON = customParse(metaDataList);
-                        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
+                    AppDatabase.getDatabaseInstance(this).getCoachDao().insertCoach(Collections.singletonList(cObj));
+                    Toast.makeText(this, "Form Submitted to DB !!!", Toast.LENGTH_SHORT).show();
 
-                        String json = "{ \"CoachInfoJSON\":" + CoachInfoJSON + ",\"metadata\":" + metaDataJSON + "}";
-                        Log.d("json :::", json);
+                    // Push To Server
+                    try {
+                        if (internetIsAvailable) {
+                            Gson gson = new Gson();
+                            String CoachInfoJSON = gson.toJson(Collections.singletonList(cObj));
 
-                        final ProgressDialog dialog = new ProgressDialog(this);
-                        dialog.setTitle("UPLOADING ... ");
-                        dialog.setCancelable(false);
-                        dialog.setCanceledOnTouchOutside(false);
-                        dialog.show();
+                            MetaData metaData = new MetaData();
+                            metaData.setKeys("pushDataTime");
+                            metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+                            List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
+                            String metaDataJSON = customParse(metaDataList);
+                            AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
 
-                        AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
-                            @Override
-                            public void onResponse(String response) {
-                                Log.d("responce", response);
-                                AppDatabase.getDatabaseInstance(CoachInformationForm.this).getCoachDao().updateSentFlag(1, uniqueCoachID);
-                                Toast.makeText(CoachInformationForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
-                                dialog.dismiss();
-                                resetForm();
-                            }
+                            String json = "{ \"CoachInfoJSON\":" + CoachInfoJSON + ",\"metadata\":" + metaDataJSON + "}";
+                            Log.d("json :::", json);
 
-                            @Override
-                            public void onError(ANError anError) {
-                                Toast.makeText(CoachInformationForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                                AppDatabase.getDatabaseInstance(CoachInformationForm.this).getCoachDao().updateSentFlag(0, uniqueCoachID);
-                                dialog.dismiss();
-                                resetForm();
-                            }
-                        });
+                            final ProgressDialog dialog = new ProgressDialog(this);
+                            dialog.setTitle("UPLOADING ... ");
+                            dialog.setCancelable(false);
+                            dialog.setCanceledOnTouchOutside(false);
+                            dialog.show();
 
-                    } else {
-                        Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
-                        resetForm();
+                            AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Log.d("responce", response);
+                                    AppDatabase.getDatabaseInstance(CoachInformationForm.this).getCoachDao().updateSentFlag(1, uniqueCoachID);
+                                    Toast.makeText(CoachInformationForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                    resetForm();
+                                }
+
+                                @Override
+                                public void onError(ANError anError) {
+                                    Toast.makeText(CoachInformationForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                                    AppDatabase.getDatabaseInstance(CoachInformationForm.this).getCoachDao().updateSentFlag(0, uniqueCoachID);
+                                    dialog.dismiss();
+                                    resetForm();
+                                }
+                            });
+
+                        } else {
+                            Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
+                            resetForm();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } else {
+                    // Preview Dialog
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CoachInformationForm.this, android.R.style.Theme_Material_Light_Dialog);
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setTitle("Form Data Preview");
+                    dialogBuilder.setMessage("Coach Name : " + edt_Name.getText().toString().trim()
+                            + "\nCoach Age : " + Integer.parseInt(edt_Age.getText().toString().trim())
+                            + "\nCoach Gender : " + gender + "\nSubject Expert : " + selectedExpertSubjects
+                            + "\nCoach Occupation : " + occupation + "\nCoach Speciality : " + speciality
+                            + "\nCoach Education : " + education + "\nSelected Groups : " + selectedGroupNames
+                            + "\nDate : " + date);
+
+                    dialogBuilder.setPositiveButton("Correct", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            btn_Submit.setText("Submit");
+                        }
+                    });
+                    dialogBuilder.setNegativeButton("Wrong", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            btn_Submit.setText("Preview");
+                        }
+                    });
+                    AlertDialog b = dialogBuilder.create();
+                    b.show();
+
                 }
+
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -470,6 +505,7 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
     }
 
     private void resetForm() {
+        btn_Submit.setText("Preview");
         populateVillages();
         populateEducation();
         populateOccupation();
