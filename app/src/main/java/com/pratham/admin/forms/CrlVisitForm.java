@@ -315,6 +315,7 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
 
     @OnClick(R.id.btn_DatePicker)
     public void visitDatePicker(View view) {
+        btn_Submit.setText("Preview");
         DialogFragment newFragment = new DatePickerFragmentOne();
         newFragment.show(getFragmentManager(), "DatePicker");
     }
@@ -335,6 +336,8 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
         sp_Village.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                btn_Submit.setText("Preview");
+
                 CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
                 vid = customGroup.getId();
                 vName = customGroup.getName();
@@ -383,6 +386,7 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
     private MultiSpinner.MultiSpinnerListener onVGSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
+            btn_Submit.setText("Preview");
             List<String> grp_sel = new ArrayList<>();
             selectedVGArray = new ArrayList<>();
             selectedVGArrayName = new ArrayList<>();
@@ -426,6 +430,7 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
         sp_GrpWithTheirGrp_multiselect.setAdapter(grpAdapter, false, new MultiSpinner.MultiSpinnerListener() {
             @Override
             public void onItemsSelected(boolean[] selected) {
+                btn_Submit.setText("Preview");
                 selectedGWTGArray = new ArrayList<>();
                 selectedGWTG = "";
                 selectedGWTGNames = "";
@@ -466,6 +471,8 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
         sp_WorkCrosscheckedGrps_multiselect.setAdapter(grpAdapter, false, new MultiSpinner.MultiSpinnerListener() {
             @Override
             public void onItemsSelected(boolean[] selected) {
+                btn_Submit.setText("Preview");
+
                 selectedWCCGArray = new ArrayList<>();
                 selectedWCCG = "";
                 selectedWCCGNames = "";
@@ -509,6 +516,7 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
     // PC Listener
     private MultiSpinner.MultiSpinnerListener onPCSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
+            btn_Submit.setText("Preview");
             // Do something here with the selected items
             List<String> selectedPCArray = new ArrayList<>();
             List<String> selectedPCArrayNames = new ArrayList<>();
@@ -544,6 +552,7 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
         sp_CoachesWithGrp_multiselect.setAdapter(coachAdapter, false, new MultiSpinner.MultiSpinnerListener() {
             @Override
             public void onItemsSelected(boolean[] selected) {
+                btn_Submit.setText("Preview");
                 selectedPCWGArray = new String[selected.length];
                 selectedPCWG = "";
                 selectedPCWGNames = "";

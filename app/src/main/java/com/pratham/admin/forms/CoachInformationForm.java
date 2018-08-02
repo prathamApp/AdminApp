@@ -154,6 +154,7 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
         sp_Speciality.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                btn_Submit.setText("Preview");
                 String selectedSpeciality = sp_Speciality.getSelectedItem().toString();
                 if (selectedSpeciality.contains("Select")) {
                 } else if (selectedSpeciality.equalsIgnoreCase("Others")) {
@@ -203,6 +204,7 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
         sp_Education.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                btn_Submit.setText("Preview");
                 String selectedEdu = sp_Education.getSelectedItem().toString();
                 if (selectedEdu.contains("Select")) {
                 } else {
@@ -279,6 +281,7 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
     private MultiSpinner.MultiSpinnerListener onSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
+            btn_Submit.setText("Preview");
             selectedExpertSubjects = "";
             selectedESArray = new String[selected.length];
             for (int i = 0; i < selected.length; i++) {
@@ -300,6 +303,7 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
         sp_Occupation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                btn_Submit.setText("Preview");
                 String selectedOccupation = sp_Occupation.getSelectedItem().toString();
                 if (selectedOccupation.contains("Select")) {
                 } else if (selectedOccupation.equalsIgnoreCase("Others")) {
@@ -359,7 +363,7 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
                 String vid = customGroup.getId();
-
+                btn_Submit.setText("Preview");
                 // Populate Registered Groups Spinner
                 populateRegisteredGroups(vid);
             }
@@ -373,6 +377,7 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
 
     @OnClick(R.id.btn_DatePicker)
     public void startDatePicker(View view) {
+        btn_Submit.setText("Preview");
         DialogFragment newFragment = new DatePickerFragmentOne();
         newFragment.show(getFragmentManager(), "DatePicker");
     }

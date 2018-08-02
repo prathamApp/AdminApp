@@ -344,6 +344,7 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
 
     @OnClick(R.id.btn_DatePicker)
     public void startDatePicker(View view) {
+        btn_Submit.setText("Preview");
         DialogFragment newFragment = new DatePickerFragmentOne();
         newFragment.show(getFragmentManager(), "DatePicker");
     }
@@ -363,6 +364,7 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
         sp_Village.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                btn_Submit.setText("Preview");
                 CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
                 vid = customGroup.getId();
                 villageName = customGroup.getName();
@@ -406,6 +408,7 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
     private MultiSpinner.MultiSpinnerListener onVGSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
+            btn_Submit.setText("Preview");
             selectedGroupsArray = new ArrayList<>();
             selectedGroups = "";
             selectedGroupNames = "";
@@ -436,6 +439,7 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
         sp_Course.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                btn_Submit.setText("Preview");
                 CustomGroup customGroup = (CustomGroup) CourseName.get(pos);
                 courseID = "";
                 courseName = "";
@@ -484,6 +488,7 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
     // Listener
     private MultiSpinner.MultiSpinnerListener onSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
+            btn_Submit.setText("Preview");
             selectedTopics = "";
             selectedTopicNames = "";
             // Do something here with the selected items
@@ -524,6 +529,7 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
     private MultiSpinner.MultiSpinnerListener onPCSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
+            btn_Submit.setText("Preview");
             List<String> selectedPCArray = new ArrayList<>();
             selectedPC = "";
             selectedPCNames = "";

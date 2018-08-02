@@ -286,6 +286,7 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
 
     @OnClick(R.id.btn_DatePicker)
     public void startDatePicker(View view) {
+        btn_Submit.setText("Preview");
         DialogFragment newFragment = new DatePickerFragmentOne();
         newFragment.show(getFragmentManager(), "DatePicker");
     }
@@ -306,6 +307,7 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
         sp_Village.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                btn_Submit.setText("Preview");
                 CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
                 vid = customGroup.getId();
                 vName = customGroup.getName();
@@ -336,6 +338,7 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
         sp_Groups.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                btn_Submit.setText("Preview");
                 CustomGroup customGroup = (CustomGroup) registeredGRPs.get(pos);
                 groupId = customGroup.getId();
                 groupName = customGroup.getName();
@@ -377,6 +380,7 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
     private MultiSpinner.MultiSpinnerListener onStdSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
+            btn_Submit.setText("Preview");
             selectedStudents = "";
             selectedStudentNames = "";
             for (int i = 0; i < selected.length; i++) {

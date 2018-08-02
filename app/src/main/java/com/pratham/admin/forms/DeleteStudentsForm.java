@@ -218,7 +218,7 @@ public class DeleteStudentsForm extends AppCompatActivity implements ConnectionR
                 CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
                 String vid = customGroup.getId();
                 villageName = customGroup.getName();
-
+                btn_Submit.setText("Preview");
                 // Populate Registered Groups Spinner
                 populateRegisteredGroups(vid);
             }
@@ -249,6 +249,7 @@ public class DeleteStudentsForm extends AppCompatActivity implements ConnectionR
                 CustomGroup customGroup = (CustomGroup) registeredGRPs.get(pos);
                 String groupId = customGroup.getId();
                 groupName = customGroup.getName();
+                btn_Submit.setText("Preview");
                 // Populate Students according to Group Spinner
                 populateStudents(groupId);
             }
@@ -287,6 +288,7 @@ public class DeleteStudentsForm extends AppCompatActivity implements ConnectionR
     private MultiSpinner.MultiSpinnerListener onStdSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
+            btn_Submit.setText("Preview");
             selectedStudents = "";
             selectedStudentsName = "";
             selectedStdList = new ArrayList();

@@ -247,6 +247,7 @@ public class CoachRetentionForm extends AppCompatActivity implements ConnectionR
         sp_Village.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                btn_Submit.setText("Preview");
                 CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
                 String vid = customGroup.getId();
                 villageName = customGroup.getName();
@@ -273,6 +274,7 @@ public class CoachRetentionForm extends AppCompatActivity implements ConnectionR
         sp_SelectCoach.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                btn_Submit.setText("Preview");
                 CustomGroup customGroup = (CustomGroup) CoachName.get(pos);
                 selectedCoachID = customGroup.getId();
             }
@@ -287,6 +289,7 @@ public class CoachRetentionForm extends AppCompatActivity implements ConnectionR
 
     @OnClick(R.id.btn_DatePicker)
     public void endDatePicker(View view) {
+        btn_Submit.setText("Preview");
         DialogFragment newFragment = new DatePickerFragmentOne();
         newFragment.show(getFragmentManager(), "DatePicker");
     }
