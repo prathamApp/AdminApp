@@ -1,7 +1,9 @@
 package com.pratham.admin.forms;
 
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -76,11 +78,15 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
     List registeredStd;
     private boolean[] selectedStdItems;
     List<CustomGroup> Stds = new ArrayList<CustomGroup>();
+    List<CustomGroup> StdNames = new ArrayList<CustomGroup>();
     String selectedStudents = "";
+    String selectedStudentNames = "";
 
     String vid;
     String groupId;
     String date;
+    private String vName;
+    private String groupName;
 
 
     @Override
@@ -121,6 +127,8 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
 
             try {
 
+                checkConnection();
+
                 // Presenty code
                 int selectedId = rg_Present.getCheckedRadioButtonId();
                 RadioButton selectedGender = (RadioButton) findViewById(selectedId);
@@ -143,58 +151,86 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
                 aObj.Present = presentStatus;
                 aObj.sentFlag = 0;
 
-                AppDatabase.getDatabaseInstance(this).getAttendanceDao().insertAttendance(Collections.singletonList(aObj));
-                Toast.makeText(this, "Form Saved to Database !!!", Toast.LENGTH_SHORT).show();
-                checkConnection();
-                // Push To Server
-                try {
-                    if (internetIsAvailable) {
-                        Gson gson = new Gson();
-                        String AttendanceJSON = gson.toJson(Collections.singletonList(aObj));
+                if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
 
-                        MetaData metaData = new MetaData();
-                        metaData.setKeys("pushDataTime");
-                        metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
-                        List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
-                        String metaDataJSON = customParse(metaDataList);
-                        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
+                    AppDatabase.getDatabaseInstance(this).getAttendanceDao().insertAttendance(Collections.singletonList(aObj));
+                    Toast.makeText(this, "Form Saved to Database !!!", Toast.LENGTH_SHORT).show();
 
-                        String json = "{ \"AttendanceJSON\":" + AttendanceJSON + ",\"metadata\":" + metaDataJSON + "}";
-                        Log.d("json :::", json);
+                    // Push To Server
+                    try {
+                        if (internetIsAvailable) {
+                            Gson gson = new Gson();
+                            String AttendanceJSON = gson.toJson(Collections.singletonList(aObj));
 
-                        final ProgressDialog dialog = new ProgressDialog(this);
-                        dialog.setTitle("UPLOADING ... ");
-                        dialog.setCancelable(false);
-                        dialog.setCanceledOnTouchOutside(false);
-                        dialog.show();
+                            MetaData metaData = new MetaData();
+                            metaData.setKeys("pushDataTime");
+                            metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+                            List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
+                            String metaDataJSON = customParse(metaDataList);
+                            AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
 
-                        AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
-                            @Override
-                            public void onResponse(String response) {
-                                Log.d("responce", response);
-                                // update flag
-                                AppDatabase.getDatabaseInstance(AttendanceForm.this).getAttendanceDao().updateSentFlag(1, uniqueAttendanceID);
-                                Toast.makeText(AttendanceForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
-                                dialog.dismiss();
-                                resetForm();
-                            }
+                            String json = "{ \"AttendanceJSON\":" + AttendanceJSON + ",\"metadata\":" + metaDataJSON + "}";
+                            Log.d("json :::", json);
 
-                            @Override
-                            public void onError(ANError anError) {
-                                Toast.makeText(AttendanceForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                                AppDatabase.getDatabaseInstance(AttendanceForm.this).getAttendanceDao().updateSentFlag(0, uniqueAttendanceID);
-                                dialog.dismiss();
-                                resetForm();
-                            }
-                        });
+                            final ProgressDialog dialog = new ProgressDialog(this);
+                            dialog.setTitle("UPLOADING ... ");
+                            dialog.setCancelable(false);
+                            dialog.setCanceledOnTouchOutside(false);
+                            dialog.show();
 
-                    } else {
-                        Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
-                        resetForm();
+                            AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Log.d("responce", response);
+                                    // update flag
+                                    AppDatabase.getDatabaseInstance(AttendanceForm.this).getAttendanceDao().updateSentFlag(1, uniqueAttendanceID);
+                                    Toast.makeText(AttendanceForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                    resetForm();
+                                }
+
+                                @Override
+                                public void onError(ANError anError) {
+                                    Toast.makeText(AttendanceForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                                    AppDatabase.getDatabaseInstance(AttendanceForm.this).getAttendanceDao().updateSentFlag(0, uniqueAttendanceID);
+                                    dialog.dismiss();
+                                    resetForm();
+                                }
+                            });
+
+                        } else {
+                            Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
+                            resetForm();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } else {
+                    // Preview Dialog
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(AttendanceForm.this, android.R.style.Theme_Material_Light_Dialog);
+                    dialogBuilder.setCancelable(false);
+                    dialogBuilder.setTitle("Form Data Preview");
+
+                    dialogBuilder.setMessage("Village Name : " + vName
+                            + "\nGroup Name : " + groupName
+                            + "\nSelected Students : " + selectedStudentNames
+                            + "\nDate : " + date
+                            + "\nPresent : " + present);
+
+                    dialogBuilder.setPositiveButton("Correct", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            btn_Submit.setText("Submit");
+                        }
+                    });
+                    dialogBuilder.setNegativeButton("Wrong", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            btn_Submit.setText("Preview");
+                        }
+                    });
+                    AlertDialog b = dialogBuilder.create();
+                    b.show();
                 }
+
             } catch (Exception e) {
 
             }
@@ -206,6 +242,7 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
     }
 
     private void resetForm() {
+        btn_Submit.setText("Preview");
         populateVillages();
         rg_Present.clearCheck();
         rb_Yes.setChecked(true);
@@ -271,7 +308,7 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
                 vid = customGroup.getId();
-
+                vName = customGroup.getName();
                 // Populate Registered Groups Spinner
                 populateRegisteredGroups(vid);
             }
@@ -301,6 +338,7 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 CustomGroup customGroup = (CustomGroup) registeredGRPs.get(pos);
                 groupId = customGroup.getId();
+                groupName = customGroup.getName();
                 // Populate Students according to Group Spinner
                 populateStudents(groupId);
             }
@@ -322,7 +360,7 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
                 if (AllStudentsInDB.get(j).getGroupId().equals(grpID)) {
                     registeredStd.add(new CustomGroup(AllStudentsInDB.get(j).getFullName(), AllStudentsInDB.get(j).getStudentId()));
                     Stds.add(new CustomGroup(AllStudentsInDB.get(j).getStudentId()));
-
+                    StdNames.add(new CustomGroup(AllStudentsInDB.get(j).getFullName()));
                 }
             }
 
@@ -340,12 +378,15 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
             selectedStudents = "";
+            selectedStudentNames = "";
             for (int i = 0; i < selected.length; i++) {
                 if (selected[i]) {
                     selectedStudents = selectedStudents + "," + Stds.get(i);
+                    selectedStudentNames = selectedStudentNames + "," + StdNames.get(i);
                 }
             }
             selectedStudents = selectedStudents.replaceFirst(",", "");
+            selectedStudentNames = selectedStudentNames.replaceFirst(",", "");
         }
     };
 

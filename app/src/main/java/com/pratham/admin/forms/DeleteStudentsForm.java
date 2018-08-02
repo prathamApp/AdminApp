@@ -179,7 +179,6 @@ public class DeleteStudentsForm extends AppCompatActivity implements ConnectionR
                 });
                 AlertDialog b = dialogBuilder.create();
                 b.show();
-
             }
 
 
