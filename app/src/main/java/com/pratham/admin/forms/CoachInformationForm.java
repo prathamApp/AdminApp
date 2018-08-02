@@ -490,7 +490,6 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
                     });
                     AlertDialog b = dialogBuilder.create();
                     b.show();
-
                 }
 
 

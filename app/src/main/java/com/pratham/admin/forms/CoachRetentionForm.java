@@ -1,7 +1,9 @@
 package com.pratham.admin.forms;
 
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -61,6 +63,7 @@ public class CoachRetentionForm extends AppCompatActivity implements ConnectionR
     String selectedCoachID = "";
     boolean internetIsAvailable = false;
     List<Coach> updatedCoachList = new ArrayList<>();
+    String villageName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,57 +131,88 @@ public class CoachRetentionForm extends AppCompatActivity implements ConnectionR
             cObj.CreatedDate = updatedCoachList.get(0).CreatedDate;
             cObj.sentFlag = 0;
 
-            AppDatabase.getDatabaseInstance(this).getCoachDao().updateCoachStatus(status, endDate, coachID);
-            Toast.makeText(this, "Form Submitted to DB !!!", Toast.LENGTH_SHORT).show();
+            if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
 
-            // Push To Server
-            try {
-                if (internetIsAvailable) {
-                    Gson gson = new Gson();
-                    String CoachRetentionJSON = gson.toJson(Collections.singletonList(cObj));
+                checkConnection();
 
-                    MetaData metaData = new MetaData();
-                    metaData.setKeys("pushDataTime");
-                    metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
-                    List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
-                    String metaDataJSON = customParse(metaDataList);
-                    AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
+                AppDatabase.getDatabaseInstance(this).getCoachDao().updateCoachStatus(status, endDate, coachID);
+                Toast.makeText(this, "Form Submitted to DB !!!", Toast.LENGTH_SHORT).show();
 
-                    String json = "{ \"CoachRetentionJSON\":" + CoachRetentionJSON + ",\"metadata\":" + metaDataJSON + "}";
-                    Log.d("json :::", json);
+                // Push To Server
+                try {
+                    if (internetIsAvailable) {
+                        Gson gson = new Gson();
+                        String CoachRetentionJSON = gson.toJson(Collections.singletonList(cObj));
 
-                    final ProgressDialog dialog = new ProgressDialog(this);
-                    dialog.setTitle("UPLOADING ... ");
-                    dialog.setCancelable(false);
-                    dialog.setCanceledOnTouchOutside(false);
-                    dialog.show();
+                        MetaData metaData = new MetaData();
+                        metaData.setKeys("pushDataTime");
+                        metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+                        List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
+                        String metaDataJSON = customParse(metaDataList);
+                        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
 
-                    AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.d("responce", response);
-                            AppDatabase.getDatabaseInstance(CoachRetentionForm.this).getCoachDao().updateSentFlag(1, selectedCoachID);
-                            Toast.makeText(CoachRetentionForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                            resetForm();
-                        }
+                        String json = "{ \"CoachRetentionJSON\":" + CoachRetentionJSON + ",\"metadata\":" + metaDataJSON + "}";
+                        Log.d("json :::", json);
 
-                        @Override
-                        public void onError(ANError anError) {
-                            Toast.makeText(CoachRetentionForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                            AppDatabase.getDatabaseInstance(CoachRetentionForm.this).getCoachDao().updateSentFlag(0, selectedCoachID);
-                            dialog.dismiss();
-                            resetForm();
-                        }
-                    });
+                        final ProgressDialog dialog = new ProgressDialog(this);
+                        dialog.setTitle("UPLOADING ... ");
+                        dialog.setCancelable(false);
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.show();
 
-                } else {
-                    Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
-                    resetForm();
+                        AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.d("responce", response);
+                                AppDatabase.getDatabaseInstance(CoachRetentionForm.this).getCoachDao().updateSentFlag(1, selectedCoachID);
+                                Toast.makeText(CoachRetentionForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                                resetForm();
+                            }
+
+                            @Override
+                            public void onError(ANError anError) {
+                                Toast.makeText(CoachRetentionForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                                AppDatabase.getDatabaseInstance(CoachRetentionForm.this).getCoachDao().updateSentFlag(0, selectedCoachID);
+                                dialog.dismiss();
+                                resetForm();
+                            }
+                        });
+
+                    } else {
+                        Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
+                        resetForm();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } else {
+                // Preview Dialog
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CoachRetentionForm.this, android.R.style.Theme_Material_Light_Dialog);
+                dialogBuilder.setCancelable(false);
+                dialogBuilder.setTitle("Form Data Preview");
+
+                dialogBuilder.setMessage("Village Name : " + villageName
+                        + "\nCoach Name : " + updatedCoachList.get(0).CoachName
+                        + "\nCoach Age : " + updatedCoachList.get(0).CoachAge
+                        + "\nCoach Gender : " + updatedCoachList.get(0).CoachGender
+                        + "\nDrop Out : " + DropOut
+                        + "\nEnd Date : " + endDate);
+
+                dialogBuilder.setPositiveButton("Correct", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        btn_Submit.setText("Submit");
+                    }
+                });
+                dialogBuilder.setNegativeButton("Wrong", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        btn_Submit.setText("Preview");
+                    }
+                });
+                AlertDialog b = dialogBuilder.create();
+                b.show();
             }
+
 
         } else {
             Toast.makeText(this, "Please Select All Fields !", Toast.LENGTH_SHORT).show();
@@ -187,6 +221,7 @@ public class CoachRetentionForm extends AppCompatActivity implements ConnectionR
     }
 
     private void resetForm() {
+        btn_Submit.setText("Preview");
         populateVillages();
         populateCoaches();
         rg_DropOut.clearCheck();
@@ -214,6 +249,7 @@ public class CoachRetentionForm extends AppCompatActivity implements ConnectionR
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
                 String vid = customGroup.getId();
+                villageName = customGroup.getName();
             }
 
             @Override

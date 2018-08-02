@@ -1,6 +1,8 @@
 package com.pratham.admin.forms;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -60,10 +62,13 @@ public class DeleteStudentsForm extends AppCompatActivity implements ConnectionR
     List registeredStd;
     private boolean[] selectedStdItems;
     List<CustomGroup> Stds = new ArrayList<CustomGroup>();
+    List<CustomGroup> StdsName = new ArrayList<CustomGroup>();
     String selectedStudents = "";
+    String selectedStudentsName = "";
 
     List selectedStdList;
-
+    String villageName;
+    String groupName;
 
     boolean internetIsAvailable = false;
 
@@ -91,65 +96,90 @@ public class DeleteStudentsForm extends AppCompatActivity implements ConnectionR
     @OnClick(R.id.btn_Submit)
     public void submitForm(View view) {
 
-        checkConnection();
-
         if ((sp_Village.getSelectedItemPosition() > 0) && (sp_Groups.getSelectedItemPosition() > 0)
                 && (selectedStudents.trim().length() > 0)) {
+
+            checkConnection();
 
             // DB Entry
             Student sObj = new Student();
             sObj.StudentId = selectedStudents;
 
-            // Push To Server
-            try {
-                if (internetIsAvailable) {
-                    Gson gson = new Gson();
-                    String DeleteStudentJSON = gson.toJson(Collections.singletonList(sObj));
+            if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
+                // Push To Server
+                try {
+                    if (internetIsAvailable) {
+                        Gson gson = new Gson();
+                        String DeleteStudentJSON = gson.toJson(Collections.singletonList(sObj));
 
-                    MetaData metaData = new MetaData();
-                    metaData.setKeys("pushDataTime");
-                    metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
-                    List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
-                    String metaDataJSON = customParse(metaDataList);
-                    AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
+                        MetaData metaData = new MetaData();
+                        metaData.setKeys("pushDataTime");
+                        metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+                        List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
+                        String metaDataJSON = customParse(metaDataList);
+                        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
 
-                    String json = "{ \"DeleteStudentJSON\":" + DeleteStudentJSON + ",\"metadata\":" + metaDataJSON + "}";
-                    Log.d("json :::", json);
+                        String json = "{ \"DeleteStudentJSON\":" + DeleteStudentJSON + ",\"metadata\":" + metaDataJSON + "}";
+                        Log.d("json :::", json);
 
-                    final ProgressDialog dialog = new ProgressDialog(this);
-                    dialog.setTitle("UPLOADING ... ");
-                    dialog.setCancelable(false);
-                    dialog.setCanceledOnTouchOutside(false);
-                    dialog.show();
+                        final ProgressDialog dialog = new ProgressDialog(this);
+                        dialog.setTitle("UPLOADING ... ");
+                        dialog.setCancelable(false);
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.show();
 
-                    AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.d("responce", response);
-                            // delete if pushed
-                            for (int i = 0; i < selectedStdList.size(); i++) {
-                                AppDatabase.getDatabaseInstance(DeleteStudentsForm.this).getStudentDao().deleteStudentByID(selectedStdList.get(i).toString());
+                        AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.d("responce", response);
+                                // delete if pushed
+                                for (int i = 0; i < selectedStdList.size(); i++) {
+                                    AppDatabase.getDatabaseInstance(DeleteStudentsForm.this).getStudentDao().deleteStudentByID(selectedStdList.get(i).toString());
+                                }
+                                Toast.makeText(DeleteStudentsForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DeleteStudentsForm.this, "Selected Students have been Deleted !!!", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                                resetForm();
                             }
-                            Toast.makeText(DeleteStudentsForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
-                            Toast.makeText(DeleteStudentsForm.this, "Selected Students have been Deleted !!!", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                            resetForm();
-                        }
 
-                        @Override
-                        public void onError(ANError anError) {
-                            Toast.makeText(DeleteStudentsForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                            dialog.dismiss();
-                            resetForm();
-                        }
-                    });
+                            @Override
+                            public void onError(ANError anError) {
+                                Toast.makeText(DeleteStudentsForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                                dialog.dismiss();
+                                resetForm();
+                            }
+                        });
 
-                } else {
-                    Toast.makeText(this, "Form Data NOT Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
-                    resetForm();
+                    } else {
+                        Toast.makeText(this, "Form Data NOT Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
+                        resetForm();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } else {
+                // Preview Dialog
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(DeleteStudentsForm.this, android.R.style.Theme_Material_Light_Dialog);
+                dialogBuilder.setCancelable(false);
+                dialogBuilder.setTitle("Form Data Preview");
+
+                dialogBuilder.setMessage("Village Name : " + villageName
+                        + "\nGroup Name : " + groupName
+                        + "\nSelected Students : " + selectedStudentsName);
+
+                dialogBuilder.setPositiveButton("Correct", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        btn_Submit.setText("Submit");
+                    }
+                });
+                dialogBuilder.setNegativeButton("Wrong", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        btn_Submit.setText("Preview");
+                    }
+                });
+                AlertDialog b = dialogBuilder.create();
+                b.show();
+
             }
 
 
@@ -161,6 +191,7 @@ public class DeleteStudentsForm extends AppCompatActivity implements ConnectionR
 
     private void resetForm() {
         checkConnection();
+        btn_Submit.setText("Preview");
         AllGroupsInDB.clear();
         AllStudentsInDB.clear();
         AllGroupsInDB = AppDatabase.getDatabaseInstance(this).getGroupDao().getAllGroups();
@@ -187,6 +218,7 @@ public class DeleteStudentsForm extends AppCompatActivity implements ConnectionR
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
                 String vid = customGroup.getId();
+                villageName = customGroup.getName();
 
                 // Populate Registered Groups Spinner
                 populateRegisteredGroups(vid);
@@ -217,6 +249,7 @@ public class DeleteStudentsForm extends AppCompatActivity implements ConnectionR
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 CustomGroup customGroup = (CustomGroup) registeredGRPs.get(pos);
                 String groupId = customGroup.getId();
+                groupName = customGroup.getName();
                 // Populate Students according to Group Spinner
                 populateStudents(groupId);
             }
@@ -238,7 +271,7 @@ public class DeleteStudentsForm extends AppCompatActivity implements ConnectionR
                 if (AllStudentsInDB.get(j).getGroupId().equals(grpID)) {
                     registeredStd.add(new CustomGroup(AllStudentsInDB.get(j).getFullName(), AllStudentsInDB.get(j).getStudentId()));
                     Stds.add(new CustomGroup(AllStudentsInDB.get(j).getStudentId()));
-
+                    StdsName.add(new CustomGroup(AllStudentsInDB.get(j).getFullName()));
                 }
             }
 
@@ -256,14 +289,17 @@ public class DeleteStudentsForm extends AppCompatActivity implements ConnectionR
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
             selectedStudents = "";
+            selectedStudentsName = "";
             selectedStdList = new ArrayList();
             for (int i = 0; i < selected.length; i++) {
                 if (selected[i]) {
                     selectedStudents = selectedStudents + "," + Stds.get(i);
+                    selectedStudentsName = selectedStudentsName + "," + StdsName.get(i);
                     selectedStdList.add(Stds.get(i));
                 }
             }
             selectedStudents = selectedStudents.replaceFirst(",", "");
+            selectedStudentsName = selectedStudentsName.replaceFirst(",", "");
         }
     };
 
