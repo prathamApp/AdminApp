@@ -88,7 +88,7 @@ public class CourseCompletionForm extends AppCompatActivity implements DashRVCli
         // Create the recyclerview.
         CourseTopicsRV = (RecyclerView) findViewById(R.id.card_view_recycler_list);
         // Create the grid layout manager with 2 columns.
-        CourseTopicsRV.addOnItemTouchListener(new DashRVTouchListener(getApplicationContext(), CourseTopicsRV, CourseCompletionForm.this));
+//        CourseTopicsRV.addOnItemTouchListener(new DashRVTouchListener(getApplicationContext(), CourseTopicsRV, CourseCompletionForm.this));
     }
 
     /* Initialise items in list. */
@@ -101,7 +101,7 @@ public class CourseCompletionForm extends AppCompatActivity implements DashRVCli
         }
 
         for (int i = 0; i < CourseTopicsByGrp.size(); i++) {
-            CourseTopicItemList.add(new CourseTopicItem(CourseTopicsByGrp.get(i).CourseAdded, CourseTopicsByGrp.get(i).TopicAdded));
+            CourseTopicItemList.add(new CourseTopicItem(CourseTopicsByGrp.get(i).CourseAdded, CourseTopicsByGrp.get(i).TopicAdded, false));
         }
         if (DataAdapter == null) {
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);

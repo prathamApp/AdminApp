@@ -5,7 +5,7 @@ public class CourseTopicItem {
     private String Course;
     private String Topic;
 
-    public CourseTopicItem(String c, String t) {
+    public CourseTopicItem(String c, String t, boolean chechBox) {
         this.Course = c;
         this.Topic = t;
     }
@@ -33,4 +33,5 @@ public class CourseTopicItem {
     public void setTopic(String topic) {
         Topic = topic;
     }
+
 }
