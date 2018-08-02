@@ -43,7 +43,6 @@ import com.pratham.admin.util.Utility;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -123,11 +122,8 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
     String selectedPCNames = "";
 
     boolean internetIsAvailable = false;
-
-    UUID uuid;
-    String uniqueCommunityID = "";
     private String villageName;
-
+    List<String> uniqueIDList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,8 +135,6 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
 
         // Hide Actionbar
         getSupportActionBar().hide();
-
-        uniqueCommunityID = UUID.randomUUID().toString();
 
         // Set Default Todays date
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
@@ -219,32 +213,40 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
                 int selectedCId = rg_Community.getCheckedRadioButtonId();
                 RadioButton selectedCOption = (RadioButton) findViewById(selectedCId);
                 String Community = selectedCOption.getText().toString();
+                List<Community> commList = new ArrayList<>();
+                for (int x = 0; x < selectedGroupsArray.size(); x++) {
 
-                Community commObj = new Community();
-                commObj.CommunityID = uniqueCommunityID;
-                commObj.VillageID = vid;
-                commObj.GroupID = selectedGroups;
-                commObj.CourseAdded = courseName;
-                commObj.TopicAdded = selectedTopicNames;
-                commObj.AddedTopicsID = selectedTopics;
-                commObj.StartDate = btn_DatePicker.getText().toString().trim();
-                commObj.EndDate = "";
-                commObj.CoachID = selectedPC;
-                commObj.Community = Community;
-                commObj.AddedCourseID = courseID;
-                commObj.ParentParticipation = 0;
-                commObj.PresentStudent = 0;
-                commObj.sentFlag = 0;
+                    Community commObj = new Community();
+                    String uniqueCommunityID = UUID.randomUUID().toString();
+                    uniqueIDList.add(uniqueCommunityID);
+
+                    commObj.CommunityID = uniqueCommunityID;
+                    commObj.VillageID = vid;
+                    commObj.GroupID = selectedGroupsArray.get(x);
+//                    commObj.GroupID = selectedGroups;
+                    commObj.CourseAdded = courseName;
+                    commObj.TopicAdded = selectedTopicNames;
+                    commObj.AddedTopicsID = selectedTopics;
+                    commObj.StartDate = btn_DatePicker.getText().toString().trim();
+                    commObj.EndDate = "";
+                    commObj.CoachID = selectedPC;
+                    commObj.Community = Community;
+                    commObj.AddedCourseID = courseID;
+                    commObj.ParentParticipation = 0;
+                    commObj.PresentStudent = 0;
+                    commObj.sentFlag = 0;
+                    commList.add(commObj);
+                }
 
                 if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
-                    AppDatabase.getDatabaseInstance(this).getCommunityDao().insertCommunity(Collections.singletonList(commObj));
+                    AppDatabase.getDatabaseInstance(this).getCommunityDao().insertCommunity(commList);
                     Toast.makeText(this, "Form Saved to Database !!!", Toast.LENGTH_SHORT).show();
 
                     // Push To Server
                     try {
                         if (internetIsAvailable) {
                             Gson gson = new Gson();
-                            String CommunityJSON = gson.toJson(Collections.singletonList(commObj));
+                            String CommunityJSON = gson.toJson(commList);
 
                             MetaData metaData = new MetaData();
                             metaData.setKeys("pushDataTime");
@@ -267,7 +269,8 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
                                 public void onResponse(String response) {
                                     Log.d("responce", response);
                                     // update flag
-                                    AppDatabase.getDatabaseInstance(CourseEnrollmentForm.this).getCommunityDao().updateSentFlag(1, uniqueCommunityID);
+                                    for (int i = 0; i < uniqueIDList.size(); i++)
+                                        AppDatabase.getDatabaseInstance(CourseEnrollmentForm.this).getCommunityDao().updateSentFlag(1, uniqueIDList.get(i));
                                     Toast.makeText(CourseEnrollmentForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
                                     dialog.dismiss();
                                     resetForm();
@@ -276,7 +279,8 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
                                 @Override
                                 public void onError(ANError anError) {
                                     Toast.makeText(CourseEnrollmentForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                                    AppDatabase.getDatabaseInstance(CourseEnrollmentForm.this).getCommunityDao().updateSentFlag(0, uniqueCommunityID);
+                                    for (int i = 0; i < uniqueIDList.size(); i++)
+                                        AppDatabase.getDatabaseInstance(CourseEnrollmentForm.this).getCommunityDao().updateSentFlag(0, uniqueIDList.get(i));
                                     dialog.dismiss();
                                     resetForm();
                                 }
@@ -328,7 +332,6 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
 
     private void resetForm() {
         btn_Submit.setText("Preview");
-        uniqueCommunityID = UUID.randomUUID().toString();
         populateVillages();
         populateCoaches();
         populateCourses();
