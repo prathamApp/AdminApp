@@ -7,9 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.modalclasses.CourseTopicItem;
 
@@ -17,7 +15,7 @@ import java.util.List;
 
 public class CourseTopicRVDataAdapter extends RecyclerView.Adapter<CourseTopicRVDataAdapter.CTRVItemHolder> {
 
-    private List<CourseTopicItem> ItemList;
+    public static List<CourseTopicItem> ItemList;
 
     public CourseTopicRVDataAdapter(List<CourseTopicItem> carItemList) {
         this.ItemList = carItemList;
@@ -82,7 +80,7 @@ public class CourseTopicRVDataAdapter extends RecyclerView.Adapter<CourseTopicRV
 
     @Override
     public void onBindViewHolder(final CTRVItemHolder holder, int position) {
-        if (ItemList != null) {
+        /*if (ItemList != null) {
             CourseTopicItem Items = ItemList.get(position);
             if (Items != null) {
                 holder.getCourse().setText(Items.getCourse());
@@ -93,7 +91,26 @@ public class CourseTopicRVDataAdapter extends RecyclerView.Adapter<CourseTopicRV
                     holder.chechBox.setChecked(false);
                 }
             }
-            //item click event listener
+*/
+        holder.chechBox.setChecked(ItemList.get(position).getSelected());
+        holder.getCourse().setText(ItemList.get(position).getCourse());
+        holder.getTopic().setText(ItemList.get(position).getTopic());
+
+        holder.chechBox.setTag(position);
+        holder.chechBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Integer pos = (Integer) holder.chechBox.getTag();
+                if (ItemList.get(pos).getSelected()) {
+                    ItemList.get(pos).setSelected(false);
+                } else {
+                    ItemList.get(pos).setSelected(true);
+                }
+            }
+        });
+
+/*            //item click event listener
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -106,8 +123,9 @@ public class CourseTopicRVDataAdapter extends RecyclerView.Adapter<CourseTopicRV
                         Toast.makeText(ApplicationController.getInstance(), "" + holder.Course.getText() + "\n" + holder.Topic.getText(), Toast.LENGTH_LONG).show();
                     }
                 }
-            });
-        }
+            });*/
+
+
     }
 
     @Override

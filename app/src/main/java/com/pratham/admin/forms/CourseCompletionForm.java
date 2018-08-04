@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pratham.admin.R;
@@ -23,7 +24,6 @@ import com.pratham.admin.modalclasses.CourseTopicItem;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.CustomGroup;
-import com.pratham.admin.util.DashRVTouchListener;
 import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.DatePickerFragmentTwo;
 import com.pratham.admin.util.Utility;
@@ -52,6 +52,8 @@ public class CourseCompletionForm extends AppCompatActivity implements DashRVCli
     Button btn_DatePickerTwo;
     @BindView(R.id.btn_Submit)
     Button btn_Submit;
+    @BindView(R.id.tv_Course_Warning)
+    TextView tv_Course_Warning;
 
     List<Village> villageList = new ArrayList<>();
     List<Groups> AllGroupsInDB;
@@ -63,6 +65,8 @@ public class CourseCompletionForm extends AppCompatActivity implements DashRVCli
     CourseTopicRVDataAdapter DataAdapter;
     String topics = "";
 
+    List selectedCourseIDs;
+    List selectedTopicIDs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,12 +100,16 @@ public class CourseCompletionForm extends AppCompatActivity implements DashRVCli
         CourseTopicItemList.clear();
         CourseTopicsByGrp = AppDatabase.getDatabaseInstance(this).getCommunityDao().getCommunityByGroupID(groupId);
 
-        if (CourseTopicsByGrp.size() == 0) {
-            Toast.makeText(this, "No Courses Available !!!", Toast.LENGTH_SHORT).show();
-        }
+        // If No Courses Available
+        if (sp_Village.getSelectedItemPosition() > 0 && sp_Groups.getSelectedItemPosition() > 0)
+            if (CourseTopicsByGrp.size() == 0) {
+                tv_Course_Warning.setVisibility(View.VISIBLE);
+            } else {
+                tv_Course_Warning.setVisibility(View.GONE);
+            }
 
         for (int i = 0; i < CourseTopicsByGrp.size(); i++) {
-            CourseTopicItemList.add(new CourseTopicItem(CourseTopicsByGrp.get(i).CourseAdded, CourseTopicsByGrp.get(i).TopicAdded, false));
+            CourseTopicItemList.add(new CourseTopicItem(CourseTopicsByGrp.get(i).AddedCourseID, CourseTopicsByGrp.get(i).CourseAdded, CourseTopicsByGrp.get(i).AddedTopicsID, CourseTopicsByGrp.get(i).TopicAdded, false));
         }
         if (DataAdapter == null) {
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
@@ -113,6 +121,20 @@ public class CourseCompletionForm extends AppCompatActivity implements DashRVCli
             CourseTopicsRV.setAdapter(DataAdapter);
         } else {
             DataAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @OnClick(R.id.btn_Submit)
+    public void submitForm(View view) {
+
+        // getting Selected Items
+        for (int i = 0; i < CourseTopicRVDataAdapter.ItemList.size(); i++) {
+            selectedCourseIDs = new ArrayList();
+            selectedTopicIDs = new ArrayList();
+            if (CourseTopicRVDataAdapter.ItemList.get(i).getSelected()) {
+                selectedCourseIDs.add(CourseTopicRVDataAdapter.ItemList.get(i).getCourseIDs());
+                selectedCourseIDs.add(CourseTopicRVDataAdapter.ItemList.get(i).getTopicIDs());
+            }
         }
     }
 

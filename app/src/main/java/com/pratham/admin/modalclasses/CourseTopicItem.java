@@ -2,20 +2,37 @@ package com.pratham.admin.modalclasses;
 
 public class CourseTopicItem {
     // Save name.
+    private String CourseIDs;
     private String Course;
+    private String TopicIDs;
     private String Topic;
+    private Boolean isSelected;
 
-    public CourseTopicItem(String c, String t, boolean chechBox) {
+    public CourseTopicItem(String cid, String c, String tid, String t, boolean isSelected) {
+        this.CourseIDs = cid;
         this.Course = c;
+        this.TopicIDs = tid;
         this.Topic = t;
+        this.isSelected = isSelected;
     }
 
     @Override
     public String toString() {
         return "CourseTopicItem{" +
-                "Course='" + Course + '\'' +
+                "CourseIDs='" + CourseIDs + '\'' +
+                ", Course='" + Course + '\'' +
+                ", TopicIDs='" + TopicIDs + '\'' +
                 ", Topic='" + Topic + '\'' +
+                ", isSelected=" + isSelected +
                 '}';
+    }
+
+    public String getCourseIDs() {
+        return CourseIDs;
+    }
+
+    public void setCourseIDs(String courseIDs) {
+        CourseIDs = courseIDs;
     }
 
     public String getCourse() {
@@ -26,6 +43,14 @@ public class CourseTopicItem {
         Course = course;
     }
 
+    public String getTopicIDs() {
+        return TopicIDs;
+    }
+
+    public void setTopicIDs(String topicIDs) {
+        TopicIDs = topicIDs;
+    }
+
     public String getTopic() {
         return Topic;
     }
@@ -34,4 +59,11 @@ public class CourseTopicItem {
         Topic = topic;
     }
 
+    public Boolean getSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(Boolean selected) {
+        isSelected = selected;
+    }
 }

@@ -61,6 +61,21 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tv_Course_Warning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@drawable/custom_border"
+                android:drawableLeft="@drawable/ic_warning"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="No Courses/ Topics Available !!!"
+                android:textColor="#FF0000"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
             <!--Course,Topics, Checkbox-->
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/card_view_recycler_list"
