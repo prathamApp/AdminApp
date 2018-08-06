@@ -138,12 +138,14 @@
 
     <string-array name="array_Education">
         <item>Select Education</item>
-        <item>Below Class 5</item>
-        <item>Class 6 - 8</item>
-        <item>Class 9 - 10</item>
-        <item>Class 11 - 12</item>
-        <item>Undergraduate</item>
-        <item>Post-Graduate</item>
+        <item>No</item>
+        <item>Class 5</item>
+        <item>Class 8</item>
+        <item>Higher Secondary</item>
+        <item>Intermediate</item>
+        <item>Graduate</item>
+        <item>Post Graduate</item>
+        <item>Others</item>
     </string-array>
 
 

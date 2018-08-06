@@ -208,8 +208,22 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
                 String selectedEdu = sp_Education.getSelectedItem().toString();
                 if (selectedEdu.contains("Select")) {
                 } else {
-                    education = selectedEdu;
-//                    Toast.makeText(CoachInformationForm.this, "" + education, Toast.LENGTH_SHORT).show();
+                    if (selectedEdu.equalsIgnoreCase("No"))
+                        education = String.valueOf(0);
+                    else if (selectedEdu.equalsIgnoreCase("Class 5"))
+                        education = String.valueOf(5);
+                    else if (selectedEdu.equalsIgnoreCase("Class 8"))
+                        education = String.valueOf(8);
+                    else if (selectedEdu.equalsIgnoreCase("Higher Secondary"))
+                        education = String.valueOf(10);
+                    else if (selectedEdu.equalsIgnoreCase("Intermediate"))
+                        education = String.valueOf(12);
+                    else if (selectedEdu.equalsIgnoreCase("Graduation"))
+                        education = String.valueOf(15);
+                    else if (selectedEdu.equalsIgnoreCase("Post Graduation"))
+                        education = String.valueOf(17);
+                    else if (selectedEdu.equalsIgnoreCase("Others"))
+                        education = String.valueOf(18);
                 }
             }
 
@@ -386,6 +400,7 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
     public void submitData(View view) {
 
         if ((sp_Village.getSelectedItemPosition() > 0) && (edt_Name.getText().toString().trim().length() > 0)
+                && (sp_Occupation.getSelectedItemPosition() > 0)
                 && (edt_Age.getText().toString().trim().length() > 0) && (sp_Education.getSelectedItemPosition() > 0)
                 && (sp_Speciality.getSelectedItemPosition() > 0) && (selectedGroups.trim().length() > 0)
                 && (selectedExpertSubjects.trim().length() > 0)) {
