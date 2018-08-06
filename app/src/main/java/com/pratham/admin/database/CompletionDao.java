@@ -5,6 +5,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
+import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Completion;
 
 import java.util.List;
@@ -22,5 +23,11 @@ public interface CompletionDao {
 
     @Query("UPDATE Completion SET sentFlag=:pushStatus WHERE CompletionID =:cID")
     void updateSentFlag(int pushStatus, String cID);
+
+    @Query("SELECT * FROM Completion WHERE sentFlag=:status")
+    public List<Completion> getNewCompletions(int status);
+
+    @Query("UPDATE Completion SET sentFlag=:pushStatus")
+    void updateAllSentFlag(int pushStatus);
 
 }

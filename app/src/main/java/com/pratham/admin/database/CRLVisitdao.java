@@ -6,6 +6,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
 import com.pratham.admin.modalclasses.CRLVisit;
+import com.pratham.admin.modalclasses.Course;
 
 import java.util.List;
 
@@ -22,5 +23,11 @@ public interface CRLVisitdao {
 
     @Query("UPDATE CRLVisit SET sentFlag=:pushStatus WHERE VisitID =:vID")
     void updateSentFlag(int pushStatus, String vID);
+
+    @Query("SELECT * FROM CRLVisit WHERE sentFlag=:status")
+    public List<CRLVisit> getNewCRLVisits(int status);
+
+    @Query("UPDATE CRLVisit SET sentFlag=:pushStatus")
+    void updateAllSentFlag(int pushStatus);
 
 }

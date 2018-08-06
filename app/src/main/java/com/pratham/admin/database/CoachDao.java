@@ -5,6 +5,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
+import com.pratham.admin.modalclasses.Attendance;
 import com.pratham.admin.modalclasses.Coach;
 
 import java.util.List;
@@ -29,4 +30,9 @@ public interface CoachDao {
     @Query("UPDATE Coach SET sentFlag=:pushStatus WHERE CoachID =:cID")
     void updateSentFlag(int pushStatus, String cID);
 
+    @Query("SELECT * FROM Coach WHERE sentFlag=:status")
+    public List<Coach> getNewCoaches(int status);
+
+    @Query("UPDATE Coach SET sentFlag=:pushStatus")
+    void updateAllSentFlag(int pushStatus);
 }

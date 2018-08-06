@@ -5,6 +5,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
+import com.pratham.admin.modalclasses.Completion;
 import com.pratham.admin.modalclasses.Course;
 
 import java.util.List;
@@ -22,5 +23,11 @@ public interface CourseDao {
 
     @Query("SELECT * FROM Course WHERE CourseID=:cID")
     public List<Course> getAllCourseDetails(String cID);
+
+    @Query("SELECT * FROM Course WHERE sentFlag=:status")
+    public List<Course> getNewCourses(int status);
+
+    @Query("UPDATE Course SET sentFlag=:pushStatus")
+    void updateAllSentFlag(int pushStatus);
 
 }

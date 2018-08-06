@@ -23,4 +23,10 @@ public interface AttendanceDao {
     @Query("UPDATE Attendance SET sentFlag=:pushStatus WHERE AttendanceID=:aID")
     void updateSentFlag(int pushStatus, String aID);
 
+    @Query("SELECT * FROM Attendance WHERE sentFlag=:status")
+    public List<Attendance> getNewAttendances(int status);
+
+    @Query("UPDATE Attendance SET sentFlag=:pushStatus")
+    void updateAllSentFlag(int pushStatus);
+
 }

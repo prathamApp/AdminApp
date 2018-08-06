@@ -5,6 +5,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
+import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Community;
 
 import java.util.List;
@@ -25,5 +26,11 @@ public interface CommunityDao {
 
     @Query("UPDATE Community SET sentFlag=:pushStatus WHERE CommunityID =:cID")
     void updateSentFlag(int pushStatus, String cID);
+
+    @Query("SELECT * FROM Community WHERE sentFlag=:status")
+    public List<Community> getNewCommunities(int status);
+
+    @Query("UPDATE Community SET sentFlag=:pushStatus")
+    void updateAllSentFlag(int pushStatus);
 
 }
