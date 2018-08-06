@@ -1,7 +1,6 @@
 package com.pratham.admin.modalclasses;
 
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -14,23 +13,25 @@ public class Completion {
     @SerializedName("CompletionID")
     public String CompletionID;
     @SerializedName("VillageID")
-    public int VillageID;
+    public String VillageID;
     @SerializedName("GroupID")
     public String GroupID;
     @SerializedName("CourseCompleted")
-    public int CourseCompleted;
+    public String CourseCompleted;
     @SerializedName("TopicCompleted")
-    public int TopicCompleted;
+    public String TopicCompleted;
     @SerializedName("StartDate")
     public String StartDate;
     @SerializedName("EndDate")
     public String EndDate;
+    @SerializedName("Event")
+    public int Event;
     @SerializedName("GroupType")
     public String GroupType; // Community/School
     @SerializedName("ParentParticipation")
     public int ParentParticipation;
-    @SerializedName("PresentStudent")
-    public int PresentStudent;
+    @SerializedName("PresentParents")
+    public int PresentParents;
     @SerializedName("sentFlag")
     public int sentFlag;
 
@@ -44,9 +45,10 @@ public class Completion {
                 ", TopicCompleted=" + TopicCompleted +
                 ", StartDate='" + StartDate + '\'' +
                 ", EndDate='" + EndDate + '\'' +
+                ", Event='" + Event + '\'' +
                 ", GroupType='" + GroupType + '\'' +
                 ", ParentParticipation=" + ParentParticipation +
-                ", PresentStudent=" + PresentStudent +
+                ", PresentParents=" + PresentParents +
                 ", sentFlag=" + sentFlag +
                 '}';
     }
@@ -60,11 +62,11 @@ public class Completion {
         CompletionID = completionID;
     }
 
-    public int getVillageID() {
+    public String getVillageID() {
         return VillageID;
     }
 
-    public void setVillageID(int villageID) {
+    public void setVillageID(String villageID) {
         VillageID = villageID;
     }
 
@@ -76,19 +78,19 @@ public class Completion {
         GroupID = groupID;
     }
 
-    public int getCourseCompleted() {
+    public String getCourseCompleted() {
         return CourseCompleted;
     }
 
-    public void setCourseCompleted(int courseCompleted) {
+    public void setCourseCompleted(String courseCompleted) {
         CourseCompleted = courseCompleted;
     }
 
-    public int getTopicCompleted() {
+    public String getTopicCompleted() {
         return TopicCompleted;
     }
 
-    public void setTopicCompleted(int topicCompleted) {
+    public void setTopicCompleted(String topicCompleted) {
         TopicCompleted = topicCompleted;
     }
 
@@ -108,6 +110,14 @@ public class Completion {
         EndDate = endDate;
     }
 
+    public int getEvent() {
+        return Event;
+    }
+
+    public void setEvent(int event) {
+        Event = event;
+    }
+
     public String getGroupType() {
         return GroupType;
     }
@@ -124,12 +134,12 @@ public class Completion {
         ParentParticipation = parentParticipation;
     }
 
-    public int getPresentStudent() {
-        return PresentStudent;
+    public int getPresentParents() {
+        return PresentParents;
     }
 
-    public void setPresentStudent(int presentStudent) {
-        PresentStudent = presentStudent;
+    public void setPresentParents(int presentParents) {
+        PresentParents = presentParents;
     }
 
     public int getSentFlag() {

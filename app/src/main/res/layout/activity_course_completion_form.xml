@@ -103,6 +103,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
+                <!--Start Date-->
                 <Button
                     android:id="@+id/btn_DatePicker"
                     android:layout_width="match_parent"
@@ -128,6 +129,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
+                <!--End Date-->
                 <Button
                     android:id="@+id/btn_DatePickerTwo"
                     android:layout_width="match_parent"
@@ -215,7 +217,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="32dp"
             android:background="@color/colorPrimaryDark"
-            android:text="Submit"
+            android:text="Preview"
             android:textAllCaps="true"
             android:textColor="#FFFFFF"
             android:textSize="20sp"

@@ -20,4 +20,7 @@ public interface CompletionDao {
     @Query("SELECT * FROM Completion")
     public List<Completion> getAllCompletion();
 
+    @Query("UPDATE Completion SET sentFlag=:pushStatus WHERE CompletionID =:cID")
+    void updateSentFlag(int pushStatus, String cID);
+
 }
