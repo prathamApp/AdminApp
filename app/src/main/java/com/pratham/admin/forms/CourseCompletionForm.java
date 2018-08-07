@@ -45,6 +45,7 @@ import com.pratham.admin.util.Utility;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -116,9 +117,19 @@ public class CourseCompletionForm extends AppCompatActivity implements DashRVCli
 
         //retrive all groups from  DB
         AllGroupsInDB = AppDatabase.getDatabaseInstance(this).getGroupDao().getAllGroups();
+        Collections.sort(AllGroupsInDB, new Comparator<Groups>() {
+            public int compare(Groups v1, Groups v2) {
+                return v1.getGroupName().compareTo(v2.getGroupName());
+            }
+        });
 
         // Populate Village Spinner
         villageList = AppDatabase.getDatabaseInstance(this).getVillageDao().getAllVillages();
+        Collections.sort(villageList, new Comparator<Village>() {
+            public int compare(Village v1, Village v2) {
+                return v1.getVillageName().compareTo(v2.getVillageName());
+            }
+        });
         populateVillages();
 
         // Create the recyclerview.
@@ -348,12 +359,27 @@ public class CourseCompletionForm extends AppCompatActivity implements DashRVCli
         btn_DatePicker.setPadding(8, 8, 8, 8);
         btn_DatePickerTwo.setText(new Utility().GetCurrentDate().toString());
         btn_DatePickerTwo.setPadding(8, 8, 8, 8);
-        AllGroupsInDB = AppDatabase.getDatabaseInstance(this).getGroupDao().getAllGroups();
-        villageList = AppDatabase.getDatabaseInstance(this).getVillageDao().getAllVillages();
         edt_ParentCount.getText().clear();
-        populateVillages();
         rg_Event.clearCheck();
         rb_Yes.setChecked(true);
+        //retrive all groups from  DB
+        AllGroupsInDB.clear();
+        AllGroupsInDB = AppDatabase.getDatabaseInstance(this).getGroupDao().getAllGroups();
+        Collections.sort(AllGroupsInDB, new Comparator<Groups>() {
+            public int compare(Groups v1, Groups v2) {
+                return v1.getGroupName().compareTo(v2.getGroupName());
+            }
+        });
+
+        // Populate Village Spinner
+        villageList.clear();
+        villageList = AppDatabase.getDatabaseInstance(this).getVillageDao().getAllVillages();
+        Collections.sort(villageList, new Comparator<Village>() {
+            public int compare(Village v1, Village v2) {
+                return v1.getVillageName().compareTo(v2.getVillageName());
+            }
+        });
+        populateVillages();
     }
 
     @OnClick(R.id.btn_DatePicker)

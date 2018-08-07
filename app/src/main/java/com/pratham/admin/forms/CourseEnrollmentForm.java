@@ -43,6 +43,8 @@ import com.pratham.admin.util.Utility;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -142,17 +144,37 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
 
         //retrive all groups from  DB
         AllGroupsInDB = AppDatabase.getDatabaseInstance(this).getGroupDao().getAllGroups();
+        Collections.sort(AllGroupsInDB, new Comparator<Groups>() {
+            public int compare(Groups v1, Groups v2) {
+                return v1.getGroupName().compareTo(v2.getGroupName());
+            }
+        });
 
         // Populate Village Spinner
         villageList = AppDatabase.getDatabaseInstance(this).getVillageDao().getAllVillages();
+        Collections.sort(villageList, new Comparator<Village>() {
+            public int compare(Village v1, Village v2) {
+                return v1.getVillageName().compareTo(v2.getVillageName());
+            }
+        });
         populateVillages();
 
         // Populate Science Course Spinner
         courseList = AppDatabase.getDatabaseInstance(this).getCoursesDao().getAllCourse();
+        Collections.sort(courseList, new Comparator<Course>() {
+            public int compare(Course v1, Course v2) {
+                return v1.getCourseName().compareTo(v2.getCourseName());
+            }
+        });
         populateCourses();
 
         // Populate Coach Spinner
         coachList = AppDatabase.getDatabaseInstance(this).getCoachDao().getAllCoaches();
+        Collections.sort(coachList, new Comparator<Coach>() {
+            public int compare(Coach v1, Coach v2) {
+                return v1.getCoachName().compareTo(v2.getCoachName());
+            }
+        });
         populateCoaches();
 
     }
@@ -332,9 +354,44 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
 
     private void resetForm() {
         btn_Submit.setText("Preview");
+        //retrive all groups from  DB
+        AllGroupsInDB.clear();
+        AllGroupsInDB = AppDatabase.getDatabaseInstance(this).getGroupDao().getAllGroups();
+        Collections.sort(AllGroupsInDB, new Comparator<Groups>() {
+            public int compare(Groups v1, Groups v2) {
+                return v1.getGroupName().compareTo(v2.getGroupName());
+            }
+        });
+
+        // Populate Village Spinner
+        villageList.clear();
+        villageList = AppDatabase.getDatabaseInstance(this).getVillageDao().getAllVillages();
+        Collections.sort(villageList, new Comparator<Village>() {
+            public int compare(Village v1, Village v2) {
+                return v1.getVillageName().compareTo(v2.getVillageName());
+            }
+        });
         populateVillages();
-        populateCoaches();
+
+        // Populate Science Course Spinner
+        courseList.clear();
+        courseList = AppDatabase.getDatabaseInstance(this).getCoursesDao().getAllCourse();
+        Collections.sort(courseList, new Comparator<Course>() {
+            public int compare(Course v1, Course v2) {
+                return v1.getCourseName().compareTo(v2.getCourseName());
+            }
+        });
         populateCourses();
+
+        // Populate Coach Spinner
+        coachList.clear();
+        coachList = AppDatabase.getDatabaseInstance(this).getCoachDao().getAllCoaches();
+        Collections.sort(coachList, new Comparator<Coach>() {
+            public int compare(Coach v1, Coach v2) {
+                return v1.getCoachName().compareTo(v2.getCoachName());
+            }
+        });
+        populateCoaches();
         rg_Community.clearCheck();
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
         btn_DatePicker.setPadding(8, 8, 8, 8);

@@ -35,6 +35,7 @@ import com.pratham.admin.util.Utility;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -81,10 +82,20 @@ public class CoachRetentionForm extends AppCompatActivity implements ConnectionR
 
         // Populate Village Spinner
         villageList = AppDatabase.getDatabaseInstance(this).getVillageDao().getAllVillages();
+        Collections.sort(villageList, new Comparator<Village>() {
+            public int compare(Village v1, Village v2) {
+                return v1.getVillageName().compareTo(v2.getVillageName());
+            }
+        });
         populateVillages();
 
         // Populate Coach Spinner
         coachList = AppDatabase.getDatabaseInstance(this).getCoachDao().getAllCoaches();
+        Collections.sort(coachList, new Comparator<Coach>() {
+            public int compare(Coach v1, Coach v2) {
+                return v1.getCoachName().compareTo(v2.getCoachName());
+            }
+        });
         populateCoaches();
 
     }
@@ -222,8 +233,26 @@ public class CoachRetentionForm extends AppCompatActivity implements ConnectionR
 
     private void resetForm() {
         btn_Submit.setText("Preview");
+        // Populate Village Spinner
+        villageList.clear();
+        villageList = AppDatabase.getDatabaseInstance(this).getVillageDao().getAllVillages();
+        Collections.sort(villageList, new Comparator<Village>() {
+            public int compare(Village v1, Village v2) {
+                return v1.getVillageName().compareTo(v2.getVillageName());
+            }
+        });
         populateVillages();
+
+        // Populate Coach Spinner
+        coachList.clear();
+        coachList = AppDatabase.getDatabaseInstance(this).getCoachDao().getAllCoaches();
+        Collections.sort(coachList, new Comparator<Coach>() {
+            public int compare(Coach v1, Coach v2) {
+                return v1.getCoachName().compareTo(v2.getCoachName());
+            }
+        });
         populateCoaches();
+
         rg_DropOut.clearCheck();
         rb_Yes.setChecked(true);
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());

@@ -39,6 +39,7 @@ import com.pratham.admin.util.Utility;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -103,15 +104,29 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
         // Generate Random UUID
         uniqueAttendanceID = UUID.randomUUID().toString();
 
-
         //retrive all groups from  DB
         AllGroupsInDB = AppDatabase.getDatabaseInstance(this).getGroupDao().getAllGroups();
+        Collections.sort(AllGroupsInDB, new Comparator<Groups>() {
+            public int compare(Groups v1, Groups v2) {
+                return v1.getGroupName().compareTo(v2.getGroupName());
+            }
+        });
 
         // Populate Initial Std Spinner
         AllStudentsInDB = AppDatabase.getDatabaseInstance(this).getStudentDao().getAllStudents();
+        Collections.sort(AllStudentsInDB, new Comparator<Student>() {
+            public int compare(Student v1, Student v2) {
+                return v1.getFullName().compareTo(v2.getFullName());
+            }
+        });
 
         // Populate Village Spinner
         villageList = AppDatabase.getDatabaseInstance(this).getVillageDao().getAllVillages();
+        Collections.sort(villageList, new Comparator<Village>() {
+            public int compare(Village v1, Village v2) {
+                return v1.getVillageName().compareTo(v2.getVillageName());
+            }
+        });
         populateVillages();
 
         // Set Default Todays date
@@ -243,7 +258,34 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
 
     private void resetForm() {
         btn_Submit.setText("Preview");
+        //retrive all groups from  DB
+        AllGroupsInDB.clear();
+        AllGroupsInDB = AppDatabase.getDatabaseInstance(this).getGroupDao().getAllGroups();
+        Collections.sort(AllGroupsInDB, new Comparator<Groups>() {
+            public int compare(Groups v1, Groups v2) {
+                return v1.getGroupName().compareTo(v2.getGroupName());
+            }
+        });
+
+        // Populate Initial Std Spinner
+        AllStudentsInDB.clear();
+        AllStudentsInDB = AppDatabase.getDatabaseInstance(this).getStudentDao().getAllStudents();
+        Collections.sort(AllStudentsInDB, new Comparator<Student>() {
+            public int compare(Student v1, Student v2) {
+                return v1.getFullName().compareTo(v2.getFullName());
+            }
+        });
+
+        // Populate Village Spinner
+        villageList.clear();
+        villageList = AppDatabase.getDatabaseInstance(this).getVillageDao().getAllVillages();
+        Collections.sort(villageList, new Comparator<Village>() {
+            public int compare(Village v1, Village v2) {
+                return v1.getVillageName().compareTo(v2.getVillageName());
+            }
+        });
         populateVillages();
+
         rg_Present.clearCheck();
         rb_Yes.setChecked(true);
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
