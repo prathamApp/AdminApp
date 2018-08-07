@@ -1,7 +1,6 @@
 package com.pratham.admin.modalclasses;
 
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -35,6 +34,10 @@ public class CRLVisit {
     public String Village;
     @SerializedName("Group")
     public String Group;
+    @SerializedName("StartTime")
+    public String StartTime;
+    @SerializedName("EndTime")
+    public String EndTime;
     @SerializedName("sentFlag")
     public int sentFlag;
 
@@ -52,6 +55,8 @@ public class CRLVisit {
                 ", PresentStudents='" + PresentStudents + '\'' +
                 ", Village='" + Village + '\'' +
                 ", Group='" + Group + '\'' +
+                ", StartTime='" + StartTime + '\'' +
+                ", EndTime='" + EndTime + '\'' +
                 ", sentFlag=" + sentFlag +
                 '}';
     }
@@ -143,6 +148,22 @@ public class CRLVisit {
 
     public void setGroup(String group) {
         Group = group;
+    }
+
+    public String getStartTime() {
+        return StartTime;
+    }
+
+    public void setStartTime(String startTime) {
+        StartTime = startTime;
+    }
+
+    public String getEndTime() {
+        return EndTime;
+    }
+
+    public void setEndTime(String endTime) {
+        EndTime = endTime;
     }
 
     public int getSentFlag() {

@@ -100,7 +100,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:visibility="gone" />
+
+            <!--Present Students Count-->
+            <EditText
+                android:id="@+id/edt_PresentStdCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:digits="0123456789"
+                android:hint="no of students present"
+                android:inputType="number"
+                android:maxLength="2"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
+
 
         </LinearLayout>
 
@@ -125,20 +142,19 @@
                 android:textColor="#FFFFFF"
                 android:textSize="18sp" />
 
-
-            <!--Present Students Count-->
-            <EditText
-                android:id="@+id/edt_PresentStdCount"
+            <!--Time Range Picker-->
+            <Button
+                android:id="@+id/btn_TimeRangePicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:layout_weight="1"
-                android:digits="0123456789"
-                android:hint="no of students present"
-                android:inputType="number"
-                android:maxLength="2"
-                android:singleLine="true"
-                android:textColor="@color/colorPrimary"
+                android:background="@color/colorPrimaryDark"
+                android:drawableLeft="@android:drawable/ic_menu_my_calendar"
+                android:paddingLeft="16dp"
+                android:text="Select Time"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
                 android:textSize="18sp" />
 
         </LinearLayout>

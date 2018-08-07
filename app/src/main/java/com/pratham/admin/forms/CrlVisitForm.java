@@ -2,6 +2,7 @@ package com.pratham.admin.forms;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -20,6 +21,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
+import com.mcsoft.timerangepickerdialog.RangeTimePickerDialog;
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.custom.MultiSpinner;
@@ -36,6 +38,7 @@ import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.Utility;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -47,12 +50,16 @@ import butterknife.OnClick;
 
 import static com.pratham.admin.util.APIs.PushForms;
 
-public class CrlVisitForm extends AppCompatActivity implements ConnectionReceiverListener {
+public class CrlVisitForm extends AppCompatActivity implements ConnectionReceiverListener, RangeTimePickerDialog.ISelectedTime {
+
+    // ref : https://android-arsenal.com/details/1/6776
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;
     @BindView(R.id.btn_DatePicker)
     Button btn_DatePicker;
+    @BindView(R.id.btn_TimeRangePicker)
+    Button btn_TimeRangePicker;
     @BindView(R.id.sp_VisitedGroups_multiselect)
     MultiSpinner sp_VisitedGroups_multiselect;
     @BindView(R.id.sp_PresentCoaches_multiselect)
@@ -117,6 +124,8 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
     String uniqueVisitID = "";
     String vid;
     private String vName = "";
+    private String startTime = "";
+    private String endTime = "";
 
 
     @Override
@@ -170,7 +179,7 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
     public void submitForm(View view) {
         if ((sp_Village.getSelectedItemPosition() > 0) && (selectedVG.trim().length() > 0)
                 && (selectedGWTG.trim().length() > 0) && (selectedWCCG.trim().length() > 0)
-                && (selectedPC.trim().length() > 0) && (selectedPCWG.trim().length() > 0)
+                && (selectedPC.trim().length() > 0) && (btn_TimeRangePicker.getText().toString().equalsIgnoreCase("Select Time"))
                 && (edt_PresentStdCount.getText().toString().trim().length() > 0)) {
             try {
 
@@ -185,12 +194,14 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
                 cvObj.DateVisited = date;
                 cvObj.GroupIDVisited = selectedVG;
                 cvObj.CoachPresentInVillage = selectedPC;
-                cvObj.CoachPresentWithGroup = selectedPCWG;
+                cvObj.CoachPresentWithGroup = ""; // Skipped Aug 07
                 cvObj.PresentGroupIDs = selectedGWTG; // Select group with their grp = present grp id
                 cvObj.WorkCrosscheckedGroupIDs = selectedWCCG;
                 cvObj.PresentStudents = edt_PresentStdCount.getText().toString().trim();
                 cvObj.Village = vName;
                 cvObj.Group = "";
+                cvObj.StartTime = startTime;
+                cvObj.EndTime = endTime;
                 cvObj.sentFlag = 0;
 
                 if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
@@ -304,6 +315,7 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
 
     private void resetForm() {
         checkConnection();
+        btn_TimeRangePicker.setText("Select Time");
         btn_Submit.setText("Preview");
         populateVillages();
         populatePresentCoaches();
@@ -318,6 +330,51 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
         btn_Submit.setText("Preview");
         DialogFragment newFragment = new DatePickerFragmentOne();
         newFragment.show(getFragmentManager(), "DatePicker");
+    }
+
+    @OnClick(R.id.btn_TimeRangePicker)
+    public void TimeRangePicker(View view) {
+        btn_Submit.setText("Preview");
+        // Create an instance of the dialog fragment and show it
+        RangeTimePickerDialog dialog = new RangeTimePickerDialog();
+        dialog.newInstance();
+        dialog.setIs24HourView(false);
+        dialog.setRadiusDialog(16);
+        dialog.setTextTabStart("Start");
+        dialog.setTextTabEnd("End");
+        dialog.setTextBtnPositive("Accept");
+        dialog.setTextBtnNegative("Close");
+        dialog.setValidateRange(true);
+        dialog.setColorBackgroundHeader(R.color.colorPrimary); // top header background
+        dialog.setColorBackgroundTimePickerHeader(R.color.colorPrimary); // Digital Time Backgrounds
+        dialog.setColorTextButton(R.color.colorPrimaryDark);
+        FragmentManager fragmentManager = getFragmentManager();
+        dialog.show(fragmentManager, "");
+    }
+
+    @Override
+    public void onSelectedTime(int hourStart, int minuteStart, int hourEnd, int minuteEnd) {
+        startTime = hourStart + ":" + minuteStart;
+        endTime = hourEnd + ":" + minuteEnd;
+
+        String sT = startTime;
+        String eT = endTime;
+        DateFormat df = new SimpleDateFormat("HH:mm");
+        DateFormat outputformat = new SimpleDateFormat("hh:mm a");
+        Date sdate = null;
+        Date edate = null;
+        String startoutput = null;
+        String endoutput = null;
+        try {
+            sdate = df.parse(sT);
+            startoutput = outputformat.format(sdate);
+            edate = df.parse(eT);
+            endoutput = outputformat.format(edate);
+            btn_TimeRangePicker.setText("From : " + startoutput + " | " + "\tTo : " + endoutput);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -508,7 +565,7 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
         sp_PresentCoaches_multiselect.setAdapter(coachAdapter, false, onPCSelectedListener);
         // set initial selection
         selectedPCItems = new boolean[coachAdapter.getCount()];
-        sp_PresentCoaches_multiselect.setHint("Select the coaches who were helping their groups");
+        sp_PresentCoaches_multiselect.setHint("Select the coaches who were helping their group at their allotted time");
         sp_PresentCoaches_multiselect.setHintTextColor(Color.BLACK);
 
     }

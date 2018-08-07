@@ -53,4 +53,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    // Time Range Picker
+    implementation 'com.github.PuffoCyano:Range-Time-Picker-Dialog:v1.5'
 }
