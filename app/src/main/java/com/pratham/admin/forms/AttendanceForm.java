@@ -55,7 +55,7 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
     @BindView(R.id.sp_Village)
     Spinner sp_Village;
     @BindView(R.id.sp_Groups)
-    Spinner sp_Groups;
+    MultiSpinner sp_Groups;
     @BindView(R.id.sp_Students)
     MultiSpinner sp_Students;
     @BindView(R.id.btn_Submit)
@@ -88,6 +88,17 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
     String date;
     private String vName;
     private String groupName;
+
+
+    // Selected Groups
+    List<String> selectedGroupsArray;
+    List<String> selectedGroupsNamesArray;
+    List registeredGroups;
+    private boolean[] selectedGroupItems;
+    List<String> Grps = new ArrayList<>();
+    List<String> GrpsNames = new ArrayList<>();
+    String selectedGroups = "";
+    String selectedGroupNames = "";
 
 
     @Override
@@ -137,7 +148,7 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
 
     @OnClick(R.id.btn_Submit)
     public void saveForm(View view) {
-        if ((sp_Village.getSelectedItemPosition() > 0) && (sp_Groups.getSelectedItemPosition() > 0)
+        if ((sp_Village.getSelectedItemPosition() > 0) && (selectedGroups.trim().length() > 0)
                 && (selectedStudents.trim().length() > 0)) {
 
             try {
@@ -160,7 +171,8 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
                 Attendance aObj = new Attendance();
                 aObj.AttendanceID = uniqueAttendanceID;
                 aObj.VillageID = vid;
-                aObj.GroupID = groupId;
+//                aObj.GroupID = groupId;
+                aObj.GroupID = selectedGroups;
                 aObj.StudentID = selectedStudents;
                 aObj.Date = date;
                 aObj.Present = presentStatus;
@@ -363,7 +375,58 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
         });
     }
 
+    // VISITED GROUPS
     private void populateRegisteredGroups(String villageID) {
+        // todo get registered grps
+        registeredGroups = new ArrayList();
+        if (AllGroupsInDB != null) {
+            Grps = new ArrayList<>();
+            GrpsNames = new ArrayList<>();
+            for (int i = 0; i < AllGroupsInDB.size(); i++) {
+                if (AllGroupsInDB.get(i).getVillageId().equals(villageID)) {
+                    registeredGroups.add(new CustomGroup(AllGroupsInDB.get(i).getGroupName(), AllGroupsInDB.get(i).getGroupId()));
+                    Grps.add(AllGroupsInDB.get(i).getGroupId());
+                    GrpsNames.add(AllGroupsInDB.get(i).getGroupName());
+                }
+            }
+        }
+
+        ArrayAdapter grpAdapter = new ArrayAdapter(AttendanceForm.this, android.R.layout.simple_spinner_dropdown_item, registeredGroups);
+        sp_Groups.setAdapter(grpAdapter, false, onVGSelectedListener);
+        // set initial selection
+        selectedGroupItems = new boolean[grpAdapter.getCount()];
+        sp_Groups.setHint("Select Groups");
+        sp_Groups.setHintTextColor(Color.BLACK);
+
+    }
+
+    // VG Listener
+    private MultiSpinner.MultiSpinnerListener onVGSelectedListener = new MultiSpinner.MultiSpinnerListener() {
+        public void onItemsSelected(boolean[] selected) {
+            // Do something here with the selected items
+            selectedGroupsArray = new ArrayList<>();
+            selectedGroupsNamesArray = new ArrayList<>();
+            selectedGroups = "";
+            selectedGroupNames = "";
+            for (int i = 0; i < selected.length; i++) {
+                if (selected[i]) {
+                    selectedGroupsArray.add(Grps.get(i));
+                    selectedGroupsNamesArray.add(GrpsNames.get(i));
+                    selectedGroups = selectedGroups + "," + Grps.get(i);
+                    selectedGroupNames = selectedGroupNames + "," + GrpsNames.get(i);
+                }
+            }
+            selectedGroups = selectedGroups.replaceFirst(",", "");
+            selectedGroupNames = selectedGroupNames.replaceFirst(",", "");
+            Toast.makeText(AttendanceForm.this, "" + selectedGroups + "\n" + selectedGroupNames, Toast.LENGTH_SHORT).show();
+
+            populateStudents(selectedGroupsArray, selectedGroupsNamesArray);
+
+        }
+    };
+
+
+    /*private void populateRegisteredGroups(String villageID) {
         // todo get registered grps
         registeredGRPs = new ArrayList();
         registeredGRPs.add(new CustomGroup("Select Groups"));
@@ -393,13 +456,25 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
 
             }
         });
-    }
+    }*/
 
 
     // Selected Students
-    private void populateStudents(String grpID) {
+    private void populateStudents(final List<String> selectedgrpID, final List<String> selectedgrpName) {
         // todo get registered grps
         registeredStd = new ArrayList();
+
+        for (int i = 0; i < AllStudentsInDB.size(); i++) {
+            for (int j = 0; j < selectedgrpID.size(); j++) {
+                if (AllStudentsInDB.get(i).getGroupId().equalsIgnoreCase(selectedgrpID.get(j))) {
+                    registeredStd.add(AllStudentsInDB.get(i).getFullName() + " (" + AllStudentsInDB.get(i).getGroupName() + " )");
+                    Stds.add(new CustomGroup(AllStudentsInDB.get(i).getStudentId()));
+                    StdNames.add(new CustomGroup(AllStudentsInDB.get(i).getFullName()));
+                }
+            }
+        }
+
+/*
         if (!AllStudentsInDB.isEmpty()) {
             for (int j = 0; j < AllStudentsInDB.size(); j++) {
                 if (AllStudentsInDB.get(j).getGroupId().equals(grpID)) {
@@ -408,15 +483,16 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
                     StdNames.add(new CustomGroup(AllStudentsInDB.get(j).getFullName()));
                 }
             }
+*/
 
-            ArrayAdapter StdAdapter = new ArrayAdapter(AttendanceForm.this, android.R.layout.simple_spinner_dropdown_item, registeredStd);
-            sp_Students.setAdapter(StdAdapter, false, onStdSelectedListener);
-            selectedStdItems = new boolean[StdAdapter.getCount()];
-            sp_Students.setHint("Select Students");
-            sp_Students.setHintTextColor(Color.BLACK);
+        ArrayAdapter StdAdapter = new ArrayAdapter(AttendanceForm.this, android.R.layout.simple_spinner_dropdown_item, registeredStd);
+        sp_Students.setAdapter(StdAdapter, false, onStdSelectedListener);
+        selectedStdItems = new boolean[StdAdapter.getCount()];
+        sp_Students.setHint("Select Students");
+        sp_Students.setHintTextColor(Color.BLACK);
 
-        }
     }
+
 
     // Std Listener
     private MultiSpinner.MultiSpinnerListener onStdSelectedListener = new MultiSpinner.MultiSpinnerListener() {
@@ -433,6 +509,7 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
             }
             selectedStudents = selectedStudents.replaceFirst(",", "");
             selectedStudentNames = selectedStudentNames.replaceFirst(",", "");
+            Toast.makeText(AttendanceForm.this, "" + selectedStudents + "\n" + selectedStudentNames, Toast.LENGTH_SHORT).show();
         }
     };
 
