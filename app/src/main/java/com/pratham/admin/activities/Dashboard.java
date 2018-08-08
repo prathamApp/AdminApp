@@ -26,7 +26,6 @@ import com.pratham.admin.modalclasses.CRLVisit;
 import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Completion;
-import com.pratham.admin.modalclasses.Course;
 import com.pratham.admin.modalclasses.DashboardItem;
 import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.util.ConnectionReceiver;
@@ -147,8 +146,8 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
         communitiesObj = AppDatabase.getDatabaseInstance(this).getCommunityDao().getNewCommunities(0);
         List<Completion> completionsObj = new ArrayList<>();
         completionsObj = AppDatabase.getDatabaseInstance(this).getCompletionDao().getNewCompletions(0);
-        List<Course> coursesObj = new ArrayList<>();
-        coursesObj = AppDatabase.getDatabaseInstance(this).getCoursesDao().getNewCourses(0);
+//        List<Course> coursesObj = new ArrayList<>();
+//        coursesObj = AppDatabase.getDatabaseInstance(this).getCoursesDao().getNewCourses(0);
         List<CRLVisit> CRLVisitObj = new ArrayList<>();
         CRLVisitObj = AppDatabase.getDatabaseInstance(this).getCRLVisitdao().getNewCRLVisits(0);
 
@@ -168,7 +167,6 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
                         + ",\"CoachesJSON\":" + "" + gson.toJson(coachesObj).toString()
                         + ",\"CommunitiesJSON\":" + "" + gson.toJson(communitiesObj).toString()
                         + ",\"CompletionsJSON\":" + "" + gson.toJson(completionsObj).toString()
-                        + ",\"CoursesJSON\":" + "" + gson.toJson(coursesObj).toString()
                         + ",\"CRLVisitsJSON\":" + "" + gson.toJson(CRLVisitObj).toString()
                         + ",\"metadata\":" + "" + metaDataJSON
                         + "}";
@@ -183,7 +181,7 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
 
                 if ((aObj.size() == 0) && (coachesObj.size() == 0)
                         && (communitiesObj.size() == 0) && (completionsObj.size() == 0)
-                        && (coursesObj.size() == 0) && (CRLVisitObj.size() == 0)) {
+                        && (CRLVisitObj.size() == 0)) {
                     // No Data Available
                     dialog.dismiss();
                     Log.d("json not pushed:::", json);
