@@ -60,6 +60,10 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
     MultiSpinner sp_Students;
     @BindView(R.id.btn_Submit)
     Button btn_Submit;
+    @BindView(R.id.btn_SelectAll)
+    Button btn_SelectAll;
+    @BindView(R.id.btn_DeselectAll)
+    Button btn_DeselectAll;
     @BindView(R.id.btn_DatePicker)
     Button btn_DatePicker;
     @BindView(R.id.rg_Present)
@@ -87,8 +91,6 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
     String groupId;
     String date;
     private String vName;
-    private String groupName;
-
 
     // Selected Groups
     List<String> selectedGroupsArray;
@@ -187,7 +189,7 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
                     try {
                         if (internetIsAvailable) {
                             Gson gson = new Gson();
-                            String AttendanceJSON = gson.toJson(Collections.singletonList(aObj));
+                            String AttendanceJSON = gson.toJson(aObj);
 
                             MetaData metaData = new MetaData();
                             metaData.setKeys("pushDataTime");
@@ -239,7 +241,7 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
                     dialogBuilder.setTitle("Form Data Preview");
 
                     dialogBuilder.setMessage("Village Name : " + vName
-                            + "\nGroup Name : " + groupName
+                            + "\nGroup Name : " + selectedGroupNames
                             + "\nSelected Students : " + selectedStudentNames
                             + "\nDate : " + date
                             + "\nPresent : " + present);
@@ -269,6 +271,8 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
     }
 
     private void resetForm() {
+        btn_SelectAll.setVisibility(View.GONE);
+        btn_DeselectAll.setVisibility(View.GONE);
         btn_Submit.setText("Preview");
         //retrive all groups from  DB
         AllGroupsInDB.clear();
@@ -345,6 +349,26 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
         newFragment.show(getFragmentManager(), "DatePicker");
     }
 
+    @OnClick(R.id.btn_SelectAll)
+    public void selectAll(View view) {
+        ArrayAdapter StdAdapter = new ArrayAdapter(AttendanceForm.this, android.R.layout.simple_spinner_dropdown_item, registeredStd);
+        sp_Students.setAdapter(StdAdapter, true, onStdSelectedListener);
+        selectedStdItems = new boolean[StdAdapter.getCount()];
+        sp_Students.setHint("Select Students");
+        sp_Students.setHintTextColor(Color.BLACK);
+        sp_Students.performClick();
+    }
+
+    @OnClick(R.id.btn_DeselectAll)
+    public void deselectAll(View view) {
+        ArrayAdapter StdAdapter = new ArrayAdapter(AttendanceForm.this, android.R.layout.simple_spinner_dropdown_item, registeredStd);
+        sp_Students.setAdapter(StdAdapter, false, onStdSelectedListener);
+        selectedStdItems = new boolean[StdAdapter.getCount()];
+        sp_Students.setHint("Select Students");
+        sp_Students.setHintTextColor(Color.BLACK);
+        sp_Students.performClick();
+    }
+
     private void populateVillages() {
 
         final List VillageName = new ArrayList();
@@ -356,6 +380,10 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
             }
             ArrayAdapter villageAdapter = new ArrayAdapter(AttendanceForm.this, android.R.layout.simple_spinner_dropdown_item, VillageName);
             sp_Village.setAdapter(villageAdapter);
+
+            btn_SelectAll.setVisibility(View.GONE);
+            btn_DeselectAll.setVisibility(View.GONE);
+
         }
 
         sp_Village.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -397,12 +425,15 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
         selectedGroupItems = new boolean[grpAdapter.getCount()];
         sp_Groups.setHint("Select Groups");
         sp_Groups.setHintTextColor(Color.BLACK);
+        btn_SelectAll.setVisibility(View.GONE);
+        btn_DeselectAll.setVisibility(View.GONE);
 
     }
 
     // VG Listener
     private MultiSpinner.MultiSpinnerListener onVGSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
+
             // Do something here with the selected items
             selectedGroupsArray = new ArrayList<>();
             selectedGroupsNamesArray = new ArrayList<>();
@@ -418,7 +449,6 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
             }
             selectedGroups = selectedGroups.replaceFirst(",", "");
             selectedGroupNames = selectedGroupNames.replaceFirst(",", "");
-            Toast.makeText(AttendanceForm.this, "" + selectedGroups + "\n" + selectedGroupNames, Toast.LENGTH_SHORT).show();
 
             populateStudents(selectedGroupsArray, selectedGroupsNamesArray);
 
@@ -474,23 +504,14 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
             }
         }
 
-/*
-        if (!AllStudentsInDB.isEmpty()) {
-            for (int j = 0; j < AllStudentsInDB.size(); j++) {
-                if (AllStudentsInDB.get(j).getGroupId().equals(grpID)) {
-                    registeredStd.add(new CustomGroup(AllStudentsInDB.get(j).getFullName(), AllStudentsInDB.get(j).getStudentId()));
-                    Stds.add(new CustomGroup(AllStudentsInDB.get(j).getStudentId()));
-                    StdNames.add(new CustomGroup(AllStudentsInDB.get(j).getFullName()));
-                }
-            }
-*/
-
         ArrayAdapter StdAdapter = new ArrayAdapter(AttendanceForm.this, android.R.layout.simple_spinner_dropdown_item, registeredStd);
         sp_Students.setAdapter(StdAdapter, false, onStdSelectedListener);
         selectedStdItems = new boolean[StdAdapter.getCount()];
         sp_Students.setHint("Select Students");
         sp_Students.setHintTextColor(Color.BLACK);
-
+        // show select/ deselect all button
+        btn_SelectAll.setVisibility(View.VISIBLE);
+        btn_DeselectAll.setVisibility(View.VISIBLE);
     }
 
 
@@ -509,7 +530,6 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
             }
             selectedStudents = selectedStudents.replaceFirst(",", "");
             selectedStudentNames = selectedStudentNames.replaceFirst(",", "");
-            Toast.makeText(AttendanceForm.this, "" + selectedStudents + "\n" + selectedStudentNames, Toast.LENGTH_SHORT).show();
         }
     };
 

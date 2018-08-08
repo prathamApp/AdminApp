@@ -34,7 +34,6 @@ import com.pratham.admin.util.DashRVTouchListener;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -158,26 +157,6 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
             if (internetIsAvailable) {
                 Gson gson = new Gson();
 
-                String AttendanceJSON = "";
-                String CoachesJSON = "";
-                String CommunitiesJSON = "";
-                String CompletionsJSON = "";
-                String CoursesJSON = "";
-                String CRLVisitsJSON = "";
-
-                if (aObj.size() > 0)
-                    AttendanceJSON = gson.toJson(Collections.singletonList(aObj));
-                if (coachesObj.size() > 0)
-                    CoachesJSON = gson.toJson(Collections.singletonList(coachesObj));
-                if (communitiesObj.size() > 0)
-                    CommunitiesJSON = gson.toJson(Collections.singletonList(communitiesObj));
-                if (completionsObj.size() > 0)
-                    CompletionsJSON = gson.toJson(Collections.singletonList(completionsObj));
-                if (coursesObj.size() > 0)
-                    CoursesJSON = gson.toJson(Collections.singletonList(coursesObj));
-                if (CRLVisitObj.size() > 0)
-                    CRLVisitsJSON = gson.toJson(Collections.singletonList(CRLVisitObj));
-
                 MetaData metaData = new MetaData();
                 metaData.setKeys("pushDataTime");
                 metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
@@ -185,16 +164,16 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
                 String metaDataJSON = customParse(metaDataList);
                 AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
 
-                String json = "{ \"AttendanceJSON\":" + "" + AttendanceJSON
-                        + ",\"CoachesJSON\":" + "" + CoachesJSON
-                        + ",\"CommunitiesJSON\":" + "" + CommunitiesJSON
-                        + ",\"CompletionsJSON\":" + "" + CompletionsJSON
-                        + ",\"CoursesJSON\":" + "" + CoursesJSON
-                        + ",\"CRLVisitsJSON\":" + "" + CRLVisitsJSON
+                String json = "{ \"AttendanceJSON\":" + "" + gson.toJson(aObj).toString()
+                        + ",\"CoachesJSON\":" + "" + gson.toJson(coachesObj).toString()
+                        + ",\"CommunitiesJSON\":" + "" + gson.toJson(communitiesObj).toString()
+                        + ",\"CompletionsJSON\":" + "" + gson.toJson(completionsObj).toString()
+                        + ",\"CoursesJSON\":" + "" + gson.toJson(coursesObj).toString()
+                        + ",\"CRLVisitsJSON\":" + "" + gson.toJson(CRLVisitObj).toString()
                         + ",\"metadata\":" + "" + metaDataJSON
                         + "}";
 
-                Log.d("json :::", json);
+                Log.d("json all push :::", json);
 
                 final ProgressDialog dialog = new ProgressDialog(this);
                 dialog.setTitle("UPLOADING ... ");

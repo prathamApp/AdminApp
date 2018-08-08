@@ -195,7 +195,7 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
     public void submitForm(View view) {
         if ((sp_Village.getSelectedItemPosition() > 0) && (selectedVG.trim().length() > 0)
                 && (selectedGWTG.trim().length() > 0) && (selectedWCCG.trim().length() > 0)
-                && (selectedPC.trim().length() > 0) && (btn_TimeRangePicker.getText().toString().equalsIgnoreCase("Select Time"))
+                && (selectedPC.trim().length() > 0) && (!btn_TimeRangePicker.getText().toString().equalsIgnoreCase("Select Time"))
                 && (edt_PresentStdCount.getText().toString().trim().length() > 0)) {
             try {
 
@@ -287,8 +287,8 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
                             + "\nVisited Groups : " + selectedVGNames
                             + "\nGroups which were studying at their Allotted time : " + selectedGWTGNames
                             + "\nGroups whose work was crosschecked by Coach : " + selectedWCCGNames
-                            + "\nCoaches who were helping their Groups : " + selectedPCNames
-                            + "\nCoach with their Group : " + selectedPCWGNames);
+                            + "\nCoaches who were helping their Groups : " + selectedPCNames);
+//                            + "\nCoach with their Group : " + selectedPCWGNames);
 
                     dialogBuilder.setPositiveButton("Correct", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
