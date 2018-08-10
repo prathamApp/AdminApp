@@ -1,76 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:background="#FFFFFF"
-    android:gravity="center"
-    android:orientation="vertical"
-    tools:context=".forms.DeleteStudentsForm">
+    android:background="#FFFFFF">
 
-    <!--Title-->
-    <TextView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="32dp"
-        android:background="@drawable/custom_border"
-        android:fontFamily="monospace"
-        android:gravity="center"
-        android:text="Delete Students"
-        android:textColor="@color/colorAccent"
-        android:textSize="28sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        tools:context=".forms.DeleteStudentsForm">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="32dp"
-        android:background="@drawable/custom_border"
-        android:orientation="vertical">
-
-        <!--Village-->
-        <Spinner
-            android:id="@+id/sp_Village"
+        <!--Title-->
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp" />
+            android:layout_margin="32dp"
+            android:background="@drawable/custom_border"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="Delete Students"
+            android:textColor="@color/colorAccent"
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
-        <!--Groups-->
-        <Spinner
-            android:id="@+id/sp_Groups"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp" />
+            android:layout_margin="32dp"
+            android:background="@drawable/custom_border"
+            android:orientation="vertical">
 
-        <!--Students-->
-        <com.pratham.admin.custom.MultiSpinner
-            android:id="@+id/sp_Students"
+            <!--Village-->
+            <Spinner
+                android:id="@+id/sp_Village"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
+
+            <!--Groups-->
+            <Spinner
+                android:id="@+id/sp_Groups"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
+
+            <!--Students-->
+            <com.pratham.admin.custom.MultiSpinner
+                android:id="@+id/sp_Students"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:paddingLeft="8dp"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_Submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:paddingLeft="8dp"
-            android:textColor="#000000"
-            android:textSize="16sp" />
+            android:layout_marginBottom="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:background="@color/colorPrimaryDark"
+            android:text="Preview"
+            android:textAllCaps="true"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btn_Submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:background="@color/colorPrimaryDark"
-        android:text="Preview"
-        android:textAllCaps="true"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-</LinearLayout>
+</ScrollView>

@@ -1,242 +1,246 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    tools:context=".forms.CourseEnrollmentForm">
+    android:background="#FFFFFF">
 
-    <!--Title Course Enrollment -->
-    <TextView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:background="@drawable/custom_border"
-        android:fontFamily="monospace"
-        android:gravity="center"
-        android:padding="16dp"
-        android:text="Course Enrollment"
-        android:textColor="@color/colorAccent"
-        android:textSize="28sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".forms.CourseEnrollmentForm">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:background="@drawable/custom_border"
-        android:orientation="vertical">
+        <!--Title Course Enrollment -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/custom_border"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="Course Enrollment"
+            android:textColor="@color/colorAccent"
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3">
+            android:layout_margin="16dp"
+            android:background="@drawable/custom_border"
+            android:orientation="vertical">
 
-            <!--Village-->
-            <Spinner
-                android:id="@+id/sp_Village"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1"
-                android:textSize="18sp" />
-
-            <!--Select Groups-->
-            <com.pratham.admin.custom.MultiSpinner
-                android:id="@+id/sp_Groups"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1"
-                android:textSize="18sp" />
-
-            <!--Select Coach-->
-            <com.pratham.admin.custom.MultiSpinner
-                android:id="@+id/sp_SelectCoach"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1"
-                android:textSize="18sp" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <!--Select Course-->
-            <Spinner
-                android:id="@+id/sp_Course"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1"
-                android:textSize="18sp" />
-
-            <!--Select SubjectExpert Multiselect-->
-            <com.pratham.admin.custom.MultiSpinner
-                android:id="@+id/ms_sp_Topics"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1"
-                android:paddingLeft="8dp"
-                android:textColor="#000000"
-                android:textSize="16sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <!--Community-->
-            <RadioGroup
-                android:id="@+id/rg_Community"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1"
                 android:orientation="horizontal"
-                android:weightSum="4">
+                android:weightSum="3">
 
-                <TextView
+                <!--Village-->
+                <Spinner
+                    android:id="@+id/sp_Village"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
                     android:layout_weight="1"
-                    android:text="Community or School"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textSize="18sp" />
 
-                <RadioButton
-                    android:id="@+id/rb_Community"
+                <!--Select Groups-->
+                <com.pratham.admin.custom.MultiSpinner
+                    android:id="@+id/sp_Groups"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
-                    android:checked="true"
-                    android:text="Community"
-                    android:textSize="14sp" />
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp" />
 
-                <RadioButton
-                    android:id="@+id/rb_School"
+                <!--Select Coach-->
+                <com.pratham.admin.custom.MultiSpinner
+                    android:id="@+id/sp_SelectCoach"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_weight="1.5"
-                    android:text="School"
-                    android:textSize="14sp" />
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp" />
 
-            </RadioGroup>
 
-            <!--Reporting Date-->
-            <Button
-                android:id="@+id/btn_DatePicker"
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimaryDark"
-                android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-                android:paddingLeft="16dp"
-                android:text="Date"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:orientation="horizontal"
+                android:weightSum="2">
 
+                <!--Select Course-->
+                <Spinner
+                    android:id="@+id/sp_Course"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp" />
 
-        </LinearLayout>
+                <!--Select SubjectExpert Multiselect-->
+                <com.pratham.admin.custom.MultiSpinner
+                    android:id="@+id/ms_sp_Topics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:paddingLeft="8dp"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            android:weightSum="2">
+            </LinearLayout>
 
-            <!--Parents Participation-->
-            <RadioGroup
-                android:id="@+id/rg_ParentsParticipation"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <!--Community-->
+                <RadioGroup
+                    android:id="@+id/rg_Community"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Community or School"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/rb_Community"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:checked="true"
+                        android:text="Community"
+                        android:textSize="14sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_School"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_weight="1.5"
+                        android:text="School"
+                        android:textSize="14sp" />
+
+                </RadioGroup>
+
+                <!--Reporting Date-->
+                <Button
+                    android:id="@+id/btn_DatePicker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimaryDark"
+                    android:drawableLeft="@android:drawable/ic_menu_my_calendar"
+                    android:paddingLeft="16dp"
+                    android:text="Date"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:visibility="gone"
-                android:weightSum="4">
+                android:weightSum="2">
 
-                <TextView
+                <!--Parents Participation-->
+                <RadioGroup
+                    android:id="@+id/rg_ParentsParticipation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_margin="16dp"
                     android:layout_weight="1"
-                    android:text="Parents Participation"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:weightSum="4">
 
-                <RadioButton
-                    android:id="@+id/rb_Yes"
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_weight="1"
+                        android:text="Parents Participation"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/rb_Yes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_weight="1.5"
+                        android:checked="true"
+                        android:text="Yes"
+                        android:textSize="14sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_No"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_weight="1.5"
+                        android:text="No"
+                        android:textSize="14sp" />
+
+                </RadioGroup>
+
+                <!--Present Students-->
+                <EditText
+                    android:id="@+id/edt_PresentStdCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_weight="1.5"
-                    android:checked="true"
-                    android:text="Yes"
-                    android:textSize="14sp" />
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:digits="0123456789"
+                    android:hint="present students count ?"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:textAllCaps="false"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:visibility="gone" />
 
-                <RadioButton
-                    android:id="@+id/rb_No"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_weight="1.5"
-                    android:text="No"
-                    android:textSize="14sp" />
 
-            </RadioGroup>
-
-            <!--Present Students-->
-            <EditText
-                android:id="@+id/edt_PresentStdCount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1"
-                android:digits="0123456789"
-                android:hint="present students count ?"
-                android:inputType="number"
-                android:maxLength="3"
-                android:textAllCaps="false"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                android:visibility="gone" />
+            </LinearLayout>
 
 
         </LinearLayout>
 
+        <Button
+            android:id="@+id/btn_Submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@color/colorPrimaryDark"
+            android:text="Preview"
+            android:textAllCaps="true"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btn_Submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:background="@color/colorPrimaryDark"
-        android:text="Preview"
-        android:textAllCaps="true"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-</LinearLayout>
+</ScrollView>

@@ -108,6 +108,8 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
 
     boolean internetIsAvailable = false;
 
+    String selectedEdu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,6 +178,7 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
                     dialogBuilder.setView(dialogView);
                     final EditText edt = (EditText) dialogView.findViewById(R.id.edt_Others);
                     dialogBuilder.setCancelable(false);
+                    edt.setHint("e.g. Programming");
                     dialogBuilder.setTitle("Please Mention Others ");
                     dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
@@ -215,8 +218,9 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
         sp_Education.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+//                education = "";
                 btn_Submit.setText("Preview");
-                String selectedEdu = sp_Education.getSelectedItem().toString();
+                selectedEdu = sp_Education.getSelectedItem().toString();
                 if (selectedEdu.contains("Select")) {
                 } else {
                     if (selectedEdu.equalsIgnoreCase("No"))
@@ -229,9 +233,9 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
                         education = String.valueOf(10);
                     else if (selectedEdu.equalsIgnoreCase("Intermediate"))
                         education = String.valueOf(12);
-                    else if (selectedEdu.equalsIgnoreCase("Graduation"))
+                    else if (selectedEdu.equalsIgnoreCase("Graduate"))
                         education = String.valueOf(15);
-                    else if (selectedEdu.equalsIgnoreCase("Post Graduation"))
+                    else if (selectedEdu.equalsIgnoreCase("Post Graduate"))
                         education = String.valueOf(17);
                     else if (selectedEdu.equalsIgnoreCase("Others"))
                         education = String.valueOf(18);
@@ -339,6 +343,7 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
                     dialogBuilder.setView(dialogView);
                     final EditText edt = (EditText) dialogView.findViewById(R.id.edt_Others);
                     dialogBuilder.setCancelable(false);
+                    edt.setHint("e.g. Service");
                     dialogBuilder.setTitle("Please Mention Others ");
                     dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
@@ -506,7 +511,8 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
                             + "\nCoach Age : " + Integer.parseInt(edt_Age.getText().toString().trim())
                             + "\nCoach Gender : " + gender + "\nSubject Expert : " + selectedExpertSubjects
                             + "\nCoach Occupation : " + occupation + "\nCoach Speciality : " + speciality
-                            + "\nCoach Education : " + education + "\nSelected Groups : " + selectedGroupNames
+                            + "\nCoach Education : " + selectedEdu + " (" + education + ")"
+                            + "\nSelected Groups : " + selectedGroupNames
                             + "\nDate : " + date);
 
                     dialogBuilder.setPositiveButton("Correct", new DialogInterface.OnClickListener() {

@@ -1,177 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:gravity="center"
-    android:orientation="vertical"
-    tools:context=".forms.CrlVisitForm">
+    android:background="#FFFFFF">
 
-    <!--Title-->
-    <TextView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:background="@drawable/custom_border"
-        android:fontFamily="monospace"
-        android:gravity="center"
-        android:padding="16dp"
-        android:text="CRL Visit"
-        android:textColor="@color/colorAccent"
-        android:textSize="28sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        tools:context=".forms.CrlVisitForm">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/custom_border"
-        android:orientation="vertical">
+        <!--Title-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/custom_border"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="CRL Visit"
+            android:textColor="@color/colorAccent"
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/custom_border"
+            android:orientation="vertical">
 
-            <!--Village-->
-            <Spinner
-                android:id="@+id/sp_Village"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-            <!--Multi Select Groups Dynamically-->
-            <com.pratham.admin.custom.MultiSpinner
-                android:id="@+id/sp_VisitedGroups_multiselect"
+                <!--Village-->
+                <Spinner
+                    android:id="@+id/sp_Village"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18sp" />
+
+                <!--Multi Select Groups Dynamically-->
+                <com.pratham.admin.custom.MultiSpinner
+                    android:id="@+id/sp_VisitedGroups_multiselect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1" />
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <!--Multi Select Groups with correct Group  -->
+                <com.pratham.admin.custom.MultiSpinner
+                    android:id="@+id/sp_GrpWithTheirGrp_multiselect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1" />
+
+                <!--Multi Select WorkCrosscheckedGrps-->
+                <com.pratham.admin.custom.MultiSpinner
+                    android:id="@+id/sp_WorkCrosscheckedGrps_multiselect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <!--Multi Select Present Coach Dynamically-->
+                <com.pratham.admin.custom.MultiSpinner
+                    android:id="@+id/sp_PresentCoaches_multiselect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1" />
+
+                <!--Multi Select CoachesWithGrp-->
+                <com.pratham.admin.custom.MultiSpinner
+                    android:id="@+id/sp_CoachesWithGrp_multiselect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <!--Present Students Count-->
+                <EditText
+                    android:id="@+id/edt_PresentStdCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:digits="0123456789"
+                    android:hint="no of students present"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <!--Visit Date-->
+                <Button
+                    android:id="@+id/btn_DatePicker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimaryDark"
+                    android:drawableLeft="@android:drawable/ic_menu_my_calendar"
+                    android:paddingLeft="16dp"
+                    android:text="Date"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+
+                <!--Time Range Picker-->
+                <Button
+                    android:id="@+id/btn_TimeRangePicker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimaryDark"
+                    android:drawableLeft="@android:drawable/ic_menu_my_calendar"
+                    android:paddingLeft="16dp"
+                    android:text="Select Time"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
+
+        <Button
+            android:id="@+id/btn_Submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <!--Multi Select Groups with correct Group  -->
-            <com.pratham.admin.custom.MultiSpinner
-                android:id="@+id/sp_GrpWithTheirGrp_multiselect"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1" />
-
-            <!--Multi Select WorkCrosscheckedGrps-->
-            <com.pratham.admin.custom.MultiSpinner
-                android:id="@+id/sp_WorkCrosscheckedGrps_multiselect"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <!--Multi Select Present Coach Dynamically-->
-            <com.pratham.admin.custom.MultiSpinner
-                android:id="@+id/sp_PresentCoaches_multiselect"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1" />
-
-            <!--Multi Select CoachesWithGrp-->
-            <com.pratham.admin.custom.MultiSpinner
-                android:id="@+id/sp_CoachesWithGrp_multiselect"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1"
-                android:visibility="gone" />
-
-            <!--Present Students Count-->
-            <EditText
-                android:id="@+id/edt_PresentStdCount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1"
-                android:digits="0123456789"
-                android:hint="no of students present"
-                android:inputType="number"
-                android:maxLength="2"
-                android:singleLine="true"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <!--Visit Date-->
-            <Button
-                android:id="@+id/btn_DatePicker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimaryDark"
-                android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-                android:paddingLeft="16dp"
-                android:text="Date"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
-
-            <!--Time Range Picker-->
-            <Button
-                android:id="@+id/btn_TimeRangePicker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimaryDark"
-                android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-                android:paddingLeft="16dp"
-                android:text="Select Time"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
-
-        </LinearLayout>
+            android:layout_margin="16dp"
+            android:background="@color/colorPrimaryDark"
+            android:text="Preview"
+            android:textAllCaps="true"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
-
-    <Button
-        android:id="@+id/btn_Submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:background="@color/colorPrimaryDark"
-        android:text="Preview"
-        android:textAllCaps="true"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-</LinearLayout>
+</ScrollView>
