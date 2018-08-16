@@ -407,6 +407,9 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
     private void populateRegisteredGroups(String villageID) {
         // todo get registered grps
         registeredGroups = new ArrayList();
+        selectedGroups = "";
+        selectedGroupNames = "";
+
         if (AllGroupsInDB != null) {
             Grps = new ArrayList<>();
             GrpsNames = new ArrayList<>();
@@ -493,6 +496,8 @@ public class AttendanceForm extends AppCompatActivity implements ConnectionRecei
     private void populateStudents(final List<String> selectedgrpID, final List<String> selectedgrpName) {
         // todo get registered grps
         registeredStd = new ArrayList();
+        selectedStudents = "";
+        selectedStudentNames = "";
 
         for (int i = 0; i < AllStudentsInDB.size(); i++) {
             for (int j = 0; j < selectedgrpID.size(); j++) {

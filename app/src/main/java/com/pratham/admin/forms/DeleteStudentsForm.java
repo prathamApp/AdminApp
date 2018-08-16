@@ -286,6 +286,7 @@ public class DeleteStudentsForm extends AppCompatActivity implements ConnectionR
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 CustomGroup customGroup = (CustomGroup) registeredGRPs.get(pos);
                 String groupId = customGroup.getId();
+                groupName = "";
                 groupName = customGroup.getName();
                 btn_Submit.setText("Preview");
                 // Populate Students according to Group Spinner
@@ -304,6 +305,10 @@ public class DeleteStudentsForm extends AppCompatActivity implements ConnectionR
     private void populateStudents(String grpID) {
         // todo get registered grps
         registeredStd = new ArrayList();
+        Stds.clear();
+        StdsName.clear();
+        selectedStudents = "";
+        selectedStudentsName = "";
         if (!AllStudentsInDB.isEmpty()) {
             for (int j = 0; j < AllStudentsInDB.size(); j++) {
                 if (AllStudentsInDB.get(j).getGroupId().equals(grpID)) {

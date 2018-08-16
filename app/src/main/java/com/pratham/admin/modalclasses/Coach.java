@@ -1,7 +1,6 @@
 package com.pratham.admin.modalclasses;
 
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -40,6 +39,8 @@ public class Coach {
     public String CreatedBy;
     @SerializedName("CreatedDate")
     public String CreatedDate;
+    @SerializedName("CoachVillageID")
+    public String CoachVillageID;
     @SerializedName("sentFlag")
     public int sentFlag;
 
@@ -60,6 +61,7 @@ public class Coach {
                 ", CoachActive=" + CoachActive +
                 ", CreatedBy='" + CreatedBy + '\'' +
                 ", CreatedDate='" + CreatedDate + '\'' +
+                ", CoachVillageID='" + CoachVillageID + '\'' +
                 ", sentFlag=" + sentFlag +
                 '}';
     }
@@ -175,6 +177,14 @@ public class Coach {
 
     public void setCreatedDate(String createdDate) {
         CreatedDate = createdDate;
+    }
+
+    public String getCoachVillageID() {
+        return CoachVillageID;
+    }
+
+    public void setCoachVillageID(String coachVillageID) {
+        CoachVillageID = coachVillageID;
     }
 
     public int getSentFlag() {

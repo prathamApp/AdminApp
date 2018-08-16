@@ -65,6 +65,8 @@ public class CoachRetentionForm extends AppCompatActivity implements ConnectionR
     boolean internetIsAvailable = false;
     List<Coach> updatedCoachList = new ArrayList<>();
     String villageName;
+    String vid;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,15 +90,6 @@ public class CoachRetentionForm extends AppCompatActivity implements ConnectionR
             }
         });
         populateVillages();
-
-        // Populate Coach Spinner
-        coachList = AppDatabase.getDatabaseInstance(this).getCoachDao().getAllCoaches();
-        Collections.sort(coachList, new Comparator<Coach>() {
-            public int compare(Coach v1, Coach v2) {
-                return v1.getCoachName().compareTo(v2.getCoachName());
-            }
-        });
-        populateCoaches();
 
     }
 
@@ -140,6 +133,7 @@ public class CoachRetentionForm extends AppCompatActivity implements ConnectionR
             cObj.EndDate = endDate; // new Values
             cObj.CreatedBy = updatedCoachList.get(0).CreatedBy;
             cObj.CreatedDate = updatedCoachList.get(0).CreatedDate;
+            cObj.CoachVillageID = vid;
             cObj.sentFlag = 0;
 
             if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
@@ -245,13 +239,6 @@ public class CoachRetentionForm extends AppCompatActivity implements ConnectionR
 
         // Populate Coach Spinner
         coachList.clear();
-        coachList = AppDatabase.getDatabaseInstance(this).getCoachDao().getAllCoaches();
-        Collections.sort(coachList, new Comparator<Coach>() {
-            public int compare(Coach v1, Coach v2) {
-                return v1.getCoachName().compareTo(v2.getCoachName());
-            }
-        });
-        populateCoaches();
 
         rg_DropOut.clearCheck();
         rb_Yes.setChecked(true);
@@ -263,6 +250,8 @@ public class CoachRetentionForm extends AppCompatActivity implements ConnectionR
     private void populateVillages() {
 
         final List VillageName = new ArrayList();
+        vid = "";
+        villageName = "";
         if (!villageList.isEmpty()) {
             VillageName.add(new CustomGroup("Select Village"));
             for (int j = 0; j < villageList.size(); j++) {
@@ -278,8 +267,21 @@ public class CoachRetentionForm extends AppCompatActivity implements ConnectionR
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 btn_Submit.setText("Preview");
                 CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
-                String vid = customGroup.getId();
+                vid = "";
+                vid = customGroup.getId();
                 villageName = customGroup.getName();
+
+                // populate coaches by villageid
+                // Populate Coach Spinner
+                coachList.clear();
+                coachList = AppDatabase.getDatabaseInstance(CoachRetentionForm.this).getCoachDao().getCoachByVillageID(vid);
+                Collections.sort(coachList, new Comparator<Coach>() {
+                    public int compare(Coach v1, Coach v2) {
+                        return v1.getCoachName().compareTo(v2.getCoachName());
+                    }
+                });
+                populateCoaches();
+
             }
 
             @Override
@@ -298,6 +300,7 @@ public class CoachRetentionForm extends AppCompatActivity implements ConnectionR
             }
             ArrayAdapter coachAdapter = new ArrayAdapter(CoachRetentionForm.this, android.R.layout.simple_spinner_dropdown_item, CoachName);
             sp_SelectCoach.setAdapter(coachAdapter);
+            selectedCoachID = "";
         }
 
         sp_SelectCoach.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

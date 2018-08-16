@@ -110,6 +110,9 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
 
     String selectedEdu;
 
+    String vid;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -253,6 +256,9 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
     private void populateRegisteredGroups(String villageID) {
         // todo get registered grps
         registeredGroups = new ArrayList();
+        selectedGroups = "";
+        selectedGroupNames = "";
+
         if (AllGroupsInDB != null) {
             Grps = new ArrayList<>();
             GrpsNames = new ArrayList<>();
@@ -271,7 +277,6 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
         selectedGroupItems = new boolean[grpAdapter.getCount()];
         sp_Groups.setHint("Select Groups");
         sp_Groups.setHintTextColor(Color.BLACK);
-
     }
 
     // VG Listener
@@ -392,7 +397,8 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
-                String vid = customGroup.getId();
+                vid = "";
+                vid = customGroup.getId();
                 btn_Submit.setText("Preview");
                 // Populate Registered Groups Spinner
                 populateRegisteredGroups(vid);
@@ -446,6 +452,7 @@ public class CoachInformationForm extends AppCompatActivity implements Connectio
                 cObj.CreatedBy = "";
                 cObj.CreatedDate = date;
                 cObj.sentFlag = 0;
+                cObj.CoachVillageID = vid;
 
                 if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
 

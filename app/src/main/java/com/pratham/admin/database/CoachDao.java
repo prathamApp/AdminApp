@@ -24,6 +24,9 @@ public interface CoachDao {
     @Query("SELECT * FROM Coach where CoachID =:cID")
     public List<Coach> getCoachByID(String cID);
 
+    @Query("SELECT * FROM Coach where CoachVillageID =:vID")
+    public List<Coach> getCoachByVillageID(String vID);
+
     @Query("UPDATE Coach SET CoachActive = :cActive, EndDate = :eDate WHERE CoachID =:cID")
     void updateCoachStatus(int cActive, String eDate, String cID);
 

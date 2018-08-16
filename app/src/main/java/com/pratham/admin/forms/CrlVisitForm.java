@@ -163,15 +163,6 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
         });
         populateVillages();
 
-        // Populate Coach Spinner
-        coachList = AppDatabase.getDatabaseInstance(this).getCoachDao().getAllCoaches();
-        Collections.sort(coachList, new Comparator<Coach>() {
-            public int compare(Coach v1, Coach v2) {
-                return v1.getCoachName().compareTo(v2.getCoachName());
-            }
-        });
-        populatePresentCoaches();
-
     }
 
     @Override
@@ -358,14 +349,6 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
 
         // Populate Coach Spinner
         coachList.clear();
-        coachList = AppDatabase.getDatabaseInstance(this).getCoachDao().getAllCoaches();
-        Collections.sort(coachList, new Comparator<Coach>() {
-            public int compare(Coach v1, Coach v2) {
-                return v1.getCoachName().compareTo(v2.getCoachName());
-            }
-        });
-        populatePresentCoaches();
-
     }
 
     @OnClick(R.id.btn_DatePicker)
@@ -445,6 +428,15 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
                 // Populate Visited Groups Spinner
                 populateVisitedGroups(vid);
 
+                // Populate Coach Spinner
+                coachList = AppDatabase.getDatabaseInstance(CrlVisitForm.this).getCoachDao().getCoachByVillageID(vid);
+                Collections.sort(coachList, new Comparator<Coach>() {
+                    public int compare(Coach v1, Coach v2) {
+                        return v1.getCoachName().compareTo(v2.getCoachName());
+                    }
+                });
+                populatePresentCoaches();
+
             }
 
             @Override
@@ -458,6 +450,8 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
     // VISITED GROUPS
     private void populateVisitedGroups(String villageID) {
         // todo get registered grps
+        selectedVG = "";
+        selectedVGNames = "";
         registeredVGGRPs = new ArrayList();
         if (AllGroupsInDB != null) {
 //            VG = new String[AllGroupsInDB.size()];
@@ -479,7 +473,6 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
         selectedVGItems = new boolean[grpAdapter.getCount()];
         sp_VisitedGroups_multiselect.setHint("Select Visited Groups");
         sp_VisitedGroups_multiselect.setHintTextColor(Color.BLACK);
-
     }
 
     // VG Listener
@@ -518,6 +511,8 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
     private void populateGrpWithTheirGrp(final List<String> selectedgrpID, final List<String> selectedgrpName) {
         // todo get registered grps
         List<String> registeredGWTGGRPs = new ArrayList<>();
+        selectedGWTG = "";
+        selectedGWTGNames = "";
 
         for (int i = 0; i < AllGroupsInDB.size(); i++) {
             for (int j = 0; j < selectedgrpID.size(); j++) {
@@ -558,6 +553,8 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
     private void populateWorkCrosscheckedGrps(final List<String> selectedGrpID, final List<String> selectedgrpName) {
         // todo get registered grps
         List registeredWCCGGRPs = new ArrayList();
+        selectedWCCG = "";
+        selectedWCCGNames = "";
 
         for (int i = 0; i < AllGroupsInDB.size(); i++) {
             for (int j = 0; j < selectedGrpID.size(); j++) {
@@ -597,6 +594,9 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
     // Present Groups
     private void populatePresentCoaches() {
         registeredPCGRPs = new ArrayList();
+        selectedPC = "";
+        selectedPCNames = "";
+
         for (int j = 0; j < coachList.size(); j++) {
             CustomGroup customGroup = new CustomGroup(coachList.get(j).getCoachName(), coachList.get(j).getCoachID());
             registeredPCGRPs.add(customGroup);
@@ -640,6 +640,9 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
     // Present Groups with their grps
     private void populateCoachesWithTheirGroup(final List<String> selectedPCArray, final List<String> selectedPCArrayNames) {
         List<String> registeredPCWGGRPs = new ArrayList();
+        selectedPCWG = "";
+        selectedPCWGNames = "";
+
         for (int i = 0; i < registeredPCGRPs.size(); i++) {
             for (int j = 0; j < selectedPCArray.size(); j++) {
                 if (registeredPCGRPs.get(i).getId().equalsIgnoreCase(selectedPCArray.get(j))) {

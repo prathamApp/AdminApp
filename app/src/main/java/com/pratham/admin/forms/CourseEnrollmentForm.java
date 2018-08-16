@@ -168,15 +168,6 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
         });
         populateCourses();
 
-        // Populate Coach Spinner
-        coachList = AppDatabase.getDatabaseInstance(this).getCoachDao().getAllCoaches();
-        Collections.sort(coachList, new Comparator<Coach>() {
-            public int compare(Coach v1, Coach v2) {
-                return v1.getCoachName().compareTo(v2.getCoachName());
-            }
-        });
-        populateCoaches();
-
     }
 
     @Override
@@ -383,15 +374,9 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
         });
         populateCourses();
 
-        // Populate Coach Spinner
+        // Populate Coach
         coachList.clear();
-        coachList = AppDatabase.getDatabaseInstance(this).getCoachDao().getAllCoaches();
-        Collections.sort(coachList, new Comparator<Coach>() {
-            public int compare(Coach v1, Coach v2) {
-                return v1.getCoachName().compareTo(v2.getCoachName());
-            }
-        });
-        populateCoaches();
+
         rg_Community.clearCheck();
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
         btn_DatePicker.setPadding(8, 8, 8, 8);
@@ -431,6 +416,16 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
 
                 // Populate Registered Groups Spinner
                 populateRegisteredGroups(vid);
+
+                // Populate Coach Spinner
+                coachList = AppDatabase.getDatabaseInstance(CourseEnrollmentForm.this).getCoachDao().getCoachByVillageID(vid);
+                Collections.sort(coachList, new Comparator<Coach>() {
+                    public int compare(Coach v1, Coach v2) {
+                        return v1.getCoachName().compareTo(v2.getCoachName());
+                    }
+                });
+                populateCoaches();
+
             }
 
             @Override
@@ -461,7 +456,8 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
         selectedGroupItems = new boolean[grpAdapter.getCount()];
         sp_Groups.setHint("Select Groups");
         sp_Groups.setHintTextColor(Color.BLACK);
-
+        selectedGroups = "";
+        selectedGroupNames = "";
     }
 
     // Groups Listener
@@ -569,6 +565,9 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
     // Present Groups
     private void populateCoaches() {
         registeredPCGRPs = new ArrayList();
+        selectedPC = "";
+        selectedPCNames = "";
+
         for (int j = 0; j < coachList.size(); j++) {
             CustomGroup customGroup = new CustomGroup(coachList.get(j).getCoachName(), coachList.get(j).getCoachID());
             registeredPCGRPs.add(customGroup);
