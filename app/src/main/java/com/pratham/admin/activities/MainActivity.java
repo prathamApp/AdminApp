@@ -98,10 +98,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface {
         // Start WiFi
         turnOnWifi();
 
-//        userName.setText("amolmoghe");
-//        password.setText("pratham@123");
-        userName.setText("");
-        password.setText("");
+        userName.setText("amolmoghe");
+        password.setText("pratham@123");
+//        userName.setText("");
+//        password.setText("");
         userName.requestFocus();
         SharedPreferences preferences = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
         String program = preferences.getString("program", "null");

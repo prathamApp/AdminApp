@@ -3,19 +3,25 @@ package com.pratham.admin.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
 import com.pratham.admin.ApplicationController;
+import com.pratham.admin.POS.POS_Dashboard;
 import com.pratham.admin.R;
 import com.pratham.admin.adapters.DashRVDataAdapter;
 import com.pratham.admin.database.AppDatabase;
@@ -36,21 +42,29 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.pratham.admin.util.APIs.PushForms;
 
 public class Dashboard extends AppCompatActivity implements DashRVClickListener, ConnectionReceiverListener {
 
     // Ref : https://www.dev2qa.com/android-cardview-with-image-and-text-example/
     String LoggedcrlId = "", LoggedcrlName = "", LoggedCRLnameSwapStd = "";
+    private String deviceID, apkVersion, serialID, WiFiMac, gpsFixDuration;
 
     private List<DashboardItem> DashboardItemList = null;
     DashRVDataAdapter DataAdapter;
     boolean internetIsAvailable = false;
 
+    @BindView(R.id.tv_appInfo)
+    TextView tv_appInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        ButterKnife.bind(this);
 
         // Hide Actionbar
         getSupportActionBar().hide();
@@ -81,6 +95,25 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
         // Start WiFi
         turnOnWifi();
         pushNewData();
+
+    }
+
+    private void initializeAppInfo() {
+        deviceID = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        serialID = android.os.Build.SERIAL;
+        try {
+            PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+            apkVersion = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wInfo = wifiManager.getConnectionInfo();
+        WiFiMac = wInfo.getMacAddress();
+
+        tv_appInfo.setText("Apk Version : " + apkVersion + "\nWiFi MAC : " + WiFiMac
+                + "\nDevice ID : " + deviceID + "\nSerial ID : " + serialID);
     }
 
     @Override
@@ -99,6 +132,7 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
         turnOnWifi();
         checkConnection();
         ApplicationController.getInstance().setConnectionListener(this);
+        initializeAppInfo();
     }
 
     private void checkConnection() {
@@ -230,6 +264,7 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
             DashboardItemList.add(new DashboardItem("Scan or Code", R.drawable.qr_code_selector));
             DashboardItemList.add(new DashboardItem("Swap Students", R.drawable.swap_selector));
             DashboardItemList.add(new DashboardItem("Forms", R.drawable.ic_form));
+            DashboardItemList.add(new DashboardItem("POS Dashboard", R.drawable.ic_pos));
         }
     }
 
@@ -249,6 +284,12 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
             startActivity(intent);
         } else if (name.contains("Forms")) {
             Intent intent = new Intent(Dashboard.this, FormsActivity.class);
+            intent.putExtra("CRLid", LoggedcrlId);
+            intent.putExtra("CRLname", LoggedcrlName);
+            intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
+            startActivity(intent);
+        } else if (name.contains("POS")) {
+            Intent intent = new Intent(Dashboard.this, POS_Dashboard.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
