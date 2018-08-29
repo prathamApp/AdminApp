@@ -21,7 +21,7 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
 import com.pratham.admin.ApplicationController;
-import com.pratham.admin.POS.POS_Dashboard;
+import com.pratham.admin.POS.ui.dashboard.POS_Dashboard;
 import com.pratham.admin.R;
 import com.pratham.admin.adapters.DashRVDataAdapter;
 import com.pratham.admin.database.AppDatabase;

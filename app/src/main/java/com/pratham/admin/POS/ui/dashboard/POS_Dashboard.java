@@ -1,6 +1,7 @@
-package com.pratham.admin.POS;
+package com.pratham.admin.POS.ui.dashboard;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.wifi.WifiInfo;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.pratham.admin.ApplicationController;
+import com.pratham.admin.POS.ui.add_edit_operations.AddEditOperations;
 import com.pratham.admin.R;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.util.ConnectionReceiver;
@@ -114,6 +116,8 @@ public class POS_Dashboard extends AppCompatActivity implements ConnectionReceiv
     }
 
     public void AddEditScreen(View view) {
+        Intent i = new Intent(POS_Dashboard.this, AddEditOperations.class);
+        startActivity(i);
     }
 
     public void AssignGroups(View view) {
