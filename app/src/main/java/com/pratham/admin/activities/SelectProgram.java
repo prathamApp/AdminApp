@@ -56,10 +56,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.pratham.admin.util.APIs.HL;
+import static com.pratham.admin.util.APIs.PI;
 import static com.pratham.admin.util.APIs.PullCoaches;
 import static com.pratham.admin.util.APIs.PullCourses;
 import static com.pratham.admin.util.APIs.PullHLCourseCommunity;
 import static com.pratham.admin.util.APIs.PullHLCourseCompletion;
+import static com.pratham.admin.util.APIs.RI;
+import static com.pratham.admin.util.APIs.SC;
 import static com.pratham.admin.util.APIs.village;
 
 public class SelectProgram extends AppCompatActivity implements ConnectionReceiverListener, OnSavedData, VillageListLisner {
@@ -180,17 +183,21 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                             url = APIs.HLpullVillagesURL + stateCode[selectedState];
                             loadAPI(url, village, APIs.HL);
                             break;
-                        case APIs.RI:
+                        case APIs.ECE:
+                            url = APIs.ECEpullVillagesURL + stateCode[selectedState];
+                            loadAPI(url, village, APIs.ECE);
+                            break;
+                        case RI:
                             url = APIs.RIpullVillagesURL + stateCode[selectedState];
-                            loadAPI(url, village, APIs.RI);
+                            loadAPI(url, village, RI);
                             break;
-                        case APIs.SC:
+                        case SC:
                             url = APIs.SCpullVillagesURL + stateCode[selectedState];
-                            loadAPI(url, village, APIs.SC);
+                            loadAPI(url, village, SC);
                             break;
-                        case APIs.PI:
+                        case PI:
                             url = APIs.PIpullVillagesURL + stateCode[selectedState];
-                            loadAPI(url, village, APIs.PI);
+                            loadAPI(url, village, PI);
                             break;
                     }
                 } else {
@@ -229,25 +236,49 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                                 String url = APIs.HLpullCrlsURL + stateCode[selectedState] + "&programid=1";
                                 loadAPI(url, APIs.CRL, APIs.HL);
                                 break;
-                            case APIs.RI:
-                                loadAPI(APIs.RIpullCrlsURL, APIs.CRL, APIs.RI);
+                            case APIs.ECE:
+                                String url5 = APIs.ECEpullCrlsURL + stateCode[selectedState] + "&programid=8";
+                                loadAPI(url5, APIs.CRL, APIs.ECE);
                                 break;
-                            case APIs.SC:
-                                loadAPI(APIs.SCpullCrlsURL, APIs.CRL, APIs.SC);
+                            case RI:
+                                String url2 = APIs.RIpullCrlsURL + stateCode[selectedState] + "&programid=2";
+                                loadAPI(url2, APIs.CRL, RI);
                                 break;
-                            case APIs.PI:
-                                loadAPI(APIs.PIpullCrlsURL, APIs.CRL, APIs.PI);
+                            case SC:
+                                String url3 = APIs.SCpullCrlsURL + stateCode[selectedState] + "&programid=3";
+                                loadAPI(url3, APIs.CRL, SC);
+                                break;
+                            case PI:
+                                String url4 = APIs.PIpullCrlsURL + stateCode[selectedState] + "&programid=4";
+                                loadAPI(url4, APIs.CRL, PI);
                                 break;
 
                         }
-                        // Pull Courses
-                        pullCourses();
-                        // Pull Coaches
-                        pullCoaches();
-                        // HLCourseCommunity
-                        pullHLCourseCommunity();
-                        // HLCourseCompletion
-                        pullHLCourseCompletion();
+
+                        try {
+                            // Pull Courses
+                            pullCourses();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            // Pull Coaches
+                            pullCoaches();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            // HLCourseCommunity
+                            pullHLCourseCommunity();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            // HLCourseCompletion
+                            pullHLCourseCompletion();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
                     } else {
                         btn_saveData.setEnabled(false);
@@ -268,7 +299,21 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
     }
 
     private void pullCoaches() {
-        showDialoginApiCalling(HL, "Pulling Coaches !!!");
+        switch (selectedProgram) {
+            case HL:
+                showDialoginApiCalling(HL, "Pulling Coaches !!!");
+                break;
+            case RI:
+                showDialoginApiCalling(RI, "Pulling Coaches !!!");
+                break;
+            case SC:
+                showDialoginApiCalling(SC, "Pulling Coaches !!!");
+                break;
+            case PI:
+                showDialoginApiCalling(PI, "Pulling Coaches !!!");
+                break;
+        }
+
         AndroidNetworking.get(PullCoaches).build().getAsJSONArray(new JSONArrayRequestListener() {
             @Override
             public void onResponse(JSONArray response) {
@@ -297,7 +342,22 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
     }
 
     private void pullCourses() {
-        showDialoginApiCalling(HL, "Pulling Courses !!!");
+
+        switch (selectedProgram) {
+            case HL:
+                showDialoginApiCalling(HL, "Pulling Courses !!!");
+                break;
+            case RI:
+                showDialoginApiCalling(RI, "Pulling Courses !!!");
+                break;
+            case SC:
+                showDialoginApiCalling(SC, "Pulling Courses !!!");
+                break;
+            case PI:
+                showDialoginApiCalling(PI, "Pulling Courses !!!");
+                break;
+        }
+
         AndroidNetworking.get(PullCourses).build().getAsJSONArray(new JSONArrayRequestListener() {
             @Override
             public void onResponse(JSONArray response) {
@@ -326,7 +386,21 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
     }
 
     private void pullHLCourseCommunity() {
-        showDialoginApiCalling(HL, "Pulling Course Community !!!");
+        switch (selectedProgram) {
+            case HL:
+                showDialoginApiCalling(HL, "Pulling Course Community !!!");
+                break;
+            case RI:
+                showDialoginApiCalling(RI, "Pulling Course Community !!!");
+                break;
+            case SC:
+                showDialoginApiCalling(SC, "Pulling Course Community !!!");
+                break;
+            case PI:
+                showDialoginApiCalling(PI, "Pulling Course Community !!!");
+                break;
+        }
+
         AndroidNetworking.get(PullHLCourseCommunity).build().getAsJSONArray(new JSONArrayRequestListener() {
             @Override
             public void onResponse(JSONArray response) {
@@ -355,7 +429,21 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
     }
 
     private void pullHLCourseCompletion() {
-        showDialoginApiCalling(HL, "Pulling Course Completion !!!");
+        switch (selectedProgram) {
+            case HL:
+                showDialoginApiCalling(HL, "Pulling Course Completion !!!");
+                break;
+            case RI:
+                showDialoginApiCalling(RI, "Pulling Course Completion !!!");
+                break;
+            case SC:
+                showDialoginApiCalling(SC, "Pulling Course Completion !!!");
+                break;
+            case PI:
+                showDialoginApiCalling(PI, "Pulling Course Completion !!!");
+                break;
+        }
+
         AndroidNetworking.get(PullHLCourseCompletion).build().getAsJSONArray(new JSONArrayRequestListener() {
             @Override
             public void onResponse(JSONArray response) {
@@ -456,15 +544,17 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 case APIs.HL:
                     loadAPI(APIs.HLpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, APIs.HL);
                     break;
-                case APIs.RI:
-                    loadAPI(APIs.RIpullGroupsURL + villageId, APIs.Group, APIs.RI);
+                case APIs.ECE:
+                    loadAPI(APIs.ECEpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, APIs.ECE);
                     break;
-
-                case APIs.SC:
-                    loadAPI(APIs.SCpullGroupsURL + villageId, APIs.Group, APIs.SC);
+                case RI:
+                    loadAPI(APIs.RIpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, RI);
                     break;
-                case APIs.PI:
-                    loadAPI(APIs.PIpullGroupsURL + villageId, APIs.Group, APIs.PI);
+                case SC:
+                    loadAPI(APIs.SCpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, SC);
+                    break;
+                case PI:
+                    loadAPI(APIs.PIpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, PI);
                     break;
 
             }
@@ -522,15 +612,18 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                         case APIs.HL:
                             loadAPI(APIs.HLpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.HL);
                             break;
-                        case APIs.RI:
-                            loadAPI(APIs.RIpullStudentsURL + villageId, APIs.Student, APIs.RI);
+                        case APIs.ECE:
+                            loadAPI(APIs.ECEpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.ECE);
+                            break;
+                        case RI:
+                            loadAPI(APIs.RIpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, RI);
                             break;
 
-                        case APIs.SC:
-                            loadAPI(APIs.SCpullStudentsURL + villageId, APIs.Student, APIs.SC);
+                        case SC:
+                            loadAPI(APIs.SCpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, SC);
                             break;
-                        case APIs.PI:
-                            loadAPI(APIs.PIpullStudentsURL + villageId, APIs.Student, APIs.PI);
+                        case PI:
+                            loadAPI(APIs.PIpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, PI);
                             break;
                     }
                 }

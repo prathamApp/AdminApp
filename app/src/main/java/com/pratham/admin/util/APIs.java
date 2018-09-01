@@ -8,11 +8,20 @@ public class APIs {
     public static final String CRL = "CRL";
     public static final String Group = "Groups";
     public static final String Student = "Student";
+
     public static final String HL = "Hybrid Learning";
     public static final String HLpullVillagesURL = "http://www.hlearning.openiscool.org/api/village/get?programId=1&state=";
     public static final String HLpullGroupsURL = "http://www.devtab.openiscool.org/api/Group?programid=1&villageId=";
     public static final String HLpullStudentsURL = "http://www.devtab.openiscool.org/api/student?programid=1&villageId=";
     public static final String HLpullCrlsURL = "http://www.swap.prathamcms.org/api/UserList?statecode=";
+
+    public static final String ECE = "ECE";
+    public static final String ECEpullVillagesURL = "http://www.hlearning.openiscool.org/api/village/get?programId=8&state=";
+    public static final String ECEpullGroupsURL = "http://www.devtab.openiscool.org/api/Group?programid=8&villageId=";
+    public static final String ECEpullStudentsURL = "http://www.devtab.openiscool.org/api/student?programid=8&villageId=";
+    public static final String ECEpullCrlsURL = "http://www.swap.prathamcms.org/api/UserList?statecode=";
+
+
     /* http://www.swap.prathamcms.org/api/UserList?statecode=MH&programid=1*/
     public static final String RI = "Read India";
     public static final String RIpullVillagesURL = "http://www.readindia.openiscool.org/api/village/get?programId=2&state=";

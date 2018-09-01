@@ -40,15 +40,20 @@
                 <RadioButton
                     android:id="@+id/rbtn_readindia"
                     style="@style/CustomRadioButton"
-
                     android:enabled="false"
                     android:text="@string/read_india" />
 
                 <RadioButton
                     android:id="@+id/rbtn_second_chance"
                     style="@style/CustomRadioButton"
-                    android:enabled="false"
+                    android:enabled="true"
                     android:text="@string/second_chance" />
+
+                <RadioButton
+                    android:id="@+id/rbtn_ece"
+                    style="@style/CustomRadioButton"
+                    android:enabled="true"
+                    android:text="@string/ECE" />
 
                 <RadioButton
                     android:id="@+id/rbtn_pratham_institute"
@@ -68,40 +73,40 @@
                 <Spinner
                     android:id="@+id/spinner_state"
                     style="@style/spinner_style"
-                    android:background="@drawable/gradient_spinner_selectprogram"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:background="@drawable/gradient_spinner_selectprogram" />
 
                 <Spinner
                     android:id="@+id/spinner_block"
                     style="@style/spinner_style"
-                    android:background="@drawable/gradient_spinner_selectprogram"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:entries="@array/block"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:background="@drawable/gradient_spinner_selectprogram"
+                    android:entries="@array/block" />
             </LinearLayout>
 
-           <!-- <Spinner
-                android:id="@+id/spinner_village"
-                style="@style/spinner_style"
-                android:background="@drawable/gradient_spinner_selectprogram"
-                android:layout_width="350dp"
-                android:layout_height="50dp"
-                android:layout_below="@id/spinner_LL"
-                android:entries="@array/village"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp" />
+            <!-- <Spinner
+                 android:id="@+id/spinner_village"
+                 style="@style/spinner_style"
+                 android:background="@drawable/gradient_spinner_selectprogram"
+                 android:layout_width="350dp"
+                 android:layout_height="50dp"
+                 android:layout_below="@id/spinner_LL"
+                 android:entries="@array/village"
+                 android:layout_centerHorizontal="true"
+                 android:layout_marginTop="30dp" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_below="@id/spinner_village" />-->
+             <Space
+                 android:layout_width="match_parent"
+                 android:layout_height="10dp"
+                 android:layout_below="@id/spinner_village" />-->
 
         </RelativeLayout>
     </ScrollView>
@@ -123,10 +128,10 @@
             android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:background="@drawable/btn_style"
-            android:textColor="#ffffff"
             android:elevation="15dp"
             android:enabled="false"
-            android:text="Pull data" />
+            android:text="Pull data"
+            android:textColor="#ffffff" />
 
         <Button
             android:id="@+id/btn_saveData"
@@ -136,10 +141,10 @@
             android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:background="@drawable/btn_style"
-            android:textColor="#ffffff"
             android:elevation="15dp"
             android:enabled="false"
-            android:text="save data" />
+            android:text="save data"
+            android:textColor="#ffffff" />
     </LinearLayout>
 </LinearLayout>
 
