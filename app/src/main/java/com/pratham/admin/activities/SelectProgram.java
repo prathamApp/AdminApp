@@ -333,7 +333,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 if (!internetIsAvailable) {
                     Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(SelectProgram.this, "Plaese check internet connection.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SelectProgram.this, "Pull Coaches Failed.", Toast.LENGTH_LONG).show();
                 }
                 dismissShownDialog();
                 apiLoadFlag = false;
@@ -377,7 +377,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 if (!internetIsAvailable) {
                     Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(SelectProgram.this, "Plaese check internet connection.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SelectProgram.this, "PullCourses Failed.", Toast.LENGTH_LONG).show();
                 }
                 dismissShownDialog();
                 apiLoadFlag = false;
@@ -420,7 +420,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 if (!internetIsAvailable) {
                     Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(SelectProgram.this, "Plaese check internet connection.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SelectProgram.this, "PullCourseCommunity Failed.", Toast.LENGTH_LONG).show();
                 }
                 dismissShownDialog();
                 apiLoadFlag = false;
@@ -463,7 +463,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 if (!internetIsAvailable) {
                     Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(SelectProgram.this, "Plaese check internet connection.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SelectProgram.this, "PullCourseCompletion Failed.", Toast.LENGTH_LONG).show();
                 }
                 dismissShownDialog();
                 apiLoadFlag = false;
@@ -488,7 +488,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 if (!internetIsAvailable) {
                     Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(SelectProgram.this, "Plaese check internet connection.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SelectProgram.this, "Load API Failed.", Toast.LENGTH_LONG).show();
                 }
                 // Log.d("error", "" + error);
                 dismissShownDialog();
