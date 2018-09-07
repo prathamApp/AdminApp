@@ -116,6 +116,14 @@
             android:name=".POS.ui.add_edit_operations.AddEditOperations"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activities.PullData"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activities.PushData"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>

@@ -264,7 +264,9 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
             DashboardItemList.add(new DashboardItem("Scan or Code", R.drawable.qr_code_selector));
             DashboardItemList.add(new DashboardItem("Swap Students", R.drawable.swap_selector));
             DashboardItemList.add(new DashboardItem("Forms", R.drawable.ic_form));
-//            DashboardItemList.add(new DashboardItem("POS Dashboard", R.drawable.ic_pos));
+            DashboardItemList.add(new DashboardItem("POS Dashboard", R.drawable.ic_pos));
+            DashboardItemList.add(new DashboardItem("Pull Data", R.drawable.ic_pull));
+            DashboardItemList.add(new DashboardItem("Push Data", R.drawable.ic_push));
         }
     }
 
@@ -290,6 +292,18 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
             startActivity(intent);
         } else if (name.contains("POS")) {
             Intent intent = new Intent(Dashboard.this, POS_Dashboard.class);
+            intent.putExtra("CRLid", LoggedcrlId);
+            intent.putExtra("CRLname", LoggedcrlName);
+            intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
+            startActivity(intent);
+        } else if (name.contains("Pull")) {
+            Intent intent = new Intent(Dashboard.this, PullData.class);
+            intent.putExtra("CRLid", LoggedcrlId);
+            intent.putExtra("CRLname", LoggedcrlName);
+            intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
+            startActivity(intent);
+        } else if (name.contains("Push")) {
+            Intent intent = new Intent(Dashboard.this, PushData.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
