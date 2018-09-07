@@ -12,16 +12,18 @@ import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Completion;
 import com.pratham.admin.modalclasses.Course;
+import com.pratham.admin.modalclasses.GroupSession;
+import com.pratham.admin.modalclasses.GroupVisit;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
-import com.pratham.admin.modalclasses.SchoolSession;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.TabTrack;
 import com.pratham.admin.modalclasses.TempStudent;
 import com.pratham.admin.modalclasses.Village;
 
-@Database(entities = {Attendance.class, CRL.class, CRLVisit.class, Coach.class, Course.class, Community.class, Completion.class, Groups.class, Student.class, /*SchoolSession.class,*/ Village.class, MetaData.class, TempStudent.class, TabTrack.class}, version = 3, exportSchema = false)
+@Database(entities = {Attendance.class, CRL.class, CRLVisit.class, Coach.class, Course.class, Community.class, Completion.class, Groups.class, Student.class, GroupSession.class,GroupVisit.class, Village.class, MetaData.class, TempStudent.class, TabTrack.class}, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
+
     private static AppDatabase DATABASEINSTANCE;
 
     public abstract AttendanceDao getAttendanceDao();
@@ -38,7 +40,9 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract CompletionDao getCompletionDao();
 
-//    public abstract SchoolSessionDao getSchoolSessionDao();
+    public abstract GroupSessionDao getGroupSessionDao();
+
+    public abstract GroupVisitDao getGroupVisitDao();
 
     public abstract TabTrackDao getTabTrackDao();
 

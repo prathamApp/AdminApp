@@ -13,7 +13,6 @@ import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.modalclasses.Course;
 import com.pratham.admin.modalclasses.Groups;
-import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.CustomGroup;
 import com.pratham.admin.util.DatePickerFragmentOne;
@@ -26,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SchoolSessionForm extends AppCompatActivity {
+public class GroupSessionForm extends AppCompatActivity {
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;
@@ -49,7 +48,7 @@ public class SchoolSessionForm extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_school_session_form);
+        setContentView(R.layout.activity_group_session_form);
         ButterKnife.bind(this);
 
         // Hide Actionbar
@@ -80,11 +79,11 @@ public class SchoolSessionForm extends AppCompatActivity {
                 CustomGroup customGroup = new CustomGroup(courseList.get(j).getCourseName(), courseList.get(j).getCourseID());
                 CourseName.add(customGroup);
             }
-            ArrayAdapter villageAdapter = new ArrayAdapter(SchoolSessionForm.this, android.R.layout.simple_spinner_dropdown_item, CourseName);
+            ArrayAdapter villageAdapter = new ArrayAdapter(GroupSessionForm.this, android.R.layout.simple_spinner_dropdown_item, CourseName);
             sp_Course.setAdapter(villageAdapter);
         } else {
             CourseName.add("Select Course");
-            ArrayAdapter villageAdapter = new ArrayAdapter(SchoolSessionForm.this, android.R.layout.simple_spinner_dropdown_item, CourseName);
+            ArrayAdapter villageAdapter = new ArrayAdapter(GroupSessionForm.this, android.R.layout.simple_spinner_dropdown_item, CourseName);
             sp_Course.setAdapter(villageAdapter);
         }
 
@@ -99,7 +98,7 @@ public class SchoolSessionForm extends AppCompatActivity {
                 CustomGroup customGroup = new CustomGroup(villageList.get(j).getVillageName(), villageList.get(j).getVillageId());
                 VillageName.add(customGroup);
             }
-            ArrayAdapter villageAdapter = new ArrayAdapter(SchoolSessionForm.this, android.R.layout.simple_spinner_dropdown_item, VillageName);
+            ArrayAdapter villageAdapter = new ArrayAdapter(GroupSessionForm.this, android.R.layout.simple_spinner_dropdown_item, VillageName);
             sp_Village.setAdapter(villageAdapter);
         }
 
@@ -130,7 +129,7 @@ public class SchoolSessionForm extends AppCompatActivity {
             }
         }
 
-        ArrayAdapter grpAdapter = new ArrayAdapter(SchoolSessionForm.this, android.R.layout.simple_spinner_dropdown_item, registeredGRPs);
+        ArrayAdapter grpAdapter = new ArrayAdapter(GroupSessionForm.this, android.R.layout.simple_spinner_dropdown_item, registeredGRPs);
         sp_Groups.setAdapter(grpAdapter);
         sp_Groups.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

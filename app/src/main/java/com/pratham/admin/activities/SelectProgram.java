@@ -95,6 +95,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
     Animation animation;
     boolean apiLoadFlag = false;
     boolean internetIsAvailable = false;
+    boolean errorDetected = false;
     private List<Village> villageList = new ArrayList();
     private List<CRL> CRLList = new ArrayList();
     private List<Student> studentList = new ArrayList();
@@ -267,6 +268,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+
                         try {
                             // HLCourseCommunity
                             pullHLCourseCommunity();
@@ -279,6 +281,9 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+
+                        // validate data (if all good then enable btn_save)
+                        validateData();
 
                     } else {
                         btn_saveData.setEnabled(false);
@@ -295,6 +300,19 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
             }
         } else {
             Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void validateData() {
+        if (!errorDetected && spinner_state.getSelectedItemPosition() > 0 && spinner_block.getSelectedItemPosition() > 0) {
+            // all good
+            btn_saveData.setEnabled(true);
+            btn_saveData.startAnimation(animation);
+            btn_pullData.setEnabled(false);
+            btn_pullData.clearAnimation();
+        } else {
+            // something went wrong
+            Toast.makeText(this, "Something went wrong !!!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -329,6 +347,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
 
             @Override
             public void onError(ANError error) {
+                errorDetected = true;
                 spinner_state.setSelection(0);
                 if (!internetIsAvailable) {
                     Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
@@ -373,6 +392,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
 
             @Override
             public void onError(ANError error) {
+                errorDetected = true;
                 spinner_state.setSelection(0);
                 if (!internetIsAvailable) {
                     Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
@@ -416,7 +436,8 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
 
             @Override
             public void onError(ANError error) {
-                spinner_state.setSelection(0);
+                errorDetected = true;
+//                spinner_state.setSelection(0);
                 if (!internetIsAvailable) {
                     Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
                 } else {
@@ -459,7 +480,8 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
 
             @Override
             public void onError(ANError error) {
-                spinner_state.setSelection(0);
+                errorDetected = true;
+//                spinner_state.setSelection(0);
                 if (!internetIsAvailable) {
                     Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
                 } else {
@@ -484,6 +506,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
 
             @Override
             public void onError(ANError error) {
+                errorDetected = true;
                 spinner_state.setSelection(0);
                 if (!internetIsAvailable) {
                     Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
@@ -570,10 +593,6 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
         ArrayList<Student> studentMoadal = gson.fromJson(json, listType);
 
         studentList.addAll(studentMoadal);
-        btn_saveData.setEnabled(true);
-        btn_saveData.startAnimation(animation);
-        btn_pullData.setEnabled(false);
-        btn_pullData.clearAnimation();
         if (studLoadCount == villageId.size()) {
             dismissShownDialog();
         }

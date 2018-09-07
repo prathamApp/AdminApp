@@ -33,6 +33,8 @@ import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Completion;
 import com.pratham.admin.modalclasses.DashboardItem;
+import com.pratham.admin.modalclasses.GroupSession;
+import com.pratham.admin.modalclasses.GroupVisit;
 import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.DashRVTouchListener;
@@ -184,6 +186,10 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
 //        coursesObj = AppDatabase.getDatabaseInstance(this).getCoursesDao().getNewCourses(0);
         List<CRLVisit> CRLVisitObj = new ArrayList<>();
         CRLVisitObj = AppDatabase.getDatabaseInstance(this).getCRLVisitdao().getNewCRLVisits(0);
+        List<GroupSession> GroupSessionObj = new ArrayList<>();
+        GroupSessionObj = AppDatabase.getDatabaseInstance(this).getGroupSessionDao().getNewGroupSessions(0);
+        List<GroupVisit> GroupVisitObj = new ArrayList<>();
+        GroupVisitObj = AppDatabase.getDatabaseInstance(this).getGroupVisitDao().getNewGroupVisits(0);
 
         // Push To Server
         try {
@@ -202,6 +208,8 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
                         + ",\"CommunitiesJSON\":" + "" + gson.toJson(communitiesObj).toString()
                         + ",\"CompletionsJSON\":" + "" + gson.toJson(completionsObj).toString()
                         + ",\"CRLVisitsJSON\":" + "" + gson.toJson(CRLVisitObj).toString()
+                        + ",\"GroupVisitsJSON\":" + "" + gson.toJson(GroupSessionObj).toString()
+                        + ",\"GroupSessionJSON\":" + "" + gson.toJson(GroupVisitObj).toString()
                         + ",\"metadata\":" + "" + metaDataJSON
                         + "}";
 
@@ -232,6 +240,8 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
                             AppDatabase.getDatabaseInstance(Dashboard.this).getCompletionDao().updateAllSentFlag(1);
                             AppDatabase.getDatabaseInstance(Dashboard.this).getCoursesDao().updateAllSentFlag(1);
                             AppDatabase.getDatabaseInstance(Dashboard.this).getCRLVisitdao().updateAllSentFlag(1);
+                            AppDatabase.getDatabaseInstance(Dashboard.this).getGroupSessionDao().updateAllSentFlag(1);
+                            AppDatabase.getDatabaseInstance(Dashboard.this).getGroupVisitDao().updateAllSentFlag(1);
                             dialog.dismiss();
                         }
 
@@ -243,6 +253,8 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
                             AppDatabase.getDatabaseInstance(Dashboard.this).getCompletionDao().updateAllSentFlag(0);
                             AppDatabase.getDatabaseInstance(Dashboard.this).getCoursesDao().updateAllSentFlag(0);
                             AppDatabase.getDatabaseInstance(Dashboard.this).getCRLVisitdao().updateAllSentFlag(0);
+                            AppDatabase.getDatabaseInstance(Dashboard.this).getGroupVisitDao().updateAllSentFlag(0);
+                            AppDatabase.getDatabaseInstance(Dashboard.this).getGroupSessionDao().updateAllSentFlag(0);
                             dialog.dismiss();
                         }
                     });

@@ -89,7 +89,7 @@
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".forms.SchoolSessionForm"
+            android:name=".forms.GroupSessionForm"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden" />
         <activity
@@ -122,6 +122,10 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.PushData"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".forms.GroupVisitForm"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden" />
     </application>

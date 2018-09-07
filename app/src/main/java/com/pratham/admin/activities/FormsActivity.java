@@ -18,6 +18,8 @@ import com.pratham.admin.forms.CourseCompletionForm;
 import com.pratham.admin.forms.CourseEnrollmentForm;
 import com.pratham.admin.forms.CrlVisitForm;
 import com.pratham.admin.forms.DeleteStudentsForm;
+import com.pratham.admin.forms.GroupSessionForm;
+import com.pratham.admin.forms.GroupVisitForm;
 import com.pratham.admin.interfaces.DashRVClickListener;
 import com.pratham.admin.modalclasses.DashboardItem;
 import com.pratham.admin.util.DashRVTouchListener;
@@ -89,10 +91,11 @@ public class FormsActivity extends AppCompatActivity implements DashRVClickListe
             DashboardItemList.add(new DashboardItem("Coach Information", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Course Completion", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Coach Retention", R.drawable.ic_form));
-//            DashboardItemList.add(new DashboardItem("School Session", R.drawable.ic_form));
+            DashboardItemList.add(new DashboardItem("Group Session", R.drawable.ic_form));
+            DashboardItemList.add(new DashboardItem("Group Visit", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Course Enrollment", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Delete Students", R.drawable.ic_form));
-            DashboardItemList.add(new DashboardItem("CRL Visit", R.drawable.ic_form));
+//            DashboardItemList.add(new DashboardItem("CRL Visit", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Students Attendance", R.drawable.ic_form));
         }
     }
@@ -120,19 +123,19 @@ public class FormsActivity extends AppCompatActivity implements DashRVClickListe
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
-        } /*else if (name.contains("Session")) {
-            Intent intent = new Intent(FormsActivity.this, SchoolSessionForm.class);
+        } else if (name.contains("Session")) {
+            Intent intent = new Intent(FormsActivity.this, GroupSessionForm.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
-        } */ else if (name.contains("Delete")) {
+        } else if (name.contains("Delete")) {
             Intent intent = new Intent(FormsActivity.this, DeleteStudentsForm.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
-        } else if (name.contains("CRL")) {
+        } else if (name.equalsIgnoreCase("CRL Visit")) {
             Intent intent = new Intent(FormsActivity.this, CrlVisitForm.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
@@ -146,6 +149,12 @@ public class FormsActivity extends AppCompatActivity implements DashRVClickListe
             startActivity(intent);
         } else if (name.contains("Enrollment")) {
             Intent intent = new Intent(FormsActivity.this, CourseEnrollmentForm.class);
+            intent.putExtra("CRLid", LoggedcrlId);
+            intent.putExtra("CRLname", LoggedcrlName);
+            intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
+            startActivity(intent);
+        } else if (name.contains("Visit")) {
+            Intent intent = new Intent(FormsActivity.this, GroupVisitForm.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
