@@ -27,5 +27,7 @@ public interface GroupSessionDao {
     @Query("UPDATE GroupSession SET sentFlag=:pushStatus")
     void updateAllSentFlag(int pushStatus);
 
+    @Query("UPDATE GroupSession SET sentFlag=:pushStatus WHERE GroupSessionID=:gID")
+    void updateSentFlag(int pushStatus, String gID);
 
 }

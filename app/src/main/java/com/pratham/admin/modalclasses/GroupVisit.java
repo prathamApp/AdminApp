@@ -27,13 +27,15 @@ public class GroupVisit {
 
     @SerializedName("GroupIDVisited")
     public String GroupIDVisited;
+    @SerializedName("PresentGroupIDs")
+    public String PresentGroupIDs;
+    @SerializedName("WorkCrosscheckedGroupIDs")
+    public String WorkCrosscheckedGroupIDs;
     @SerializedName("Group")
     public String Group;
 
     @SerializedName("CoachPresentInVillage")
     public String CoachPresentInVillage;
-    @SerializedName("WorkCrosscheckedGroupIDs")
-    public String WorkCrosscheckedGroupIDs;
     @SerializedName("PresentStudents")
     public String PresentStudents;
 
@@ -50,9 +52,10 @@ public class GroupVisit {
                 ", StartTime='" + StartTime + '\'' +
                 ", EndTime='" + EndTime + '\'' +
                 ", GroupIDVisited='" + GroupIDVisited + '\'' +
+                ", PresentGroupIDs='" + PresentGroupIDs + '\'' +
+                ", WorkCrosscheckedGroupIDs='" + WorkCrosscheckedGroupIDs + '\'' +
                 ", Group='" + Group + '\'' +
                 ", CoachPresentInVillage='" + CoachPresentInVillage + '\'' +
-                ", WorkCrosscheckedGroupIDs='" + WorkCrosscheckedGroupIDs + '\'' +
                 ", PresentStudents='" + PresentStudents + '\'' +
                 ", sentFlag=" + sentFlag +
                 '}';
@@ -115,6 +118,22 @@ public class GroupVisit {
         GroupIDVisited = groupIDVisited;
     }
 
+    public String getPresentGroupIDs() {
+        return PresentGroupIDs;
+    }
+
+    public void setPresentGroupIDs(String presentGroupIDs) {
+        PresentGroupIDs = presentGroupIDs;
+    }
+
+    public String getWorkCrosscheckedGroupIDs() {
+        return WorkCrosscheckedGroupIDs;
+    }
+
+    public void setWorkCrosscheckedGroupIDs(String workCrosscheckedGroupIDs) {
+        WorkCrosscheckedGroupIDs = workCrosscheckedGroupIDs;
+    }
+
     public String getGroup() {
         return Group;
     }
@@ -129,14 +148,6 @@ public class GroupVisit {
 
     public void setCoachPresentInVillage(String coachPresentInVillage) {
         CoachPresentInVillage = coachPresentInVillage;
-    }
-
-    public String getWorkCrosscheckedGroupIDs() {
-        return WorkCrosscheckedGroupIDs;
-    }
-
-    public void setWorkCrosscheckedGroupIDs(String workCrosscheckedGroupIDs) {
-        WorkCrosscheckedGroupIDs = workCrosscheckedGroupIDs;
     }
 
     public String getPresentStudents() {

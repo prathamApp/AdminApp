@@ -205,7 +205,7 @@ public class CourseEnrollmentForm extends AppCompatActivity implements Connectio
     public void submitForm(View view) {
 
         if ((sp_Village.getSelectedItemPosition() > 0) && (selectedGroups.trim().length() > 0)
-                && (selectedPC.trim().length() > 0) && (sp_Course.getSelectedItemPosition() > 0)) {
+                && (sp_Course.getSelectedItemPosition() > 0)) {
 
             try {
 

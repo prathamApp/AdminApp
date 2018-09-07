@@ -50,17 +50,17 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="18sp" />
 
-                <!--Multi Select Groups Dynamically-->
+                <!--Multi Select Present Coach Dynamically-->
                 <com.pratham.admin.custom.MultiSpinner
-                    android:id="@+id/sp_VisitedGroups_multiselect"
+                    android:id="@+id/sp_PresentCoaches_multiselect"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:layout_weight="1" />
 
-                <!--Multi Select Present Coach Dynamically-->
+                <!--Multi Select Groups Dynamically-->
                 <com.pratham.admin.custom.MultiSpinner
-                    android:id="@+id/sp_PresentCoaches_multiselect"
+                    android:id="@+id/sp_VisitedGroups_multiselect"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
@@ -73,6 +73,15 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:layout_weight="1" />
+
+                <!--Multi Select Groups with correct Group  -->
+                <com.pratham.admin.custom.MultiSpinner
+                    android:id="@+id/sp_GrpWithTheirGrp_multiselect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1" />
+
 
                 <!--Present Students Count-->
                 <EditText
