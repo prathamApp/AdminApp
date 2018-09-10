@@ -5,11 +5,12 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import com.pratham.admin.modalclasses.CRLVisit;
+//import com.pratham.admin.modalclasses.CRLVisit;
 import com.pratham.admin.modalclasses.Course;
 
 import java.util.List;
 
+/*
 @Dao
 public interface CRLVisitdao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -31,3 +32,4 @@ public interface CRLVisitdao {
     void updateAllSentFlag(int pushStatus);
 
 }
+*/

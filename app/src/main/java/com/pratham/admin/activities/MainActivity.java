@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface {
         AppDatabase.getDatabaseInstance(this).getTempStudentDao().deleteTempStudent();
         AppDatabase.getDatabaseInstance(this).getCoachDao().deleteAllCoaches();
         AppDatabase.getDatabaseInstance(this).getCoursesDao().deleteAllCourses();
-        AppDatabase.getDatabaseInstance(this).getCRLVisitdao().deleteAllCRLVisits();
+//        AppDatabase.getDatabaseInstance(this).getCRLVisitdao().deleteAllCRLVisits();
         AppDatabase.getDatabaseInstance(this).getCommunityDao().deleteAllCommunity();
         AppDatabase.getDatabaseInstance(this).getCompletionDao().deleteAllCompletion();
         AppDatabase.getDatabaseInstance(this).getGroupSessionDao().deleteAllGroupSession();

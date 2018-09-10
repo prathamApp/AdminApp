@@ -28,7 +28,7 @@ import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.DashRVClickListener;
 import com.pratham.admin.modalclasses.Attendance;
-import com.pratham.admin.modalclasses.CRLVisit;
+//import com.pratham.admin.modalclasses.CRLVisit;
 import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Completion;
@@ -184,8 +184,8 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
         completionsObj = AppDatabase.getDatabaseInstance(this).getCompletionDao().getNewCompletions(0);
 //        List<Course> coursesObj = new ArrayList<>();
 //        coursesObj = AppDatabase.getDatabaseInstance(this).getCoursesDao().getNewCourses(0);
-        List<CRLVisit> CRLVisitObj = new ArrayList<>();
-        CRLVisitObj = AppDatabase.getDatabaseInstance(this).getCRLVisitdao().getNewCRLVisits(0);
+//        List<CRLVisit> CRLVisitObj = new ArrayList<>();
+//        CRLVisitObj = AppDatabase.getDatabaseInstance(this).getCRLVisitdao().getNewCRLVisits(0);
         List<GroupSession> GroupSessionObj = new ArrayList<>();
         GroupSessionObj = AppDatabase.getDatabaseInstance(this).getGroupSessionDao().getNewGroupSessions(0);
         List<GroupVisit> GroupVisitObj = new ArrayList<>();
@@ -207,7 +207,7 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
                         + ",\"CoachesJSON\":" + "" + gson.toJson(coachesObj).toString()
                         + ",\"CommunitiesJSON\":" + "" + gson.toJson(communitiesObj).toString()
                         + ",\"CompletionsJSON\":" + "" + gson.toJson(completionsObj).toString()
-                        + ",\"CRLVisitsJSON\":" + "" + gson.toJson(CRLVisitObj).toString()
+//                        + ",\"CRLVisitsJSON\":" + "" + gson.toJson(CRLVisitObj).toString()
                         + ",\"GroupVisitsJSON\":" + "" + gson.toJson(GroupSessionObj).toString()
                         + ",\"GroupSessionJSON\":" + "" + gson.toJson(GroupVisitObj).toString()
                         + ",\"metadata\":" + "" + metaDataJSON
@@ -223,7 +223,7 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
 
                 if ((aObj.size() == 0) && (coachesObj.size() == 0)
                         && (communitiesObj.size() == 0) && (completionsObj.size() == 0)
-                        && (CRLVisitObj.size() == 0)) {
+                        /*&& (CRLVisitObj.size() == 0)*/) {
                     // No Data Available
                     dialog.dismiss();
                     Log.d("json not pushed:::", json);
@@ -239,7 +239,7 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
                             AppDatabase.getDatabaseInstance(Dashboard.this).getCommunityDao().updateAllSentFlag(1);
                             AppDatabase.getDatabaseInstance(Dashboard.this).getCompletionDao().updateAllSentFlag(1);
                             AppDatabase.getDatabaseInstance(Dashboard.this).getCoursesDao().updateAllSentFlag(1);
-                            AppDatabase.getDatabaseInstance(Dashboard.this).getCRLVisitdao().updateAllSentFlag(1);
+//                            AppDatabase.getDatabaseInstance(Dashboard.this).getCRLVisitdao().updateAllSentFlag(1);
                             AppDatabase.getDatabaseInstance(Dashboard.this).getGroupSessionDao().updateAllSentFlag(1);
                             AppDatabase.getDatabaseInstance(Dashboard.this).getGroupVisitDao().updateAllSentFlag(1);
                             dialog.dismiss();
@@ -252,7 +252,7 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
                             AppDatabase.getDatabaseInstance(Dashboard.this).getCommunityDao().updateAllSentFlag(0);
                             AppDatabase.getDatabaseInstance(Dashboard.this).getCompletionDao().updateAllSentFlag(0);
                             AppDatabase.getDatabaseInstance(Dashboard.this).getCoursesDao().updateAllSentFlag(0);
-                            AppDatabase.getDatabaseInstance(Dashboard.this).getCRLVisitdao().updateAllSentFlag(0);
+//                            AppDatabase.getDatabaseInstance(Dashboard.this).getCRLVisitdao().updateAllSentFlag(0);
                             AppDatabase.getDatabaseInstance(Dashboard.this).getGroupVisitDao().updateAllSentFlag(0);
                             AppDatabase.getDatabaseInstance(Dashboard.this).getGroupSessionDao().updateAllSentFlag(0);
                             dialog.dismiss();

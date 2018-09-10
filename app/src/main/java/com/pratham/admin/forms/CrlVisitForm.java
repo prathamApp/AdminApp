@@ -27,7 +27,7 @@ import com.pratham.admin.R;
 import com.pratham.admin.custom.MultiSpinner;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
-import com.pratham.admin.modalclasses.CRLVisit;
+//import com.pratham.admin.modalclasses.CRLVisit;
 import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
@@ -182,6 +182,7 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
     }
 
 
+/*
     @OnClick(R.id.btn_Submit)
     public void submitForm(View view) {
         if ((sp_Village.getSelectedItemPosition() > 0) && (selectedVG.trim().length() > 0)
@@ -304,6 +305,7 @@ public class CrlVisitForm extends AppCompatActivity implements ConnectionReceive
         }
     }
 
+*/
 
     private String customParse(List<MetaData> metaDataList) {
         String json = "{";

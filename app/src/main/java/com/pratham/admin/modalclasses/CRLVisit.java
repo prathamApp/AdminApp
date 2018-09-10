@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 // Select group with their grp = present grp id
 
+/*
 @Entity
 public class CRLVisit {
     @NonNull
@@ -174,3 +175,4 @@ public class CRLVisit {
         this.sentFlag = sentFlag;
     }
 }
+*/
