@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface GroupSessionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertAllCRLVisit(List<GroupSession> GroupSessionDaoList);
+    public void insertAllGroupSession(List<GroupSession> GroupSessionDaoList);
 
     @Query("DELETE FROM GroupSession")
     public void deleteAllGroupSession();
