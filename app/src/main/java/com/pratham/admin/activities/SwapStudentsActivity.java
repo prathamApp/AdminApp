@@ -673,15 +673,20 @@ public class SwapStudentsActivity extends AppCompatActivity implements OnCheckBo
     public boolean validateGroupName() {
         boolean returnFlag = true;
         Animation vibrateAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.vibrate);
-        if ((selectedGroupNameRightSpinner.equals("SELECT GROUPS")) || (selectedGroupNameRightSpinner.equals("NO GROUPS"))) {
-            spinner_student_rightSide.startAnimation(vibrateAnimation);
-            returnFlag = false;
+        try {
+            if ((selectedGroupNameRightSpinner.equals("SELECT GROUPS")) || (selectedGroupNameRightSpinner.equals("NO GROUPS"))) {
+                spinner_student_rightSide.startAnimation(vibrateAnimation);
+                returnFlag = false;
+            }
+            if ((selectedGroupNameLeftSpinner.equals("SELECT GROUPS")) || (selectedGroupNameLeftSpinner.equals("NO GROUPS"))) {
+                spinner_group_left.startAnimation(vibrateAnimation);
+                returnFlag = false;
+            }
+            return returnFlag;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-        if ((selectedGroupNameLeftSpinner.equals("SELECT GROUPS")) || (selectedGroupNameLeftSpinner.equals("NO GROUPS"))) {
-            spinner_group_left.startAnimation(vibrateAnimation);
-            returnFlag = false;
-        }
-        return returnFlag;
     }
 
 

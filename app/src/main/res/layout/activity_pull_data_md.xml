@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.PullDataMD">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/custom_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <RadioGroup
+            android:id="@+id/rg_programs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#f2dddc"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbtn_hybrid_learning"
+                style="@style/CustomRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="@string/hybrid_learning" />
+
+            <RadioButton
+                android:id="@+id/rbtn_readindia"
+                style="@style/CustomRadioButton"
+                android:enabled="false"
+                android:text="@string/read_india" />
+
+            <RadioButton
+                android:id="@+id/rbtn_second_chance"
+                style="@style/CustomRadioButton"
+                android:enabled="true"
+                android:text="@string/second_chance" />
+
+            <RadioButton
+                android:id="@+id/rbtn_ece"
+                style="@style/CustomRadioButton"
+                android:enabled="true"
+                android:text="@string/ECE" />
+
+            <RadioButton
+                android:id="@+id/rbtn_pratham_institute"
+                style="@style/CustomRadioButton"
+                android:enabled="false"
+                android:text="@string/pratham_institute" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/spinner_LL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rg_programs"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal">
+
+            <!--Select SubjectExpert Multiselect-->
+           <!-- <com.pratham.admin.custom.MultiSpinner
+                android:id="@+id/spinner_state"
+                style="@style/spinner_style"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/gradient_spinner_selectprogram" />-->
+
+            <Spinner
+                android:id="@+id/spinner_state"
+                style="@style/spinner_style"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/gradient_spinner_selectprogram" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:elevation="8dp"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_style"
+                android:elevation="15dp"
+                android:text="save data"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

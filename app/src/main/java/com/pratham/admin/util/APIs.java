@@ -13,13 +13,13 @@ public class APIs {
     public static final String HLpullVillagesURL = "http://www.hlearning.openiscool.org/api/village/get?programId=1&state=";
     public static final String HLpullGroupsURL = "http://www.devtab.openiscool.org/api/Group?programid=1&villageId=";
     public static final String HLpullStudentsURL = "http://www.devtab.openiscool.org/api/student?programid=1&villageId=";
-    public static final String HLpullCrlsURL = "http://www.swap.prathamcms.org/api/UserList?statecode=";
+    public static final String HLpullCrlsURL = "http://www.swap.prathamcms.org/api/UserList?programId=1&statecode=";
 
     public static final String ECE = "ECE";
     public static final String ECEpullVillagesURL = "http://www.hlearning.openiscool.org/api/village/get?programId=8&state=";
     public static final String ECEpullGroupsURL = "http://www.devtab.openiscool.org/api/Group?programid=8&villageId=";
     public static final String ECEpullStudentsURL = "http://www.devtab.openiscool.org/api/student?programid=8&villageId=";
-    public static final String ECEpullCrlsURL = "http://www.swap.prathamcms.org/api/UserList?statecode=";
+    public static final String ECEpullCrlsURL = "http://www.swap.prathamcms.org/api/UserList?programId=8&statecode=";
 
 
     /* http://www.swap.prathamcms.org/api/UserList?statecode=MH&programid=1*/
@@ -55,13 +55,16 @@ public class APIs {
     public static final String PullCourses = "http://www.swap.prathamcms.org/api/course/get";
 
     // Pull HLCourseCommunity
-    public static final String PullHLCourseCommunity = "http://swap.prathamcms.org/api/HLCoach/GetHLCourseCommunity/?villageid=1&programid=1";
+   // public static final String PullHLCourseCommunity = "http://swap.prathamcms.org/api/HLCoach/GetHLCourseCommunity/?villageid=1&programid=1";
+    public static final String PullHLCourseCommunity = "http://swap.prathamcms.org/api/HLCoach/GetHLCourseCommunity/?";
 
     // Pull HLCourseCompletion
-    public static final String PullHLCourseCompletion = "http://swap.prathamcms.org/api/HLCoach/GetHLCourseCompletion/?villageid=1&programid=1";
+   // public static final String PullHLCourseCompletion = "http://swap.prathamcms.org/api/HLCoach/GetHLCourseCompletion/?villageid=1&programid=1";
+    public static final String PullHLCourseCompletion = "http://swap.prathamcms.org/api/HLCoach/GetHLCourseCompletion/?";
 
     // Pull Coaches
-    public static final String PullCoaches = "http://swap.prathamcms.org/api/HLCoach/GetHLCoachInfo/?villageid=1&programid=1";
+   // public static final String PullCoaches = "http://swap.prathamcms.org/api/HLCoach/GetHLCoachInfo/?villageid=1&programid=1";
+    public static final String PullCoaches = "http://swap.prathamcms.org/api/HLCoach/GetHLCoachInfo/?";
 
     // Push API of Forms
     public static final String PushForms = "http://www.swap.prathamcms.org/api/crlvisit/crlvisitpushdata";

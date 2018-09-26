@@ -8,6 +8,7 @@ import android.content.Context;
 import com.pratham.admin.modalclasses.Attendance;
 import com.pratham.admin.modalclasses.CRL;
 //import com.pratham.admin.modalclasses.CRLVisit;
+import com.pratham.admin.modalclasses.CRLmd;
 import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Completion;
@@ -21,7 +22,7 @@ import com.pratham.admin.modalclasses.TabTrack;
 import com.pratham.admin.modalclasses.TempStudent;
 import com.pratham.admin.modalclasses.Village;
 
-@Database(entities = {Attendance.class, CRL.class, /*CRLVisit.class,*/ Coach.class, Course.class, Community.class, Completion.class, Groups.class, Student.class, GroupSession.class,GroupVisit.class, Village.class, MetaData.class, TempStudent.class, TabTrack.class}, version = 3, exportSchema = false)
+@Database(entities = {Attendance.class, CRL.class,CRLmd.class, /*CRLVisit.class,*/ Coach.class, Course.class, Community.class, Completion.class, Groups.class, Student.class, GroupSession.class,GroupVisit.class, Village.class, MetaData.class, TempStudent.class, TabTrack.class}, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase DATABASEINSTANCE;
@@ -29,6 +30,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract AttendanceDao getAttendanceDao();
 
     public abstract CRLdao getCRLdao();
+    public abstract CRLmd_dao getCRLmd_dao();
 
 //    public abstract CRLVisitdao getCRLVisitdao();
 

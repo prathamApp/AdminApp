@@ -1,3 +1,5 @@
+
+
 package com.pratham.admin.activities;
 
 import android.app.AlertDialog;
@@ -55,6 +57,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.pratham.admin.util.APIs.ECE;
 import static com.pratham.admin.util.APIs.HL;
 import static com.pratham.admin.util.APIs.PI;
 import static com.pratham.admin.util.APIs.PullCoaches;
@@ -255,35 +258,9 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                                 break;
 
                         }
+                        btn_saveData.setEnabled(true);
+                        btn_pullData.clearAnimation();
 
-                        try {
-                            // Pull Courses
-                            pullCourses();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            // Pull Coaches
-                            pullCoaches();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                        try {
-                            // HLCourseCommunity
-                            pullHLCourseCommunity();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            // HLCourseCompletion
-                            pullHLCourseCompletion();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                        // validate data (if all good then enable btn_save)
-                        validateData();
 
                     } else {
                         btn_saveData.setEnabled(false);
@@ -303,8 +280,9 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
         }
     }
 
+
     private void validateData() {
-        if (!errorDetected && spinner_state.getSelectedItemPosition() > 0 && spinner_block.getSelectedItemPosition() > 0) {
+        if (spinner_state.getSelectedItemPosition() > 0 && spinner_block.getSelectedItemPosition() > 0) {
             // all good
             btn_saveData.setEnabled(true);
             btn_saveData.startAnimation(animation);
@@ -316,182 +294,6 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
         }
     }
 
-    private void pullCoaches() {
-        switch (selectedProgram) {
-            case HL:
-                showDialoginApiCalling(HL, "Pulling Coaches !!!");
-                break;
-            case RI:
-                showDialoginApiCalling(RI, "Pulling Coaches !!!");
-                break;
-            case SC:
-                showDialoginApiCalling(SC, "Pulling Coaches !!!");
-                break;
-            case PI:
-                showDialoginApiCalling(PI, "Pulling Coaches !!!");
-                break;
-        }
-
-        AndroidNetworking.get(PullCoaches).build().getAsJSONArray(new JSONArrayRequestListener() {
-            @Override
-            public void onResponse(JSONArray response) {
-                String json = response.toString();
-                Gson gson = new Gson();
-                Type listType = new TypeToken<ArrayList<Coach>>() {
-                }.getType();
-                ArrayList<Coach> modalCoachList = gson.fromJson(json, listType);
-                CoachList.clear();
-                CoachList.addAll(modalCoachList);
-                dismissShownDialog();
-            }
-
-            @Override
-            public void onError(ANError error) {
-                errorDetected = true;
-                spinner_state.setSelection(0);
-                if (!internetIsAvailable) {
-                    Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(SelectProgram.this, "Pull Coaches Failed.", Toast.LENGTH_LONG).show();
-                }
-                dismissShownDialog();
-                apiLoadFlag = false;
-            }
-        });
-    }
-
-    private void pullCourses() {
-
-        switch (selectedProgram) {
-            case HL:
-                showDialoginApiCalling(HL, "Pulling Courses !!!");
-                break;
-            case RI:
-                showDialoginApiCalling(RI, "Pulling Courses !!!");
-                break;
-            case SC:
-                showDialoginApiCalling(SC, "Pulling Courses !!!");
-                break;
-            case PI:
-                showDialoginApiCalling(PI, "Pulling Courses !!!");
-                break;
-        }
-
-        AndroidNetworking.get(PullCourses).build().getAsJSONArray(new JSONArrayRequestListener() {
-            @Override
-            public void onResponse(JSONArray response) {
-                String json = response.toString();
-                Gson gson = new Gson();
-                Type listType = new TypeToken<ArrayList<Course>>() {
-                }.getType();
-                ArrayList<Course> modalCoursesList = gson.fromJson(json, listType);
-                CourseList.clear();
-                CourseList.addAll(modalCoursesList);
-                dismissShownDialog();
-            }
-
-            @Override
-            public void onError(ANError error) {
-                errorDetected = true;
-                spinner_state.setSelection(0);
-                if (!internetIsAvailable) {
-                    Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(SelectProgram.this, "PullCourses Failed.", Toast.LENGTH_LONG).show();
-                }
-                dismissShownDialog();
-                apiLoadFlag = false;
-            }
-        });
-    }
-
-    private void pullHLCourseCommunity() {
-        switch (selectedProgram) {
-            case HL:
-                showDialoginApiCalling(HL, "Pulling Course Community !!!");
-                break;
-            case RI:
-                showDialoginApiCalling(RI, "Pulling Course Community !!!");
-                break;
-            case SC:
-                showDialoginApiCalling(SC, "Pulling Course Community !!!");
-                break;
-            case PI:
-                showDialoginApiCalling(PI, "Pulling Course Community !!!");
-                break;
-        }
-
-        AndroidNetworking.get(PullHLCourseCommunity).build().getAsJSONArray(new JSONArrayRequestListener() {
-            @Override
-            public void onResponse(JSONArray response) {
-                String json = response.toString();
-                Gson gson = new Gson();
-                Type listType = new TypeToken<ArrayList<Course>>() {
-                }.getType();
-                ArrayList<Community> modalCommunityList = gson.fromJson(json, listType);
-                CommunityList.clear();
-                CommunityList.addAll(modalCommunityList);
-                dismissShownDialog();
-            }
-
-            @Override
-            public void onError(ANError error) {
-                errorDetected = true;
-//                spinner_state.setSelection(0);
-                if (!internetIsAvailable) {
-                    Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(SelectProgram.this, "PullCourseCommunity Failed.", Toast.LENGTH_LONG).show();
-                }
-                dismissShownDialog();
-                apiLoadFlag = false;
-            }
-        });
-    }
-
-    private void pullHLCourseCompletion() {
-        switch (selectedProgram) {
-            case HL:
-                showDialoginApiCalling(HL, "Pulling Course Completion !!!");
-                break;
-            case RI:
-                showDialoginApiCalling(RI, "Pulling Course Completion !!!");
-                break;
-            case SC:
-                showDialoginApiCalling(SC, "Pulling Course Completion !!!");
-                break;
-            case PI:
-                showDialoginApiCalling(PI, "Pulling Course Completion !!!");
-                break;
-        }
-
-        AndroidNetworking.get(PullHLCourseCompletion).build().getAsJSONArray(new JSONArrayRequestListener() {
-            @Override
-            public void onResponse(JSONArray response) {
-                String json = response.toString();
-                Gson gson = new Gson();
-                Type listType = new TypeToken<ArrayList<Course>>() {
-                }.getType();
-                ArrayList<Completion> modalCompletionList = gson.fromJson(json, listType);
-                CompletionList.clear();
-                CompletionList.addAll(modalCompletionList);
-                dismissShownDialog();
-            }
-
-            @Override
-            public void onError(ANError error) {
-                errorDetected = true;
-//                spinner_state.setSelection(0);
-                if (!internetIsAvailable) {
-                    Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(SelectProgram.this, "PullCourseCompletion Failed.", Toast.LENGTH_LONG).show();
-                }
-                dismissShownDialog();
-                apiLoadFlag = false;
-            }
-        });
-    }
 
     public void loadAPI(final String url, final String type, final String program) {
         showDialoginApiCalling(program, type);
@@ -507,14 +309,19 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
             @Override
             public void onError(ANError error) {
                 errorDetected = true;
-                spinner_state.setSelection(0);
+                if (type.equals("village")) {
+                    spinner_state.setSelection(0);
+                    dismissShownDialog();
+                }
+                /*  dismissShownDialog();*/
+                parseJSON("[]", type, program);
                 if (!internetIsAvailable) {
                     Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(SelectProgram.this, "Load API Failed.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SelectProgram.this, "Load API Failed." + type, Toast.LENGTH_LONG).show();
                 }
                 // Log.d("error", "" + error);
-                dismissShownDialog();
+
                 apiLoadFlag = false;
             }
         });
@@ -556,6 +363,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
 
     private void loadCRL(String json, String program) {
         CRLList.clear();
+
         Gson gson = new Gson();
         Type listType = new TypeToken<ArrayList<CRL>>() {
         }.getType();
@@ -595,23 +403,31 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
         studentList.addAll(studentMoadal);
         if (studLoadCount == villageId.size()) {
             dismissShownDialog();
+
+
+            // mayur cha code
+
+            formsAPI();
+
         }
         //  Log.d("prathamS", studentList.toString());
     }
 
+
     private void loadGroup(String json, String program) {
         //  groupsList.clear();
         groupLoadCount++;
-        Gson gson = new Gson();
-        Type listType = new TypeToken<ArrayList<Groups>>() {
-        }.getType();
-        ArrayList<Groups> groupsMoadal = gson.fromJson(json, listType);
-        //  Log.d("prathamG", groupsList.toString());
-        groupsList.addAll(groupsMoadal);
-
+        if (!json.isEmpty()) {
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ArrayList<Groups>>() {
+            }.getType();
+            ArrayList<Groups> groupsMoadal = gson.fromJson(json, listType);
+            //  Log.d("prathamG", groupsList.toString());
+            groupsList.addAll(groupsMoadal);
+        }
         if (groupLoadCount == villageId.size()) {
-            if (groupsList.isEmpty()) {
-                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            //if (groupsList.isEmpty()) {
+               /* AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                 alertDialog.setTitle("No Groups Available");
                 alertDialog.setIcon(R.drawable.ic_error_outline_black_24dp);
                 //alertDialog.setMessage("No Groups Available");
@@ -622,29 +438,32 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                     }
                 });
                 btn_pullData.clearAnimation();
-                btn_pullData.setEnabled(false);
-                dismissShownDialog();
+                btn_pullData.setEnabled(false)
                 alertDialog.show();
-            } else {
-                for (int j = 0; j < villageId.size(); j++) {
-                    switch (program) {
-                        case APIs.HL:
-                            loadAPI(APIs.HLpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.HL);
-                            break;
-                        case APIs.ECE:
-                            loadAPI(APIs.ECEpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.ECE);
-                            break;
-                        case RI:
-                            loadAPI(APIs.RIpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, RI);
-                            break;
+                alertDialog.show();*/
+            ;
+            /*  dismissShownDialog();*/
 
-                        case SC:
-                            loadAPI(APIs.SCpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, SC);
-                            break;
-                        case PI:
-                            loadAPI(APIs.PIpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, PI);
-                            break;
-                    }
+            //  } else {
+            for (int j = 0; j < villageId.size(); j++) {
+                switch (program) {
+                    case APIs.HL:
+                        loadAPI(APIs.HLpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.HL);
+                        break;
+                    case APIs.ECE:
+                        loadAPI(APIs.ECEpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.ECE);
+                        break;
+                    case RI:
+                        loadAPI(APIs.RIpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, RI);
+                        break;
+
+                    case SC:
+                        loadAPI(APIs.SCpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, SC);
+                        break;
+                    case PI:
+                        loadAPI(APIs.PIpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, PI);
+                        break;
+                    // }
                 }
             }
         }
@@ -708,7 +527,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                         studLoadCount = 0;
                         SelectVillageDialog selectVillageDialog = new SelectVillageDialog(SelectProgram.this, villageName);
                         selectVillageDialog.show();
-                        dismissShownDialog();
+                        //  dismissShownDialog();
                     }
                 } else {
                     // spinner_village.setSelection(0);
@@ -734,19 +553,9 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
     public void saveData() {
         btn_saveData.clearAnimation();
         btn_saveData.setEnabled(false);
-        AppDatabase.getDatabaseInstance(this).getGroupDao().deleteAllGroups();
-        AppDatabase.getDatabaseInstance(this).getStudentDao().deleteAllStudents();
-        AppDatabase.getDatabaseInstance(this).getVillageDao().deleteAllVillages();
-        AppDatabase.getDatabaseInstance(this).getCRLdao().deleteAllCRLs();
 
-        // Save Pulled Data
-        AppDatabase.getDatabaseInstance(this).getCoursesDao().deleteAllCourses();
-        AppDatabase.getDatabaseInstance(this).getCoachDao().deleteAllCoaches();
-        AppDatabase.getDatabaseInstance(this).getCommunityDao().deleteAllCommunity();
-        AppDatabase.getDatabaseInstance(this).getCompletionDao().deleteAllCompletion();
-
-        if (groupsList.isEmpty()) {
-            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        //  if (groupsList.isEmpty()) {
+        /*    AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("No Groups Available");
             alertDialog.setIcon(R.drawable.ic_error_outline_black_24dp);
             //alertDialog.setMessage("No Groups Available");
@@ -756,12 +565,62 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
 
                 }
             });
-            alertDialog.show();
+            alertDialog.show();*/
 
-        } else {
-            new SaveDataTask(SelectProgram.this, SelectProgram.this, CRLList, studentList, groupsList, villageId, CourseList, CoachList, CommunityList, CompletionList).execute();
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SelectProgram.this, android.R.style.Theme_Material_Light_Dialog);
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.setTitle("Data Preview");
+        dialogBuilder.setMessage("CRLList : " + CRLList.size() + "\nstudentList : " + studentList.size() + "\ngroupsList : " + groupsList.size() + "\nCourseList : " + CourseList.size() + "\nCoachList : " + CoachList.size() + "\nCommunityList : " + CommunityList.size() + "\nCompletionList : " + CompletionList.size());
+        if (CRLList.size() > 0) {
+            dialogBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    try {
+                        AppDatabase.getDatabaseInstance(SelectProgram.this).getGroupDao().deleteAllGroups();
+                        AppDatabase.getDatabaseInstance(SelectProgram.this).getStudentDao().deleteAllStudents();
+                        AppDatabase.getDatabaseInstance(SelectProgram.this).getVillageDao().deleteAllVillages();
+                        AppDatabase.getDatabaseInstance(SelectProgram.this).getCRLdao().deleteAllCRLs();
+
+                        // Save Pulled Data
+                        AppDatabase.getDatabaseInstance(SelectProgram.this).getCoursesDao().deleteAllCourses();
+                        AppDatabase.getDatabaseInstance(SelectProgram.this).getCoachDao().deleteAllCoaches();
+                        AppDatabase.getDatabaseInstance(SelectProgram.this).getCommunityDao().deleteAllCommunity();
+                        AppDatabase.getDatabaseInstance(SelectProgram.this).getCompletionDao().deleteAllCompletion();
+
+
+                        new SaveDataTask(SelectProgram.this, SelectProgram.this, CRLList, studentList, groupsList, villageId, CourseList, CoachList, CommunityList, CompletionList).execute();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                    }
+
+                }
+            });
         }
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                btn_pullData.startAnimation(animation);
+                btn_saveData.setEnabled(true);
+                CRLList.clear();
+                studentList.clear();
+                groupsList.clear();
+                villageId.clear();
+                CourseList.clear();
+                CoachList.clear();
+                CommunityList.clear();
+                CompletionList.clear();
+                spinner_block.setSelection(0);
+                spinner_state.setSelection(0);
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
 
+
+
+       /* } else {
+           // new SaveDataTask(SelectProgram.this, SelectProgram.this, CRLList, studentList, groupsList, villageId, CourseList, CoachList, CommunityList, CompletionList).execute();
+        }
+*/
     }
 
     private void saveDataToSharedPreference() {
@@ -811,5 +670,249 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
             btn_pullData.setEnabled(true);
             btn_pullData.startAnimation(animation);
         }
+    }
+
+
+    private void formsAPI() {
+        CompletionList.clear();
+        CommunityList.clear();
+        CoachList.clear();
+
+        try {
+            // Pull Courses
+            pullCourses();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            // Pull Coaches
+            for (Village village : villageId) {
+                pullCoaches(village.getVillageId());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            // HLCourseCommunity
+            for (Village village : villageId) {
+                pullHLCourseCommunity(village.getVillageId());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            // HLCourseCompletion
+            for (Village village : villageId) {
+                pullHLCourseCompletion(village.getVillageId());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        // validate data (if all good then enable btn_save)
+        validateData();
+    }
+
+    private void pullCoaches(String vID) {
+        String couchUrl = PullCoaches;
+        switch (selectedProgram) {
+            case HL:
+                showDialoginApiCalling(HL, "Pulling Coaches !!!");
+                couchUrl = couchUrl + "villageid=" + vID + "&programid=1";
+                break;
+            case RI:
+                showDialoginApiCalling(RI, "Pulling Coaches !!!");
+                couchUrl = couchUrl + "villageid=" + vID + "&programid=2";
+                break;
+            case ECE:
+                showDialoginApiCalling(RI, "Pulling Coaches !!!");
+                couchUrl = couchUrl + "villageid=" + vID + "&programid=8";
+                break;
+            case SC:
+                showDialoginApiCalling(SC, "Pulling Coaches !!!");
+                couchUrl = couchUrl + "villageid=" + vID + "&programid=3";
+                break;
+            case PI:
+                showDialoginApiCalling(PI, "Pulling Coaches !!!");
+                couchUrl = couchUrl + "villageid=" + vID + "&programid=4";
+                break;
+        }
+
+        AndroidNetworking.get(couchUrl).build().getAsJSONArray(new JSONArrayRequestListener() {
+            @Override
+            public void onResponse(JSONArray response) {
+                String json = response.toString();
+                Gson gson = new Gson();
+                Type listType = new TypeToken<ArrayList<Coach>>() {
+                }.getType();
+                ArrayList<Coach> modalCoachList = gson.fromJson(json, listType);
+                CoachList.addAll(modalCoachList);
+                dismissShownDialog();
+            }
+
+            @Override
+            public void onError(ANError error) {
+                errorDetected = true;
+                if (!internetIsAvailable) {
+                    Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(SelectProgram.this, "Pull Coaches Failed.", Toast.LENGTH_LONG).show();
+                }
+                dismissShownDialog();
+                apiLoadFlag = false;
+            }
+        });
+    }
+
+
+    private void pullHLCourseCommunity(String vID) {
+        String pullHLCourseCommunityUrl = PullHLCourseCommunity + "villageid=" + vID + "&programid=";
+        switch (selectedProgram) {
+            case HL:
+                showDialoginApiCalling(HL, "Pulling Course Community !!!");
+                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 1;
+                break;
+            case RI:
+                showDialoginApiCalling(RI, "Pulling Course Community !!!");
+                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 2;
+                break;
+            case SC:
+                showDialoginApiCalling(SC, "Pulling Course Community !!!");
+                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 3;
+                break;
+            case PI:
+                showDialoginApiCalling(PI, "Pulling Course Community !!!");
+                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 4;
+                break;
+            case ECE:
+                showDialoginApiCalling(PI, "Pulling Course Community !!!");
+                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 8;
+                break;
+        }
+
+        AndroidNetworking.get(pullHLCourseCommunityUrl).build().getAsJSONArray(new JSONArrayRequestListener() {
+            @Override
+            public void onResponse(JSONArray response) {
+                String json = response.toString();
+                Gson gson = new Gson();
+                Type listType = new TypeToken<ArrayList<Course>>() {
+                }.getType();
+                ArrayList<Community> modalCommunityList = gson.fromJson(json, listType);
+                CommunityList.addAll(modalCommunityList);
+                dismissShownDialog();
+            }
+
+            @Override
+            public void onError(ANError error) {
+                errorDetected = true;
+//                spinner_state.setSelection(0);
+                if (!internetIsAvailable) {
+                    Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(SelectProgram.this, "PullCourseCommunity Failed.", Toast.LENGTH_LONG).show();
+                }
+                dismissShownDialog();
+                apiLoadFlag = false;
+            }
+        });
+    }
+
+    private void pullCourses() {
+        switch (selectedProgram) {
+            case HL:
+                showDialoginApiCalling(HL, "Pulling Courses !!!");
+                break;
+            case RI:
+                showDialoginApiCalling(RI, "Pulling Courses !!!");
+                break;
+            case SC:
+                showDialoginApiCalling(SC, "Pulling Courses !!!");
+                break;
+            case PI:
+                showDialoginApiCalling(PI, "Pulling Courses !!!");
+                break;
+        }
+
+        AndroidNetworking.get(PullCourses).build().getAsJSONArray(new JSONArrayRequestListener() {
+            @Override
+            public void onResponse(JSONArray response) {
+                String json = response.toString();
+                Gson gson = new Gson();
+                Type listType = new TypeToken<ArrayList<Course>>() {
+                }.getType();
+                ArrayList<Course> modalCoursesList = gson.fromJson(json, listType);
+                CourseList.clear();
+                CourseList.addAll(modalCoursesList);
+                dismissShownDialog();
+            }
+
+            @Override
+            public void onError(ANError error) {
+                errorDetected = true;
+                if (!internetIsAvailable) {
+                    Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(SelectProgram.this, "PullCourses Failed.", Toast.LENGTH_LONG).show();
+                }
+                dismissShownDialog();
+                apiLoadFlag = false;
+            }
+        });
+    }
+
+
+    private void pullHLCourseCompletion(String vID) {
+        String PullHLCourseCompletionUrl = PullHLCourseCompletion + "villageid=" + vID + "&programid=";
+        switch (selectedProgram) {
+            case HL:
+                showDialoginApiCalling(HL, "Pulling Course Completion !!!");
+                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 1;
+                break;
+            case RI:
+                showDialoginApiCalling(RI, "Pulling Course Completion !!!");
+                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 2;
+                break;
+            case SC:
+                showDialoginApiCalling(SC, "Pulling Course Completion !!!");
+                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 3;
+
+                break;
+            case PI:
+                showDialoginApiCalling(PI, "Pulling Course Completion !!!");
+                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 4;
+                break;
+            case ECE:
+                showDialoginApiCalling(PI, "Pulling Course Completion !!!");
+                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 8;
+                break;
+        }
+
+        AndroidNetworking.get(PullHLCourseCompletionUrl).build().getAsJSONArray(new JSONArrayRequestListener() {
+            @Override
+            public void onResponse(JSONArray response) {
+                String json = response.toString();
+                Gson gson = new Gson();
+                Type listType = new TypeToken<ArrayList<Course>>() {
+                }.getType();
+                ArrayList<Completion> modalCompletionList = gson.fromJson(json, listType);
+                CompletionList.addAll(modalCompletionList);
+                dismissShownDialog();
+            }
+
+            @Override
+            public void onError(ANError error) {
+                errorDetected = true;
+//                spinner_state.setSelection(0);
+                if (!internetIsAvailable) {
+                    Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(SelectProgram.this, "PullCourseCompletion Failed.", Toast.LENGTH_LONG).show();
+                }
+                dismissShownDialog();
+                apiLoadFlag = false;
+            }
+        });
     }
 }
