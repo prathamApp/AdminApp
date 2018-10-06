@@ -124,7 +124,11 @@ public class CustomDialog extends Dialog implements ConnectionReceiverListener {
                 AppDatabase.destroyInstance();
                 dismiss();
                 switch (program) {
+                    //todo urban program
                     case APIs.HL:
+                        uploadAPI(APIs.HLpushToServerURL, json);
+                        break;
+                    case APIs.UP:
                         uploadAPI(APIs.HLpushToServerURL, json);
                         break;
                     case APIs.RI:

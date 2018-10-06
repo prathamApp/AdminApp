@@ -60,6 +60,11 @@
                     style="@style/CustomRadioButton"
                     android:enabled="false"
                     android:text="@string/pratham_institute" />
+
+                <RadioButton
+                    android:id="@+id/rbtn_urbanProgram"
+                    style="@style/CustomRadioButton"
+                    android:text="@string/urbon_program" />
             </RadioGroup>
 
             <LinearLayout

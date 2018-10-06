@@ -1,7 +1,6 @@
 package com.pratham.admin.modalclasses;
 
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -13,51 +12,46 @@ public class Community {
     @PrimaryKey
     @SerializedName("CommunityID")
     public String CommunityID;
+    @SerializedName("Community")
+    public String Community; // Community/School
     @SerializedName("VillageID")
     public String VillageID;
-    @SerializedName("GroupID")
+    @SerializedName("ProgramId")
+    public String ProgramId;
+    @SerializedName("GroupId")
     public String GroupID;
     @SerializedName("CourseAdded")
     public String CourseAdded;
     @SerializedName("TopicAdded")
     public String TopicAdded;
+    @SerializedName("CoachId")
+    public String CoachID;
     @SerializedName("StartDate")
     public String StartDate;
     @SerializedName("EndDate")
     public String EndDate;
-    @SerializedName("CoachID")
-    public String CoachID;
-    @SerializedName("Community")
-    public String Community; // Community/School
-    @SerializedName("AddedCourseID")
-    public String AddedCourseID;// Courses IDs
-    @SerializedName("AddedTopicsID")
-    public String AddedTopicsID;// Topics IDs
     @SerializedName("ParentParticipation")
     public int ParentParticipation;
     @SerializedName("PresentStudent")
     public int PresentStudent; // not available
+
+    @SerializedName("AddedCourseID")
+    public String AddedCourseID;// Courses IDs
+    @SerializedName("AddedTopicsID")
+    public String AddedTopicsID;// Topics IDs
+
+    @SerializedName("CreatedBy")
+    public String CreatedBy;
+    @SerializedName("CreatedDatet")
+    public String CreatedDate;
+
     @SerializedName("sentFlag")
     public int sentFlag;
 
+
     @Override
     public String toString() {
-        return "Community{" +
-                "CommunityID='" + CommunityID + '\'' +
-                ", VillageID='" + VillageID + '\'' +
-                ", GroupID='" + GroupID + '\'' +
-                ", CourseAdded='" + CourseAdded + '\'' +
-                ", TopicAdded='" + TopicAdded + '\'' +
-                ", StartDate='" + StartDate + '\'' +
-                ", EndDate='" + EndDate + '\'' +
-                ", CoachID='" + CoachID + '\'' +
-                ", Community='" + Community + '\'' +
-                ", AddedCourseID='" + AddedCourseID + '\'' +
-                ", AddedTopicsID='" + AddedTopicsID + '\'' +
-                ", ParentParticipation=" + ParentParticipation +
-                ", PresentStudent=" + PresentStudent +
-                ", sentFlag=" + sentFlag +
-                '}';
+        return "Community{" + "CommunityID='" + CommunityID + '\'' + ", Community='" + Community + '\'' + ", VillageID='" + VillageID + '\'' + ", GroupID='" + GroupID + '\'' + ", CourseAdded='" + CourseAdded + '\'' + ", TopicAdded='" + TopicAdded + '\'' + ", CoachID='" + CoachID + '\'' + ", StartDate='" + StartDate + '\'' + ", EndDate='" + EndDate + '\'' + ", ParentParticipation=" + ParentParticipation + ", PresentStudent=" + PresentStudent + ", AddedCourseID='" + AddedCourseID + '\'' + ", AddedTopicsID='" + AddedTopicsID + '\'' + ", CreatedBy='" + CreatedBy + '\'' + ", CreatedDate='" + CreatedDate + '\'' + ", sentFlag=" + sentFlag + '}';
     }
 
     @NonNull
@@ -67,6 +61,14 @@ public class Community {
 
     public void setCommunityID(@NonNull String communityID) {
         CommunityID = communityID;
+    }
+
+    public String getCommunity() {
+        return Community;
+    }
+
+    public void setCommunity(String community) {
+        Community = community;
     }
 
     public String getVillageID() {
@@ -101,6 +103,14 @@ public class Community {
         TopicAdded = topicAdded;
     }
 
+    public String getCoachID() {
+        return CoachID;
+    }
+
+    public void setCoachID(String coachID) {
+        CoachID = coachID;
+    }
+
     public String getStartDate() {
         return StartDate;
     }
@@ -117,20 +127,20 @@ public class Community {
         EndDate = endDate;
     }
 
-    public String getCoachID() {
-        return CoachID;
+    public int getParentParticipation() {
+        return ParentParticipation;
     }
 
-    public void setCoachID(String coachID) {
-        CoachID = coachID;
+    public void setParentParticipation(int parentParticipation) {
+        ParentParticipation = parentParticipation;
     }
 
-    public String getCommunity() {
-        return Community;
+    public int getPresentStudent() {
+        return PresentStudent;
     }
 
-    public void setCommunity(String community) {
-        Community = community;
+    public void setPresentStudent(int presentStudent) {
+        PresentStudent = presentStudent;
     }
 
     public String getAddedCourseID() {
@@ -149,20 +159,20 @@ public class Community {
         AddedTopicsID = addedTopicsID;
     }
 
-    public int getParentParticipation() {
-        return ParentParticipation;
+    public String getCreatedBy() {
+        return CreatedBy;
     }
 
-    public void setParentParticipation(int parentParticipation) {
-        ParentParticipation = parentParticipation;
+    public void setCreatedBy(String createdBy) {
+        CreatedBy = createdBy;
     }
 
-    public int getPresentStudent() {
-        return PresentStudent;
+    public String getCreatedDate() {
+        return CreatedDate;
     }
 
-    public void setPresentStudent(int presentStudent) {
-        PresentStudent = presentStudent;
+    public void setCreatedDate(String createdDate) {
+        CreatedDate = createdDate;
     }
 
     public int getSentFlag() {

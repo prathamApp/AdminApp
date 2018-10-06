@@ -27,11 +27,11 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.async.SaveDataTask;
-import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.OnSavedData;
 import com.pratham.admin.interfaces.VillageListLisner;
@@ -187,6 +187,11 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                             url = APIs.HLpullVillagesURL + stateCode[selectedState];
                             loadAPI(url, village, APIs.HL);
                             break;
+                        case APIs.UP:
+                            //todo urban
+                            url = APIs.UPpullVillagesURL + stateCode[selectedState];
+                            loadAPI(url, village, APIs.UP);
+                            break;
                         case APIs.ECE:
                             url = APIs.ECEpullVillagesURL + stateCode[selectedState];
                             loadAPI(url, village, APIs.ECE);
@@ -239,6 +244,11 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                             case APIs.HL:
                                 String url = APIs.HLpullCrlsURL + stateCode[selectedState] + "&programid=1";
                                 loadAPI(url, APIs.CRL, APIs.HL);
+                                break;
+                            case APIs.UP:
+                                //todo urban
+                                String url11 = APIs.UPpullCrlsURL + stateCode[selectedState] + "&programid=1";
+                                loadAPI(url11, APIs.CRL, APIs.UP);
                                 break;
                             case APIs.ECE:
                                 String url5 = APIs.ECEpullCrlsURL + stateCode[selectedState] + "&programid=8";
@@ -375,6 +385,9 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 case APIs.HL:
                     loadAPI(APIs.HLpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, APIs.HL);
                     break;
+                case APIs.UP:
+                    loadAPI(APIs.UPpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, APIs.UP);
+                    break;
                 case APIs.ECE:
                     loadAPI(APIs.ECEpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, APIs.ECE);
                     break;
@@ -403,8 +416,6 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
         studentList.addAll(studentMoadal);
         if (studLoadCount == villageId.size()) {
             dismissShownDialog();
-
-
             // mayur cha code
 
             formsAPI();
@@ -449,6 +460,9 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 switch (program) {
                     case APIs.HL:
                         loadAPI(APIs.HLpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.HL);
+                        break;
+                    case APIs.UP:
+                        loadAPI(APIs.UPpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.UP);
                         break;
                     case APIs.ECE:
                         loadAPI(APIs.ECEpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.ECE);
@@ -575,7 +589,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
             dialogBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     try {
-                        AppDatabase.getDatabaseInstance(SelectProgram.this).getGroupDao().deleteAllGroups();
+                       /* AppDatabase.getDatabaseInstance(SelectProgram.this).getGroupDao().deleteAllGroups();
                         AppDatabase.getDatabaseInstance(SelectProgram.this).getStudentDao().deleteAllStudents();
                         AppDatabase.getDatabaseInstance(SelectProgram.this).getVillageDao().deleteAllVillages();
                         AppDatabase.getDatabaseInstance(SelectProgram.this).getCRLdao().deleteAllCRLs();
@@ -584,10 +598,15 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                         AppDatabase.getDatabaseInstance(SelectProgram.this).getCoursesDao().deleteAllCourses();
                         AppDatabase.getDatabaseInstance(SelectProgram.this).getCoachDao().deleteAllCoaches();
                         AppDatabase.getDatabaseInstance(SelectProgram.this).getCommunityDao().deleteAllCommunity();
-                        AppDatabase.getDatabaseInstance(SelectProgram.this).getCompletionDao().deleteAllCompletion();
+                        AppDatabase.getDatabaseInstance(SelectProgram.this).getCompletionDao().deleteAllCompletion();*/
 
 
-                        new SaveDataTask(SelectProgram.this, SelectProgram.this, CRLList, studentList, groupsList, villageId, CourseList, CoachList, CommunityList, CompletionList).execute();
+                        try {
+                            new SaveDataTask(SelectProgram.this, SelectProgram.this, CRLList, studentList, groupsList, villageId, CourseList, CoachList, CommunityList, CompletionList).execute();
+                        } catch (Exception e) {
+                            Toast.makeText(SelectProgram.this, "Insertion Fail", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {
@@ -722,6 +741,11 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 showDialoginApiCalling(HL, "Pulling Coaches !!!");
                 couchUrl = couchUrl + "villageid=" + vID + "&programid=1";
                 break;
+            case APIs.UP:
+                //todo urban
+                showDialoginApiCalling(APIs.UP, "Pulling Coaches !!!");
+                couchUrl = couchUrl + "villageid=" + vID + "&programid=1";
+                break;
             case RI:
                 showDialoginApiCalling(RI, "Pulling Coaches !!!");
                 couchUrl = couchUrl + "villageid=" + vID + "&programid=2";
@@ -745,10 +769,14 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
             public void onResponse(JSONArray response) {
                 String json = response.toString();
                 Gson gson = new Gson();
-                Type listType = new TypeToken<ArrayList<Coach>>() {
-                }.getType();
-                ArrayList<Coach> modalCoachList = gson.fromJson(json, listType);
-                CoachList.addAll(modalCoachList);
+                try {
+                    Type listType = new TypeToken<ArrayList<Coach>>() {
+                    }.getType();
+                    ArrayList<Coach> modalCoachList = gson.fromJson(json, listType);
+                    CoachList.addAll(modalCoachList);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
                 dismissShownDialog();
             }
 
@@ -774,6 +802,10 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 showDialoginApiCalling(HL, "Pulling Course Community !!!");
                 pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 1;
                 break;
+            case APIs.UP:
+                showDialoginApiCalling(APIs.UP, "Pulling Course Community !!!");
+                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 1;
+                break;
             case RI:
                 showDialoginApiCalling(RI, "Pulling Course Community !!!");
                 pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 2;
@@ -797,10 +829,14 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
             public void onResponse(JSONArray response) {
                 String json = response.toString();
                 Gson gson = new Gson();
-                Type listType = new TypeToken<ArrayList<Course>>() {
-                }.getType();
-                ArrayList<Community> modalCommunityList = gson.fromJson(json, listType);
-                CommunityList.addAll(modalCommunityList);
+                try {
+                    Type listType = new TypeToken<ArrayList<Community>>() {
+                    }.getType();
+                    ArrayList<Community> modalCommunityList = gson.fromJson(json, listType);
+                    CommunityList.addAll(modalCommunityList);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
                 dismissShownDialog();
             }
 
@@ -824,6 +860,9 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
             case HL:
                 showDialoginApiCalling(HL, "Pulling Courses !!!");
                 break;
+            case APIs.UP:
+                showDialoginApiCalling(APIs.UP, "Pulling Courses !!!");
+                break;
             case RI:
                 showDialoginApiCalling(RI, "Pulling Courses !!!");
                 break;
@@ -839,12 +878,15 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
             @Override
             public void onResponse(JSONArray response) {
                 String json = response.toString();
-                Gson gson = new Gson();
-                Type listType = new TypeToken<ArrayList<Course>>() {
-                }.getType();
-                ArrayList<Course> modalCoursesList = gson.fromJson(json, listType);
-                CourseList.clear();
-                CourseList.addAll(modalCoursesList);
+                try {
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<ArrayList<Course>>() {
+                    }.getType();
+                    ArrayList<Course> modalCoursesList = gson.fromJson(json, listType);
+                    CourseList.addAll(modalCoursesList);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
                 dismissShownDialog();
             }
 
@@ -870,6 +912,11 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 showDialoginApiCalling(HL, "Pulling Course Completion !!!");
                 PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 1;
                 break;
+            case APIs.UP:
+                //todo Urban
+                showDialoginApiCalling(APIs.UP, "Pulling Course Completion !!!");
+                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 1;
+                break;
             case RI:
                 showDialoginApiCalling(RI, "Pulling Course Completion !!!");
                 PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 2;
@@ -893,11 +940,15 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
             @Override
             public void onResponse(JSONArray response) {
                 String json = response.toString();
-                Gson gson = new Gson();
-                Type listType = new TypeToken<ArrayList<Course>>() {
-                }.getType();
-                ArrayList<Completion> modalCompletionList = gson.fromJson(json, listType);
-                CompletionList.addAll(modalCompletionList);
+                try {
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<ArrayList<Completion>>() {
+                    }.getType();
+                    ArrayList<Completion> modalCompletionList = gson.fromJson(json, listType);
+                    CompletionList.addAll(modalCompletionList);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
                 dismissShownDialog();
             }
 

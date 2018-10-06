@@ -11,7 +11,7 @@ public class Coach {
 
     @NonNull
     @PrimaryKey
-    @SerializedName("CoachID")
+    @SerializedName("CoachId")
     public String CoachID;
     @SerializedName("CoachName")
     public String CoachName;
@@ -29,41 +29,28 @@ public class Coach {
     public String CoachEducation;
     @SerializedName("CoachGroupID")
     public String CoachGroupID;
+
+    @SerializedName("CoachVillageID")
+    public String CoachVillageID;
+
     @SerializedName("StartDate")
     public String StartDate;
     @SerializedName("EndDate")
     public String EndDate;
     @SerializedName("CoachActive")
     public int CoachActive;
+
     @SerializedName("CreatedBy")
     public String CreatedBy;
     @SerializedName("CreatedDate")
     public String CreatedDate;
-    @SerializedName("CoachVillageID")
-    public String CoachVillageID;
     @SerializedName("sentFlag")
     public int sentFlag;
 
+
     @Override
     public String toString() {
-        return "Coach{" +
-                "CoachID='" + CoachID + '\'' +
-                ", CoachName='" + CoachName + '\'' +
-                ", CoachAge=" + CoachAge +
-                ", CoachGender='" + CoachGender + '\'' +
-                ", CoachOccupation='" + CoachOccupation + '\'' +
-                ", CoachSpeciality='" + CoachSpeciality + '\'' +
-                ", CoachSubjectExpert='" + CoachSubjectExpert + '\'' +
-                ", CoachEducation='" + CoachEducation + '\'' +
-                ", CoachGroupID='" + CoachGroupID + '\'' +
-                ", StartDate='" + StartDate + '\'' +
-                ", EndDate='" + EndDate + '\'' +
-                ", CoachActive=" + CoachActive +
-                ", CreatedBy='" + CreatedBy + '\'' +
-                ", CreatedDate='" + CreatedDate + '\'' +
-                ", CoachVillageID='" + CoachVillageID + '\'' +
-                ", sentFlag=" + sentFlag +
-                '}';
+        return "Coach{" + "CoachID='" + CoachID + '\'' + ", CoachName='" + CoachName + '\'' + ", CoachAge=" + CoachAge + ", CoachGender='" + CoachGender + '\'' + ", CoachOccupation='" + CoachOccupation + '\'' + ", CoachSpeciality='" + CoachSpeciality + '\'' + ", CoachSubjectExpert='" + CoachSubjectExpert + '\'' + ", CoachEducation='" + CoachEducation + '\'' + ", CoachGroupID='" + CoachGroupID + '\'' + ", CoachVillageID='" + CoachVillageID + '\'' + ", StartDate='" + StartDate + '\'' + ", EndDate='" + EndDate + '\'' + ", CoachActive=" + CoachActive + ", CreatedBy='" + CreatedBy + '\'' + ", CreatedDate='" + CreatedDate + '\'' + ", sentFlag=" + sentFlag + '}';
     }
 
     @NonNull
@@ -139,6 +126,14 @@ public class Coach {
         CoachGroupID = coachGroupID;
     }
 
+    public String getCoachVillageID() {
+        return CoachVillageID;
+    }
+
+    public void setCoachVillageID(String coachVillageID) {
+        CoachVillageID = coachVillageID;
+    }
+
     public String getStartDate() {
         return StartDate;
     }
@@ -177,14 +172,6 @@ public class Coach {
 
     public void setCreatedDate(String createdDate) {
         CreatedDate = createdDate;
-    }
-
-    public String getCoachVillageID() {
-        return CoachVillageID;
-    }
-
-    public void setCoachVillageID(String coachVillageID) {
-        CoachVillageID = coachVillageID;
     }
 
     public int getSentFlag() {

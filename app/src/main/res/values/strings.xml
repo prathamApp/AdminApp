@@ -8,6 +8,7 @@
     <string name="second_chance">Second Chance</string>
     <string name="ECE">ECE</string>
     <string name="pratham_institute">Pratham Institute</string>
+    <string name="urbon_program">Urban programme</string>
 
 
     <string-array name="india_states">
@@ -155,8 +156,23 @@
         <item>Read India</item>
         <item>Pratham Institutes</item>
         <item>Second Chance</item>
+        <item>Urban programme</item>
         <!--<item>Others</item>-->
     </string-array>
 
+    <string-array name="array_isDamged">
+        <item>Is Damaged?</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+    <string-array name="array_damgeType">
+        <item>Select Damage Type</item>
+        <item>Glass Broken</item>
+        <item>Battery Problem</item>
+        <item>Display Problem</item>
+        <item>SD card Slot damage</item>
+        <item>Charging Slot damage</item>
+        <item>Other?, pleas specify</item>
+    </string-array>
 
 </resources>

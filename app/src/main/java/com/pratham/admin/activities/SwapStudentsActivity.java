@@ -144,7 +144,7 @@ public class SwapStudentsActivity extends AppCompatActivity implements OnCheckBo
         List VillageName = new ArrayList();
         if (!villageList.isEmpty()) {
             for (int j = 0; j < villageList.size(); j++) {
-                VillageName.add(villageList.get(j).getVillageName() + "  (ID:: " + villageList.get(j).getVillageId()+")");
+                VillageName.add(villageList.get(j).getVillageName() + "  (ID:: " + villageList.get(j).getVillageId() + ")");
             }
             ArrayAdapter villageAdapter = new ArrayAdapter(SwapStudentsActivity.this, android.R.layout.simple_spinner_dropdown_item, VillageName);
             spinner_village.setAdapter(villageAdapter);
@@ -162,11 +162,11 @@ public class SwapStudentsActivity extends AppCompatActivity implements OnCheckBo
                         break;
                     }
                 }*/
-                String splitedVillageBracetRemoved =selected_village.substring(selected_village.indexOf("(") + 1, selected_village.indexOf(")"));
+                String splitedVillageBracetRemoved = selected_village.substring(selected_village.indexOf("(") + 1, selected_village.indexOf(")"));
                 String[] splitedVillageData = splitedVillageBracetRemoved.split("ID::");
                 try {
                     selectedVillageID = splitedVillageData[1].trim();
-                    selectedVillageID=selectedVillageID.replace(")","");
+                    selectedVillageID = selectedVillageID.replace(")", "");
                     /*   idRightGroupSpinner = splitedGroupData[1].trim();*/
                 } catch (Exception e) {
 
@@ -758,6 +758,10 @@ public class SwapStudentsActivity extends AppCompatActivity implements OnCheckBo
                 AppDatabase.destroyInstance();
                 switch (program) {
                     case APIs.HL:
+                        uploadAPI(APIs.HLpushToServerURL, json);
+                        break;
+                    case APIs.UP:
+                        //todo urban program
                         uploadAPI(APIs.HLpushToServerURL, json);
                         break;
                     case APIs.RI:

@@ -39,6 +39,8 @@ public class CRLmd {
     @SerializedName("Password")
     String Password;
 
+    String status;
+
     @NonNull
     public String getCRLId() {
         return CRLId;
@@ -150,5 +152,13 @@ public class CRLmd {
 
     public void setPassword(String password) {
         Password = password;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

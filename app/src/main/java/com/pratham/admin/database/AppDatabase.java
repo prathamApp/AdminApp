@@ -19,10 +19,12 @@ import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.TabTrack;
+import com.pratham.admin.modalclasses.TabletManageDevice;
+import com.pratham.admin.modalclasses.TabletStatus;
 import com.pratham.admin.modalclasses.TempStudent;
 import com.pratham.admin.modalclasses.Village;
 
-@Database(entities = {Attendance.class, CRL.class,CRLmd.class, /*CRLVisit.class,*/ Coach.class, Course.class, Community.class, Completion.class, Groups.class, Student.class, GroupSession.class,GroupVisit.class, Village.class, MetaData.class, TempStudent.class, TabTrack.class}, version = 3, exportSchema = false)
+@Database(entities = {Attendance.class, CRL.class,CRLmd.class, /*CRLVisit.class,*/ Coach.class, Course.class, Community.class, Completion.class, Groups.class, Student.class, GroupSession.class,GroupVisit.class, Village.class, MetaData.class, TempStudent.class, TabTrack.class,TabletManageDevice.class,TabletStatus.class}, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase DATABASEINSTANCE;
@@ -31,6 +33,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract CRLdao getCRLdao();
     public abstract CRLmd_dao getCRLmd_dao();
+    public abstract TabletStatusDao getTabletStatusDao();
 
 //    public abstract CRLVisitdao getCRLVisitdao();
 
@@ -48,6 +51,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract TabTrackDao getTabTrackDao();
 
+    public  abstract TabletManageDeviceDao getTabletManageDeviceDoa();
     public abstract GroupDao getGroupDao();
 
     public abstract StudentDao getStudentDao();

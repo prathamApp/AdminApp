@@ -136,6 +136,8 @@ public class PullDataMD extends AppCompatActivity implements ConnectionReceiverL
                             switch (selectedProgram) {
                                 case APIs.HL:
                                     pullCRL(APIs.HLpullCrlsURL + selectedState);
+                                case APIs.UP:
+                                    pullCRL(APIs.UPpullCrlsURL + selectedState);
                                     break;
                                 case APIs.ECE:
                                     pullCRL(APIs.ECEpullCrlsURL + selectedState);

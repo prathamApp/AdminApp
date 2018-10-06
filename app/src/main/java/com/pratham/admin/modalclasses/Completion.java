@@ -12,26 +12,31 @@ public class Completion {
     @PrimaryKey
     @SerializedName("CompletionID")
     public String CompletionID;
+    @SerializedName("GroupType")
+    public String GroupType; // Community/School
     @SerializedName("VillageID")
     public String VillageID;
-    @SerializedName("GroupID")
+    @SerializedName("ProgramId")
+    public String ProgramId;
+    @SerializedName("GroupId")
     public String GroupID;
     @SerializedName("CourseCompleted")
     public String CourseCompleted;
     @SerializedName("TopicCompleted")
     public String TopicCompleted;
-    @SerializedName("StartDate")
+    @SerializedName("StateDate")
     public String StartDate;
     @SerializedName("EndDate")
     public String EndDate;
-    @SerializedName("Event")
-    public int Event;
-    @SerializedName("GroupType")
-    public String GroupType; // Community/School
     @SerializedName("ParentParticipation")
     public int ParentParticipation;
     @SerializedName("PresentParents")
     public int PresentParents;
+    @SerializedName("Event")
+    public int Event;
+    @SerializedName("CreatedBy")
+    public String CreatedBy;
+
     @SerializedName("sentFlag")
     public int sentFlag;
 

@@ -22,7 +22,9 @@ public class TabTrack {
     String Pratham_ID;
     @SerializedName("Date")
     String date;
+    @SerializedName("Serial_NO")
 
+    String Serial_NO;
     boolean oldFlag=false;
 
     public boolean getOldFlag() {
@@ -104,8 +106,6 @@ public class TabTrack {
         Serial_NO = serial_NO;
     }
 
-    @SerializedName("Serial_NO")
 
-    String Serial_NO;
 
 }

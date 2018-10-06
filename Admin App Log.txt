@@ -1,0 +1,6 @@
+06 Oct 2018
+In Course Enrollment form- Selection of Coach should not be mandatory. --- done
+Data pull for coaches is not happening. --- done
+A new column for " Urban programme"  should be added. --- done ( ProgramID = 11 )
+Option for ASER entry should be included. --- Pending (Recruirements not received yet)
+In "Manage Device" option, there are a few things which need to update ---  Pending (Recruirements not received yet)

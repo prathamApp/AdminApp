@@ -26,8 +26,8 @@
                 android:id="@+id/program"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:layout_margin="8dp"
                 android:background="@drawable/gradient_spinner_selectprogram"
                 android:prompt="@string/selectProgram" />
 
@@ -35,37 +35,36 @@
                 android:id="@+id/roleCrl"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:layout_margin="8dp"
                 android:background="@drawable/gradient_spinner_selectprogram" />
 
             <Spinner
                 android:id="@+id/crlName"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:layout_margin="8dp"
                 android:background="@drawable/gradient_spinner_selectprogram" />
         </LinearLayout>
+        <!--   <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal">
+               &lt;!&ndash;
+               <Spinner
+                   android:id="@+id/crlName"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="1"
+                   android:background="@drawable/gradient_spinner_selectprogram" />&ndash;&gt;
 
-     <!--   <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            &lt;!&ndash;
-            <Spinner
-                android:id="@+id/crlName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/gradient_spinner_selectprogram" />&ndash;&gt;
-
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-        </LinearLayout>-->
+               <TextView
+                   android:id="@+id/date"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="1" />
+           </LinearLayout>-->
     </android.support.v7.widget.LinearLayoutCompat>
 
     <LinearLayout
@@ -134,6 +133,8 @@
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_above="@id/bottomControl"
+                android:layout_alignParentTop="true"
                 android:fillViewport="true">
 
                 <LinearLayout
@@ -141,9 +142,9 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <Space
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp" />
+                    <!--  <Space
+                          android:layout_width="match_parent"
+                          android:layout_height="5dp" />-->
 
                     <!-- <Spinner
                          android:id="@+id/qr_spinner_state"
@@ -158,15 +159,32 @@
                         android:layout_width="match_parent"
                         android:layout_height="5dp" />
 
-                    <TextView
-                        android:id="@+id/qr_spinner_crl"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="10dp"
-                        android:gravity="center"
-                        android:textSize="20dp"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/assignedCrlName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/assignedCrlId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
 
                     <Space
                         android:layout_width="match_parent"
@@ -183,11 +201,9 @@
                         android:hint="Pratham ID"
                         android:textColor="@android:color/black"
                         android:textSize="15dp" />
-
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="3dp" />
-
                     <EditText
                         android:id="@+id/qr_serialNo"
                         style="@style/CustomText"
@@ -201,10 +217,54 @@
                         android:singleLine="true"
                         android:textColor="@android:color/black"
                         android:textSize="15dp" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp" />
+
+                    <Spinner
+                        android:id="@+id/isDamaged"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:entries="@array/array_isDamged" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp" />
+
+                    <Spinner
+                        android:id="@+id/damageType"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:entries="@array/array_damgeType" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp" />
+
+                    <EditText
+                        android:id="@+id/comments"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:hint="Comments?" />
+                    <!-- <EditText
+                         android:id="@+id/qr_serialNo"
+                         style="@style/CustomText"
+                         android:layout_width="match_parent"
+                         android:layout_height="50dp"
+                         android:layout_marginLeft="10dp"
+                         android:layout_marginRight="10dp"
+                         android:hint="Serial NO"
+                         android:maxLength="8"
+                         android:maxLines="1"
+                         android:singleLine="true"
+                         android:textColor="@android:color/black"
+                         android:textSize="15dp" />-->
                 </LinearLayout>
             </ScrollView>
 
             <LinearLayout
+                android:id="@+id/bottomControl"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_alignParentBottom="true"

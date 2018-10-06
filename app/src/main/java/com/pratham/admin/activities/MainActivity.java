@@ -123,12 +123,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface {
         String CRLuserName = userName.getText().toString();
         String CRLpassword = password.getText().toString();
         if (CRLuserName.equals("admin") && CRLpassword.equals("admin")) {
-            if (AppDatabase.getDatabaseInstance(this).getCRLdao().getAllCRLs().isEmpty()) {
+            /*if (AppDatabase.getDatabaseInstance(this).getCRLdao().getAllCRLs().isEmpty()) {*/
                 Intent intent = new Intent(this, SelectProgram.class);
                 startActivity(intent);
-            } else {
+           /* } else {
                 Toast.makeText(this, "Enter CRL login details or clear data", Toast.LENGTH_LONG).show();
-            }
+            }*/
         } else {
             boolean userPass = false;
             List<CRL> Crl = AppDatabase.getDatabaseInstance(this).getCRLdao().getAllCRLs();

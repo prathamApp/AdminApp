@@ -6,6 +6,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
 import com.pratham.admin.modalclasses.CRL;
+import com.pratham.admin.modalclasses.CRLmd;
 
 import java.util.List;
 
@@ -20,4 +21,18 @@ public interface CRLdao {
     @Query("SELECT * FROM CRL")
     public List<CRL> getAllCRLs();
 
+    @Query("SELECT count(*) FROM CRL")
+    public int  getCRLsCount();
+
+    @Query("SELECT RoleId FROM CRL where CRLId=:id")
+    public String  getCRLsRoleById(String id);
+
+    @Query("SELECT DISTINCT ProgramName FROM CRL")
+    public List<String>  getDistinctCRLsdProgram();
+
+    @Query("SELECT DISTINCT  RoleName FROM CRL")
+    public List<String>  getDistinctCRLsRoleId();
+
+    @Query("SELECT DISTINCT UserName,CRLId,FirstName FROM CRL WHERE RoleName=:roleName and ProgramName=:programName")
+    public List<CRL>  getDistinctCRLsUserName(String roleName, String programName);
 }
