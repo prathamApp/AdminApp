@@ -75,4 +75,12 @@ public class APIs {
 
     // Push API of Forms
     public static final String PushForms = "http://www.swap.prathamcms.org/api/crlvisit/crlvisitpushdata";
+
+    // Assign/ Return Admin App API
+    public static final String AssignReturn = "http://swap.prathamcms.org/api/AssignReturn/pushdata";
+
+    // Device List API
+    public static final String DeviceList = "http://swap.prathamcms.org/api/tablist?userid=30";
+
+
 }

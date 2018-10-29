@@ -38,6 +38,7 @@ import com.pratham.admin.interfaces.QRScanListener;
 import com.pratham.admin.modalclasses.CRL;
 import com.pratham.admin.modalclasses.CrlInfoRecycler;
 import com.pratham.admin.modalclasses.TabletManageDevice;
+import com.pratham.admin.util.APIs;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.ROll_ID;
 
@@ -524,7 +525,7 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
         mScannerView.startCamera();
         mScannerView.resumeCameraPreview(AssignTabletMD.this);
         prathamId = "";
-        QrId="";
+        QrId = "";
         qr_pratham_id.setText(prathamId);
         successMessage.setVisibility(View.GONE);
         qr_serialNo.setText("");
@@ -626,7 +627,7 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
     }
 
     private void uploadAPI(String url, String json) {
-        url = "";
+//        url = "";
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setTitle("UPLOADING ... ");
         dialog.setCancelable(false);
@@ -657,7 +658,7 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
         if (internetIsAvailable) {
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
             String json = gson.toJson(tabletMD);
-            uploadAPI("", json);
+            uploadAPI(APIs.AssignReturn, json);
         } else {
             Toast.makeText(this, "No Internet Connection...", Toast.LENGTH_SHORT).show();
         }

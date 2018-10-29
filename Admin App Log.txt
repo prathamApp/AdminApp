@@ -1,6 +1,300 @@
+12 July
+Create Coach info Form --- done
+Create Coach Retention Form --- done
+
+13 July
+Create Course Completion Form --- done
+Create Course Enrollment Form --- done
+Rechange design of all forms --- done
+Upload project to Git --- done
+
+14 July
+Create CRL Visit Form --- done
+Create School Session Form --- done
+Create Reporting Students Form --- done
+Create Attendance Form --- done
+
+17 July
+Redesign forms --- done
+New Date Fragment --- done
+
+19July
+Export schema db false --- done
+clear data db mainactivity --- done
+
+20 July
+Forms activity --- done
+New Forms activity -- done
+
+24 July
+Coach info form -- done
+add multiselect spinner class --- done
+coach retention form --- done
+School Session form --- done
+Course Dao & POJO --- done ( populate course left)
+reporting students --- done (populate groupwise std )
+
+25 July
+Reporting Students form --- done
+new spinner logic in coach info --- done
+new spinner logic in coach retention --- done
+new spinner logic in School session --- done
+Call from Student Pull Courses API in Select Program Class --- done
+Shared pref new app version error resolved --- done 
+
+
+26 July
+rename community info to course enrollment --- done
+rename course enrollment/ session to school session --- done 
+course enrollment form --- done
+crl visit --- done
+
+
+
+27 July
+(hint : FOR MULTISELECT SPINNER IF check visit Form )
+Coach info Submit data --- done 
+CRL VISIT Submit data ---  done
+change design of course enrollment/ community --- done
+change db schema of community --- done
+topic completion item -- done
+Change Spinner to multiselect spinner --- done
+Coach Retention Submit data on click --- done	 
+course enrollment --- done
+
+30 July
+Pull Coach API --- done
+add sentflag in all pojo --- done
+push CRLVisit data --- done
+sample push test --- 30 July 3.25PM, 3.28PM, 3.57PM, 3.58 PM, 4.03PM, 4.14PM --- done
+remove school session form + db+ dao + views --- done
+autpop turn on internet(wifi) --- done 
+turn on wifi whenever app starts -- done
+push code to git --- 5.36PM --- done 
+update UI of Course Retention --- done
+push status Coach retention --- done 
+push status Coach Enrollment --- done 
+/************************************************************** 31 JULY ***************************************/
+
+31 July
+
+Coach Information: --- DONE
+  Add these options under Specialty (None, Others) --- done
+  Add this option under Subject Expert (None) --- done
+  Add these options under occupation (State Govt., Central Govt.) --- done
+  Select Groups: This should be multi-select --- done
+  Occupation others dialog box --- done
+  Speciality others dialog box --- done
+    
+Course Enrollment: --- DONE
+  Delete "School session" form. We had discussed the other day that both school and community will be in the same form. --- done 
+  Remove these options (Remove the option "Parents Participation" ,Remove "Present Student") --- done
+  Group Selection should be multi-select. --- done
+  Coach Selection Should be multi-select. --- done 
+
+Reporting Students To Be Deleted (Rename the form as to be "Delete Students") --- done
+Reporting Students rename to Delete Students --- done
+Refactor reporting to delete --- done
+
+
+CRL Visit form
+  Rename the option " Select groups with their groups" as "Groups which were studying at their allotted time" --- done
+  Rename the option "Select Work crosschecked groups" as "Groups whose work was crosschecked by Coach". --- done 
+  Rename "Select present coaches" as  "Select the coaches who were helping their groups". --- done
+  Reallignment of CRLVisit Form --- done 
+
+convert leftover pojo to Gson (decide from Server end Pojo) --- done
+
+Refactor CRLVisit to pushForms --- done
+
+Attendance Form --- DONE
+  Attendance Dao --- done
+  Attendance Pojo --- done
+  Attendance UI --- done
+  Village Spinner, Group Spinner --- done
+  Multiselect Student Spinner --- done
+  Attendance functionality --- 
+  Push test --- many done
+  Unique Attendance ID --- done
+
+Delete Student multispinner --- done
+
+/************************************************************** August 1 **************************************************************/
+
+August 1
+
+PUSH API
+  Delete Student --- done
+  Coach info --- done
+  Coach Retention --- done
+  Course Enrollment --- done
+  CRLVisit --- done
+  StudentAttendance --- done
+
+Pull API
+  Get GetHLCourseCommunity --- done
+  GetHLCourseCompletion --- done
+
+New Course enrollment Pojo --- done
+Course enrollment validation & topics added changes --- done
+
+
+August 2
+
+show filled form on submit button		
+  Coach information --- done submitListener
+  Coach Retention --- done submitListener
+  Delete Student --- done submitListener
+  StudentAttendance --- done submitListener
+  Course Enrollment --- done submitListener
+  CRLVisit --- done submitListener
+  Course Completion ---
+  btnSubmit listener at all forms --- done
+
+Course enrollment group id wise entry in db --- done
+
+
+August 4
+Course Completion
+  Rename "Reporting Date" as "End Date" --- done
+  "number of parents present", should not be compulsory. We were not able to check we weren't able to submit the form. --- done
+  In both our tablets, we were not able to submit the "course completion" form.  --- done
+  There are no options for "course" and "topic" selection. It should be the same as in "course enrollment" form. --- done
+  recycler by id -- done
+  course completion --- (recycler view of topic/course/checkbox left) --- done
+  Show if no course available in CourseCompletion --- done
+
+Aug 06
+Course Completion
+  change PoJo -- done
+  Submit button data --- done
+  PUSH API Course Completion --- done
+
+Push Everything when connected to Net in Dashboard(There is no option to push the data)--- done
+remove username(AmolMoghe) password from Main Activity --- done
+
+
+Coach Information: --- DONE
+  The "Select Occupation" option should be compulsory.  --- done
+  Keep the options for Education as:  
+       No=0,Class 5th= 5, Class 8= 8 Higher Secondary.=10, Intermediate=12,Graduation=15,Post Graduation=17,Other=18) --- done
+       After the equals to Sign I have given the coding for each options. --- done
+
+
+
+/******************************************************************  August 07  ***************************************************/
+CRL Visit
+    Change the question from "Select the coaches who were helping their group" to " Select the coaches who were helping their group at their allotted time" -- done
+    Remove the question: " Select the coach with their group". --- done
+    Add a question for Visit Time. This should be two part question "From" and "To" add time time -- done	
+
+Attendance: 
+    Group Selection should be Multi-Select. --- done
+    show group name after std name --- done
+    The students should come in a table or in a grid ( Alphabetically). I think if you look at the sheet that we had shared you'll remember. --- done
+
+Sort Alphabetically
+  Attendance Form -- done
+  Coach Info --- done
+  Coach Retention --- done
+  Course Completion --- done
+  Course Enrollment -- done
+  CRLVisit --- done
+  Delete Students --- done
+
+
+For all the forms, all the options ( like names of the groups in "Select Groups" , "Select Coach" etc. should come alphabetically. Even in the starting when we are selecting villages to be downloaded. It would be much easier for the user. --- done
+
+
+Course Completion --- skip
+    Group Selection should be Multi-Select. --- skip 
+    Add an option of Community and School. The same that has been added "Course enrollment". This should come before "Group Selection". --- skip
+
+Course Enrollment: Please change the order of the questions: --- skip
+    Select Village --- skip
+    Community or School --- skip
+    Select Course --- skip
+    Select Topic--- skip
+    Select Groups--- skip
+    Select Coach--- skip
+    Date--- skip
+
+
+
+August 08
+CRLVisit form submit issue --- Resolved
+select all in attendance form --- done
+json format change while pushing (Dashboard) --- done
+remove username(AmolMoghe) password from Main Activity --- done 
+skip courses json --- done
+
+
+August 10
+Once you select class 10th as an option and then if you select post graduate or graduate then it still shows that you have selected class 10th in the preview mode.We need to check what entry do we receive in the db. --- resolved
+If we select around 20 -25 students for attendance, then we are not able to see the submit button. Sharing a screenshot for it. --- resolved
+remove username(AmolMoghe) password from Main Activity --- done
+
+
+August 16
+Delete student preview issue ---- resolved
+hint : obtain vid from selected grp id from group table ( for Coach retention after selection get all grp id associated with that grp & get all coaches who have that groupid )
+add village id in coach pojo --- done
+add coach village id in coach info --- done
+multispinner reset in coach info --- done 
+multispinner reset in Attendance Form --- done 
+multispinner reset in coach enrollment --- done 
+multispinner reset in CRLVisit --- done 
+Villagewise Coach Spinner in Coach Retention ---- done
+Villagewise Coach Spinner in Course Enrollment ---- done
+Villagewise Coach Spinner in CRLVisit ---- done
+
+August 17
+app info on dashboard --- done
+
+August 23
+POS Dashboard integration MVP --- done 
+
+1 sept
+Enable Second chance & ECE in layout --- done
+enable apis --- done
+add ece in pull --- done
+add ece in ui --- done
+
+06 Sept
+change toast messages for pull api failure handling --- done (SelectProgram.java)
+new crl visit form --- skipped as structure needs to be changed
+pull data activity --- done
+push data activity --- done
+
+07 Sept
+crl visit form divide --- done
+groupsession form --- done
+groupvisit form --- done
+auto push groupvisit --- done
+auto push groupsession --- done
+select program validations --- done
+course enrollment select coach not compulsary --- done
+group visit form --- done
+
+10 Sept
+group session form --- done
+remove crlvisit table & traces --- done
+
 06 Oct 2018
 In Course Enrollment form- Selection of Coach should not be mandatory. --- done
 Data pull for coaches is not happening. --- done
 A new column for " Urban programme"  should be added. --- done ( ProgramID = 11 )
 Option for ASER entry should be included. --- Pending (Recruirements not received yet)
 In "Manage Device" option, there are a few things which need to update ---  Pending (Recruirements not received yet)
+
+
+29 Oct
+New Assign Return Tablet API --- done
+New Device List API --- done
+
+
+TODO
+student details section in admin app --- 
+ASER Levels ---
+pos feature under progress --- 
+crashlytics --- 
