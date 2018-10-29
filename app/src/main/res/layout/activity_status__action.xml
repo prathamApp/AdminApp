@@ -171,10 +171,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <Space
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp" />
-
                     <!-- <Spinner
                          android:id="@+id/qr_spinner_state"
                          style="@style/spinner_style"
@@ -184,9 +180,9 @@
                          android:layout_marginRight="10dp"
                          android:background="@drawable/gradient_spinner_selectprogram" />
 -->
-                    <Space
+                    <!--<Space
                         android:layout_width="match_parent"
-                        android:layout_height="5dp" />
+                        android:layout_height="5dp" />-->
 
                     <TextView
                         android:id="@+id/qr_spinner_crl"
@@ -217,7 +213,19 @@
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="3dp" />
-
+                    <EditText
+                        android:id="@+id/qr_serialNo"
+                        style="@style/CustomText"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:hint="Serial NO"
+                        android:maxLength="8"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="15dp" />
                     <TextView
                         android:id="@+id/tv"
                         android:layout_width="wrap_content"

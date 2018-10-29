@@ -66,6 +66,7 @@
             android:textSize="16sp" />
 
         <Button
+            android:id="@+id/returnTablet"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -89,7 +90,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <Button
-            android:id="@+id/acion"
+            android:id="@+id/acionstatus"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -29,6 +29,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.zxing.Result;
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
@@ -38,11 +39,14 @@ import com.pratham.admin.modalclasses.CRL;
 import com.pratham.admin.modalclasses.CrlInfoRecycler;
 import com.pratham.admin.modalclasses.TabletManageDevice;
 import com.pratham.admin.util.ConnectionReceiver;
+import com.pratham.admin.util.ROll_ID;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -109,6 +113,16 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
     final String RETURN = "Return";
     List<CrlInfoRecycler> crlList_md = new ArrayList<>();
 
+  /*  final String BRG_CRL_Tutor = "6";
+    final String Block_Head = "5";
+  *//*  final String District_Head = "4";*//*
+    final String State_Program_Head = "3";
+    final String Program_Head = "2";
+    final String Store="-1";
+    final String Admin = "7";*/
+
+
+    String[] options;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +154,7 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
     protected void onResume() {
         super.onResume();
         checkConnection();
+
         //  int crlCount = AppDatabase.getDatabaseInstance(context).getCRLmd_dao().getCRLs_mdCount();
         int crlCount = AppDatabase.getDatabaseInstance(context).getCRLdao().getCRLsCount();
         if (crlCount <= 0) {
@@ -158,6 +173,7 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
 
 
         } else {
+            setRules();
             List<TabletManageDevice> oldList = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().getAllTabletManageDevice();
             if (!oldList.isEmpty()) {
                 for (int i = 0; i < oldList.size(); i++) {
@@ -170,6 +186,66 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
             loadSpinner();
             // qr_spinner_crl.setText(LoggedcrlName);
             setCount();
+        }
+    }
+
+    private void setRules() {
+
+        String role = AppDatabase.getDatabaseInstance(this).getCRLdao().getCRLsRoleById(LoggedcrlId);
+        if (tabStatus.equals(ASSIGN)) {
+            switch (role) {
+                case ROll_ID.BRG_CRL_Tutor:
+                    options = new String[]{};
+                    break;
+                case ROll_ID.Block_Head:
+                    options = new String[]{ROll_ID.BRG_CRL_Tutor};
+                    break;
+                case ROll_ID.District_Head:
+                    options = new String[]{ROll_ID.Block_Head, ROll_ID.BRG_CRL_Tutor};
+                    break;
+                case ROll_ID.Program_Head:
+                    options = new String[]{ROll_ID.District_Head, ROll_ID.Block_Head};
+                    break;
+                case ROll_ID.State_Program_Head:
+                    options = new String[]{ROll_ID.Program_Head, ROll_ID.District_Head, ROll_ID.Block_Head};
+                    break;
+                case ROll_ID.National_Program_Head:
+                    options = new String[]{ROll_ID.State_Program_Head};
+                    break;
+                case ROll_ID.Store:
+                    options = new String[]{ROll_ID.Block_Head, ROll_ID.District_Head, ROll_ID.Program_Head, ROll_ID.State_Program_Head, ROll_ID.National_Program_Head};
+                    break;
+                case ROll_ID.Admin:
+                    options = new String[]{ROll_ID.Block_Head, ROll_ID.District_Head, ROll_ID.Program_Head, ROll_ID.State_Program_Head, ROll_ID.National_Program_Head, ROll_ID.Store};
+                    break;
+            }
+        } else if (tabStatus.equals(RETURN)) {
+            switch (role) {
+                case ROll_ID.BRG_CRL_Tutor:
+                    options = new String[]{ROll_ID.Block_Head, ROll_ID.District_Head};
+                    break;
+                case ROll_ID.Block_Head:
+                    options = new String[]{ROll_ID.Program_Head, ROll_ID.Store, ROll_ID.District_Head};
+                    break;
+                case ROll_ID.District_Head:
+                    options = new String[]{ROll_ID.Program_Head, ROll_ID.Store};
+                    break;
+                case ROll_ID.Program_Head:
+                    options = new String[]{ROll_ID.State_Program_Head, ROll_ID.Store};
+                    break;
+                case ROll_ID.State_Program_Head:
+                    options = new String[]{ROll_ID.National_Program_Head, ROll_ID.Store};
+                    break;
+                case ROll_ID.National_Program_Head:
+                    options = new String[]{ROll_ID.Store};
+                    break;
+                case ROll_ID.Store:
+                    options = new String[]{ROll_ID.Admin};
+                    break;
+                case ROll_ID.Admin:
+                    options = new String[]{ROll_ID.Admin};
+                    break;
+            }
         }
     }
 
@@ -229,7 +305,13 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
 
         programList.add("Select Program");
         // programList.addAll(AppDatabase.getDatabaseInstance(context).getCRLmd_dao().getDistinctCRLs_mdProgram());
-        programList.addAll(AppDatabase.getDatabaseInstance(context).getCRLdao().getDistinctCRLsdProgram());
+        for (String rollId : options) {
+            programList.addAll(AppDatabase.getDatabaseInstance(context).getCRLdao().getDistinctCRLsdProgram(rollId));
+        }
+        Set<String> hs = new LinkedHashSet<>();
+        hs.addAll(programList);
+        programList.clear();
+        programList.addAll(hs);
         ArrayAdapter programAdapter = new ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, programList);
         programSpinner.setAdapter(programAdapter);
 
@@ -240,8 +322,14 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
                 roleList.add("Select Role");
                 if (pos > 0) {
                     // roleList.addAll(AppDatabase.getDatabaseInstance(context).getCRLmd_dao().getDistinctCRLs_mdRoleId());
-                    roleList.addAll(AppDatabase.getDatabaseInstance(context).getCRLdao().getDistinctCRLsRoleId());
+                    for (String rollId : options) {
+                        roleList.addAll(AppDatabase.getDatabaseInstance(context).getCRLdao().getDistinctCRLsRoleId(rollId));
+                    }
                 }
+                Set<String> hs = new LinkedHashSet<>();
+                hs.addAll(roleList);
+                roleList.clear();
+                roleList.addAll(hs);
                 ArrayAdapter stateAdapter = new ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, roleList);
                 roleCrlSpinner.setAdapter(stateAdapter);
             }
@@ -377,6 +465,8 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
                 if (l.isEmpty()) {
                     qr_pratham_id.setText(prathamId);
                     successMessage.setVisibility(View.VISIBLE);
+                    qr_serialNo.setText("");
+                    qr_serialNo.setEnabled(false);
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setCancelable(false);
@@ -386,6 +476,8 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
                         public void onClick(DialogInterface dialogInterface, int i) {
                             qr_pratham_id.setText(prathamId);
                             successMessage.setVisibility(View.VISIBLE);
+                            qr_serialNo.setText("");
+                            qr_serialNo.setEnabled(false);
                             dialogInterface.dismiss();
                        /* AppDatabase.getDatabaseInstance(Activity_QRScan.this).getTabTrackDao().insertTabTrack(tabletStatus);
                         Toast.makeText(Activity_QRScan.this, "Updated Successfully ", Toast.LENGTH_LONG).show();*/
@@ -432,8 +524,11 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
         mScannerView.startCamera();
         mScannerView.resumeCameraPreview(AssignTabletMD.this);
         prathamId = "";
+        QrId="";
         qr_pratham_id.setText(prathamId);
         successMessage.setVisibility(View.GONE);
+        qr_serialNo.setText("");
+        qr_serialNo.setEnabled(true);
     }
 
     @OnClick(R.id.qr_btn_save)
@@ -448,6 +543,7 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
                         tabletManageDevice.setQR_ID(QrId);
                         tabletManageDevice.setStatus(tabStatus);
                         tabletManageDevice.setLogged_CRL_ID(LoggedcrlId);
+                        tabletManageDevice.setAssigned_CRL_Name(LoggedcrlName);
                         tabletManageDevice.setAssigned_CRL_ID(assignedCRL);
                         tabletManageDevice.setAssigned_CRL_Name(assignedCrlName.getText().toString());
                         tabletManageDevice.setPratham_ID(prathamId);
@@ -476,6 +572,7 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
                     tabletManageDevice.setTabSerial_ID(serialNO);
                     tabletManageDevice.setStatus(tabStatus);
                     tabletManageDevice.setLogged_CRL_ID(LoggedcrlId);
+                    tabletManageDevice.setLogged_CRL_NAME(LoggedcrlName);
                     tabletManageDevice.setAssigned_CRL_ID(assignedCRL);
                     tabletManageDevice.setAssigned_CRL_Name(assignedCrlName.getText().toString());
                     tabletManageDevice.setOldFlag(false);
@@ -557,9 +654,8 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
 
     @Override
     public void update() {
-
         if (internetIsAvailable) {
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
             String json = gson.toJson(tabletMD);
             uploadAPI("", json);
         } else {

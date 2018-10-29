@@ -11,7 +11,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:background="#f2dddc"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayout_userName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

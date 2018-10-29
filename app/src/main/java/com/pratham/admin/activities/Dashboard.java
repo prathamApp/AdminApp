@@ -279,7 +279,7 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
 //            DashboardItemList.add(new DashboardItem("POS Dashboard", R.drawable.ic_pos));
 //            DashboardItemList.add(new DashboardItem("Pull Data", R.drawable.ic_pull));
 //            DashboardItemList.add(new DashboardItem("Push Data", R.drawable.ic_push));
-//            DashboardItemList.add(new DashboardItem("Manage Device", R.drawable.tablet));
+            DashboardItemList.add(new DashboardItem("Manage Device", R.drawable.tablet));
         }
     }
 

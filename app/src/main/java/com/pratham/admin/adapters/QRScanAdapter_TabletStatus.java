@@ -46,9 +46,11 @@ public class QRScanAdapter_TabletStatus extends RecyclerView.Adapter<QRScanAdapt
         } else {
             holder.parent_recycler_row.setBackgroundColor(Color.parseColor("#ffffff"));
         }
-        holder.crlID.setText(tabletStatuses.get(holder.getAdapterPosition()).getLoggedUserId());
+        holder.crlID.setText(tabletStatuses.get(holder.getAdapterPosition()).getLoggedCRL_Id());
+        holder.crl_name.setText(tabletStatuses.get(holder.getAdapterPosition()).getLoggedCRL_Name());
         holder.txt_qr_id.setText(tabletStatuses.get(holder.getAdapterPosition()).getQrID());
         holder.pratham_id.setText(tabletStatuses.get(holder.getAdapterPosition()).getPrathamId());
+        holder.serial_No.setText(tabletStatuses.get(holder.getAdapterPosition()).getSerialNo());
         holder.Status.setText(tabletStatuses.get(holder.getAdapterPosition()).getStatus());
         holder.date.setText(tabletStatuses.get(holder.getAdapterPosition()).getDate());
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +69,7 @@ public class QRScanAdapter_TabletStatus extends RecyclerView.Adapter<QRScanAdapt
 
     class ViewHolder extends RecyclerView.ViewHolder {
         // @BindView(R.id.checkBox_student)
-        TextView crlID, txt_qr_id, pratham_id, Status,date;
+        TextView crlID,crl_name, txt_qr_id, pratham_id, Status,date,serial_No;
         ImageView iv_delete;
         ConstraintLayout parent_recycler_row;
 
@@ -75,6 +77,8 @@ public class QRScanAdapter_TabletStatus extends RecyclerView.Adapter<QRScanAdapt
             super(itemView);
             //ButterKnife.bind(this,itemView);
             crlID = itemView.findViewById(R.id.crlID);
+            crl_name=itemView.findViewById(R.id.crlName);
+            serial_No=itemView.findViewById(R.id.serial_No);
             txt_qr_id = itemView.findViewById(R.id.txt_qr_id);
             pratham_id = itemView.findViewById(R.id.pratham_id);
             Status = itemView.findViewById(R.id.Status);

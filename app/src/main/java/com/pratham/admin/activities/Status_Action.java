@@ -31,6 +31,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.zxing.Result;
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
@@ -67,7 +68,8 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
     Button btn_DatePicker;
     public ZXingScannerView mScannerView;
 
-
+    @BindView(R.id.qr_serialNo)
+    EditText qr_serialNo;
     @BindView(R.id.successMessage)
     LinearLayout successMessage;
     String LoggedcrlId;
@@ -184,6 +186,8 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
                 if (l.isEmpty()) {
                     qr_pratham_id.setText(prathamId);
                     successMessage.setVisibility(View.VISIBLE);
+                    qr_serialNo.setText("");
+                    qr_serialNo.setEnabled(false);
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setCancelable(false);
@@ -193,6 +197,8 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
                         public void onClick(DialogInterface dialogInterface, int i) {
                             qr_pratham_id.setText(prathamId);
                             successMessage.setVisibility(View.VISIBLE);
+                            qr_serialNo.setText("");
+                            qr_serialNo.setEnabled(false);
                             dialogInterface.dismiss();
                        /* AppDatabase.getDatabaseInstance(Activity_QRScan.this).getTabTrackDao().insertTabTrack(tabletStatus);
                         Toast.makeText(Activity_QRScan.this, "Updated Successfully ", Toast.LENGTH_LONG).show();*/
@@ -238,22 +244,27 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
         mScannerView.startCamera();
         mScannerView.resumeCameraPreview(Status_Action.this);
         prathamId = "";
+        QrId = "";
         qr_pratham_id.setText(prathamId);
         successMessage.setVisibility(View.GONE);
+        qr_serialNo.setText("");
+        qr_serialNo.setEnabled(true);
     }
 
     @OnClick(R.id.qr_btn_save)
     public void saveTabTrack() {
+        String serialNO = qr_serialNo.getText().toString();
         prathamId = qr_pratham_id.getText().toString();
-        String date = btn_DatePicker.getText().toString().trim();
+        // String date = btn_DatePicker.getText().toString().trim();
         int selectedRadio = statusRadioGroup.getCheckedRadioButtonId();
-        if (!prathamId.equals("")) {
+        if ((!serialNO.equals("")) || !prathamId.equals("")) {
             if (selectedRadio != -1) {
                 tabletStatus = new TabletStatus();
                 tabletStatus.setQrID(QrId);
-                tabletStatus.setLoggedUserId(LoggedcrlId);
+                tabletStatus.setLoggedCRL_Id(LoggedcrlId);
+                tabletStatus.setLoggedCRL_Name(LoggedcrlName);
                 tabletStatus.setPrathamId(prathamId);
-
+                tabletStatus.setSerialNo(serialNO);
                 tabletStatus.setStatus(((RadioButton) statusRadioGroup.findViewById(selectedRadio)).getText().toString());
                 tabletStatus.setOldFlag(false);
                 tabletStatus.setDate(btn_DatePicker.getText().toString());
@@ -331,10 +342,10 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
     public void update() {
 
         if (internetIsAvailable) {
-            Gson gson = new Gson();
+            Gson gson =new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
             String json = gson.toJson(tabTracks);
             //todo change API
-            uploadAPI(APIs.TabTrackPushAPI, json);
+            uploadAPI("", json);
         } else {
             Toast.makeText(this, "No Internet Connection...", Toast.LENGTH_SHORT).show();
         }

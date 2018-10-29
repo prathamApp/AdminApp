@@ -43,10 +43,10 @@ public class APIs {
 
 
     public static final String UP = "Urban programme";
-    public static final String UPpullVillagesURL = "http://www.hlearning.openiscool.org/api/village/get?programId=11&state=";
-    public static final String UPpullGroupsURL = "http://www.devtab.openiscool.org/api/Group?programid=11&villageId=";
-    public static final String UPpullStudentsURL = "http://www.devtab.openiscool.org/api/student?programid=11&villageId=";
-    public static final String UPpullCrlsURL = "http://www.swap.prathamcms.org/api/UserList?programId=11&statecode=";
+    public static final String UPpullVillagesURL = "http://www.hlearning.openiscool.org/api/village/get?programId=6&state=";
+    public static final String UPpullGroupsURL = "http://www.devtab.openiscool.org/api/Group?programid=6&villageId=";
+    public static final String UPpullStudentsURL = "http://www.devtab.openiscool.org/api/student?programid=6&villageId=";
+    public static final String UPpullCrlsURL = "http://www.swap.prathamcms.org/api/UserList?programId=6&statecode=";
 
     //NewPushURL
     /*  public static final String HLpushToServerURL = "http://www.hlearning.openiscool.org/api/datapush/pushusage";*/

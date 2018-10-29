@@ -4,42 +4,76 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 @Entity
 public class TabletManageDevice {
+
     @NonNull
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    @Expose(serialize = false)
+    private Integer id;
+    @Expose
     @SerializedName("QR_ID")
     String QR_ID;
+
+    @Expose
     @SerializedName("CRL_ID")
     String assigned_CRL_ID;
+
+    @Expose
     @SerializedName("CRL_Name")
     String assigned_CRL_Name;
+
+    @Expose
     @SerializedName("Pratham_ID")
     String Pratham_ID;
+
+    @Expose
     @SerializedName("Tab_serial_ID")
     String tabSerial_ID;
+
+    @Expose
     @SerializedName("Date")
     String date;
-    @SerializedName("CRL_ID_Admin")
+
+    @Expose
+    @SerializedName("CRL_ID_LoggedIN")
     String logged_CRL_ID;
 
+
+    @Expose
+    @SerializedName("CRL_NAME_LoggedIN")
+    String logged_CRL_NAME;
+
+    @Expose
     @SerializedName("is_Damaged")
     String is_Damaged;
 
+    @Expose
     @SerializedName("damageType")
     String damageType;
 
+    @Expose
     @SerializedName("operation_Type")
     String status;
 
+    @Expose
     @SerializedName("comment")
     String comment;
 
+    @Expose(serialize = false)
+    boolean oldFlag = false;
 
+    @NonNull
+    public Integer getId() {
+        return id;
+    }
 
-
-    boolean oldFlag=false;
+    public void setId(@NonNull Integer id) {
+        this.id = id;
+    }
 
     public boolean getOldFlag() {
         return oldFlag;
@@ -48,6 +82,7 @@ public class TabletManageDevice {
     public void setOldFlag(boolean oldFlag) {
         this.oldFlag = oldFlag;
     }
+
     @NonNull
     public String getQR_ID() {
         return QR_ID;
@@ -74,7 +109,6 @@ public class TabletManageDevice {
     }
 
 
-
     public String getPratham_ID() {
         return Pratham_ID;
     }
@@ -97,6 +131,14 @@ public class TabletManageDevice {
 
     public void setLogged_CRL_ID(String logged_CRL_ID) {
         this.logged_CRL_ID = logged_CRL_ID;
+    }
+
+    public String getLogged_CRL_NAME() {
+        return logged_CRL_NAME;
+    }
+
+    public void setLogged_CRL_NAME(String logged_CRL_NAME) {
+        this.logged_CRL_NAME = logged_CRL_NAME;
     }
 
     public String getIs_Damaged() {

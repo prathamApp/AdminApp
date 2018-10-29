@@ -97,19 +97,27 @@ public class MainActivity extends AppCompatActivity implements DialogInterface {
 
         // Start WiFi
         turnOnWifi();
+        /*userName.setText("admin");
+        password.setText("admin");*/
 
-      /*  userName.setText("amolmoghe");
-        password.setText("pratham@123");*/
-        userName.setText("");
+    /*    userName.setText("santoshborade");
+        password.setText("pratham123");
+        userName.setText("amolmoghe");
+        password.setText("pratham@123");
+        userName.setText("ganeshtupe54");
+        password.setText("pratham");*/
+       userName.setText("609");
+        password.setText("pefmumbai");
+       /* userName.setText("");
         password.setText("");
-        userName.requestFocus();
+        userName.requestFocus();*/
         SharedPreferences preferences = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
         String program = preferences.getString("program", "null");
         String state = preferences.getString("state", "null");
         String village = preferences.getString("village", "null");
         lastOfflineSavedDate = preferences.getString("offlineSaveTime", "null");
         if ((!program.equals("null")) && (!state.equals("null")) && (!village.equals("null"))) {
-            programInfoLayout.setVisibility(View.VISIBLE);
+            //   programInfoLayout.setVisibility(View.VISIBLE);
             selProg.setText(program);
             selState.setText(state);
             selVillage.setText(village);
@@ -124,8 +132,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface {
         String CRLpassword = password.getText().toString();
         if (CRLuserName.equals("admin") && CRLpassword.equals("admin")) {
             /*if (AppDatabase.getDatabaseInstance(this).getCRLdao().getAllCRLs().isEmpty()) {*/
-                Intent intent = new Intent(this, SelectProgram.class);
-                startActivity(intent);
+            Intent intent = new Intent(this, SelectProgram.class);
+            startActivity(intent);
            /* } else {
                 Toast.makeText(this, "Enter CRL login details or clear data", Toast.LENGTH_LONG).show();
             }*/

@@ -4,23 +4,57 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 @Entity
 public class TabletStatus {
-    String loggedUserId;
-    String prathamId;
     @NonNull
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    @Expose(serialize = false)
+    private Integer id;
+    @Expose
     String qrID;
+    @Expose
+    String loggedCRL_Id;
+    @Expose
+    String loggedCRL_Name;
+    @Expose
+    String prathamId;
+    @Expose
     String date;
+    @Expose
+    String serialNo;
+    @Expose
     String status;
-    boolean oldFlag=false;
 
-    public String getLoggedUserId() {
-        return loggedUserId;
+    @Expose(serialize = false)
+    @SerializedName("oldFlag")
+    boolean oldFlag = false;
+
+    @NonNull
+    public Integer getId() {
+        return id;
     }
 
-    public void setLoggedUserId(String loggedUserId) {
-        this.loggedUserId = loggedUserId;
+    public void setId(@NonNull Integer id) {
+        this.id = id;
+    }
+
+    public String getLoggedCRL_Id() {
+        return loggedCRL_Id;
+    }
+
+    public void setLoggedCRL_Id(String loggedCRL_Id) {
+        this.loggedCRL_Id = loggedCRL_Id;
+    }
+
+    public String getLoggedCRL_Name() {
+        return loggedCRL_Name;
+    }
+
+    public void setLoggedCRL_Name(String loggedCRL_Name) {
+        this.loggedCRL_Name = loggedCRL_Name;
     }
 
     public String getPrathamId() {
@@ -29,6 +63,14 @@ public class TabletStatus {
 
     public void setPrathamId(String prathamId) {
         this.prathamId = prathamId;
+    }
+
+    public String getSerialNo() {
+        return serialNo;
+    }
+
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
     }
 
     public String getQrID() {

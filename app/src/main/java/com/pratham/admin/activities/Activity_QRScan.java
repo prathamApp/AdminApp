@@ -154,7 +154,7 @@ public class Activity_QRScan extends AppCompatActivity implements ZXingScannerVi
         state = preferences.getString("state", "null");
         String village = preferences.getString("village", "null");
         if ((!program.equals("null")) && (!state.equals("null")) && (!village.equals("null"))) {
-            programInfoLayout.setVisibility(View.VISIBLE);
+           // programInfoLayout.setVisibility(View.VISIBLE);
             selProg.setText(program);
             selState.setText(state);
             selVillage.setText(village);

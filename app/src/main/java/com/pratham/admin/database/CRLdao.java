@@ -27,11 +27,11 @@ public interface CRLdao {
     @Query("SELECT RoleId FROM CRL where CRLId=:id")
     public String  getCRLsRoleById(String id);
 
-    @Query("SELECT DISTINCT ProgramName FROM CRL")
-    public List<String>  getDistinctCRLsdProgram();
+    @Query("SELECT DISTINCT ProgramName FROM CRL WHERE RoleId=:rollID")
+    public List<String>  getDistinctCRLsdProgram(String rollID);
 
-    @Query("SELECT DISTINCT  RoleName FROM CRL")
-    public List<String>  getDistinctCRLsRoleId();
+    @Query("SELECT DISTINCT  RoleName FROM CRL WHERE RoleId=:rollID")
+    public List<String>  getDistinctCRLsRoleId(String rollID);
 
     @Query("SELECT DISTINCT UserName,CRLId,FirstName FROM CRL WHERE RoleName=:roleName and ProgramName=:programName")
     public List<CRL>  getDistinctCRLsUserName(String roleName, String programName);
