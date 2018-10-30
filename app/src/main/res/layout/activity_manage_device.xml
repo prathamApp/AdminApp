@@ -88,7 +88,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-
+        <Button
+            android:id="@+id/my_devicelist"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:background="@color/colorPrimaryDark"
+            android:onClick="myDeviceList"
+            android:text="My Devices"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
         <Button
             android:id="@+id/acionstatus"
             android:layout_width="0dp"

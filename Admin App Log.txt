@@ -293,6 +293,13 @@ New Assign Return Tablet API --- done
 New Device List API --- done
 
 
+30 Oct
+Display Device API --- Done
+Damaged QR Replacement Module in Return Tab ( Tabtrack ) --- done
+Damaged QR Replacement Module in Assign Tab ( Tabtrack ) --- done
+Damaged QR Replacement Module in Tab Status ( Tabtrack ) --- done
+Login Page info on Toolbar --- done
+
 TODO
 student details section in admin app --- 
 ASER Levels ---

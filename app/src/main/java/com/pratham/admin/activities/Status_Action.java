@@ -28,7 +28,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -36,12 +38,15 @@ import com.google.zxing.Result;
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
+import com.pratham.admin.interfaces.DevicePrathamIdLisner;
 import com.pratham.admin.interfaces.QRScanListener;
 import com.pratham.admin.modalclasses.TabletStatus;
 import com.pratham.admin.util.APIs;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.Utility;
+
+import org.json.JSONArray;
 
 import java.util.List;
 
@@ -50,7 +55,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class Status_Action extends AppCompatActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener {
+public class Status_Action extends AppCompatActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener, DevicePrathamIdLisner {
 
     @BindView(R.id.qr_frame)
     FrameLayout qr_frame;
@@ -82,6 +87,7 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
     boolean internetIsAvailable = false;
     List<TabletStatus> tabTracks;
     CustomDialogTabletStatus customDialogTabletStatus;
+    private MyDeviceList myDeviceList;
 
 
     @Override
@@ -89,6 +95,7 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status__action);
         ButterKnife.bind(this);
+
         context = this;
         LoggedcrlId = getIntent().getStringExtra("CRLid");
         LoggedcrlName = getIntent().getStringExtra("CRLname");
@@ -115,7 +122,6 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -182,38 +188,54 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
             QrId = splitted[0];
             prathamId = splitted[1];
             if (QrId != null && prathamId != null && splitted.length == 2) {
-                List l = AppDatabase.getDatabaseInstance(this).getTabletStatusDao().checkExistance(QrId);
-                if (l.isEmpty()) {
-                    qr_pratham_id.setText(prathamId);
-                    successMessage.setVisibility(View.VISIBLE);
-                    qr_serialNo.setText("");
-                    qr_serialNo.setEnabled(false);
-                } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setCancelable(false);
-                    builder.setMessage("This QR Is Already Scanned. Do You Want To Replace Data?");
-                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            qr_pratham_id.setText(prathamId);
-                            successMessage.setVisibility(View.VISIBLE);
-                            qr_serialNo.setText("");
-                            qr_serialNo.setEnabled(false);
-                            dialogInterface.dismiss();
+                if ((!prathamId.equalsIgnoreCase("None"))) {
+                    List l = AppDatabase.getDatabaseInstance(this).getTabletStatusDao().checkExistance(QrId);
+                    if (l.isEmpty()) {
+                        qr_pratham_id.setText(prathamId);
+                        successMessage.setVisibility(View.VISIBLE);
+                        qr_serialNo.setText("");
+                        qr_serialNo.setEnabled(false);
+                    } else {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setCancelable(false);
+                        builder.setMessage("This QR Is Already Scanned. Do You Want To Replace Data?");
+                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                qr_pratham_id.setText(prathamId);
+                                successMessage.setVisibility(View.VISIBLE);
+                                qr_serialNo.setText("");
+                                qr_serialNo.setEnabled(false);
+                                dialogInterface.dismiss();
                        /* AppDatabase.getDatabaseInstance(Activity_QRScan.this).getTabTrackDao().insertTabTrack(tabletStatus);
                         Toast.makeText(Activity_QRScan.this, "Updated Successfully ", Toast.LENGTH_LONG).show();*/
-                        }
-                    });
-                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            resetCamera();
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    Dialog dialog = builder.create();
-                    dialog.show();
+                            }
+                        });
+                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                resetCamera();
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        Dialog dialog = builder.create();
+                        dialog.show();
 
+                    }
+                } else {
+                    if (internetIsAvailable) {
+                        String url = APIs.DeviceList + LoggedcrlId;
+                        loadDevises(url);
+                    } else {
+
+                        new AlertDialog.Builder(this).setTitle("Warning").setMessage("Please fill out the entire form").setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                resetCamera();
+                                dialog.dismiss();
+                            }
+                        }).create().show();
+                    }
                 }
             } else {
                 Toast.makeText(this, "Invalid QR ", Toast.LENGTH_LONG).show();
@@ -222,6 +244,26 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
             e.printStackTrace();
             Toast.makeText(this, "Invalid QR ", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void loadDevises(String url) {
+        AndroidNetworking.get(url).setPriority(Priority.MEDIUM).build().getAsJSONArray(new JSONArrayRequestListener() {
+            @Override
+            public void onResponse(JSONArray response) {
+                myDeviceList = new MyDeviceList(context, response);
+                myDeviceList.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                    }
+                });
+                myDeviceList.show();
+            }
+
+            @Override
+            public void onError(ANError anError) {
+
+            }
+        });
     }
 
     @Override
@@ -289,7 +331,8 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
         //qr_serialNo.setText("")
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
         statusRadioGroup.clearCheck();
-        qr_pratham_id.setText("");
+//        qr_pratham_id.setText("");
+        QrId = "";
     }
 
     public void setCount() {
@@ -313,7 +356,6 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
     }
 
     private void uploadAPI(String url, String json) {
-        url = "";
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setTitle("UPLOADING ... ");
         dialog.setCancelable(false);
@@ -342,10 +384,10 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
     public void update() {
 
         if (internetIsAvailable) {
-            Gson gson =new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
             String json = gson.toJson(tabTracks);
             //todo change API
-            uploadAPI("", json);
+            uploadAPI(APIs.AssignReturn, json);
         } else {
             Toast.makeText(this, "No Internet Connection...", Toast.LENGTH_SHORT).show();
         }
@@ -374,5 +416,57 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
         //todo
         AppDatabase.getDatabaseInstance(Status_Action.this).getTabletStatusDao().deleteAllTabletStatus();
         customDialogTabletStatus.dismiss();
+    }
+
+    @Override
+    public void getPrathamId(final String prathamIdNew, final String QrIdNEW) {
+        if (QrIdNEW != null && prathamIdNew != null) {
+            myDeviceList.dismiss();
+            /* check prathamID is not none ie for Not blank QR code*/
+            if ((!prathamIdNew.equalsIgnoreCase("None"))) {
+                //   List l = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().checkExistanceTabletManageDevice(QrIdNEW);
+                List l = AppDatabase.getDatabaseInstance(this).getTabletStatusDao().checkExistance(QrIdNEW);
+                if (l.isEmpty()) {
+                    QrId = QrIdNEW;
+                    prathamId = prathamIdNew;
+                    qr_pratham_id.setText(prathamId);
+                    successMessage.setVisibility(View.VISIBLE);
+                    qr_serialNo.setText("");
+                    qr_serialNo.setEnabled(false);
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setCancelable(false);
+                    builder.setMessage("This QR Is Already Scanned. Do You Want To Replace Data?");
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            QrId = QrIdNEW;
+                            prathamId = prathamIdNew;
+                            qr_pratham_id.setText(prathamId);
+                            successMessage.setVisibility(View.VISIBLE);
+                            qr_serialNo.setText("");
+                            qr_serialNo.setEnabled(false);
+                            dialogInterface.dismiss();
+                       /* AppDatabase.getDatabaseInstance(Activity_QRScan.this).getTabTrackDao().insertTabTrack(tabletStatus);
+                        Toast.makeText(Activity_QRScan.this, "Updated Successfully ", Toast.LENGTH_LONG).show();*/
+                        }
+                    });
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            resetCamera();
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    Dialog dialog = builder.create();
+                    dialog.show();
+
+                }
+            } else {
+
+            }
+        } else {
+            Toast.makeText(this, "Invalid QR ", Toast.LENGTH_LONG).show();
+        }
     }
 }

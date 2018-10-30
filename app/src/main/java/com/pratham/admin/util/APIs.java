@@ -80,7 +80,7 @@ public class APIs {
     public static final String AssignReturn = "http://swap.prathamcms.org/api/AssignReturn/pushdata";
 
     // Device List API
-    public static final String DeviceList = "http://swap.prathamcms.org/api/tablist?userid=30";
+    public static final String DeviceList = "http://swap.prathamcms.org/api/tablist?userid=";
 
 
 }

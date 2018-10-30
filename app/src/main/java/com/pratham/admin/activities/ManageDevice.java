@@ -1,19 +1,32 @@
 package com.pratham.admin.activities;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
+import com.pratham.admin.interfaces.ConnectionReceiverListener;
+import com.pratham.admin.interfaces.DevicePrathamIdLisner;
+import com.pratham.admin.util.APIs;
+import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.ROll_ID;
+
+import org.json.JSONArray;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ManageDevice extends AppCompatActivity {
+public class ManageDevice extends AppCompatActivity implements DevicePrathamIdLisner, ConnectionReceiverListener {
     @BindView(R.id.btn_assignTablet)
     Button btn_assignTablet;
 
@@ -25,6 +38,8 @@ public class ManageDevice extends AppCompatActivity {
 
     String LoggedcrlName;
     String LoggedcrlId;
+    Context context;
+    boolean internetIsAvailable = false;
    /* final String Admin = "7";
     final String BRG_CRL_Tutor = "6";
     final String Block_Head = "5";
@@ -39,11 +54,13 @@ public class ManageDevice extends AppCompatActivity {
         ButterKnife.bind(this);
         LoggedcrlId = getIntent().getStringExtra("CRLid");
         LoggedcrlName = getIntent().getStringExtra("CRLname");
+        context = ManageDevice.this;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        checkConnection();
         setRules();
     }
 
@@ -105,5 +122,64 @@ public class ManageDevice extends AppCompatActivity {
         intent.putExtra("CRLid", LoggedcrlId);
         intent.putExtra("CRLname", LoggedcrlName);
         startActivity(intent);
+    }
+
+    public void myDeviceList(View view) {
+        //todo check internret connection
+        if (internetIsAvailable) {
+            String url = APIs.DeviceList + LoggedcrlId;
+            loadDevises(url);
+        }else {
+            new AlertDialog.Builder(ManageDevice.this)
+                    .setTitle("Warning")
+                    .setMessage("No Intenet Found")
+                    .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create()
+                    .show()
+            ;
+        }
+    }
+
+    private void loadDevises(String url) {
+        AndroidNetworking.get(url).setPriority(Priority.MEDIUM).build().getAsJSONArray(new JSONArrayRequestListener() {
+            @Override
+            public void onResponse(JSONArray response) {
+                MyDeviceList myDeviceList = new MyDeviceList(context, response);
+                myDeviceList.show();
+            }
+
+            @Override
+            public void onError(ANError anError) {
+
+            }
+        });
+    }
+
+    @Override
+    public void getPrathamId(String prathamId, String QrId) {
+
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            internetIsAvailable = false;
+        } else {
+            internetIsAvailable = true;
+        }
+    }
+
+    private void checkConnection() {
+        boolean isConnected = ConnectionReceiver.isConnected();
+        if (!isConnected) {
+            internetIsAvailable = false;
+        } else {
+            internetIsAvailable = true;
+        }
     }
 }

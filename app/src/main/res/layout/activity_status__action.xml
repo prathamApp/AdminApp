@@ -213,6 +213,7 @@
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="3dp" />
+
                     <EditText
                         android:id="@+id/qr_serialNo"
                         style="@style/CustomText"
@@ -226,14 +227,15 @@
                         android:singleLine="true"
                         android:textColor="@android:color/black"
                         android:textSize="15dp" />
+
                     <TextView
                         android:id="@+id/tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:textSize="18sp"
-                        android:text="select status?" />
+                        android:text="select status?"
+                        android:textSize="18sp" />
 
                     <RadioGroup
                         android:id="@+id/statusRadioGroup"
@@ -247,24 +249,24 @@
                             android:id="@+id/fixed"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="fixed" />
+                            android:text="Fixed" />
 
                         <android.support.v7.widget.AppCompatRadioButton
                             android:id="@+id/notFixed"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="not fixed" />
+                            android:text="Not Fixed" />
                     </RadioGroup>
 
                     <Button
                         android:id="@+id/btn_DatePicker"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
                         android:background="@color/colorPrimaryDark"
                         android:drawableLeft="@android:drawable/ic_menu_my_calendar"
                         android:paddingLeft="16dp"
                         android:text="Date"
-                        android:layout_margin="8dp"
                         android:textAllCaps="false"
                         android:textColor="#FFFFFF"
                         android:textSize="18sp" />

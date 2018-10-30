@@ -267,9 +267,13 @@ public class Activity_QRScan extends AppCompatActivity implements ZXingScannerVi
             prathamId = jsonObject.getString("PrathamCode");*/
             QrId = splitted[0];
             prathamId = splitted[1];
+            Log.d("::::Tag",QrId+"  "+prathamId);
             if (QrId != null && prathamId != null && splitted.length == 2) {
                 List l = AppDatabase.getDatabaseInstance(this).getTabTrackDao().checkExistance(QrId);
                 if (l.isEmpty()) {
+
+
+                    Log.d(":::",QrId+"  "+prathamId);
                     qr_pratham_id.setText(prathamId);
                     successMessage.setVisibility(View.VISIBLE);
                 } else {

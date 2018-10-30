@@ -126,5 +126,11 @@
     <style name="Widget.Holo.Light.Spinner.DropDown">
     </style>
 
+    <style name="devicelist">
+        <item name="android:textSize">18dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+    </style>
 
 </resources>

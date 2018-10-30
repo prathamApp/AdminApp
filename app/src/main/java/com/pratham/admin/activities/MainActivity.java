@@ -106,18 +106,19 @@ public class MainActivity extends AppCompatActivity implements DialogInterface {
         password.setText("pratham@123");
         userName.setText("ganeshtupe54");
         password.setText("pratham");*/
-       userName.setText("609");
-        password.setText("pefmumbai");
-       /* userName.setText("");
+       /* userName.setText("amolmoghe");
+        password.setText("pratham@123");
+     */
+        userName.setText("");
         password.setText("");
-        userName.requestFocus();*/
+        userName.requestFocus();
         SharedPreferences preferences = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
         String program = preferences.getString("program", "null");
         String state = preferences.getString("state", "null");
         String village = preferences.getString("village", "null");
         lastOfflineSavedDate = preferences.getString("offlineSaveTime", "null");
         if ((!program.equals("null")) && (!state.equals("null")) && (!village.equals("null"))) {
-            //   programInfoLayout.setVisibility(View.VISIBLE);
+            programInfoLayout.setVisibility(View.VISIBLE);
             selProg.setText(program);
             selState.setText(state);
             selVillage.setText(village);
