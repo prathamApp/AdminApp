@@ -119,6 +119,7 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
     final String RETURN = "Return";
     List<CrlInfoRecycler> crlList_md = new ArrayList<>();
     MyDeviceList myDeviceList;
+    ProgressDialog progressDialog;
 
   /*  final String BRG_CRL_Tutor = "6";
     final String Block_Head = "5";
@@ -212,21 +213,24 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
                 case ROll_ID.District_Head:
                     options = new String[]{ROll_ID.Block_Head, ROll_ID.BRG_CRL_Tutor};
                     break;
-                case ROll_ID.Program_Head:
-                    options = new String[]{ROll_ID.District_Head, ROll_ID.Block_Head};
-                    break;
                 case ROll_ID.State_Program_Head:
-                    options = new String[]{ROll_ID.Program_Head, ROll_ID.District_Head, ROll_ID.Block_Head};
+                    options = new String[]{ROll_ID.District_Head, ROll_ID.Block_Head, ROll_ID.BRG_CRL_Tutor};
                     break;
-                case ROll_ID.National_Program_Head:
+                case ROll_ID.Program_Head:
                     options = new String[]{ROll_ID.State_Program_Head};
                     break;
-                case ROll_ID.Store:
-                    options = new String[]{ROll_ID.Block_Head, ROll_ID.District_Head, ROll_ID.Program_Head, ROll_ID.State_Program_Head, ROll_ID.National_Program_Head};
+                case ROll_ID.Vendor:
+                    options = new String[]{ROll_ID.Block_Head, ROll_ID.District_Head, ROll_ID.State_Program_Head, ROll_ID.BRG_CRL_Tutor};
                     break;
+
                 case ROll_ID.Admin:
-                    options = new String[]{ROll_ID.Block_Head, ROll_ID.District_Head, ROll_ID.Program_Head, ROll_ID.State_Program_Head, ROll_ID.National_Program_Head, ROll_ID.Store};
+                    options = new String[]{ROll_ID.BRG_CRL_Tutor, ROll_ID.Block_Head, ROll_ID.District_Head, ROll_ID.State_Program_Head, ROll_ID.Vendor};
                     break;
+               /* case ROll_ID.National_Program_Head:
+                    options = new String[]{ROll_ID.State_Program_Head};
+                    break;*/
+
+
             }
         } else if (tabStatus.equals(RETURN)) {
             switch (role) {
@@ -234,21 +238,22 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
                     options = new String[]{ROll_ID.Block_Head, ROll_ID.District_Head};
                     break;
                 case ROll_ID.Block_Head:
-                    options = new String[]{ROll_ID.Program_Head, ROll_ID.Store, ROll_ID.District_Head};
+                    options = new String[]{ROll_ID.State_Program_Head, ROll_ID.Vendor};
                     break;
                 case ROll_ID.District_Head:
-                    options = new String[]{ROll_ID.Program_Head, ROll_ID.Store};
-                    break;
-                case ROll_ID.Program_Head:
-                    options = new String[]{ROll_ID.State_Program_Head, ROll_ID.Store};
+                    options = new String[]{ROll_ID.State_Program_Head, ROll_ID.Vendor};
                     break;
                 case ROll_ID.State_Program_Head:
-                    options = new String[]{ROll_ID.National_Program_Head, ROll_ID.Store};
+                    options = new String[]{ROll_ID.Program_Head, ROll_ID.Vendor};
                     break;
-                case ROll_ID.National_Program_Head:
+                case ROll_ID.Program_Head:
+                    options = new String[]{ROll_ID.Vendor};
+                    break;
+
+                /*case ROll_ID.National_Program_Head:
                     options = new String[]{ROll_ID.Store};
-                    break;
-                case ROll_ID.Store:
+                    break;*/
+                case ROll_ID.Vendor:
                     options = new String[]{ROll_ID.Admin};
                     break;
                 case ROll_ID.Admin:
@@ -511,20 +516,15 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
                         String url = APIs.DeviceList + LoggedcrlId;
                         loadDevises(url);
                     } else {
+                        checkConnection();
+                        new AlertDialog.Builder(this).setTitle("Warning").setMessage("Internet not available").setPositiveButton("Close", new DialogInterface.OnClickListener() {
 
-                        new AlertDialog.Builder(this)
-                                .setTitle("Warning")
-                                .setMessage("Please fill out the entire form")
-                                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        resetCamera();
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .create()
-                                .show();
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                resetCamera();
+                                dialog.dismiss();
+                            }
+                        }).create().show();
                     }
                 }
             } else {
@@ -538,13 +538,18 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
     }
 
     private void loadDevises(String url) {
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("loading Devices");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
         AndroidNetworking.get(url).setPriority(Priority.MEDIUM).build().getAsJSONArray(new JSONArrayRequestListener() {
             @Override
             public void onResponse(JSONArray response) {
+                progressDialog.dismiss();
                 myDeviceList = new MyDeviceList(context, response);
-                myDeviceList.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                myDeviceList.setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
-                    public void onDismiss(DialogInterface dialogInterface) {
+                    public void onCancel(DialogInterface dialogInterface) {
                         resetCamera();
                     }
                 });
@@ -553,7 +558,9 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
 
             @Override
             public void onError(ANError anError) {
-
+                progressDialog.dismiss();
+                resetCamera();
+                Toast.makeText(context, "Check internet connection", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -680,7 +687,6 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
     }
 
     private void uploadAPI(String url, String json) {
-//        url = "";
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setTitle("UPLOADING ... ");
         dialog.setCancelable(false);
@@ -713,6 +719,7 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
             String json = gson.toJson(tabletMD);
             uploadAPI(APIs.AssignReturn, json);
         } else {
+            checkConnection();
             Toast.makeText(this, "No Internet Connection...", Toast.LENGTH_SHORT).show();
         }
     }
@@ -748,9 +755,9 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
             myDeviceList.dismiss();
             /* check prathamID is not none ie for Not blank QR code*/
             if ((!prathamIdNew.equalsIgnoreCase("None"))) {
-                List l = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().checkExistanceTabletManageDevice(QrIdNEW);
+                List l = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().checkExistanceTabletManageDevice(QrId);
                 if (l.isEmpty()) {
-                    QrId = QrIdNEW;
+                    // QrId = QrIdNEW;
                     prathamId = prathamIdNew;
                     qr_pratham_id.setText(prathamId);
                     successMessage.setVisibility(View.VISIBLE);
@@ -763,7 +770,7 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            QrId = QrIdNEW;
+                            //  QrId = QrIdNEW;
                             prathamId = prathamIdNew;
                             qr_pratham_id.setText(prathamId);
                             successMessage.setVisibility(View.VISIBLE);

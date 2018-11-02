@@ -51,7 +51,7 @@ public class QRScanAdapter_MD extends RecyclerView.Adapter<QRScanAdapter_MD.View
         holder.ad_AssignedBy.setText(tabletManageDevices.get(position).getLogged_CRL_ID());
         holder.qrID.setText(tabletManageDevices.get(position).getQR_ID());
         holder.pratham_id.setText(tabletManageDevices.get(position).getPratham_ID());
-        holder.txt_serial_No.setText(tabletManageDevices.get(position).getTabSerial_ID());
+        holder.txt_date.setText(tabletManageDevices.get(position).getDate());
 
         String replaceStaatus="";
         if(tabletManageDevices.get(position).getIs_Damaged()!=null){
@@ -89,7 +89,7 @@ public class QRScanAdapter_MD extends RecyclerView.Adapter<QRScanAdapter_MD.View
 
     class ViewHolder extends RecyclerView.ViewHolder {
         // @BindView(R.id.checkBox_student)
-        TextView ad_status, ad_assignedTo, ad_AssignedBy, qrID, pratham_id, txt_serial_No, replaceStatus;
+        TextView ad_status, ad_assignedTo, ad_AssignedBy, qrID, pratham_id, txt_date, replaceStatus;
         ImageView ad_iv_delete;
         ConstraintLayout parent_recycler_row;
 
@@ -101,7 +101,7 @@ public class QRScanAdapter_MD extends RecyclerView.Adapter<QRScanAdapter_MD.View
             ad_AssignedBy = itemView.findViewById(R.id.ad_AssignedBy);
             qrID = itemView.findViewById(R.id.qrID);
             pratham_id = itemView.findViewById(R.id.pratham_id);
-            txt_serial_No = itemView.findViewById(R.id.txt_date);
+            txt_date = itemView.findViewById(R.id.txt_date);
             /* txt_loggedIn_crl = itemView.findViewById(R.id.txt_loggedIn_crl);*/
             replaceStatus = itemView.findViewById(R.id.replaceStatus);
             ad_iv_delete = itemView.findViewById(R.id.ad_iv_delete);

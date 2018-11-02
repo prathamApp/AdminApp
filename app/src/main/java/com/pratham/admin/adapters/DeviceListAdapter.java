@@ -36,13 +36,13 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.My
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
       //  if(deviseList.get(position).getPratham_ID()!=null)
-        holder.prathamId.setText("prathamId :"+deviseList.get(position).getPratham_ID());
+        holder.prathamId.setText("PrathamId :"+deviseList.get(position).getPratham_ID());
        // if(deviseList.get(position).getQR_ID()!=null)
-        holder.qrId.setText("qr Id :"+deviseList.get(position).getQR_ID());
-        holder.deviceId.setText("deviceId :"+deviseList.get(position).getDeviceid());
-        holder.serialID.setText("serialId :"+deviseList.get(position).getSerialno());
-        holder.brand.setText("Model:"+deviseList.get(position).getBrand()+""+deviseList.get(position).getModel());
-        holder.macAdd.setText("Mac Addr :"+deviseList.get(position).getMacAdd());
+        holder.qrId.setText("Qr Id :"+deviseList.get(position).getQR_ID());
+        holder.deviceId.setText("DeviceId :"+deviseList.get(position).getDeviceid());
+        holder.serialID.setText("SerialId :"+deviseList.get(position).getSerialno());
+        holder.brand.setText("Model:"+deviseList.get(position).getBrand()+" "+deviseList.get(position).getModel());
+        holder.macAdd.setText("Mac Addr :"+deviseList.get(position).getWiFiMacAddress());
     }
 
     @Override

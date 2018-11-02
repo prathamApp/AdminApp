@@ -100,15 +100,16 @@ public class MainActivity extends AppCompatActivity implements DialogInterface {
         /*userName.setText("admin");
         password.setText("admin");*/
 
-    /*    userName.setText("santoshborade");
+    /*  userName.setText("santoshborade");
         password.setText("pratham123");
         userName.setText("amolmoghe");
         password.setText("pratham@123");
         userName.setText("ganeshtupe54");
-        password.setText("pratham");*/
-       /* userName.setText("amolmoghe");
+        password.setText("pratham");
+        userName.setText("amolmoghe");
         password.setText("pratham@123");
-     */
+        userName.setText("narayansiraswar410");
+        password.setText("pratham");*/
         userName.setText("");
         password.setText("");
         userName.requestFocus();

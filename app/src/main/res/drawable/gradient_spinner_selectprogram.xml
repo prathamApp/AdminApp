@@ -15,8 +15,6 @@
             <item android:right="20dp">
                 <bitmap android:gravity="right" android:src="@drawable/arrowdown" />
             </item>
-
         </layer-list>
     </item>
-
 </selector>

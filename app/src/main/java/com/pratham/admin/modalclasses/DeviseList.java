@@ -9,7 +9,7 @@ public class DeviseList {
     String status;
     String Pratham_ID;
     String QR_ID;
-    String macAdd;
+    String WiFiMacAddress;
 
     public String getUserid() {
         return userid;
@@ -75,11 +75,11 @@ public class DeviseList {
         this.QR_ID = QR_ID;
     }
 
-    public String getMacAdd() {
-        return macAdd;
+    public String getWiFiMacAddress() {
+        return WiFiMacAddress;
     }
 
-    public void setMacAdd(String macAdd) {
-        this.macAdd = macAdd;
+    public void setWiFiMacAddress(String wiFiMacAddress) {
+        WiFiMacAddress = wiFiMacAddress;
     }
 }

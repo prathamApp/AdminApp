@@ -8,11 +8,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -227,7 +225,7 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
                         String url = APIs.DeviceList + LoggedcrlId;
                         loadDevises(url);
                     } else {
-
+                        checkConnection();
                         new AlertDialog.Builder(this).setTitle("Warning").setMessage("Please fill out the entire form").setPositiveButton("Close", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -247,13 +245,25 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
     }
 
     private void loadDevises(String url) {
+        final ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Loading Devices...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
         AndroidNetworking.get(url).setPriority(Priority.MEDIUM).build().getAsJSONArray(new JSONArrayRequestListener() {
             @Override
             public void onResponse(JSONArray response) {
+                progressDialog.dismiss();
                 myDeviceList = new MyDeviceList(context, response);
-                myDeviceList.setOnDismissListener(new DialogInterface.OnDismissListener() {
+               /* myDeviceList.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
+                        resetCamera();
+                    }
+                });*/
+               myDeviceList.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        resetCamera();
                     }
                 });
                 myDeviceList.show();
@@ -261,7 +271,9 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
 
             @Override
             public void onError(ANError anError) {
-
+                progressDialog.dismiss();
+                resetCamera();
+                Toast.makeText(context, "Check internet conection", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -389,6 +401,7 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
             //todo change API
             uploadAPI(APIs.AssignReturn, json);
         } else {
+            checkConnection();
             Toast.makeText(this, "No Internet Connection...", Toast.LENGTH_SHORT).show();
         }
     }
@@ -425,9 +438,9 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
             /* check prathamID is not none ie for Not blank QR code*/
             if ((!prathamIdNew.equalsIgnoreCase("None"))) {
                 //   List l = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().checkExistanceTabletManageDevice(QrIdNEW);
-                List l = AppDatabase.getDatabaseInstance(this).getTabletStatusDao().checkExistance(QrIdNEW);
+                List l = AppDatabase.getDatabaseInstance(this).getTabletStatusDao().checkExistance(QrId);
                 if (l.isEmpty()) {
-                    QrId = QrIdNEW;
+                   // QrId = QrIdNEW;
                     prathamId = prathamIdNew;
                     qr_pratham_id.setText(prathamId);
                     successMessage.setVisibility(View.VISIBLE);
@@ -440,7 +453,7 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            QrId = QrIdNEW;
+                           // QrId = QrIdNEW;
                             prathamId = prathamIdNew;
                             qr_pratham_id.setText(prathamId);
                             successMessage.setVisibility(View.VISIBLE);

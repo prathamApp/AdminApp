@@ -30,7 +30,7 @@ public class MyDeviceList extends Dialog {
         Gson gson = new Gson();
         Type devicesList = new TypeToken<ArrayList<DeviseList>>() {
         }.getType();
-        this.context=context;
+        this.context = context;
         deviceList = gson.fromJson(response.toString(), devicesList);
     }
 
@@ -38,9 +38,13 @@ public class MyDeviceList extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_device_list_dilog);
-        setTitle("Select Device from The List");
+        if (deviceList.isEmpty()) {
+            setTitle("No Device Found");
+        } else {
+            setTitle("Select Device From The List");
+        }
         recyclerView = findViewById(R.id.recycler_view);
-        DeviceListAdapter deviceAdapter = new DeviceListAdapter(context,deviceList);
+        DeviceListAdapter deviceAdapter = new DeviceListAdapter(context, deviceList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(deviceAdapter);

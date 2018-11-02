@@ -9,10 +9,12 @@ import com.google.gson.annotations.SerializedName;
 
 @Entity
 public class TabletStatus {
+    /*   @NonNull
+       @PrimaryKey(autoGenerate = true)
+       @Expose(serialize = false)
+       private Integer id;*/
     @NonNull
-    @PrimaryKey(autoGenerate = true)
-    @Expose(serialize = false)
-    private Integer id;
+    @PrimaryKey
     @Expose
     String qrID;
     @Expose
@@ -32,14 +34,14 @@ public class TabletStatus {
     @SerializedName("oldFlag")
     boolean oldFlag = false;
 
-    @NonNull
+   /* @NonNull
     public Integer getId() {
         return id;
     }
 
     public void setId(@NonNull Integer id) {
         this.id = id;
-    }
+    }*/
 
     public String getLoggedCRL_Id() {
         return loggedCRL_Id;

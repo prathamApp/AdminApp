@@ -1,6 +1,7 @@
 package com.pratham.admin.activities;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -40,6 +42,8 @@ public class ManageDevice extends AppCompatActivity implements DevicePrathamIdLi
     String LoggedcrlId;
     Context context;
     boolean internetIsAvailable = false;
+    ProgressDialog progressDialog;
+
    /* final String Admin = "7";
     final String BRG_CRL_Tutor = "6";
     final String Block_Head = "5";
@@ -84,22 +88,18 @@ public class ManageDevice extends AppCompatActivity implements DevicePrathamIdLi
             case ROll_ID.State_Program_Head:
                 acionstatus.setVisibility(View.GONE);
                 break;
-            case ROll_ID.National_Program_Head:
+           /* case ROll_ID.National_Program_Head:
                 acionstatus.setVisibility(View.GONE);
-                break;
-            case ROll_ID.Store:
+                break;*/
+            case ROll_ID.Vendor:
 
                 break;
             case ROll_ID.Admin:
-                acionstatus.setVisibility(View.GONE);
+                // acionstatus.setVisibility(View.GONE);
                 break;
         }
 
     }
-    /*  public void pullData(View view) {
-        Intent intent = new Intent(this, PullDataMD.class);
-        startActivity(intent);
-    }*/
 
     public void assignTablet(View view) {
         Intent intent = new Intent(this, AssignTabletMD.class);
@@ -129,33 +129,34 @@ public class ManageDevice extends AppCompatActivity implements DevicePrathamIdLi
         if (internetIsAvailable) {
             String url = APIs.DeviceList + LoggedcrlId;
             loadDevises(url);
-        }else {
-            new AlertDialog.Builder(ManageDevice.this)
-                    .setTitle("Warning")
-                    .setMessage("No Intenet Found")
-                    .setPositiveButton("Close", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .create()
-                    .show()
-            ;
+        } else {
+            checkConnection();
+            new AlertDialog.Builder(ManageDevice.this).setTitle("Warning").setMessage("No Intenet Found").setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).create().show();
         }
     }
 
     private void loadDevises(String url) {
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Loading Devices..");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
         AndroidNetworking.get(url).setPriority(Priority.MEDIUM).build().getAsJSONArray(new JSONArrayRequestListener() {
             @Override
             public void onResponse(JSONArray response) {
+                progressDialog.dismiss();
                 MyDeviceList myDeviceList = new MyDeviceList(context, response);
                 myDeviceList.show();
             }
 
             @Override
             public void onError(ANError anError) {
-
+                progressDialog.dismiss();
+                Toast.makeText(context, "check internet connection", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -417,7 +417,6 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
         if (studLoadCount == villageId.size()) {
             dismissShownDialog();
             // mayur cha code
-
             formsAPI();
 
         }

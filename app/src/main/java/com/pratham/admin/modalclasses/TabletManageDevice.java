@@ -10,13 +10,21 @@ import com.google.gson.annotations.SerializedName;
 @Entity
 public class TabletManageDevice {
 
-    @NonNull
+   /* @NonNull
     @PrimaryKey(autoGenerate = true)
     @Expose(serialize = false)
-    private Integer id;
+    private Integer id;*/
+
+    @NonNull
     @Expose
+    @PrimaryKey
     @SerializedName("QR_ID")
     String QR_ID;
+
+
+    @Expose
+    @SerializedName("Pratham_ID")
+    String Pratham_ID;
 
     @Expose
     @SerializedName("CRL_ID")
@@ -26,9 +34,7 @@ public class TabletManageDevice {
     @SerializedName("CRL_Name")
     String assigned_CRL_Name;
 
-    @Expose
-    @SerializedName("Pratham_ID")
-    String Pratham_ID;
+
 
     @Expose
     @SerializedName("Tab_serial_ID")
@@ -65,7 +71,7 @@ public class TabletManageDevice {
 
     @Expose(serialize = false)
     boolean oldFlag = false;
-
+/*
     @NonNull
     public Integer getId() {
         return id;
@@ -73,7 +79,7 @@ public class TabletManageDevice {
 
     public void setId(@NonNull Integer id) {
         this.id = id;
-    }
+    }*/
 
     public boolean getOldFlag() {
         return oldFlag;
