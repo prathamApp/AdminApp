@@ -120,16 +120,6 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
     List<CrlInfoRecycler> crlList_md = new ArrayList<>();
     MyDeviceList myDeviceList;
     ProgressDialog progressDialog;
-
-  /*  final String BRG_CRL_Tutor = "6";
-    final String Block_Head = "5";
-  *//*  final String District_Head = "4";*//*
-    final String State_Program_Head = "3";
-    final String Program_Head = "2";
-    final String Store="-1";
-    final String Admin = "7";*/
-
-
     String[] options;
 
     @Override
@@ -164,7 +154,6 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
     protected void onResume() {
         super.onResume();
         checkConnection();
-
         //  int crlCount = AppDatabase.getDatabaseInstance(context).getCRLmd_dao().getCRLs_mdCount();
         int crlCount = AppDatabase.getDatabaseInstance(context).getCRLdao().getCRLsCount();
         if (crlCount <= 0) {
@@ -201,7 +190,8 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
 
     private void setRules() {
 
-        String role = AppDatabase.getDatabaseInstance(this).getCRLdao().getCRLsRoleById(LoggedcrlId);
+        String role="";
+        role = AppDatabase.getDatabaseInstance(this).getCRLdao().getCRLsRoleById(LoggedcrlId);
         if (tabStatus.equals(ASSIGN)) {
             switch (role) {
                 case ROll_ID.BRG_CRL_Tutor:
@@ -336,8 +326,9 @@ public class AssignTabletMD extends AppCompatActivity implements ZXingScannerVie
                 roleList.add("Select Role");
                 if (pos > 0) {
                     // roleList.addAll(AppDatabase.getDatabaseInstance(context).getCRLmd_dao().getDistinctCRLs_mdRoleId());
+                    String programName=adapterView.getSelectedItem().toString();
                     for (String rollId : options) {
-                        roleList.addAll(AppDatabase.getDatabaseInstance(context).getCRLdao().getDistinctCRLsRoleId(rollId));
+                        roleList.addAll(AppDatabase.getDatabaseInstance(context).getCRLdao().getDistinctCRLsRoleId(rollId,programName));
                     }
                 }
                 Set<String> hs = new LinkedHashSet<>();

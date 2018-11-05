@@ -300,6 +300,10 @@ Damaged QR Replacement Module in Assign Tab ( Tabtrack ) --- done
 Damaged QR Replacement Module in Tab Status ( Tabtrack ) --- done
 Login Page info on Toolbar --- done
 
+
+3 Nov 18
+1 vendor added
+2 Second chance Api changed
 TODO
 student details section in admin app --- 
 ASER Levels ---

@@ -268,7 +268,7 @@ public class Activity_QRScan extends AppCompatActivity implements ZXingScannerVi
             QrId = splitted[0];
             prathamId = splitted[1];
             Log.d("::::Tag",QrId+"  "+prathamId);
-            if (QrId != null && prathamId != null && splitted.length == 2) {
+            if (QrId != null && prathamId != null && splitted.length == 2 && (!prathamId.equalsIgnoreCase("None"))) {
                 List l = AppDatabase.getDatabaseInstance(this).getTabTrackDao().checkExistance(QrId);
                 if (l.isEmpty()) {
 

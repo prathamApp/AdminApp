@@ -146,6 +146,7 @@ public class PullDataMD extends AppCompatActivity implements ConnectionReceiverL
                                     pullCRL(APIs.RIpullCrlsURL + selectedState);
                                     break;
                                 case SC:
+                                    //wrong API
                                     pullCRL(APIs.SCpullCrlsURL + selectedState);
                                     break;
                                 case PI:

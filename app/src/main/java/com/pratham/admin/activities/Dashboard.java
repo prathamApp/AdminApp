@@ -28,7 +28,6 @@ import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.DashRVClickListener;
 import com.pratham.admin.modalclasses.Attendance;
-//import com.pratham.admin.modalclasses.CRLVisit;
 import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Completion;
@@ -36,6 +35,7 @@ import com.pratham.admin.modalclasses.DashboardItem;
 import com.pratham.admin.modalclasses.GroupSession;
 import com.pratham.admin.modalclasses.GroupVisit;
 import com.pratham.admin.modalclasses.MetaData;
+import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.DashRVTouchListener;
 
@@ -48,6 +48,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.pratham.admin.util.APIs.PushForms;
+
+//import com.pratham.admin.modalclasses.CRLVisit;
 
 public class Dashboard extends AppCompatActivity implements DashRVClickListener, ConnectionReceiverListener {
 
@@ -72,7 +74,9 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
         getSupportActionBar().hide();
 
         checkConnection();
-
+        //backup Database
+        BackupDatabase backupDatabase = new BackupDatabase();
+        backupDatabase.backup(this);
         LoggedcrlId = getIntent().getStringExtra("CRLid");
         LoggedcrlName = getIntent().getStringExtra("CRLname");
         LoggedCRLnameSwapStd = getIntent().getStringExtra("CRLnameSwapStd");
@@ -114,8 +118,7 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
         WifiInfo wInfo = wifiManager.getConnectionInfo();
         WiFiMac = wInfo.getMacAddress();
 
-        tv_appInfo.setText("Apk Version : " + apkVersion + "\nWiFi MAC : " + WiFiMac
-                + "\nDevice ID : " + deviceID + "\nSerial ID : " + serialID);
+        tv_appInfo.setText("Apk Version : " + apkVersion + "\nWiFi MAC : " + WiFiMac + "\nDevice ID : " + deviceID + "\nSerial ID : " + serialID);
     }
 
     @Override
@@ -203,15 +206,9 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
                 String metaDataJSON = customParse(metaDataList);
                 AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
 
-                String json = "{ \"AttendanceJSON\":" + "" + gson.toJson(aObj).toString()
-                        + ",\"CoachesJSON\":" + "" + gson.toJson(coachesObj).toString()
-                        + ",\"CommunitiesJSON\":" + "" + gson.toJson(communitiesObj).toString()
-                        + ",\"CompletionsJSON\":" + "" + gson.toJson(completionsObj).toString()
+                String json = "{ \"AttendanceJSON\":" + "" + gson.toJson(aObj).toString() + ",\"CoachesJSON\":" + "" + gson.toJson(coachesObj).toString() + ",\"CommunitiesJSON\":" + "" + gson.toJson(communitiesObj).toString() + ",\"CompletionsJSON\":" + "" + gson.toJson(completionsObj).toString()
 //                        + ",\"CRLVisitsJSON\":" + "" + gson.toJson(CRLVisitObj).toString()
-                        + ",\"GroupVisitsJSON\":" + "" + gson.toJson(GroupSessionObj).toString()
-                        + ",\"GroupSessionJSON\":" + "" + gson.toJson(GroupVisitObj).toString()
-                        + ",\"metadata\":" + "" + metaDataJSON
-                        + "}";
+                        + ",\"GroupVisitsJSON\":" + "" + gson.toJson(GroupSessionObj).toString() + ",\"GroupSessionJSON\":" + "" + gson.toJson(GroupVisitObj).toString() + ",\"metadata\":" + "" + metaDataJSON + "}";
 
                 Log.d("json all push :::", json);
 
@@ -221,9 +218,8 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.show();
 
-                if ((aObj.size() == 0) && (coachesObj.size() == 0)
-                        && (communitiesObj.size() == 0) && (completionsObj.size() == 0)
-                        /*&& (CRLVisitObj.size() == 0)*/) {
+                if ((aObj.size() == 0) && (coachesObj.size() == 0) && (communitiesObj.size() == 0) && (completionsObj.size() == 0)
+                    /*&& (CRLVisitObj.size() == 0)*/) {
                     // No Data Available
                     dialog.dismiss();
                     Log.d("json not pushed:::", json);
@@ -321,7 +317,7 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
-        }else if (name.contains("Manage Device")) {
+        } else if (name.contains("Manage Device")) {
             Intent intent = new Intent(Dashboard.this, ManageDevice.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);

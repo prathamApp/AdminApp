@@ -30,8 +30,8 @@ public interface CRLdao {
     @Query("SELECT DISTINCT ProgramName FROM CRL WHERE RoleId=:rollID")
     public List<String>  getDistinctCRLsdProgram(String rollID);
 
-    @Query("SELECT DISTINCT  RoleName FROM CRL WHERE RoleId=:rollID")
-    public List<String>  getDistinctCRLsRoleId(String rollID);
+    @Query("SELECT DISTINCT  RoleName FROM CRL WHERE RoleId=:rollID and ProgramName=:programName")
+    public List<String>  getDistinctCRLsRoleId(String rollID,String programName);
 
     @Query("SELECT DISTINCT UserName,CRLId,FirstName FROM CRL WHERE RoleName=:roleName and ProgramName=:programName")
     public List<CRL>  getDistinctCRLsUserName(String roleName, String programName);

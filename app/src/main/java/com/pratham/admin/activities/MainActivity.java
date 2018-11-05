@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface {
             SharedPreferences preferences = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
             String version = preferences.getString("version", "null");
             if (!versionName.equals(version)) {
-                Toast.makeText(this, "New Version Available", Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(this, "New Version Available", Toast.LENGTH_SHORT).show();
                 clearData();
                 SharedPreferences sharedPref = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();

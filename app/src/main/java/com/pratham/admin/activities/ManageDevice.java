@@ -70,35 +70,38 @@ public class ManageDevice extends AppCompatActivity implements DevicePrathamIdLi
 
     private void setRules() {
         String role = AppDatabase.getDatabaseInstance(this).getCRLdao().getCRLsRoleById(LoggedcrlId);
-        switch (role) {
-            case ROll_ID.BRG_CRL_Tutor:
-                btn_assignTablet.setVisibility(View.GONE);
-                acionstatus.setVisibility(View.GONE);
-                break;
-            case ROll_ID.Block_Head:
-                acionstatus.setVisibility(View.GONE);
-                break;
-            case ROll_ID.District_Head:
-                acionstatus.setVisibility(View.GONE);
-                break;
+        if (role != null) {
+            switch (role) {
+                case ROll_ID.BRG_CRL_Tutor:
+                    btn_assignTablet.setVisibility(View.GONE);
+                    acionstatus.setVisibility(View.GONE);
+                    break;
+                case ROll_ID.Block_Head:
+                    acionstatus.setVisibility(View.GONE);
+                    break;
+                case ROll_ID.District_Head:
+                    acionstatus.setVisibility(View.GONE);
+                    break;
 
-            case ROll_ID.Program_Head:
-                acionstatus.setVisibility(View.GONE);
-                break;
-            case ROll_ID.State_Program_Head:
-                acionstatus.setVisibility(View.GONE);
-                break;
+                case ROll_ID.Program_Head:
+                    acionstatus.setVisibility(View.GONE);
+                    break;
+                case ROll_ID.State_Program_Head:
+                    acionstatus.setVisibility(View.GONE);
+                    break;
            /* case ROll_ID.National_Program_Head:
                 acionstatus.setVisibility(View.GONE);
                 break;*/
-            case ROll_ID.Vendor:
+                case ROll_ID.Vendor:
 
-                break;
-            case ROll_ID.Admin:
-                // acionstatus.setVisibility(View.GONE);
-                break;
+                    break;
+                case ROll_ID.Admin:
+                    // acionstatus.setVisibility(View.GONE);
+                    break;
+            }
+        } else {
+            Toast.makeText(context, "No rolls available", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public void assignTablet(View view) {

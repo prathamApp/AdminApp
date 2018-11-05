@@ -24,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.google.gson.Gson;
@@ -242,16 +243,16 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                         apiLoadFlag = false;
                         switch (selectedProgram) {
                             case APIs.HL:
-                                String url = APIs.HLpullCrlsURL + stateCode[selectedState] + "&programid=1";
+                                String url = APIs.HLpullCrlsURL + stateCode[selectedState]; /*+ "&programid=1";*/
                                 loadAPI(url, APIs.CRL, APIs.HL);
                                 break;
                             case APIs.UP:
                                 //todo urban
-                                String url11 = APIs.UPpullCrlsURL + stateCode[selectedState] + "&programid=1";
+                                String url11 = APIs.UPpullCrlsURL + stateCode[selectedState]; /*+ "&programid=1";*/
                                 loadAPI(url11, APIs.CRL, APIs.UP);
                                 break;
                             case APIs.ECE:
-                                String url5 = APIs.ECEpullCrlsURL + stateCode[selectedState] + "&programid=8";
+                                String url5 = APIs.ECEpullCrlsURL + stateCode[selectedState];/* + "&programid=8";*/
                                 loadAPI(url5, APIs.CRL, APIs.ECE);
                                 break;
                             case RI:
@@ -259,7 +260,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                                 loadAPI(url2, APIs.CRL, RI);
                                 break;
                             case SC:
-                                String url3 = APIs.SCpullCrlsURL + stateCode[selectedState] + "&programid=3";
+                                String url3 = APIs.SCpullCrlsURL + stateCode[selectedState]; /*+ "&programid=3";*/
                                 loadAPI(url3, APIs.CRL, SC);
                                 break;
                             case PI:
@@ -416,11 +417,42 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
         studentList.addAll(studentMoadal);
         if (studLoadCount == villageId.size()) {
             dismissShownDialog();
+
+            pullStorePersons();
             // mayur cha code
             formsAPI();
 
         }
         //  Log.d("prathamS", studentList.toString());
+    }
+
+    private void pullStorePersons() {
+        String url = APIs.storePersonAPI + stateCode[selectedState];
+        final ProgressDialog progressDialog=new ProgressDialog(SelectProgram.this);
+        progressDialog.setMessage("loading store person");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        AndroidNetworking.get(url).setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
+            @Override
+            public void onResponse(JSONArray response) {
+                // do anything with response
+                Gson gson = new Gson();
+                Type listType = new TypeToken<ArrayList<CRL>>() {
+                }.getType();
+                ArrayList<CRL> CrlMoadal = gson.fromJson(response.toString(), listType);
+                CRLList.addAll(CrlMoadal);
+                progressDialog.dismiss();
+
+            }
+
+            @Override
+            public void onError(ANError error) {
+                // handle error
+                Toast.makeText(SelectProgram.this, "Failed to load store person", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
+
     }
 
 
