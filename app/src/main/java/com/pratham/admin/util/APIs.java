@@ -33,7 +33,7 @@ public class APIs {
     public static final String SCpullVillagesURL = "http://www.hlearning.openiscool.org/api/village/get?programId=3&state=";
     public static final String SCpullGroupsURL = "http://www.devtab.openiscool.org/api/Group?programid=3&villageId=";
     public static final String SCpullStudentsURL = "http://www.devtab.openiscool.org/api/student?programid=3&villageId=";
-   // public static final String SCpullCrlsURL = "http://www.hlearning.openiscool.org/api/crl/get?programId=3";
+    // public static final String SCpullCrlsURL = "http://www.hlearning.openiscool.org/api/crl/get?programId=3";
     public static final String SCpullCrlsURL = "http://www.swap.prathamcms.org/api/UserList?programId=3&statecode=";
 
     public static final String PI = "Pratham Institute";
@@ -48,6 +48,15 @@ public class APIs {
     public static final String UPpullGroupsURL = "http://www.devtab.openiscool.org/api/Group?programid=6&villageId=";
     public static final String UPpullStudentsURL = "http://www.devtab.openiscool.org/api/student?programid=6&villageId=";
     public static final String UPpullCrlsURL = "http://www.swap.prathamcms.org/api/UserList?programId=6&statecode=";
+
+
+    public static final String HG = "Hamara Gaon";
+    public static final String HGpullVillagesURL = "http://www.hlearning.openiscool.org/api/village/get?programId=13&state=";
+    public static final String HGpullGroupsURL = "http://www.devtab.openiscool.org/api/Group?programid=13&villageId=";
+    public static final String HGpullStudentsURL = "http://www.devtab.openiscool.org/api/student?programid=13&villageId=";
+    public static final String HGpullCrlsURL = "http://www.swap.prathamcms.org/api/UserList?programId=13&statecode=";
+    public static final String HGpullAserURL = "http://devtab.openiscool.org/api/AserVillage?programid=13&villageid=";
+
 
     //NewPushURL
     /*  public static final String HLpushToServerURL = "http://www.hlearning.openiscool.org/api/datapush/pushusage";*/

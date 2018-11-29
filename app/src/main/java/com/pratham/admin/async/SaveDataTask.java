@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.OnSavedData;
+import com.pratham.admin.modalclasses.Aser;
 import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Completion;
@@ -23,12 +24,13 @@ public class SaveDataTask extends AsyncTask<Void, Integer, Void> {
     private List CompletionList;
     private List coachList;
     private List villageList;
+    private List aserList;
     private Context context;
     private ProgressDialog dialog;
     private OnSavedData onSavedData;
 
     public SaveDataTask(Context context, OnSavedData onSavedData, List CRLList, List studentList, List groupsList,
-                        List villageList, List<Course> courseList, List<Coach> coachList, List<Community> communityList, List<Completion> completionList) {
+                        List villageList, List<Course> courseList, List<Coach> coachList, List<Community> communityList, List<Completion> completionList, List<Aser> aserList) {
         this.CRLList = CRLList;
         this.studentList = studentList;
         this.groupsList = groupsList;
@@ -39,6 +41,7 @@ public class SaveDataTask extends AsyncTask<Void, Integer, Void> {
         this.villageList = villageList;
         this.context = context;
         this.onSavedData = onSavedData;
+        this.aserList = aserList;
     }
 
     @Override
@@ -62,6 +65,7 @@ public class SaveDataTask extends AsyncTask<Void, Integer, Void> {
         AppDatabase.getDatabaseInstance(context).getCompletionDao().insertCompletion(CompletionList);
         AppDatabase.getDatabaseInstance(context).getCoachDao().insertCoach(coachList);
         AppDatabase.getDatabaseInstance(context).getVillageDao().insertAllVillages(villageList);
+        AppDatabase.getDatabaseInstance(context).getAserDao().insertAllAserList(aserList);
         AppDatabase.destroyInstance();
         return null;
     }

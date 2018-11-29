@@ -36,6 +36,7 @@ import com.pratham.admin.async.SaveDataTask;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.OnSavedData;
 import com.pratham.admin.interfaces.VillageListLisner;
+import com.pratham.admin.modalclasses.Aser;
 import com.pratham.admin.modalclasses.CRL;
 import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Community;
@@ -59,6 +60,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.pratham.admin.util.APIs.ECE;
+import static com.pratham.admin.util.APIs.HG;
 import static com.pratham.admin.util.APIs.HL;
 import static com.pratham.admin.util.APIs.PI;
 import static com.pratham.admin.util.APIs.PullCoaches;
@@ -93,7 +95,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
     private int selectedState;
     String[] stateCode;
     private String selectedStateName = "MH";
-    List selectedVillage = new ArrayList();
+    List<String> selectedVillage = new ArrayList();
     String selectedBlock = "NO BLOCKS";
     String selectedProgram = null;
     Animation animation;
@@ -103,6 +105,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
     private List<Village> villageList = new ArrayList();
     private List<CRL> CRLList = new ArrayList();
     private List<Student> studentList = new ArrayList();
+    private List<Aser> aserList = new ArrayList();
     private List<Groups> groupsList = new ArrayList();
     private List<Course> CourseList = new ArrayList();
     private List<Community> CommunityList = new ArrayList();
@@ -111,6 +114,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
     List<Village> villageId;
     int groupLoadCount = 0;
     int studLoadCount = 0;
+    int countAser = 0;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -209,6 +213,10 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                             url = APIs.PIpullVillagesURL + stateCode[selectedState];
                             loadAPI(url, village, PI);
                             break;
+                        case HG:
+                            url = APIs.HGpullVillagesURL + stateCode[selectedState];
+                            loadAPI(url, village, HG);
+                            break;
                     }
                 } else {
                     Toast.makeText(this, "Please Select State", Toast.LENGTH_SHORT).show();
@@ -266,6 +274,10 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                             case PI:
                                 String url4 = APIs.PIpullCrlsURL + stateCode[selectedState] + "&programid=4";
                                 loadAPI(url4, APIs.CRL, PI);
+                                break;
+                            case APIs.HG:
+                                String url13 = APIs.HGpullCrlsURL + stateCode[selectedState]; /*+ "&programid=1";*/
+                                loadAPI(url13, APIs.CRL, APIs.HG);
                                 break;
 
                         }
@@ -401,6 +413,9 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 case PI:
                     loadAPI(APIs.PIpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, PI);
                     break;
+                case HG:
+                    loadAPI(APIs.HGpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, HG);
+                    break;
 
             }
         }
@@ -416,19 +431,62 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
 
         studentList.addAll(studentMoadal);
         if (studLoadCount == villageId.size()) {
-            dismissShownDialog();
+            if (program.equals(HG)) {
+                loadAserData();
+            } else {
+                dismissShownDialog();
 
-            pullStorePersons();
-            // mayur cha code
-            formsAPI();
-
+                pullStorePersons();
+                // mayur cha code
+                formsAPI();
+            }
         }
         //  Log.d("prathamS", studentList.toString());
     }
 
+    private void loadAserData() {
+        aserList.clear();
+        countAser = 0;
+        for (String id : selectedVillage) {
+            downloadAserData(APIs.HGpullAserURL + id);
+        }
+    }
+
+    private void downloadAserData(String url) {
+        AndroidNetworking.get(url).setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
+            @Override
+            public void onResponse(JSONArray response) {
+                // do anything with response
+                countAser++;
+                Gson gson = new Gson();
+                Type listType = new TypeToken<ArrayList<Aser>>() {
+                }.getType();
+                ArrayList<Aser> AserMoadal = gson.fromJson(response.toString(), listType);
+                aserList.addAll(AserMoadal);
+                if (countAser == villageId.size()) {
+                    dismissShownDialog();
+                    pullStorePersons();
+                    // mayur cha code
+                    formsAPI();
+                }
+
+            }
+
+            @Override
+            public void onError(ANError error) {
+                // handle error
+                Toast.makeText(SelectProgram.this, "Failed to load store person", Toast.LENGTH_SHORT).show();
+                dismissShownDialog();
+                pullStorePersons();
+                // mayur cha code
+                formsAPI();
+            }
+        });
+    }
+
     private void pullStorePersons() {
         String url = APIs.storePersonAPI + stateCode[selectedState];
-        final ProgressDialog progressDialog=new ProgressDialog(SelectProgram.this);
+        final ProgressDialog progressDialog = new ProgressDialog(SelectProgram.this);
         progressDialog.setMessage("loading store person");
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -508,6 +566,10 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                     case PI:
                         loadAPI(APIs.PIpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, PI);
                         break;
+
+                    case HG:
+                        loadAPI(APIs.HGpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, HG);
+                        break;
                     // }
                 }
             }
@@ -570,6 +632,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                         studentList.clear();
                         groupLoadCount = 0;
                         studLoadCount = 0;
+                        countAser=0;
                         SelectVillageDialog selectVillageDialog = new SelectVillageDialog(SelectProgram.this, villageName);
                         selectVillageDialog.show();
                         //  dismissShownDialog();
@@ -633,7 +696,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
 
 
                         try {
-                            new SaveDataTask(SelectProgram.this, SelectProgram.this, CRLList, studentList, groupsList, villageId, CourseList, CoachList, CommunityList, CompletionList).execute();
+                            new SaveDataTask(SelectProgram.this, SelectProgram.this, CRLList, studentList, groupsList, villageId, CourseList, CoachList, CommunityList, CompletionList, aserList).execute();
                         } catch (Exception e) {
                             Toast.makeText(SelectProgram.this, "Insertion Fail", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
@@ -660,6 +723,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 CompletionList.clear();
                 spinner_block.setSelection(0);
                 spinner_state.setSelection(0);
+                aserList.clear();
             }
         });
         AlertDialog b = dialogBuilder.create();
@@ -934,7 +998,6 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
             }
         });
     }
-
 
     private void pullHLCourseCompletion(String vID) {
         String PullHLCourseCompletionUrl = PullHLCourseCompletion + "villageid=" + vID + "&programid=";
