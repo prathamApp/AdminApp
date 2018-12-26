@@ -60,6 +60,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.pratham.admin.util.APIs.ECE;
+import static com.pratham.admin.util.APIs.GP;
 import static com.pratham.admin.util.APIs.HG;
 import static com.pratham.admin.util.APIs.HL;
 import static com.pratham.admin.util.APIs.PI;
@@ -217,6 +218,10 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                             url = APIs.HGpullVillagesURL + stateCode[selectedState];
                             loadAPI(url, village, HG);
                             break;
+                        case GP:
+                            url = APIs.GPpullVillagesURL + stateCode[selectedState];
+                            loadAPI(url, village, GP);
+                            break;
                     }
                 } else {
                     Toast.makeText(this, "Please Select State", Toast.LENGTH_SHORT).show();
@@ -278,6 +283,10 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                             case APIs.HG:
                                 String url13 = APIs.HGpullCrlsURL + stateCode[selectedState]; /*+ "&programid=1";*/
                                 loadAPI(url13, APIs.CRL, APIs.HG);
+                                break;
+                            case APIs.GP:
+                                String url14 = APIs.GPpullCrlsURL + stateCode[selectedState]; /*+ "&programid=1";*/
+                                loadAPI(url14, APIs.CRL, APIs.GP);
                                 break;
 
                         }
@@ -415,6 +424,9 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                     break;
                 case HG:
                     loadAPI(APIs.HGpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, HG);
+                    break;
+                case APIs.GP:
+                    loadAPI(APIs.GPpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, APIs.GP);
                     break;
 
             }
@@ -570,6 +582,9 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                     case HG:
                         loadAPI(APIs.HGpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, HG);
                         break;
+                    case APIs.GP:
+                        loadAPI(APIs.GPpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.GP);
+                        break;
                     // }
                 }
             }
@@ -632,7 +647,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                         studentList.clear();
                         groupLoadCount = 0;
                         studLoadCount = 0;
-                        countAser=0;
+                        countAser = 0;
                         SelectVillageDialog selectVillageDialog = new SelectVillageDialog(SelectProgram.this, villageName);
                         selectVillageDialog.show();
                         //  dismissShownDialog();
@@ -857,6 +872,10 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 showDialoginApiCalling(PI, "Pulling Coaches !!!");
                 couchUrl = couchUrl + "villageid=" + vID + "&programid=4";
                 break;
+            case GP:
+                showDialoginApiCalling(GP, "Pulling Coaches !!!");
+                couchUrl = couchUrl + "villageid=" + vID + "&programid=14";
+                break;
         }
 
         AndroidNetworking.get(couchUrl).build().getAsJSONArray(new JSONArrayRequestListener() {
@@ -917,6 +936,10 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 showDialoginApiCalling(PI, "Pulling Course Community !!!");
                 pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 8;
                 break;
+            case GP:
+                showDialoginApiCalling(GP, "Pulling Course Community !!!");
+                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 14;
+                break;
         }
 
         AndroidNetworking.get(pullHLCourseCommunityUrl).build().getAsJSONArray(new JSONArrayRequestListener() {
@@ -966,6 +989,9 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 break;
             case PI:
                 showDialoginApiCalling(PI, "Pulling Courses !!!");
+                break;
+            case GP:
+                showDialoginApiCalling(GP, "Pulling Courses !!!");
                 break;
         }
 
@@ -1027,6 +1053,10 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
             case ECE:
                 showDialoginApiCalling(PI, "Pulling Course Completion !!!");
                 PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 8;
+                break;
+            case GP:
+                showDialoginApiCalling(GP, "Pulling Course Completion !!!");
+                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 14;
                 break;
         }
 

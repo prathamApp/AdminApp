@@ -58,6 +58,13 @@ public class APIs {
     public static final String HGpullAserURL = "http://devtab.openiscool.org/api/AserVillage?programid=13&villageid=";
 
 
+    public static final String GP = "Government Partnership";
+    public static final String GPpullVillagesURL = "http://www.hlearning.openiscool.org/api/village/get?programId=14&state=";
+    public static final String GPpullGroupsURL = "http://www.devtab.openiscool.org/api/Group?programid=14&villageId=";
+    public static final String GPpullStudentsURL = "http://www.devtab.openiscool.org/api/student?programid=14&villageId=";
+    public static final String GPpullCrlsURL = "http://www.swap.prathamcms.org/api/UserList?programId=14&statecode=";
+
+
     //NewPushURL
     /*  public static final String HLpushToServerURL = "http://www.hlearning.openiscool.org/api/datapush/pushusage";*/
     public static final String HLpushToServerURL = "http://www.swap.prathamcms.org/api/QRSwap/SwapData";

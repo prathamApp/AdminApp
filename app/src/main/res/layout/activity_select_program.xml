@@ -74,6 +74,11 @@
                         android:id="@+id/rbtn_hamaraGao"
                         style="@style/CustomRadioButton"
                         android:text="@string/hamara_gaon" />
+
+                    <RadioButton
+                        android:id="@+id/rbtn_govPartnership"
+                        style="@style/CustomRadioButton"
+                        android:text="@string/government_Partnership" />
                 </RadioGroup>
             </HorizontalScrollView>
 
