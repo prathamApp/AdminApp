@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="#FFFFFF"
+        tools:context="com.example.pef.prathamopenschool.AddNewGroup">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/custom_border"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="Add New Group"
+            android:textColor="@color/colorAccent"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+
+        <!--Select State Drop Down List-->
+        <Spinner
+            android:id="@+id/spinner_SelectState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/spinner_background_forms"
+            android:textAlignment="center" />
+
+        <!--Select Block Drop Down List-->
+        <Spinner
+            android:id="@+id/spinner_SelectBlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spinner_SelectState"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="16dp"
+            android:background="@drawable/spinner_background_forms"
+            android:textAlignment="center" />
+
+        <!--Village Drop Down List-->
+        <Spinner
+            android:id="@+id/spinner_selectVillage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spinner_SelectBlock"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/spinner_background_forms"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/edt_NewGroupName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spinner_selectVillage"
+            android:layout_margin="16dp"
+            android:hint="enter new group name"
+            android:inputType="textCapWords"
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:textColorHint="@color/text_hint"
+            android:textSize="18sp" />
+
+        <!--Submit, Clear-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edt_NewGroupName"
+            android:layout_margin="16dp"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <Button
+                android:id="@+id/btn_Submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/album_title"
+                android:text="Submit"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_Clear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_weight="2"
+                android:background="@color/album_title"
+                android:text="Clear"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

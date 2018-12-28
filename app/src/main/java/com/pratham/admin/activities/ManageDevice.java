@@ -186,4 +186,11 @@ public class ManageDevice extends AppCompatActivity implements DevicePrathamIdLi
             internetIsAvailable = true;
         }
     }
+
+    public void scanQR(View view) {
+        Intent intent = new Intent(ManageDevice.this, Activity_QRScan.class);
+        intent.putExtra("CRLid", LoggedcrlId);
+        intent.putExtra("CRLname", LoggedcrlName);
+        startActivity(intent);
+    }
 }

@@ -1,5 +1,6 @@
-package com.pratham.admin.POS.ui.dashboard;
+package com.pratham.admin.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -12,17 +13,16 @@ import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
-
 import com.pratham.admin.ApplicationController;
-import com.pratham.admin.POS.ui.add_edit_operations.AddEditOperations;
 import com.pratham.admin.R;
+import com.pratham.admin.forms.DeleteStudentsForm;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.util.ConnectionReceiver;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class POS_Dashboard extends AppCompatActivity implements ConnectionReceiverListener {
+public class Student_Management extends AppCompatActivity implements ConnectionReceiverListener {
 
     @BindView(R.id.tv_appInfo)
     TextView tv_appInfo;
@@ -34,7 +34,7 @@ public class POS_Dashboard extends AppCompatActivity implements ConnectionReceiv
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pos__dashboard);
+        setContentView(R.layout.activity_student__management);
         ButterKnife.bind(this);
 
         // Hide Actionbar
@@ -53,7 +53,7 @@ public class POS_Dashboard extends AppCompatActivity implements ConnectionReceiv
         LoggedCRLnameSwapStd = getIntent().getStringExtra("CRLnameSwapStd");
 
         PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-        PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+        @SuppressLint("InvalidWakeLockTag") PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                 "MyWakelockTag");
         wakeLock.acquire();
     }
@@ -115,26 +115,43 @@ public class POS_Dashboard extends AppCompatActivity implements ConnectionReceiv
         }
     }
 
-    public void AddEditScreen(View view) {
-        Intent i = new Intent(POS_Dashboard.this, AddEditOperations.class);
-        startActivity(i);
+    public void AddNewGroup(View view) {
+        Intent intent = new Intent(this, AddNewGroup.class);
+        intent.putExtra("CRLid", LoggedcrlId);
+        intent.putExtra("CRLname", LoggedcrlName);
+        intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
+        startActivity(intent);
     }
 
-    public void AssignGroups(View view) {
+    public void AddNewStudent(View view) {
+        Intent intent = new Intent(this, AddNewStudent.class);
+        intent.putExtra("CRLid", LoggedcrlId);
+        intent.putExtra("CRLname", LoggedcrlName);
+        intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
+        startActivity(intent);
     }
 
-    public void PullPushTransferUsage(View view) {
+    public void EditStudent(View view) {
+        Intent intent = new Intent(this, EditStudent.class);
+        intent.putExtra("CRLid", LoggedcrlId);
+        intent.putExtra("CRLname", LoggedcrlName);
+        intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
+        startActivity(intent);
     }
 
-    public void ShareOperations(View view) {
+    public void DeleteStudent(View view) {
+        Intent intent = new Intent(this, DeleteStudentsForm.class);
+        intent.putExtra("CRLid", LoggedcrlId);
+        intent.putExtra("CRLname", LoggedcrlName);
+        intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
+        startActivity(intent);
     }
 
-    public void TabReports(View view) {
-    }
-
-    public void ReceiveOperations(View view) {
-    }
-
-    public void changePrathamCode(View view) {
+    public void SwapStudents(View view) {
+        Intent intent = new Intent(this, SwapStudentsActivity.class);
+        intent.putExtra("CRLid", LoggedcrlId);
+        intent.putExtra("CRLname", LoggedcrlName);
+        intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
+        startActivity(intent);
     }
 }

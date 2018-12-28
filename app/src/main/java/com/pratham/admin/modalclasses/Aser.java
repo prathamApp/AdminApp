@@ -4,32 +4,104 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Ameya on 19-Jun-17.
  */
 @Entity
 public class Aser {
     @NonNull
-    @PrimaryKey
-    public String AserID;
+    @PrimaryKey(autoGenerate = true)
+    @SerializedName("AserID")
+    public int AserID;
+    @SerializedName("StudentId")
     public String StudentId;
+    @SerializedName("TestType")
     public int TestType;
-    public String TestDate, ChildID;
-    public int Lang, Num;
+    @SerializedName("TestDate")
+    public String TestDate;
+    @SerializedName("ChildID")
+    public String ChildID;
+    @SerializedName("Lang")
+    public int Lang;
+    @SerializedName("Num")
+    public int Num;
+    @SerializedName("OAdd")
     public int OAdd;
+    @SerializedName("OSub")
     public int OSub;
+    @SerializedName("OMul")
     public int OMul;
+    @SerializedName("ODiv")
     public int ODiv;
+    @SerializedName("WAdd")
     public int WAdd;
+    @SerializedName("WSub")
     public int WSub;
-    public String CreatedBy, CreatedDate, DeviceId, GroupID;
-    int FLAG;
-
+    @SerializedName("FLAG")
+    public int FLAG;
+    @SerializedName("CreatedBy")
+    public String CreatedBy;
+    @SerializedName("CreatedDate")
+    public String CreatedDate;
+    @SerializedName("DeviceId")
+    public String DeviceId;
+    @SerializedName("GroupID")
+    public String GroupID;
+    @SerializedName("sharedBy")
     public String sharedBy;
+    @SerializedName("SharedAtDateTime")
     public String SharedAtDateTime;
+    @SerializedName("appVersion")
     public String appVersion;
+    @SerializedName("appName")
     public String appName;
+    @SerializedName("CreatedOn")
     public String CreatedOn;
+
+    // new fields db version 4
+    @SerializedName("sentFlag")
+    public int sentFlag;
+
+    @Override
+    public String toString() {
+        return "Aser{" +
+                "AserID=" + AserID +
+                ", StudentId='" + StudentId + '\'' +
+                ", TestType=" + TestType +
+                ", TestDate='" + TestDate + '\'' +
+                ", ChildID='" + ChildID + '\'' +
+                ", Lang=" + Lang +
+                ", Num=" + Num +
+                ", OAdd=" + OAdd +
+                ", OSub=" + OSub +
+                ", OMul=" + OMul +
+                ", ODiv=" + ODiv +
+                ", WAdd=" + WAdd +
+                ", WSub=" + WSub +
+                ", FLAG=" + FLAG +
+                ", CreatedBy='" + CreatedBy + '\'' +
+                ", CreatedDate='" + CreatedDate + '\'' +
+                ", DeviceId='" + DeviceId + '\'' +
+                ", GroupID='" + GroupID + '\'' +
+                ", sharedBy='" + sharedBy + '\'' +
+                ", SharedAtDateTime='" + SharedAtDateTime + '\'' +
+                ", appVersion='" + appVersion + '\'' +
+                ", appName='" + appName + '\'' +
+                ", CreatedOn='" + CreatedOn + '\'' +
+                ", sentFlag=" + sentFlag +
+                '}';
+    }
+
+    @NonNull
+    public int getAserID() {
+        return AserID;
+    }
+
+    public void setAserID(@NonNull int aserID) {
+        AserID = aserID;
+    }
 
     public String getStudentId() {
         return StudentId;
@@ -127,6 +199,14 @@ public class Aser {
         this.WSub = WSub;
     }
 
+    public int getFLAG() {
+        return FLAG;
+    }
+
+    public void setFLAG(int FLAG) {
+        this.FLAG = FLAG;
+    }
+
     public String getCreatedBy() {
         return CreatedBy;
     }
@@ -157,14 +237,6 @@ public class Aser {
 
     public void setGroupID(String groupID) {
         GroupID = groupID;
-    }
-
-    public int getFLAG() {
-        return FLAG;
-    }
-
-    public void setFLAG(int FLAG) {
-        this.FLAG = FLAG;
     }
 
     public String getSharedBy() {
@@ -205,5 +277,13 @@ public class Aser {
 
     public void setCreatedOn(String createdOn) {
         CreatedOn = createdOn;
+    }
+
+    public int getSentFlag() {
+        return sentFlag;
+    }
+
+    public void setSentFlag(int sentFlag) {
+        this.sentFlag = sentFlag;
     }
 }

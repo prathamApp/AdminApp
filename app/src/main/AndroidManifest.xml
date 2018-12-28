@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 
     <uses-feature android:name="android.hardware.camera" />
@@ -49,6 +49,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.AddNewStudent"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name=".activities.AddNewGroup"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activities.EditStudent"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".activities.Activity_QRScan"
             android:label="@string/selectProgram"
@@ -111,11 +125,7 @@
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".POS.ui.dashboard.POS_Dashboard"
-            android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".POS.ui.add_edit_operations.AddEditOperations"
+            android:name=".activities.Student_Management"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden" />
         <activity
@@ -142,9 +152,10 @@
             android:name=".activities.AssignTabletMD"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".activities.Status_Action"
+        <activity
+            android:name=".activities.Status_Action"
             android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>

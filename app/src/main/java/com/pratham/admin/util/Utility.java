@@ -3,16 +3,11 @@ package com.pratham.admin.util;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.os.Environment;
+import android.provider.Settings;
 
-import org.json.JSONObject;
+import com.pratham.admin.ApplicationController;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -58,32 +53,10 @@ public class Utility {
         }
     }
 
-    // Reading configuration Json From SDCard
-    public String getProgramId() {
+    public String GetDeviceID() {
+        String deviceID = "";
+        return deviceID = Settings.Secure.getString(ApplicationController.getInstance().getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        String progIDString = null;
-        try {
-            File myJsonFile = new File(Environment.getExternalStorageDirectory() + "/.POSinternal/Json/Config.json");
-            FileInputStream stream = new FileInputStream(myJsonFile);
-            String jsonStr = null;
-            try {
-                FileChannel fc = stream.getChannel();
-                MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
-
-                jsonStr = Charset.defaultCharset().decode(bb).toString();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                stream.close();
-            }
-
-            JSONObject jsonObj = new JSONObject(jsonStr);
-            progIDString = jsonObj.getString("programId");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return progIDString;
     }
 
 

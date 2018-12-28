@@ -5,26 +5,51 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
+
 @Entity
 public class Groups {
     @NonNull
     @PrimaryKey
     @SerializedName("GroupId")
-    String GroupId;
+    public String GroupId;
     @SerializedName("GroupName")
-    String GroupName;
+    public String GroupName;
     @SerializedName("VillageId")
-    String VillageId;
+    public String VillageId;
     @SerializedName("ProgramId")
-    int ProgramId;
+    public int ProgramId;
     @SerializedName("GroupCode")
-    String GroupCode;
+    public String GroupCode;
     @SerializedName("SchoolName")
-    String SchoolName;
+    public String SchoolName;
     @SerializedName("VIllageName")
-    String VIllageName;
+    public String VIllageName;
     @SerializedName("DeviceId")
-    String DeviceId;
+    public String DeviceId;
+
+    // new fields db version 4
+    @SerializedName("CreatedBy")
+    public String CreatedBy;
+    @SerializedName("CreatedOn")
+    public String CreatedOn;
+    @SerializedName("sentFlag")
+    public int sentFlag;
+
+
+    // new Methods
+    public Groups() {
+
+    }
+
+    public Groups(String id, String name) {
+        GroupId = id;
+        GroupName = name;
+    }
+
+    @Override
+    public String toString() {
+        return this.GroupName;
+    }
 
     @NonNull
     public String getGroupId() {
@@ -89,5 +114,21 @@ public class Groups {
 
     public void setDeviceId(String deviceId) {
         DeviceId = deviceId;
+    }
+
+    public String getCreatedBy() {
+        return CreatedBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        CreatedBy = createdBy;
+    }
+
+    public String getCreatedOn() {
+        return CreatedOn;
+    }
+
+    public void setCreatedOn(String createdOn) {
+        CreatedOn = createdOn;
     }
 }

@@ -5,30 +5,46 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
+
 @Entity
 public class Village {
     @NonNull
     @PrimaryKey
     @SerializedName("VillageId")
-    private String VillageId;
+    public String VillageId;
     @SerializedName("VillageCode")
-    private String VillageCode;
+    public String VillageCode;
     @SerializedName("VillageName")
-    private String VillageName;
+    public String VillageName;
     @SerializedName("Block")
-    private String Block;
+    public String Block;
     @SerializedName("District")
-    private String District;
+    public String District;
     @SerializedName("State")
-    private String State;
+    public String State;
     @SerializedName("CRLId")
-    private String CRLId;
+    public String CRLId;
 
-    public String  getVillageId() {
+    public Village(int id, String name) {
+        VillageId = String.valueOf(id);
+        VillageName = name;
+    }
+
+    public Village() {
+
+    }
+
+    @Override
+    public String toString() {
+        return this.VillageName;
+    }
+
+    @NonNull
+    public String getVillageId() {
         return VillageId;
     }
 
-    public void setVillageId(String villageId) {
+    public void setVillageId(@NonNull String villageId) {
         VillageId = villageId;
     }
 

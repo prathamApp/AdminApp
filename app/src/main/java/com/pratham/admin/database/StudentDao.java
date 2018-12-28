@@ -15,6 +15,9 @@ public interface StudentDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insertAllStudents(List<Student> studentsList);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public void insertStudent(Student student);
+
     @Update
     public int updateAllStudent(List<Student> studList);
 
@@ -30,4 +33,15 @@ public interface StudentDao {
     @Query("DELETE FROM Student Where StudentId=:stdID")
     public void deleteStudentByID(String stdID);
 
+    @Query("SELECT * FROM Student WHERE GroupID =:GroupID ")
+    public List<Student> GetAllStudentsByGroupID(String GroupID);
+
+    @Query("select * from Student where StudentID =:studentID")
+    public Student GetStudentDataByStdID(String studentID);
+
+    @Query("SELECT * FROM Student WHERE sentFlag=:status")
+    public List<Student> getNewStudents(int status);
+
+    @Query("UPDATE Student SET sentFlag=:pushStatus")
+    void updateAllSentFlag(int pushStatus);
 }

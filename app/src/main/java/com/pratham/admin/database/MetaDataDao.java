@@ -19,4 +19,7 @@ public interface MetaDataDao {
 
     @Query("SELECT value  FROM MetaData WHERE keys=='CRL_ID'")
     public String getCrlMetaData();
+
+    @Query("SELECT value FROM MetaData WHERE keys=='ProgramID'")
+    public String getProgramID();
 }

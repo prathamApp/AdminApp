@@ -36,21 +36,37 @@ public class Student {
     public String StudentId;
 
     @Ignore
-    transient boolean  isChecked =false;
+    transient boolean isChecked = false;
+
+    // new fields db version 4
+    @SerializedName("FirstName")
+    public String FirstName;
+    @SerializedName("MiddleName")
+    public String MiddleName;
+    @SerializedName("LastName")
+    public String LastName;
+    @SerializedName("CreatedBy")
+    public String CreatedBy;
+    @SerializedName("CreatedOn")
+    public String CreatedOn;
+    @SerializedName("UpdatedDate")
+    public String UpdatedDate;
+    @SerializedName("DOB")
+    public String DOB;
+
+
+    // new methods
+    public Student() {
+    }
+
+    public Student(String id, String name) {
+        StudentId = id;
+        FirstName = name;
+    }
 
     @Override
     public String toString() {
-        return "Student{" +
-                "GroupId='" + GroupId + '\'' +
-                ", GroupName='" + GroupName + '\'' +
-                ", FullName='" + FullName + '\'' +
-                ", Stud_Class='" + Stud_Class + '\'' +
-                ", Age='" + Age + '\'' +
-                ", Gender='" + Gender + '\'' +
-                ", sentFlag=" + sentFlag +
-                ", StudentId='" + StudentId + '\'' +
-                ", isChecked=" + isChecked +
-                '}';
+        return this.FirstName;
     }
 
     public String getGroupId() {
@@ -109,14 +125,6 @@ public class Student {
         this.sentFlag = sentFlag;
     }
 
-    public boolean isChecked() {
-        return isChecked;
-    }
-
-    public void setChecked(boolean checked) {
-        isChecked = checked;
-    }
-
     @NonNull
     public String getStudentId() {
         return StudentId;
@@ -126,4 +134,67 @@ public class Student {
         StudentId = studentId;
     }
 
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
+    public String getFirstName() {
+        return FirstName;
+    }
+
+    public void setFirstName(String firstName) {
+        FirstName = firstName;
+    }
+
+    public String getMiddleName() {
+        return MiddleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        MiddleName = middleName;
+    }
+
+    public String getLastName() {
+        return LastName;
+    }
+
+    public void setLastName(String lastName) {
+        LastName = lastName;
+    }
+
+    public String getCreatedBy() {
+        return CreatedBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        CreatedBy = createdBy;
+    }
+
+    public String getCreatedOn() {
+        return CreatedOn;
+    }
+
+    public void setCreatedOn(String createdOn) {
+        CreatedOn = createdOn;
+    }
+
+    public String getUpdatedDate() {
+        return UpdatedDate;
+    }
+
+    public void setUpdatedDate(String updatedDate) {
+        UpdatedDate = updatedDate;
+    }
+
+    public String getDOB() {
+        return DOB;
+    }
+
+    public void setDOB(String DOB) {
+        this.DOB = DOB;
+    }
 }

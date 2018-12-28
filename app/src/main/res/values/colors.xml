@@ -4,4 +4,10 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="rowBackground">#fadabf</color>
+
+    <color name="solid_background">#00749E</color>
+    <color name="text_hint">#909090</color>
+    <color name="button">#2E96BB</color>
+    <color name="album_title">#4c4c4c</color>
+
 </resources>

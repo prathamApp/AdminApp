@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
+    android:gravity="center"
     android:orientation="vertical"
-    tools:context=".POS.ui.dashboard.POS_Dashboard">
+    tools:context=".activities.Student_Management">
 
     <!--Title-->
     <TextView
@@ -16,9 +18,9 @@
         android:fontFamily="monospace"
         android:gravity="center"
         android:padding="16dp"
-        android:text="POS Dashboard"
+        android:text="Student Management"
         android:textColor="@color/colorAccent"
-        android:textSize="28sp"
+        android:textSize="32sp"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -35,11 +37,11 @@
             android:layout_gravity="center"
             android:layout_margin="16dp"
             android:background="@color/colorPrimaryDark"
-            android:onClick="AddEditScreen"
-            android:text="Add / Edit"
+            android:onClick="AddNewGroup"
+            android:text="Add New Group"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
         <Button
             android:layout_width="250dp"
@@ -47,11 +49,11 @@
             android:layout_gravity="center"
             android:layout_margin="16dp"
             android:background="@color/colorPrimaryDark"
-            android:onClick="AssignGroups"
-            android:text="Assign Tablet"
+            android:onClick="AddNewStudent"
+            android:text="Add New Student"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -68,11 +70,11 @@
             android:layout_gravity="center"
             android:layout_margin="16dp"
             android:background="@color/colorPrimaryDark"
-            android:onClick="PullPushTransferUsage"
-            android:text="  Push / Pull / Transfer Usage  "
+            android:onClick="EditStudent"
+            android:text="Edit Student"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
         <Button
             android:layout_width="250dp"
@@ -80,11 +82,11 @@
             android:layout_gravity="center"
             android:layout_margin="16dp"
             android:background="@color/colorPrimaryDark"
-            android:onClick="ShareOperations"
-            android:text="Share Profiles/ Jsons/ Update"
+            android:onClick="DeleteStudent"
+            android:text="Delete Student"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -102,58 +104,25 @@
             android:layout_gravity="center"
             android:layout_margin="16dp"
             android:background="@color/colorPrimaryDark"
-            android:onClick="TabReports"
-            android:text="  Tab Report  "
+            android:onClick="SwapStudents"
+            android:text="Swap Students"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="16sp" />
-
-
-        <Button
-            android:id="@+id/btn_receiveData"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="16dp"
-            android:background="@color/colorPrimaryDark"
-            android:onClick="ReceiveOperations"
-            android:text="  Receive Usage/ Profiles/ Jsons  "
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/Line4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/Line3"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn_changePrathamCode"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="16dp"
-            android:background="@color/colorPrimaryDark"
-            android:onClick="changePrathamCode"
-            android:text="  Change Pratham Code  "
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
     </LinearLayout>
 
     <TextView
         android:id="@+id/tv_appInfo"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
-        android:gravity="end"
+        android:layout_marginBottom="32dp"
         android:hint="App Info"
-        android:orientation="vertical" />
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 </LinearLayout>

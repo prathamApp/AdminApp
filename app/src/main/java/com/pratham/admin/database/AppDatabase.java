@@ -1,8 +1,10 @@
 package com.pratham.admin.database;
 
+import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 
 import com.pratham.admin.modalclasses.Aser;
@@ -26,7 +28,7 @@ import com.pratham.admin.modalclasses.Village;
 
 //import com.pratham.admin.modalclasses.CRLVisit;
 
-@Database(entities = {Attendance.class, CRL.class, CRLmd.class, /*CRLVisit.class,*/ Coach.class, Course.class, Community.class, Completion.class, Groups.class, Student.class, GroupSession.class, GroupVisit.class, Village.class, MetaData.class, TempStudent.class, TabTrack.class, TabletManageDevice.class, TabletStatus.class, Aser.class}, version = 3, exportSchema = false)
+@Database(entities = {Attendance.class, CRL.class, CRLmd.class, /*CRLVisit.class,*/ Coach.class, Course.class, Community.class, Completion.class, Groups.class, Student.class, GroupSession.class, GroupVisit.class, Village.class, MetaData.class, TempStudent.class, TabTrack.class, TabletManageDevice.class, TabletStatus.class, Aser.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase DATABASEINSTANCE;
@@ -71,9 +73,32 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public static AppDatabase getDatabaseInstance(Context context) {
         if (DATABASEINSTANCE == null)
-            DATABASEINSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "prathamDb").fallbackToDestructiveMigration().allowMainThreadQueries().build();
+            DATABASEINSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "prathamDb")
+                    .addMigrations(MIGRATION_3_4)
+                    .allowMainThreadQueries()
+                    .build();
         return DATABASEINSTANCE;
     }
+
+    static final Migration MIGRATION_3_4 = new Migration(3, 4) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            // Alter Queries for new columns as we don't want to lose existing data
+            database.execSQL("ALTER TABLE Aser ADD COLUMN sentFlag INTEGER DEFAULT 0");
+
+            database.execSQL("ALTER TABLE Groups ADD COLUMN CreatedBy TEXT");
+            database.execSQL("ALTER TABLE Groups ADD COLUMN CreatedOn TEXT");
+            database.execSQL("ALTER TABLE Groups ADD COLUMN sentFlag INTEGER DEFAULT 0");
+
+            database.execSQL("ALTER TABLE Student ADD COLUMN FirstName TEXT");
+            database.execSQL("ALTER TABLE Student ADD COLUMN MiddleName TEXT");
+            database.execSQL("ALTER TABLE Student ADD COLUMN LastName TEXT");
+            database.execSQL("ALTER TABLE Student ADD COLUMN CreatedBy TEXT");
+            database.execSQL("ALTER TABLE Student ADD COLUMN CreatedOn TEXT");
+            database.execSQL("ALTER TABLE Student ADD COLUMN UpdatedDate TEXT");
+            database.execSQL("ALTER TABLE Student ADD COLUMN DOB TEXT");
+        }
+    };
 
     public static void destroyInstance() {
         DATABASEINSTANCE = null;

@@ -14,10 +14,21 @@ public interface GroupDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insertAllGroups(List<Groups> groupsList);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public void insertGroup(Groups grp);
+
     @Query("DELETE FROM Groups")
     public void deleteAllGroups();
+
+    @Query("SELECT * From Groups WHERE VillageId =:vid ORDER BY GroupName ASC")
+    public List<Groups> GetGroups(int vid);
 
     @Query("SELECT * FROM Groups ")
     public List<Groups> getAllGroups();
 
+    @Query("SELECT * FROM Groups WHERE sentFlag=:status")
+    public List<Groups> getNewGroups(int status);
+
+    @Query("UPDATE Groups SET sentFlag=:pushStatus")
+    void updateAllSentFlag(int pushStatus);
 }

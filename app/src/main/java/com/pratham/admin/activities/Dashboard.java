@@ -3,6 +3,7 @@ package com.pratham.admin.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.wifi.WifiInfo;
@@ -15,18 +16,19 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
 import com.pratham.admin.ApplicationController;
-import com.pratham.admin.POS.ui.dashboard.POS_Dashboard;
 import com.pratham.admin.R;
 import com.pratham.admin.adapters.DashRVDataAdapter;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.DashRVClickListener;
+import com.pratham.admin.modalclasses.Aser;
 import com.pratham.admin.modalclasses.Attendance;
 import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Community;
@@ -34,7 +36,9 @@ import com.pratham.admin.modalclasses.Completion;
 import com.pratham.admin.modalclasses.DashboardItem;
 import com.pratham.admin.modalclasses.GroupSession;
 import com.pratham.admin.modalclasses.GroupVisit;
+import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
+import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.DashRVTouchListener;
@@ -100,8 +104,39 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
 
         // Start WiFi
         turnOnWifi();
-        pushNewData();
+//        pushNewData();
 
+        populateProgramID();
+
+    }
+
+    private void populateProgramID() {
+        SharedPreferences preferences = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
+        String program = preferences.getString("program", "null");
+        int pid = 0;
+        if (program.contains("Learning"))
+            pid = 1;
+        else if (program.contains("India"))
+            pid = 2;
+        else if (program.contains("Institutes"))
+            pid = 10;
+        else if (program.contains("Second"))
+            pid = 3;
+        else if (program.contains("Urban"))
+            pid = 6;
+        else if (program.contains("Gaon"))
+            pid = 13;
+        else if (program.contains("Government"))
+            pid = 14;
+        else if (program.contains("ECE"))
+            pid = 8;
+        else if (program.contains("KGBV"))
+            pid = 5;
+
+        MetaData metaData = new MetaData();
+        metaData.setKeys("ProgramID");
+        metaData.setValue(String.valueOf(pid));
+        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
     }
 
     private void initializeAppInfo() {
@@ -194,6 +229,13 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
         List<GroupVisit> GroupVisitObj = new ArrayList<>();
         GroupVisitObj = AppDatabase.getDatabaseInstance(this).getGroupVisitDao().getNewGroupVisits(0);
 
+        List<Student> stdObj = new ArrayList<>();
+        stdObj = AppDatabase.getDatabaseInstance(this).getStudentDao().getNewStudents(0);
+        List<Aser> aserObj = new ArrayList<>();
+        aserObj = AppDatabase.getDatabaseInstance(this).getAserDao().getNewAser(0);
+        List<Groups> grpObj = new ArrayList<>();
+        grpObj = AppDatabase.getDatabaseInstance(this).getGroupDao().getNewGroups(0);
+
         // Push To Server
         try {
             if (internetIsAvailable) {
@@ -207,7 +249,9 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
                 AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
 
                 String json = "{ \"AttendanceJSON\":" + "" + gson.toJson(aObj).toString() + ",\"CoachesJSON\":" + "" + gson.toJson(coachesObj).toString() + ",\"CommunitiesJSON\":" + "" + gson.toJson(communitiesObj).toString() + ",\"CompletionsJSON\":" + "" + gson.toJson(completionsObj).toString()
-//                        + ",\"CRLVisitsJSON\":" + "" + gson.toJson(CRLVisitObj).toString()
+                        + ",\"StudentJSON\":" + "" + gson.toJson(stdObj).toString()
+                        + ",\"AserJSON\":" + "" + gson.toJson(aserObj).toString()
+                        + ",\"GroupsJSON\":" + "" + gson.toJson(grpObj).toString()
                         + ",\"GroupVisitsJSON\":" + "" + gson.toJson(GroupSessionObj).toString() + ",\"GroupSessionJSON\":" + "" + gson.toJson(GroupVisitObj).toString() + ",\"metadata\":" + "" + metaDataJSON + "}";
 
                 Log.d("json all push :::", json);
@@ -238,7 +282,14 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
 //                            AppDatabase.getDatabaseInstance(Dashboard.this).getCRLVisitdao().updateAllSentFlag(1);
                             AppDatabase.getDatabaseInstance(Dashboard.this).getGroupSessionDao().updateAllSentFlag(1);
                             AppDatabase.getDatabaseInstance(Dashboard.this).getGroupVisitDao().updateAllSentFlag(1);
-                            dialog.dismiss();
+
+                            AppDatabase.getDatabaseInstance(Dashboard.this).getStudentDao().updateAllSentFlag(1);
+                            AppDatabase.getDatabaseInstance(Dashboard.this).getAserDao().updateAllSentFlag(1);
+                            AppDatabase.getDatabaseInstance(Dashboard.this).getGroupDao().updateAllSentFlag(1);
+
+                            Toast.makeText(Dashboard.this, "Data Pushed !", Toast.LENGTH_SHORT).show();
+                            if (dialog.isShowing())
+                                dialog.dismiss();
                         }
 
                         @Override
@@ -251,13 +302,21 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
 //                            AppDatabase.getDatabaseInstance(Dashboard.this).getCRLVisitdao().updateAllSentFlag(0);
                             AppDatabase.getDatabaseInstance(Dashboard.this).getGroupVisitDao().updateAllSentFlag(0);
                             AppDatabase.getDatabaseInstance(Dashboard.this).getGroupSessionDao().updateAllSentFlag(0);
-                            dialog.dismiss();
+
+                            AppDatabase.getDatabaseInstance(Dashboard.this).getStudentDao().updateAllSentFlag(0);
+                            AppDatabase.getDatabaseInstance(Dashboard.this).getAserDao().updateAllSentFlag(0);
+                            AppDatabase.getDatabaseInstance(Dashboard.this).getGroupDao().updateAllSentFlag(0);
+
+                            Toast.makeText(Dashboard.this, "Error in Data Pushing !", Toast.LENGTH_SHORT).show();
+                            if (dialog.isShowing())
+                                dialog.dismiss();
                         }
                     });
                 }
 
             } else {
                 //No Internet
+                Toast.makeText(this, "No Internet !\nUnable to Push !", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -269,12 +328,12 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
     private void initializeItemList() {
         if (DashboardItemList == null) {
             DashboardItemList = new ArrayList<DashboardItem>();
-            DashboardItemList.add(new DashboardItem("Scan or Code", R.drawable.qr_code_selector));
-            DashboardItemList.add(new DashboardItem("Swap Students", R.drawable.swap_selector));
+//            DashboardItemList.add(new DashboardItem("Scan QR Code", R.drawable.qr_code_selector));
+//            DashboardItemList.add(new DashboardItem("Swap Students", R.drawable.swap_selector));
             DashboardItemList.add(new DashboardItem("Forms", R.drawable.ic_form));
-//            DashboardItemList.add(new DashboardItem("POS Dashboard", R.drawable.ic_pos));
+            DashboardItemList.add(new DashboardItem("Student Management", R.drawable.ic_pos));
 //            DashboardItemList.add(new DashboardItem("Pull Data", R.drawable.ic_pull));
-//            DashboardItemList.add(new DashboardItem("Push Data", R.drawable.ic_push));
+            DashboardItemList.add(new DashboardItem("Push Data", R.drawable.ic_push));
             DashboardItemList.add(new DashboardItem("Manage Device", R.drawable.tablet));
         }
     }
@@ -299,8 +358,8 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
-        } else if (name.contains("POS")) {
-            Intent intent = new Intent(Dashboard.this, POS_Dashboard.class);
+        } else if (name.contains("Management")) {
+            Intent intent = new Intent(Dashboard.this, Student_Management.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
@@ -312,11 +371,16 @@ public class Dashboard extends AppCompatActivity implements DashRVClickListener,
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
         } else if (name.contains("Push")) {
+            /*
             Intent intent = new Intent(Dashboard.this, PushData.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
+            */
+            turnOnWifi();
+            pushNewData();
+
         } else if (name.contains("Manage Device")) {
             Intent intent = new Intent(Dashboard.this, ManageDevice.class);
             intent.putExtra("CRLid", LoggedcrlId);
