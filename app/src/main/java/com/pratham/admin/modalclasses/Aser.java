@@ -49,6 +49,14 @@ public class Aser {
     public String DeviceId;
     @SerializedName("GroupID")
     public String GroupID;
+    @SerializedName("sharedBy")
+    public String sharedBy;
+    @SerializedName("SharedAtDateTime")
+    public String SharedAtDateTime;
+    @SerializedName("appVersion")
+    public String appVersion;
+    @SerializedName("appName")
+    public String appName;
     @SerializedName("CreatedOn")
     public String CreatedOn;
 
@@ -77,6 +85,10 @@ public class Aser {
                 ", CreatedDate='" + CreatedDate + '\'' +
                 ", DeviceId='" + DeviceId + '\'' +
                 ", GroupID='" + GroupID + '\'' +
+                ", sharedBy='" + sharedBy + '\'' +
+                ", SharedAtDateTime='" + SharedAtDateTime + '\'' +
+                ", appVersion='" + appVersion + '\'' +
+                ", appName='" + appName + '\'' +
                 ", CreatedOn='" + CreatedOn + '\'' +
                 ", sentFlag=" + sentFlag +
                 '}';
@@ -225,6 +237,38 @@ public class Aser {
 
     public void setGroupID(String groupID) {
         GroupID = groupID;
+    }
+
+    public String getSharedBy() {
+        return sharedBy;
+    }
+
+    public void setSharedBy(String sharedBy) {
+        this.sharedBy = sharedBy;
+    }
+
+    public String getSharedAtDateTime() {
+        return SharedAtDateTime;
+    }
+
+    public void setSharedAtDateTime(String sharedAtDateTime) {
+        SharedAtDateTime = sharedAtDateTime;
+    }
+
+    public String getAppVersion() {
+        return appVersion;
+    }
+
+    public void setAppVersion(String appVersion) {
+        this.appVersion = appVersion;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 
     public String getCreatedOn() {
