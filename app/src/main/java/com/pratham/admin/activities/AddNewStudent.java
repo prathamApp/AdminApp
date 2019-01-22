@@ -35,6 +35,7 @@ import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.BackupDatabase;
+import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.BirthDatePickerFragment;
 import com.pratham.admin.util.DatePickerFragment;
 import com.pratham.admin.util.Utility;
@@ -52,8 +53,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class AddNewStudent extends AppCompatActivity {
+public class AddNewStudent extends BaseActivity {
 
+    private static final int TAKE_Thumbnail = 1;
+    private static final int REQUEST_WRITE_STORAGE = 112;
+    private static String TAG = "PermissionDemo";
+    public boolean EndlineButtonClicked = false;
     Spinner states_spinner, blocks_spinner, villages_spinner, groups_spinner;
     EditText edt_Fname, edt_Mname, edt_Lname, edt_Class;
     RadioGroup rg_Gender;
@@ -66,26 +71,17 @@ public class AddNewStudent extends AppCompatActivity {
     List<String> ExistingStudents;
     String StudentID, FirstName, MiddleName, LastName, Age, Class, UpdatedDate, Gender;
     String randomUUIDStudent;
-    private static final int TAKE_Thumbnail = 1;
     ImageView imgView;
-    private static String TAG = "PermissionDemo";
-    private static final int REQUEST_WRITE_STORAGE = 112;
     Uri uriSavedImage;
     UUID uuStdid;
     RadioButton selectedGender;
     List<Groups> GroupsVillages = new ArrayList<Groups>();
-
     boolean timer;
-
     int stdAge = 0;
-
     Utility util;
-
     Spinner sp_BaselineLang, sp_NumberReco;
     Button btn_EndlineDatePicker, btn_DatePicker, btn_Endline1, btn_Endline2, btn_Endline3, btn_Endline4;
     LinearLayout AserForm;
-    public boolean EndlineButtonClicked = false;
-
     int testT, langSpin, numSpin;
     int OA = 0;
     int OS = 0;

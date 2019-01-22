@@ -32,6 +32,7 @@ import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Village;
+import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.CustomGroup;
 import com.pratham.admin.util.DatePickerFragmentOne;
@@ -51,7 +52,7 @@ import butterknife.OnClick;
 
 import static com.pratham.admin.util.APIs.PushForms;
 
-public class CrlVisitForm extends AppCompatActivity implements ConnectionReceiverListener, RangeTimePickerDialog.ISelectedTime {
+public class CrlVisitForm extends BaseActivity implements ConnectionReceiverListener, RangeTimePickerDialog.ISelectedTime {
 
     // ref : https://android-arsenal.com/details/1/6776
 

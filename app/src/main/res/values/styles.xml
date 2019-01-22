@@ -8,6 +8,13 @@
         <item name="colorAccent">#8c0818</item>
     </style>
 
+    <style name="NoActionBr" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#b4111f</item>
+        <item name="colorPrimaryDark">#8c0818</item>
+        <item name="colorAccent">#8c0818</item>
+    </style>
+
     <!--username password-->
     <style name="CustomText">
         <item name="android:textSize">25sp</item>
@@ -64,6 +71,7 @@
         <item name="spinnerStyle">@android:style/Widget.Spinner</item>
         <item name="dropDownSpinnerStyle">@style/Widget.Spinner.DropDown</item>
     </style>
+
     <style name="Theme.Holo">
         <item name="spinnerStyle">?android:attr/dropDownSpinnerStyle</item>
         <item name="dropDownSpinnerStyle">@style/Widget.Holo.Spinner.DropDown</item>
@@ -121,10 +129,9 @@
         <!--         <item name="android:popupPromptView">@android:layout/simple_dropdown_hint</item> -->
     </style>
 
-    <style name="Widget.Holo.Spinner.DropDown">
-    </style>
-    <style name="Widget.Holo.Light.Spinner.DropDown">
-    </style>
+    <style name="Widget.Holo.Spinner.DropDown"></style>
+
+    <style name="Widget.Holo.Light.Spinner.DropDown"></style>
 
     <style name="devicelist">
         <item name="android:textSize">18dp</item>

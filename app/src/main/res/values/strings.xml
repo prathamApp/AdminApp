@@ -11,6 +11,7 @@
     <string name="urbon_program">Urban programme</string>
     <string name="hamara_gaon">Hamara Gaon</string>
     <string name="government_Partnership">Government Partnership</string>
+    <string name="KGBV">KGBV</string>
 
 
     <string-array name="india_states">
@@ -163,6 +164,7 @@
         <item>Urban programme</item>
         <item>Hamara Gaon</item>
         <item>Government Partnership</item>
+        <item>KGBV</item>
 
         <!--<item>Others</item>-->
     </string-array>

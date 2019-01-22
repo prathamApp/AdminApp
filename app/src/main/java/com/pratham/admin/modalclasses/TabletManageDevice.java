@@ -10,17 +10,14 @@ import com.google.gson.annotations.SerializedName;
 @Entity
 public class TabletManageDevice {
 
-   /* @NonNull
+    @NonNull
     @PrimaryKey(autoGenerate = true)
     @Expose(serialize = false)
-    private Integer id;*/
+    private Integer id;
 
-    @NonNull
     @Expose
-    @PrimaryKey
     @SerializedName("QR_ID")
     String QR_ID;
-
 
     @Expose
     @SerializedName("Pratham_ID")
@@ -33,8 +30,6 @@ public class TabletManageDevice {
     @Expose
     @SerializedName("CRL_Name")
     String assigned_CRL_Name;
-
-
 
     @Expose
     @SerializedName("Tab_serial_ID")
@@ -69,9 +64,21 @@ public class TabletManageDevice {
     @SerializedName("comment")
     String comment;
 
+    @Expose
+    @SerializedName("newPrathamID")
+    String newPrathamID;
+
+    @Expose
+    @SerializedName("newQrID")
+    String newQrID;
+
+    @Expose
+    @SerializedName("new_Tab_serial_ID")
+    String new_Tab_serial_ID;
+
     @Expose(serialize = false)
     boolean oldFlag = false;
-/*
+
     @NonNull
     public Integer getId() {
         return id;
@@ -79,7 +86,7 @@ public class TabletManageDevice {
 
     public void setId(@NonNull Integer id) {
         this.id = id;
-    }*/
+    }
 
     public boolean getOldFlag() {
         return oldFlag;
@@ -185,5 +192,29 @@ public class TabletManageDevice {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String getNewPrathamID() {
+        return newPrathamID;
+    }
+
+    public void setNewPrathamID(String newPrathamID) {
+        this.newPrathamID = newPrathamID;
+    }
+
+    public String getNewQrID() {
+        return newQrID;
+    }
+
+    public void setNewQrID(String newQrID) {
+        this.newQrID = newQrID;
+    }
+
+    public String getNew_Tab_serial_ID() {
+        return new_Tab_serial_ID;
+    }
+
+    public void setNew_Tab_serial_ID(String new_Tab_serial_ID) {
+        this.new_Tab_serial_ID = new_Tab_serial_ID;
     }
 }

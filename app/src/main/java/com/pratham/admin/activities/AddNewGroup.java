@@ -17,13 +17,14 @@ import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.BackupDatabase;
+import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class AddNewGroup extends AppCompatActivity {
+public class AddNewGroup extends BaseActivity {
 
     Spinner states_spinner, blocks_spinner, villages_spinner;
     EditText edt_NewGroupName;

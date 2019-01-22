@@ -19,6 +19,7 @@ import com.pratham.admin.modalclasses.GroupSession;
 import com.pratham.admin.modalclasses.GroupVisit;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
+import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.TabTrack;
 import com.pratham.admin.modalclasses.TabletManageDevice;
@@ -28,7 +29,7 @@ import com.pratham.admin.modalclasses.Village;
 
 //import com.pratham.admin.modalclasses.CRLVisit;
 
-@Database(entities = {Attendance.class, CRL.class, CRLmd.class, /*CRLVisit.class,*/ Coach.class, Course.class, Community.class, Completion.class, Groups.class, Student.class, GroupSession.class, GroupVisit.class, Village.class, MetaData.class, TempStudent.class, TabTrack.class, TabletManageDevice.class, TabletStatus.class, Aser.class}, version = 4, exportSchema = false)
+@Database(entities = {Attendance.class, CRL.class, CRLmd.class, /*CRLVisit.class,*/ Coach.class, Course.class, Community.class, Completion.class, Groups.class, Student.class, GroupSession.class, GroupVisit.class, Village.class, MetaData.class, TempStudent.class, TabTrack.class, TabletManageDevice.class, Modal_Log.class, TabletStatus.class, Aser.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase DATABASEINSTANCE;
@@ -36,6 +37,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract AttendanceDao getAttendanceDao();
 
     public abstract CRLdao getCRLdao();
+
+    public abstract LogDao getLogDao();
 
     public abstract CRLmd_dao getCRLmd_dao();
 

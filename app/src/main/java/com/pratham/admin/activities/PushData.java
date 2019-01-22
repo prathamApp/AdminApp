@@ -12,9 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
+import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 
-public class PushData extends AppCompatActivity implements ConnectionReceiverListener {
+public class PushData extends BaseActivity implements ConnectionReceiverListener {
 
     boolean internetIsAvailable = false;
     String LoggedcrlId = "", LoggedcrlName = "", LoggedCRLnameSwapStd = "";

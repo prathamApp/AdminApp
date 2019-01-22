@@ -22,18 +22,18 @@ import com.pratham.admin.forms.GroupSessionForm;
 import com.pratham.admin.forms.GroupVisitForm;
 import com.pratham.admin.interfaces.DashRVClickListener;
 import com.pratham.admin.modalclasses.DashboardItem;
+import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.DashRVTouchListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FormsActivity extends AppCompatActivity implements DashRVClickListener {
+public class FormsActivity extends BaseActivity implements DashRVClickListener {
 
     // Ref : https://www.dev2qa.com/android-cardview-with-image-and-text-example/
     String LoggedcrlId = "", LoggedcrlName = "", LoggedCRLnameSwapStd = "";
-
-    private List<DashboardItem> DashboardItemList = null;
     DashRVDataAdapter DataAdapter;
+    private List<DashboardItem> DashboardItemList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

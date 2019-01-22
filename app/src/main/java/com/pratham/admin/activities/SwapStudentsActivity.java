@@ -42,6 +42,7 @@ import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.TempStudent;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.APIs;
+import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.CustomGroup;
 
@@ -56,7 +57,7 @@ import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 import jp.wasabeef.recyclerview.animators.SlideInRightAnimator;
 
-public class SwapStudentsActivity extends AppCompatActivity implements OnCheckBoxSelectedItem, ConnectionReceiverListener, OnlineChanges {
+public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSelectedItem, ConnectionReceiverListener, OnlineChanges {
     @BindView(R.id.swapStudParentLayout)
     LinearLayout swapStudParentLayout;
     @BindView(R.id.leftSide)

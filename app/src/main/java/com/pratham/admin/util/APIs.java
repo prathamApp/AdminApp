@@ -15,6 +15,13 @@ public class APIs {
     public static final String HLpullStudentsURL = "http://www.devtab.openiscool.org/api/student?programid=1&villageId=";
     public static final String HLpullCrlsURL = "http://www.swap.prathamcms.org/api/UserList?programId=1&statecode=";
 
+
+    public static final String KGBV = "KGBV";
+    public static final String KGBVpullVillagesURL = "http://www.hlearning.openiscool.org/api/village/get?programId=5&state=";
+    public static final String KGBVpullGroupsURL = "http://www.devtab.openiscool.org/api/Group?programid=5&villageId=";
+    public static final String KGBVpullStudentsURL = "http://www.devtab.openiscool.org/api/student?programid=5&villageId=";
+    public static final String KGBVpullCrlsURL = "http://www.swap.prathamcms.org/api/UserList?programId=5&statecode=";
+
     public static final String ECE = "ECE";
     public static final String ECEpullVillagesURL = "http://www.hlearning.openiscool.org/api/village/get?programId=8&state=";
     public static final String ECEpullGroupsURL = "http://www.devtab.openiscool.org/api/Group?programid=8&villageId=";

@@ -1,7 +1,10 @@
 package com.pratham.admin.activities;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,17 +35,9 @@ public class CustomDialogQRScan_MD extends Dialog implements QRRecyclerListener 
 
     List<TabletManageDevice> changesList;
     Context context;
-    AssignTabletMD assignTabletMD;
+    Context assignTabletMD;
     QRScanListener qrScanListener;
     QRScanAdapter_MD qrScanAdapter_md;
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().deleteAllTabletManageDevice();
-        AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().insertTabletAllManageDevice(changesList);
-        assignTabletMD.finish();
-    }
 
     public CustomDialogQRScan_MD(@NonNull Context context, List changesList) {
         super(context, android.R.style.Theme_DeviceDefault_NoActionBar_Fullscreen);
@@ -50,6 +45,22 @@ public class CustomDialogQRScan_MD extends Dialog implements QRRecyclerListener 
         this.context = context;
         assignTabletMD = (AssignTabletMD) context;
         qrScanListener = (QRScanListener) context;
+    }
+
+    public CustomDialogQRScan_MD(@NonNull Context context, List changesList, int temp) {
+        super(context, android.R.style.Theme_DeviceDefault_NoActionBar_Fullscreen);
+        this.changesList = changesList;
+        this.context = context;
+        assignTabletMD = (ReplaceTablet_MD) context;
+        qrScanListener = (ReplaceTablet_MD) context;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().deleteAllTabletManageDevice();
+        AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().insertTabletAllManageDevice(changesList);
+        ((Activity) assignTabletMD).finish();
     }
 
     @Override
@@ -85,16 +96,26 @@ public class CustomDialogQRScan_MD extends Dialog implements QRRecyclerListener 
     }
 
     @Override
-    public void delete(int position) {
-        String qrId = changesList.get(position).getQR_ID();
-        AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().deleteTabletManageDevice(qrId);
-        changesList.remove(position);
-        setCount();
-        qrScanAdapter_md.notifyDataSetChanged();
-        if (changesList.isEmpty()) {
-            this.dismiss();
-        }
+    public void delete(final int position) {
+        new AlertDialog.Builder(context).setMessage("Do you want to delete?")
+                .setPositiveButton("yes", new OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String qrId = changesList.get(position).getQR_ID();
+                        AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().deleteTabletManageDevice(qrId);
+                        changesList.remove(position);
+                        setCount();
+                        qrScanAdapter_md.notifyDataSetChanged();
+                        if (changesList.isEmpty()) {
+                            dialog.dismiss();
+                        }
+                    }
+                }).setNegativeButton("No", new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).show();
+
     }
-
-
 }

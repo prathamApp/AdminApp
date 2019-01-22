@@ -40,6 +40,7 @@ import com.pratham.admin.interfaces.DevicePrathamIdLisner;
 import com.pratham.admin.interfaces.QRScanListener;
 import com.pratham.admin.modalclasses.TabletStatus;
 import com.pratham.admin.util.APIs;
+import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.Utility;
@@ -53,14 +54,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class Status_Action extends AppCompatActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener, DevicePrathamIdLisner {
+public class Status_Action extends BaseActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener, DevicePrathamIdLisner {
 
+    public ZXingScannerView mScannerView;
     @BindView(R.id.qr_frame)
     FrameLayout qr_frame;
     @BindView(R.id.statusRadioGroup)
     RadioGroup statusRadioGroup;
-
-
     @BindView(R.id.qr_spinner_crl)
     TextView qr_spinner_crl;
     @BindView(R.id.txt_count_village)
@@ -69,8 +69,6 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
     EditText qr_pratham_id;
     @BindView(R.id.btn_DatePicker)
     Button btn_DatePicker;
-    public ZXingScannerView mScannerView;
-
     @BindView(R.id.qr_serialNo)
     EditText qr_serialNo;
     @BindView(R.id.successMessage)
@@ -260,7 +258,7 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
                         resetCamera();
                     }
                 });*/
-               myDeviceList.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                myDeviceList.setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialogInterface) {
                         resetCamera();
@@ -440,7 +438,7 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
                 //   List l = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().checkExistanceTabletManageDevice(QrIdNEW);
                 List l = AppDatabase.getDatabaseInstance(this).getTabletStatusDao().checkExistance(QrId);
                 if (l.isEmpty()) {
-                   // QrId = QrIdNEW;
+                    // QrId = QrIdNEW;
                     prathamId = prathamIdNew;
                     qr_pratham_id.setText(prathamId);
                     successMessage.setVisibility(View.VISIBLE);
@@ -453,7 +451,7 @@ public class Status_Action extends AppCompatActivity implements ZXingScannerView
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                           // QrId = QrIdNEW;
+                            // QrId = QrIdNEW;
                             prathamId = prathamIdNew;
                             qr_pratham_id.setText(prathamId);
                             successMessage.setVisibility(View.VISIBLE);

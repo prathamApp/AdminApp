@@ -16,6 +16,7 @@ import com.pratham.admin.interfaces.QRScanListener;
 import com.pratham.admin.modalclasses.TabletStatus;
 
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -34,20 +35,20 @@ public class CustomDialogTabletStatus extends Dialog implements QRRecyclerListen
     QRScanListener qrScanListener;
     QRScanAdapter_TabletStatus qrScanAdapter_tabletStatus;
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        AppDatabase.getDatabaseInstance(context).getTabletStatusDao().deleteAllTabletStatus();
-        AppDatabase.getDatabaseInstance(context).getTabletStatusDao().insertAllTabletStatus(changesList);
-        status_action.finish();
-    }
-
     public CustomDialogTabletStatus(@NonNull Context context, List changesList) {
         super(context, android.R.style.Theme_DeviceDefault_NoActionBar_Fullscreen);
         this.changesList = changesList;
         this.context = context;
         status_action = (Status_Action) context;
         qrScanListener = (QRScanListener) context;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        AppDatabase.getDatabaseInstance(context).getTabletStatusDao().deleteAllTabletStatus();
+        AppDatabase.getDatabaseInstance(context).getTabletStatusDao().insertAllTabletStatus(changesList);
+        status_action.finish();
     }
 
     @Override

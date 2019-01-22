@@ -13,16 +13,18 @@ import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.forms.DeleteStudentsForm;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
+import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class Student_Management extends AppCompatActivity implements ConnectionReceiverListener {
+public class Student_Management extends BaseActivity implements ConnectionReceiverListener {
 
     @BindView(R.id.tv_appInfo)
     TextView tv_appInfo;

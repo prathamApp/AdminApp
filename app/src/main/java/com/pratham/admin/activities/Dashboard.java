@@ -10,7 +10,6 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -40,6 +39,7 @@ import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.util.BackupDatabase;
+import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.DashRVTouchListener;
 
@@ -55,18 +55,16 @@ import static com.pratham.admin.util.APIs.PushForms;
 
 //import com.pratham.admin.modalclasses.CRLVisit;
 
-public class Dashboard extends AppCompatActivity implements DashRVClickListener, ConnectionReceiverListener {
+public class Dashboard extends BaseActivity implements DashRVClickListener, ConnectionReceiverListener {
 
     // Ref : https://www.dev2qa.com/android-cardview-with-image-and-text-example/
     String LoggedcrlId = "", LoggedcrlName = "", LoggedCRLnameSwapStd = "";
-    private String deviceID, apkVersion, serialID, WiFiMac, gpsFixDuration;
-
-    private List<DashboardItem> DashboardItemList = null;
     DashRVDataAdapter DataAdapter;
     boolean internetIsAvailable = false;
-
     @BindView(R.id.tv_appInfo)
     TextView tv_appInfo;
+    private String deviceID, apkVersion, serialID, WiFiMac, gpsFixDuration;
+    private List<DashboardItem> DashboardItemList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

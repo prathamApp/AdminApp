@@ -32,6 +32,7 @@ import com.pratham.admin.modalclasses.GroupVisit;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Village;
+import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.CustomGroup;
 import com.pratham.admin.util.DatePickerFragmentOne;
@@ -51,7 +52,7 @@ import butterknife.OnClick;
 
 import static com.pratham.admin.util.APIs.PushForms;
 
-public class GroupVisitForm extends AppCompatActivity implements ConnectionReceiverListener, RangeTimePickerDialog.ISelectedTime {
+public class GroupVisitForm extends BaseActivity implements ConnectionReceiverListener, RangeTimePickerDialog.ISelectedTime {
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;

@@ -1,5 +1,3 @@
-
-
 package com.pratham.admin.activities;
 
 import android.app.AlertDialog;
@@ -11,7 +9,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -46,6 +43,7 @@ import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.APIs;
+import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 
 import org.json.JSONArray;
@@ -72,7 +70,7 @@ import static com.pratham.admin.util.APIs.RI;
 import static com.pratham.admin.util.APIs.SC;
 import static com.pratham.admin.util.APIs.village;
 
-public class SelectProgram extends AppCompatActivity implements ConnectionReceiverListener, OnSavedData, VillageListLisner {
+public class SelectProgram extends BaseActivity implements ConnectionReceiverListener, OnSavedData, VillageListLisner {
     @BindView(R.id.spinner_state)
     Spinner spinner_state;
 
@@ -92,10 +90,7 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
     Button btn_saveData;
 
     Dialog dialog;
-    private String[] states;
-    private int selectedState;
     String[] stateCode;
-    private String selectedStateName = "MH";
     List<String> selectedVillage = new ArrayList();
     String selectedBlock = "NO BLOCKS";
     String selectedProgram = null;
@@ -103,6 +98,13 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
     boolean apiLoadFlag = false;
     boolean internetIsAvailable = false;
     boolean errorDetected = false;
+    List<Village> villageId;
+    int groupLoadCount = 0;
+    int studLoadCount = 0;
+    int countAser = 0;
+    private String[] states;
+    private int selectedState;
+    private String selectedStateName = "MH";
     private List<Village> villageList = new ArrayList();
     private List<CRL> CRLList = new ArrayList();
     private List<Student> studentList = new ArrayList();
@@ -112,10 +114,6 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
     private List<Community> CommunityList = new ArrayList();
     private List<Completion> CompletionList = new ArrayList();
     private List<Coach> CoachList = new ArrayList();
-    List<Village> villageId;
-    int groupLoadCount = 0;
-    int studLoadCount = 0;
-    int countAser = 0;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -124,7 +122,6 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
         checkConnection();
         setContentView(R.layout.activity_select_program);
         ButterKnife.bind(this);
-
         //   spinner_village.setEnabled(false);
         spinner_block.setEnabled(false);
         animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
@@ -198,6 +195,10 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                             url = APIs.UPpullVillagesURL + stateCode[selectedState];
                             loadAPI(url, village, APIs.UP);
                             break;
+                        case APIs.KGBV:
+                            url = APIs.KGBVpullVillagesURL + stateCode[selectedState];
+                            loadAPI(url, village, APIs.KGBV);
+                            break;
                         case APIs.ECE:
                             url = APIs.ECEpullVillagesURL + stateCode[selectedState];
                             loadAPI(url, village, APIs.ECE);
@@ -263,6 +264,10 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                                 //todo urban
                                 String url11 = APIs.UPpullCrlsURL + stateCode[selectedState]; /*+ "&programid=1";*/
                                 loadAPI(url11, APIs.CRL, APIs.UP);
+                                break;
+                            case APIs.KGBV:
+                                String murl5 = APIs.KGBVpullCrlsURL + stateCode[selectedState]; /*+ "&programid=1";*/
+                                loadAPI(murl5, APIs.CRL, APIs.KGBV);
                                 break;
                             case APIs.ECE:
                                 String url5 = APIs.ECEpullCrlsURL + stateCode[selectedState];/* + "&programid=8";*/
@@ -409,6 +414,9 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                     break;
                 case APIs.UP:
                     loadAPI(APIs.UPpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, APIs.UP);
+                    break;
+                case APIs.KGBV:
+                    loadAPI(APIs.KGBVpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, APIs.KGBV);
                     break;
                 case APIs.ECE:
                     loadAPI(APIs.ECEpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, APIs.ECE);
@@ -564,6 +572,9 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                         break;
                     case APIs.UP:
                         loadAPI(APIs.UPpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.UP);
+                        break;
+                    case APIs.KGBV:
+                        loadAPI(APIs.KGBVpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.KGBV);
                         break;
                     case APIs.ECE:
                         loadAPI(APIs.ECEpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.ECE);
@@ -856,6 +867,10 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 showDialoginApiCalling(APIs.UP, "Pulling Coaches !!!");
                 couchUrl = couchUrl + "villageid=" + vID + "&programid=1";
                 break;
+            case APIs.KGBV:
+                showDialoginApiCalling(APIs.KGBV, "Pulling Coaches !!!");
+                couchUrl = couchUrl + "villageid=" + vID + "&programid=5";
+                break;
             case RI:
                 showDialoginApiCalling(RI, "Pulling Coaches !!!");
                 couchUrl = couchUrl + "villageid=" + vID + "&programid=2";
@@ -875,6 +890,10 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
             case GP:
                 showDialoginApiCalling(GP, "Pulling Coaches !!!");
                 couchUrl = couchUrl + "villageid=" + vID + "&programid=14";
+                break;
+            case HG:
+                showDialoginApiCalling(HG, "Pulling Coaches !!!");
+                couchUrl = couchUrl + "villageid=" + vID + "&programid=13";
                 break;
         }
 
@@ -920,6 +939,10 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 showDialoginApiCalling(APIs.UP, "Pulling Course Community !!!");
                 pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 1;
                 break;
+            case APIs.KGBV:
+                showDialoginApiCalling(APIs.KGBV, "Pulling Course Community !!!");
+                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 5;
+                break;
             case RI:
                 showDialoginApiCalling(RI, "Pulling Course Community !!!");
                 pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 2;
@@ -939,6 +962,10 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
             case GP:
                 showDialoginApiCalling(GP, "Pulling Course Community !!!");
                 pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 14;
+                break;
+            case HG:
+                showDialoginApiCalling(HG, "Pulling Course Community !!!");
+                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 13;
                 break;
         }
 
@@ -981,6 +1008,9 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
             case APIs.UP:
                 showDialoginApiCalling(APIs.UP, "Pulling Courses !!!");
                 break;
+            case APIs.KGBV:
+                showDialoginApiCalling(APIs.KGBV, "Pulling Courses !!!");
+                break;
             case RI:
                 showDialoginApiCalling(RI, "Pulling Courses !!!");
                 break;
@@ -992,6 +1022,9 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 break;
             case GP:
                 showDialoginApiCalling(GP, "Pulling Courses !!!");
+                break;
+            case HG:
+                showDialoginApiCalling(HG, "Pulling Courses !!!");
                 break;
         }
 
@@ -1037,6 +1070,10 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
                 showDialoginApiCalling(APIs.UP, "Pulling Course Completion !!!");
                 PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 1;
                 break;
+            case APIs.KGBV:
+                showDialoginApiCalling(APIs.KGBV, "Pulling Course Completion !!!");
+                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 5;
+                break;
             case RI:
                 showDialoginApiCalling(RI, "Pulling Course Completion !!!");
                 PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 2;
@@ -1057,6 +1094,10 @@ public class SelectProgram extends AppCompatActivity implements ConnectionReceiv
             case GP:
                 showDialoginApiCalling(GP, "Pulling Course Completion !!!");
                 PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 14;
+                break;
+            case HG:
+                showDialoginApiCalling(HG, "Pulling Course Completion !!!");
+                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 13;
                 break;
         }
 

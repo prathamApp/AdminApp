@@ -36,20 +36,20 @@ public class CustomDialogQRScan extends Dialog implements QRRecyclerListener {
     QRScanListener qrScanListener;
     QRScanAdapter qrScanAdapter;
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        AppDatabase.getDatabaseInstance(context).getTabTrackDao().deleteAllTabTracks();
-        AppDatabase.getDatabaseInstance(context).getTabTrackDao().insertAllTabTrack(changesList);
-        activity_qrScan.finish();
-    }
-
     public CustomDialogQRScan(@NonNull Context context, List changesList) {
         super(context, android.R.style.Theme_DeviceDefault_NoActionBar_Fullscreen);
         this.changesList = changesList;
         this.context = context;
         activity_qrScan = (Activity_QRScan) context;
         qrScanListener = (QRScanListener) context;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        AppDatabase.getDatabaseInstance(context).getTabTrackDao().deleteAllTabTracks();
+        AppDatabase.getDatabaseInstance(context).getTabTrackDao().insertAllTabTrack(changesList);
+        activity_qrScan.finish();
     }
 
     @Override

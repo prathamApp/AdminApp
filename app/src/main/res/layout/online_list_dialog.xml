@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#ffff"
     android:weightSum="3">
 
@@ -62,12 +61,12 @@
             android:id="@+id/status"
             android:layout_width="0dp"
             android:layout_height="55dp"
-            android:layout_weight="1"
+            android:layout_weight=".5"
             android:drawablePadding="10dp"
-            android:paddingTop="16dp"
             android:paddingBottom="16dp"
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
+            android:paddingTop="16dp"
             android:text="status"
             android:textColor="#000000"
             android:textStyle="bold" />
@@ -75,16 +74,16 @@
         <ScrollView
             android:layout_width="0dp"
             android:layout_height="55dp"
-            android:layout_weight="2">
+            android:layout_weight="1.7">
 
             <TextView
                 android:id="@+id/assigned_to"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="16dp"
                 android:paddingBottom="16dp"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
+                android:paddingTop="16dp"
                 android:text="Assigned To"
                 android:textColor="#000000"
                 android:textStyle="bold" />
@@ -93,16 +92,16 @@
         <ScrollView
             android:layout_width="0dp"
             android:layout_height="55dp"
-            android:layout_weight="1">
+            android:layout_weight=".5">
 
             <TextView
                 android:id="@+id/assigned_by"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="16dp"
                 android:paddingBottom="16dp"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
+                android:paddingTop="16dp"
                 android:text="Assigned By"
                 android:textColor="#000000"
                 android:textStyle="bold" />
@@ -117,10 +116,10 @@
                 android:id="@+id/qe_id"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="16dp"
                 android:paddingBottom="16dp"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
+                android:paddingTop="16dp"
                 android:text="QR ID"
                 android:textColor="#000000"
                 android:textStyle="bold" />
@@ -135,10 +134,10 @@
                 android:id="@+id/pratham_id"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="16dp"
                 android:paddingBottom="16dp"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
+                android:paddingTop="16dp"
                 android:text="Pratham ID"
                 android:textColor="#000000"
                 android:textStyle="bold" />
@@ -147,38 +146,38 @@
         <ScrollView
             android:layout_width="0dp"
             android:layout_height="55dp"
-            android:layout_weight="1.5">
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/txt_date"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="4dp"
-                android:paddingTop="16dp"
-                android:paddingRight="4dp"
                 android:paddingBottom="16dp"
-                android:text="Date"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="16dp"
+                android:text="Serial ID"
                 android:textColor="#000000"
                 android:textStyle="bold" />
         </ScrollView>
 
-       <!-- <ScrollView
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_weight="1">
+        <!-- <ScrollView
+             android:layout_width="0dp"
+             android:layout_height="55dp"
+             android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/txt_loggedIn_crl"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:text="Logged In Crl"
-                android:textColor="#000000"
-                android:textStyle="bold" />
-        </ScrollView>-->
+             <TextView
+                 android:id="@+id/txt_loggedIn_crl"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:paddingTop="16dp"
+                 android:paddingBottom="16dp"
+                 android:paddingLeft="4dp"
+                 android:paddingRight="4dp"
+                 android:text="Logged In Crl"
+                 android:textColor="#000000"
+                 android:textStyle="bold" />
+         </ScrollView>-->
 
         <ScrollView
             android:layout_width="0dp"
@@ -189,27 +188,64 @@
                 android:id="@+id/replaceStatus"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="16dp"
                 android:paddingBottom="16dp"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
-                android:text="Replace Status"
+                android:paddingTop="16dp"
+                android:text="replaced Serial ID"
                 android:textColor="#000000"
                 android:textStyle="bold" />
         </ScrollView>
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/newPrathamID"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="16dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="16dp"
+                android:text="replaced Pratham ID"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+        </ScrollView>
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/newqr_id"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="16dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="16dp"
+                android:text="replaced Qr ID"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+        </ScrollView>
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:paddingTop="16dp"
+            android:layout_weight=".5"
             android:paddingBottom="16dp"
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
+            android:paddingTop="16dp"
             android:text="Delete"
-            android:textStyle="bold"
             android:textColor="#000000"
-            android:layout_weight="1"
-            />
+            android:textStyle="bold" />
     </LinearLayout>
+
     <ScrollView
         android:id="@+id/frameLayout_village"
         android:layout_width="match_parent"

@@ -6,6 +6,9 @@ import android.content.res.AssetManager;
 import android.provider.Settings;
 
 import com.pratham.admin.ApplicationController;
+import com.pratham.admin.activities.CatchoTransparentActivity;
+
+import net.alhazmy13.catcho.library.Catcho;
 
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -122,4 +125,10 @@ public class Utility {
         return diff;
     }
 
+    public static void getCatcho(Context context) {
+        Catcho.Builder(context)
+                .activity(CatchoTransparentActivity.class)
+                .recipients("your-email@domain.com")
+                .build();
+    }
 }

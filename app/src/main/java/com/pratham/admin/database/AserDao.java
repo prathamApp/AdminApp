@@ -14,10 +14,10 @@ import java.util.List;
  */
 @Dao
 public interface AserDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insertAllAserList(List<Aser> studentsList);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insertAser(Aser aserData);
 
     @Query("SELECT * FROM Aser WHERE StudentId=:StudentId AND TestType=:TestType")

@@ -31,6 +31,7 @@ import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.BackupDatabase;
+import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.DatePickerFragment;
 import com.pratham.admin.util.Utility;
 
@@ -42,8 +43,12 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditStudent extends AppCompatActivity {
+public class EditStudent extends BaseActivity {
 
+    private static final int TAKE_Thumbnail = 1;
+    private static final int REQUEST_WRITE_STORAGE = 112;
+    private static String TAG = "PermissionDemo";
+    public boolean EndlineButtonClicked = false;
     Spinner states_spinner, blocks_spinner, villages_spinner, groups_spinner, existingStudent_Spinner;
     TextView edt_Fname, edt_Mname, edt_Lname, edt_Age, edt_Class, tv_Gender;
     Button btn_Baseline_Submit, btn_Clear, btn_Capture;
@@ -60,20 +65,14 @@ public class EditStudent extends AppCompatActivity {
     int Age;
     int Class;
     String Gender;
-    private static final int TAKE_Thumbnail = 1;
     ImageView imgView;
-    private static String TAG = "PermissionDemo";
-    private static final int REQUEST_WRITE_STORAGE = 112;
     Uri uriSavedImage;
     String StudentUniqID;
     boolean timer;
     String createdBy = "";
-
     Spinner sp_BaselineLang, sp_NumberReco;
     Button btn_EndlineDatePicker, btn_DatePicker, btn_Endline1, btn_Endline2, btn_Endline3, btn_Endline4;
     LinearLayout AserForm;
-    public boolean EndlineButtonClicked = false;
-
     int testT = 0, langSpin, numSpin;
     int OA = 0;
     int OS = 0;
@@ -85,9 +84,9 @@ public class EditStudent extends AppCompatActivity {
     String AserTestDate;
 
     List<Aser> AserData;
-    private boolean captureButtonPressed = false;
     String aserDate;
     List<Groups> GroupsVillages = new ArrayList<Groups>();
+    private boolean captureButtonPressed = false;
 
     @Subscribe
     public void onEvent(String msg) {
@@ -1391,8 +1390,13 @@ public class EditStudent extends AppCompatActivity {
         ExistingStudents.add(0, std);
 
         List<Student> SpinnerStudents = new ArrayList<>();
-        for (int i = 0; i < ExistingStudents.size(); i++)
-            SpinnerStudents.add(new Student(ExistingStudents.get(i).StudentId, ExistingStudents.get(i).FirstName));
+        for (int i = 0; i < ExistingStudents.size(); i++) {
+            if (ExistingStudents.get(i).FirstName != null && !ExistingStudents.get(i).FirstName.equals("")) {
+                SpinnerStudents.add(new Student(ExistingStudents.get(i).StudentId, ExistingStudents.get(i).FirstName));
+            } else {
+                SpinnerStudents.add(new Student(ExistingStudents.get(i).StudentId, ExistingStudents.get(i).getFullName()));
+            }
+        }
 
         final ArrayAdapter<Student> ExistingStudentAdapter = new ArrayAdapter<Student>(this, R.layout.custom_spinner, SpinnerStudents);
         ExistingStudentAdapter.setDropDownViewResource(R.layout.custom_spinner);
@@ -1428,9 +1432,27 @@ public class EditStudent extends AppCompatActivity {
         if (SelectedStudent == null && existingStudent_Spinner.getSelectedItemPosition() > 0) {
             Toast.makeText(EditStudent.this, "Sorry !!! No Data Found !!!", Toast.LENGTH_SHORT).show();
         } else {
-            FirstName = SelectedStudent.FirstName;
-            MiddleName = SelectedStudent.MiddleName;
-            LastName = SelectedStudent.LastName;
+            if (SelectedStudent.FirstName == null) {
+                String[] nameArray = SelectedStudent.FullName.split(" ");
+                if (nameArray.length == 1) {
+                    FirstName = nameArray[0];
+                    MiddleName = "";
+                    LastName = "";
+                } else if (nameArray.length > 2) {
+                    FirstName = nameArray[0];
+                    MiddleName = nameArray[1];
+                    LastName = nameArray[2];
+                } else {
+                    FirstName = nameArray[0];
+                    LastName = nameArray[1];
+                    MiddleName = "";
+                }
+
+            } else {
+                FirstName = SelectedStudent.FullName;
+                MiddleName = SelectedStudent.MiddleName;
+                LastName = SelectedStudent.LastName;
+            }
             Age = Integer.parseInt(SelectedStudent.Age);
             String gen = SelectedStudent.Gender;
             if (gen.equals("Male") || gen.equals("M") || gen.equals("1")) {

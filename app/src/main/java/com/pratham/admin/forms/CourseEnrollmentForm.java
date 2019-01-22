@@ -35,6 +35,7 @@ import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Topic;
 import com.pratham.admin.modalclasses.Village;
+import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.CustomGroup;
 import com.pratham.admin.util.DatePickerFragmentOne;
@@ -57,7 +58,7 @@ import static com.pratham.admin.util.APIs.PushForms;
 
 // CourseEnrollment = CourseCommunity
 
-public class CourseEnrollmentForm extends AppCompatActivity implements ConnectionReceiverListener {
+public class CourseEnrollmentForm extends BaseActivity implements ConnectionReceiverListener {
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;

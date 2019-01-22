@@ -4,8 +4,11 @@ import android.app.Application;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.androidnetworking.AndroidNetworking;
+import com.pratham.admin.activities.CatchoTransparentActivity;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.util.ConnectionReceiver;
+
+import net.alhazmy13.catcho.library.Catcho;
 
 public class ApplicationController extends Application {
     private static ApplicationController INSTANCE;
@@ -23,6 +26,7 @@ public class ApplicationController extends Application {
         super.onCreate();
         AndroidNetworking.initialize(getApplicationContext());
         INSTANCE = this;
+
     }
 
     public static synchronized ApplicationController getInstance() {

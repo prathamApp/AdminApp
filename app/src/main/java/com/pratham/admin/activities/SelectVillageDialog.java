@@ -44,7 +44,6 @@ public class SelectVillageDialog extends Dialog {
         this.VillageNameList = tempList;
         this.context = context;
         this.villageListLisner = (VillageListLisner) context;
-
     }
 
     @Override

@@ -36,6 +36,7 @@ import com.pratham.admin.modalclasses.CourseTopicItem;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Village;
+import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.CustomGroup;
 import com.pratham.admin.util.DatePickerFragmentOne;
@@ -56,7 +57,7 @@ import butterknife.OnClick;
 
 import static com.pratham.admin.util.APIs.PushForms;
 
-public class CourseCompletionForm extends AppCompatActivity implements DashRVClickListener, ConnectionReceiverListener {
+public class CourseCompletionForm extends BaseActivity implements DashRVClickListener, ConnectionReceiverListener {
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;

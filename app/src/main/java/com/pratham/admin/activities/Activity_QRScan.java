@@ -36,6 +36,7 @@ import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.QRScanListener;
 import com.pratham.admin.modalclasses.TabTrack;
 import com.pratham.admin.util.APIs;
+import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 
 import java.text.DateFormat;
@@ -47,16 +48,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class Activity_QRScan extends AppCompatActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener {
+public class Activity_QRScan extends BaseActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener {
 
-    @BindView(R.id.qr_frame)
-    FrameLayout qr_frame;
+    public ZXingScannerView mScannerView;
     /* @BindView(R.id.qr_spinner_state)
      Spinner qr_spinner_state;*/
     //List<String> statewiseCRL;
     // List<String> statewiseCRLID;
-
-
+    @BindView(R.id.qr_frame)
+    FrameLayout qr_frame;
     @BindView(R.id.programInfo)
     ConstraintLayout programInfoLayout;
     @BindView(R.id.tv_selProg)
@@ -73,9 +73,6 @@ public class Activity_QRScan extends AppCompatActivity implements ZXingScannerVi
     EditText qr_pratham_id;
     @BindView(R.id.qr_serialNo)
     EditText qr_serialNo;
-    public ZXingScannerView mScannerView;
-
-
     @BindView(R.id.successMessage)
     LinearLayout successMessage;
     //  String selectedCRL;
@@ -154,7 +151,7 @@ public class Activity_QRScan extends AppCompatActivity implements ZXingScannerVi
         state = preferences.getString("state", "null");
         String village = preferences.getString("village", "null");
         if ((!program.equals("null")) && (!state.equals("null")) && (!village.equals("null"))) {
-           // programInfoLayout.setVisibility(View.VISIBLE);
+            // programInfoLayout.setVisibility(View.VISIBLE);
             selProg.setText(program);
             selState.setText(state);
             selVillage.setText(village);
@@ -162,9 +159,9 @@ public class Activity_QRScan extends AppCompatActivity implements ZXingScannerVi
             programInfoLayout.setVisibility(View.INVISIBLE);
         }
         qr_spinner_crl.setText(LoggedcrlName);
-        List<TabTrack> oldList=AppDatabase.getDatabaseInstance(this).getTabTrackDao().getAllTabTrack();
-        if(!oldList.isEmpty()){
-            for(int i=0;i<oldList.size();i++){
+        List<TabTrack> oldList = AppDatabase.getDatabaseInstance(this).getTabTrackDao().getAllTabTrack();
+        if (!oldList.isEmpty()) {
+            for (int i = 0; i < oldList.size(); i++) {
                 oldList.get(i).setOldFlag(true);
             }
             AppDatabase.getDatabaseInstance(this).getTabTrackDao().insertAllTabTrack(oldList);
@@ -267,13 +264,13 @@ public class Activity_QRScan extends AppCompatActivity implements ZXingScannerVi
             prathamId = jsonObject.getString("PrathamCode");*/
             QrId = splitted[0];
             prathamId = splitted[1];
-            Log.d("::::Tag",QrId+"  "+prathamId);
+            Log.d("::::Tag", QrId + "  " + prathamId);
             if (QrId != null && prathamId != null && splitted.length == 2 && (!prathamId.equalsIgnoreCase("None"))) {
                 List l = AppDatabase.getDatabaseInstance(this).getTabTrackDao().checkExistance(QrId);
                 if (l.isEmpty()) {
 
 
-                    Log.d(":::",QrId+"  "+prathamId);
+                    Log.d(":::", QrId + "  " + prathamId);
                     qr_pratham_id.setText(prathamId);
                     successMessage.setVisibility(View.VISIBLE);
                 } else {
@@ -422,8 +419,7 @@ public class Activity_QRScan extends AppCompatActivity implements ZXingScannerVi
             Gson gson = new Gson();
             String json = gson.toJson(tabTracks);
             uploadAPI(APIs.TabTrackPushAPI, json);
-        }
-        else{
+        } else {
             Toast.makeText(this, "No Internet Connection...", Toast.LENGTH_SHORT).show();
         }
     }

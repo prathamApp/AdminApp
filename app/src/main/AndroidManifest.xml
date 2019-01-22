@@ -17,7 +17,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -53,7 +52,6 @@
             android:name=".activities.AddNewStudent"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".activities.AddNewGroup"
             android:screenOrientation="sensorLandscape"
@@ -62,7 +60,6 @@
             android:name=".activities.EditStudent"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".activities.Activity_QRScan"
             android:label="@string/selectProgram"
@@ -156,6 +153,12 @@
             android:name=".activities.Status_Action"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activities.ReplaceTablet_MD"
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/NoActionBr"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".activities.CatchoTransparentActivity" />
     </application>
 
 </manifest>

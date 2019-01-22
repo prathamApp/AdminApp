@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -20,6 +19,7 @@ import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.DevicePrathamIdLisner;
 import com.pratham.admin.util.APIs;
+import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.ROll_ID;
 
@@ -28,12 +28,15 @@ import org.json.JSONArray;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ManageDevice extends AppCompatActivity implements DevicePrathamIdLisner, ConnectionReceiverListener {
+public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner, ConnectionReceiverListener {
     @BindView(R.id.btn_assignTablet)
     Button btn_assignTablet;
 
     @BindView(R.id.returnTablet)
     Button returnTablet;
+
+    @BindView(R.id.btn_replaceTab)
+    Button btn_replaceTab;
 
     @BindView(R.id.acionstatus)
     Button acionstatus;
@@ -75,25 +78,35 @@ public class ManageDevice extends AppCompatActivity implements DevicePrathamIdLi
                 case ROll_ID.BRG_CRL_Tutor:
                     btn_assignTablet.setVisibility(View.GONE);
                     acionstatus.setVisibility(View.GONE);
+                    /*only crl can replace tab*/
+                    btn_replaceTab.setVisibility(View.VISIBLE);
                     break;
                 case ROll_ID.Block_Head:
                     acionstatus.setVisibility(View.GONE);
+                    btn_replaceTab.setVisibility(View.GONE);
+
                     break;
                 case ROll_ID.District_Head:
                     acionstatus.setVisibility(View.GONE);
+                    btn_replaceTab.setVisibility(View.GONE);
+
                     break;
 
                 case ROll_ID.Program_Head:
                     acionstatus.setVisibility(View.GONE);
+                    btn_replaceTab.setVisibility(View.GONE);
+
                     break;
                 case ROll_ID.State_Program_Head:
                     acionstatus.setVisibility(View.GONE);
+                    btn_replaceTab.setVisibility(View.GONE);
+
                     break;
            /* case ROll_ID.National_Program_Head:
                 acionstatus.setVisibility(View.GONE);
                 break;*/
                 case ROll_ID.Vendor:
-
+                    btn_replaceTab.setVisibility(View.GONE);
                     break;
                 case ROll_ID.Admin:
                     // acionstatus.setVisibility(View.GONE);
@@ -117,6 +130,14 @@ public class ManageDevice extends AppCompatActivity implements DevicePrathamIdLi
         intent.putExtra("CRLid", LoggedcrlId);
         intent.putExtra("CRLname", LoggedcrlName);
         intent.putExtra("tabStatus", "Return");
+        startActivity(intent);
+    }
+
+    public void replaceTablet(View view) {
+        Intent intent = new Intent(this, ReplaceTablet_MD.class);
+        intent.putExtra("CRLid", LoggedcrlId);
+        intent.putExtra("CRLname", LoggedcrlName);
+        intent.putExtra("tabStatus", "Replace");
         startActivity(intent);
     }
 

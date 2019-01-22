@@ -79,6 +79,11 @@
                         android:id="@+id/rbtn_govPartnership"
                         style="@style/CustomRadioButton"
                         android:text="@string/government_Partnership" />
+
+                    <RadioButton
+                        android:id="@+id/KGBV"
+                        style="@style/CustomRadioButton"
+                        android:text="@string/KGBV" />
                 </RadioGroup>
             </HorizontalScrollView>
 

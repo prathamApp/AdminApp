@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,6 +20,7 @@ import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.DialogInterface;
 import com.pratham.admin.modalclasses.CRL;
 import com.pratham.admin.modalclasses.MetaData;
+import com.pratham.admin.util.BaseActivity;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -30,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements DialogInterface {
+public class MainActivity extends BaseActivity implements DialogInterface {
 
     @BindView(R.id.userName)
     EditText userName;
@@ -55,10 +55,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         // Start WiFi
         turnOnWifi();
-
         PackageInfo pinfo = null;
         try {
             pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -113,7 +111,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface {
         password.setText("pratham@123");
         userName.setText("narayansiraswar410");
         password.setText("pratham");
+        userName.setText("ganeshtupe54");
+        password.setText("pratham");
 */
+
 
         userName.setText("");
         password.setText("");

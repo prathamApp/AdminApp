@@ -12,10 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pratham.admin.R;
-import com.pratham.admin.activities.CustomDialogQRScan;
 import com.pratham.admin.activities.CustomDialogQRScan_MD;
 import com.pratham.admin.interfaces.QRRecyclerListener;
-import com.pratham.admin.modalclasses.TabTrack;
 import com.pratham.admin.modalclasses.TabletManageDevice;
 
 import java.util.List;
@@ -47,24 +45,25 @@ public class QRScanAdapter_MD extends RecyclerView.Adapter<QRScanAdapter_MD.View
             holder.parent_recycler_row.setBackgroundColor(Color.parseColor("#ffffff"));
         }
         holder.ad_status.setText(tabletManageDevices.get(holder.getAdapterPosition()).getStatus());
-        holder.ad_assignedTo.setText(tabletManageDevices.get(position).getAssigned_CRL_Name()+"( ID :"+tabletManageDevices.get(position).getAssigned_CRL_ID()+")");
+        holder.ad_assignedTo.setText(tabletManageDevices.get(position).getAssigned_CRL_Name() + "( ID :" + tabletManageDevices.get(position).getAssigned_CRL_ID() + ")");
         holder.ad_AssignedBy.setText(tabletManageDevices.get(position).getLogged_CRL_ID());
         holder.qrID.setText(tabletManageDevices.get(position).getQR_ID());
         holder.pratham_id.setText(tabletManageDevices.get(position).getPratham_ID());
-        holder.txt_date.setText(tabletManageDevices.get(position).getDate());
+        holder.serialId.setText(tabletManageDevices.get(position).getTabSerial_ID());
+        holder.newPrathamID.setText(tabletManageDevices.get(position).getNewPrathamID());
+        holder.newQrID.setText(tabletManageDevices.get(position).getNewQrID());
+       /* String replaceStaatus = "";
+        if (tabletManageDevices.get(position).getIs_Damaged() != null) {
+            replaceStaatus = tabletManageDevices.get(position).getIs_Damaged() + " ";
+        }
+        if (tabletManageDevices.get(position).getDamageType() != null) {
+            replaceStaatus += tabletManageDevices.get(position).getDamageType() + "  ";
+        }
+        if (tabletManageDevices.get(position).getComment() != null) {
+            replaceStaatus += tabletManageDevices.get(position).getComment();
+        }*/
 
-        String replaceStaatus="";
-        if(tabletManageDevices.get(position).getIs_Damaged()!=null){
-            replaceStaatus=tabletManageDevices.get(position).getIs_Damaged()+" ";
-        }
-        if(tabletManageDevices.get(position).getDamageType()!=null){
-            replaceStaatus+=tabletManageDevices.get(position).getDamageType()+"  ";
-        }
-        if(tabletManageDevices.get(position).getComment()!=null){
-            replaceStaatus+=tabletManageDevices.get(position).getComment();
-        }
-
-        holder.replaceStatus.setText(replaceStaatus);
+        holder.newSerialID.setText(tabletManageDevices.get(position).getNew_Tab_serial_ID());
 
       /*  holder.checkBox_student.setText(fname);
         holder.txt_crl_id.setText(tabletManageDevices.get(holder.getAdapterPosition()).getAssigned_CRL_ID());
@@ -89,7 +88,7 @@ public class QRScanAdapter_MD extends RecyclerView.Adapter<QRScanAdapter_MD.View
 
     class ViewHolder extends RecyclerView.ViewHolder {
         // @BindView(R.id.checkBox_student)
-        TextView ad_status, ad_assignedTo, ad_AssignedBy, qrID, pratham_id, txt_date, replaceStatus;
+        TextView ad_status, ad_assignedTo, ad_AssignedBy, qrID, pratham_id, serialId, newSerialID, newPrathamID, newQrID;
         ImageView ad_iv_delete;
         ConstraintLayout parent_recycler_row;
 
@@ -101,9 +100,11 @@ public class QRScanAdapter_MD extends RecyclerView.Adapter<QRScanAdapter_MD.View
             ad_AssignedBy = itemView.findViewById(R.id.ad_AssignedBy);
             qrID = itemView.findViewById(R.id.qrID);
             pratham_id = itemView.findViewById(R.id.pratham_id);
-            txt_date = itemView.findViewById(R.id.txt_date);
+            serialId = itemView.findViewById(R.id.serialId);
             /* txt_loggedIn_crl = itemView.findViewById(R.id.txt_loggedIn_crl);*/
-            replaceStatus = itemView.findViewById(R.id.replaceStatus);
+            newSerialID = itemView.findViewById(R.id.newSerialID);
+            newPrathamID = itemView.findViewById(R.id.newPrathamID);
+            newQrID = itemView.findViewById(R.id.newqr_id);
             ad_iv_delete = itemView.findViewById(R.id.ad_iv_delete);
             parent_recycler_row = itemView.findViewById(R.id.parent_recycler_row);
         }

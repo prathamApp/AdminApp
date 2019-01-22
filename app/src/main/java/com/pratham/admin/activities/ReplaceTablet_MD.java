@@ -14,10 +14,15 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -36,115 +41,140 @@ import com.google.zxing.Result;
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
-import com.pratham.admin.interfaces.DevicePrathamIdLisner;
 import com.pratham.admin.interfaces.QRScanListener;
 import com.pratham.admin.modalclasses.CRL;
-import com.pratham.admin.modalclasses.CrlInfoRecycler;
 import com.pratham.admin.modalclasses.TabletManageDevice;
 import com.pratham.admin.util.APIs;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
-import com.pratham.admin.util.ROll_ID;
 
 import org.json.JSONArray;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class AssignTabletMD extends BaseActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener, DevicePrathamIdLisner {
-    final String ASSIGN = "Assign";
-    final String RETURN = "Return";
-    public ZXingScannerView mScannerView;
-    @BindView(R.id.program)
+public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener {
+   /* @BindView(R.id.program)
     Spinner programSpinner;
+
     @BindView(R.id.roleCrl)
-    Spinner roleCrlSpinner;
+    Spinner roleCrlSpinner;*/
+
     /*@BindView(R.id.block)
     Spinner blockSpinner;*/
-    @BindView(R.id.assignedCrlName)
-    TextView assignedCrlName;
-    @BindView(R.id.assignedCrlId)
-    TextView assignedCrlId;
-    @BindView(R.id.crlName)
-    Spinner crlNameSpinner;
+   /* @BindView(R.id.assignedCrlName)
+    TextView assignedCrlName;*/
+
+    /* @BindView(R.id.qr_pratham_id)
+     EditText qr_pratham_id;*/
+      /*
+        @BindView(R.id.returnTablet)
+        TextView returnTablet;*/
+
+
+    /*@BindView(R.id.assignedCrlId)
+    TextView assignedCrlId;*/
+    /* @BindView(R.id.crlName)
+     Spinner crlNameSpinner;
+ */
+
+    final String ASSIGN = "Assign";
+    final String RETURN = "Return";
+    final String REPLACE = "Replace";
+    public ZXingScannerView mScannerView;
+    @BindView(R.id.qr_btn_save)
+    Button qr_btn_save;
+    @BindView(R.id.msg)
+    TextView msg;
     @BindView(R.id.qr_frame)
     FrameLayout qr_frame;
-    @BindView(R.id.qr_pratham_id)
-    EditText qr_pratham_id;
     @BindView(R.id.qr_serialNo)
     EditText qr_serialNo;
     @BindView(R.id.txt_count_village)
     TextView txt_count;
-    String prathamId;
-    String QrId;
+    @BindView(R.id.btn_returnTablet)
+    Button btn_returnTablet;
+    @BindView(R.id.btn_assignTablet)
+    Button btn_assignTablet;
     @BindView(R.id.successMessage)
     LinearLayout successMessage;
     @BindView(R.id.isDamaged)
     Spinner isDamaged;
-
-   /* @BindView(R.id.assigned_crl_name)
-    TextView assigned_crl_name;
-    @BindView(R.id.assigned_crl_Id)
-    TextView assigned_crl_Id;*/
     @BindView(R.id.damageType)
     Spinner damageType;
     @BindView(R.id.comments)
     EditText comments;
+    @BindView(R.id.qrData)
+    TextView qrData;
+    @BindView(R.id.checkbox_no_qr)
+    CheckBox checkbox_no_qr;
+    String prathamId;
+    String QrId;
+
+    String newPratahmId, newQrId, newSerialId;
+    String oldPratahmId, oldQrId, oldSerialId;
     List<CRL> allCRLlist;
     boolean permission = false;
     String LoggedcrlName;
     String LoggedcrlId;
-    String assignedCRL = "";
     CustomDialogQRScan_MD customDialogQRScan_md;
     List<TabletManageDevice> tabletMD;
     boolean internetIsAvailable = false;
     String tabStatus, isDamagedText, damageTypeText;
-    List<CrlInfoRecycler> crlList_md = new ArrayList<>();
     MyDeviceList myDeviceList;
     ProgressDialog progressDialog;
-    String[] options;
+    String comment;
     private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_assign_tablet);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_replace_tablet__md);
         ButterKnife.bind(this);
-        context = AssignTabletMD.this;
+        context = ReplaceTablet_MD.this;
         allCRLlist = new ArrayList<>();
         LoggedcrlId = getIntent().getStringExtra("CRLid");
         LoggedcrlName = getIntent().getStringExtra("CRLname");
-        tabStatus = getIntent().getStringExtra("tabStatus");
-        android.support.v7.app.ActionBar ab = getSupportActionBar();
+        tabStatus = RETURN;
+        /*android.support.v7.app.ActionBar ab = getSupportActionBar();*/
 
 
-        if (tabStatus.equals(ASSIGN)) {
-            ab.setTitle("Assign Tablet");
-            isDamaged.setVisibility(View.GONE);
-            damageType.setVisibility(View.GONE);
-            comments.setVisibility(View.GONE);
-        } else if (tabStatus.equals(RETURN)) {
-            ab.setTitle("Return Tablet");
-            isDamaged.setVisibility(View.VISIBLE);
-            damageType.setVisibility(View.VISIBLE);
-            comments.setVisibility(View.VISIBLE);
-            setLisnerToRuturnTabletSpinner();
-        }
-        loadCamera();
+        checkbox_no_qr.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+              /*  if (tabStatus.equals(RETURN)) {
+                   oldPratahmId = null;
+                    oldQrId = null;
+                    setPrathamIdAndQrIF(oldPratahmId, oldQrId);
+                } else if (tabStatus.equals(ASSIGN)) {
+                   newPratahmId = null;
+                    newQrId = null;
+                    setPrathamIdAndQrIF(newPratahmId, newQrId);
+                }*/
+                if (isChecked) {
+                    qr_serialNo.setEnabled(true);
+                    qr_serialNo.setInputType(InputType.TYPE_CLASS_TEXT);
+                } else {
+                    qr_serialNo.setEnabled(false);
+                }
+            }
+        });
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        loadCamera();
+        controller();
         checkConnection();
         //  int crlCount = AppDatabase.getDatabaseInstance(context).getCRLmd_dao().getCRLs_mdCount();
         int crlCount = AppDatabase.getDatabaseInstance(context).getCRLdao().getCRLsCount();
@@ -157,13 +187,14 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
             builder.setButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    AssignTabletMD.this.finish();
+                    ReplaceTablet_MD.this.finish();
                 }
             });
             builder.show();
 
+
         } else {
-            setRules();
+           /* setRules();*/
             List<TabletManageDevice> oldList = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().getAllTabletManageDevice();
             if (!oldList.isEmpty()) {
                 for (int i = 0; i < oldList.size(); i++) {
@@ -173,73 +204,57 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                 oldList.clear();
             }
 
-            loadSpinner();
+          /*  loadSpinner();*/
             // qr_spinner_crl.setText(LoggedcrlName);
             setCount();
         }
     }
 
-    private void setRules() {
 
-        String role = AppDatabase.getDatabaseInstance(this).getCRLdao().getCRLsRoleById(LoggedcrlId);
+    private void controller() {
+        checkbox_no_qr.setChecked(false);
         if (tabStatus.equals(ASSIGN)) {
-            switch (role) {
-                case ROll_ID.BRG_CRL_Tutor:
-                    options = new String[]{};
-                    break;
-                case ROll_ID.Block_Head:
-                    options = new String[]{ROll_ID.BRG_CRL_Tutor};
-                    break;
-                case ROll_ID.District_Head:
-                    options = new String[]{ROll_ID.Block_Head, ROll_ID.BRG_CRL_Tutor};
-                    break;
-                case ROll_ID.State_Program_Head:
-                    options = new String[]{ROll_ID.District_Head, ROll_ID.Block_Head, ROll_ID.BRG_CRL_Tutor};
-                    break;
-                case ROll_ID.Program_Head:
-                    options = new String[]{ROll_ID.State_Program_Head};
-                    break;
-                case ROll_ID.Vendor:
-                    options = new String[]{ROll_ID.Block_Head, ROll_ID.District_Head, ROll_ID.State_Program_Head, ROll_ID.BRG_CRL_Tutor};
-                    break;
-
-                case ROll_ID.Admin:
-                    options = new String[]{ROll_ID.BRG_CRL_Tutor, ROll_ID.Block_Head, ROll_ID.District_Head, ROll_ID.State_Program_Head, ROll_ID.Vendor};
-                    break;
-               /* case ROll_ID.National_Program_Head:
-                    options = new String[]{ROll_ID.State_Program_Head};
-                    break;*/
-
-
+            btn_returnTablet.setBackground(getResources().getDrawable(R.drawable.btn_style_upper_rounded));
+            btn_assignTablet.setBackground(getResources().getDrawable(R.drawable.btn_style_upper_rounded_white));
+            setPrathamIdAndQrIF(newPratahmId, newQrId);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                btn_assignTablet.setElevation(30);
+                btn_returnTablet.setElevation(0);
+            }
+            msg.setText("scan the tablet which want to Assign after that press save");
+            isDamaged.setVisibility(View.GONE);
+            damageType.setVisibility(View.GONE);
+            comments.setVisibility(View.GONE);
+            qr_btn_save.setVisibility(View.VISIBLE);
+            oldSerialId = qr_serialNo.getText().toString();
+            if (newSerialId != null && !newSerialId.equals("")) {
+                qr_serialNo.setText(newSerialId);
+            } else {
+                qr_serialNo.setText("");
             }
         } else if (tabStatus.equals(RETURN)) {
-            switch (role) {
-                case ROll_ID.BRG_CRL_Tutor:
-                    options = new String[]{ROll_ID.Block_Head, ROll_ID.District_Head};
-                    break;
-                case ROll_ID.Block_Head:
-                    options = new String[]{ROll_ID.State_Program_Head, ROll_ID.Vendor};
-                    break;
-                case ROll_ID.District_Head:
-                    options = new String[]{ROll_ID.State_Program_Head, ROll_ID.Vendor};
-                    break;
-                case ROll_ID.State_Program_Head:
-                    options = new String[]{ROll_ID.Program_Head, ROll_ID.Vendor};
-                    break;
-                case ROll_ID.Program_Head:
-                    options = new String[]{ROll_ID.Vendor};
-                    break;
-
-                /*case ROll_ID.National_Program_Head:
-                    options = new String[]{ROll_ID.Store};
-                    break;*/
-                case ROll_ID.Vendor:
-                    options = new String[]{ROll_ID.Admin};
-                    break;
-                case ROll_ID.Admin:
-                    options = new String[]{ROll_ID.Admin};
-                    break;
+            resetCamera();
+            newSerialId = qr_serialNo.getText().toString();
+            if (oldSerialId != null && !oldSerialId.equals("")) {
+                qr_serialNo.setText(oldSerialId);
+            } else {
+                qr_serialNo.setText("");
             }
+            btn_returnTablet.setBackground(getResources().getDrawable(R.drawable.btn_style_upper_rounded_white));
+            btn_assignTablet.setBackground(getResources().getDrawable(R.drawable.btn_style_upper_rounded));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                btn_returnTablet.setElevation(30);
+                btn_returnTablet.setElevation(0);
+            }
+            setPrathamIdAndQrIF(oldPratahmId, oldQrId);
+            msg.setText("first fill details then scan the tablet which want to Return");
+            isDamaged.setVisibility(View.VISIBLE);
+            damageType.setVisibility(View.VISIBLE);
+            comments.setVisibility(View.VISIBLE);
+            qr_btn_save.setVisibility(View.INVISIBLE);
+            setLisnerToRuturnTabletSpinner();
+        } else if (tabStatus.equals(REPLACE)) {
+            msg.setText("If all is good then save");
         }
     }
 
@@ -290,109 +305,10 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
         });
     }
 
-    private void loadSpinner() {
-        //load spinner program From DB
-        List<String> programList = new ArrayList<>();
-        //List<String> stateList = new ArrayList<>();
-
-        //List<String> crlList_md = new ArrayList<>();
-
-        programList.add("Select Program");
-        // programList.addAll(AppDatabase.getDatabaseInstance(context).getCRLmd_dao().getDistinctCRLs_mdProgram());
-        for (String rollId : options) {
-            programList.addAll(AppDatabase.getDatabaseInstance(context).getCRLdao().getDistinctCRLsdProgram(rollId));
-        }
-        Set<String> hs = new LinkedHashSet<>();
-        hs.addAll(programList);
-        programList.clear();
-        programList.addAll(hs);
-        ArrayAdapter programAdapter = new ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, programList);
-        programSpinner.setAdapter(programAdapter);
-
-        programSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                List<String> roleList = new ArrayList<>();
-                roleList.add("Select Role");
-                if (pos > 0) {
-                    // roleList.addAll(AppDatabase.getDatabaseInstance(context).getCRLmd_dao().getDistinctCRLs_mdRoleId());
-                    String programName = adapterView.getSelectedItem().toString();
-                    for (String rollId : options) {
-                        roleList.addAll(AppDatabase.getDatabaseInstance(context).getCRLdao().getDistinctCRLsRoleId(rollId, programName));
-                    }
-                }
-                Set<String> hs = new LinkedHashSet<>();
-                hs.addAll(roleList);
-                roleList.clear();
-                roleList.addAll(hs);
-                ArrayAdapter stateAdapter = new ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, roleList);
-                roleCrlSpinner.setAdapter(stateAdapter);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-
-        //load spinner state from DB
-      /*  stateList = AppDatabase.getDatabaseInstance(context).getCRLmd_dao().getDistinctCRLs_mdRoleId();
-        ArrayAdapter stateAdapter=new ArrayAdapter(context,android.R.layout.simple_spinner_dropdown_item,stateList);
-        roleCrlSpinner.setPrompt("select state");
-        roleCrlSpinner.setAdapter(stateAdapter);*/
-        roleCrlSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                crlList_md.clear();
-                crlList_md.add(new CrlInfoRecycler("Select Name "));
-                if (pos > 0) {
-                    //load spinner crl from db
-                    String selectedRole = roleCrlSpinner.getSelectedItem().toString();
-                    // List<CRLmd> tempList = AppDatabase.getDatabaseInstance(context).getCRLmd_dao().getDistinctCRLs_mdUserName(selectedRole, programSpinner.getSelectedItem().toString());
-                    List<CRL> tempList = AppDatabase.getDatabaseInstance(context).getCRLdao().getDistinctCRLsUserName(selectedRole, programSpinner.getSelectedItem().toString());
-                    for (CRL crL : tempList) {
-                        crlList_md.add(new CrlInfoRecycler(crL.getCRLId(), crL.getFirstName(), crL.getUserName()));
-                    }
-                }
-                ArrayAdapter crlAdapter = new ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, crlList_md);
-                crlNameSpinner.setAdapter(crlAdapter);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-
-        crlNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-
-                if (pos > 0) {
-                    CrlInfoRecycler crlInfoRecycler = (CrlInfoRecycler) adapterView.getSelectedItem();
-                    assignedCRL = crlInfoRecycler.getCrlId();
-                    assignedCrlName.setText(crlInfoRecycler.getCrlName());
-                    assignedCrlId.setText("( ID: " + crlInfoRecycler.getCrlId() + ")");
-
-                } else {
-                    assignedCRL = "";
-                    assignedCrlName.setText("");
-                    assignedCrlId.setText("");
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-    }
 
     private void loadCamera() {
 
-        if (ContextCompat.checkSelfPermission(AssignTabletMD.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(ReplaceTablet_MD.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -401,13 +317,13 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                 builder.setPositiveButton("Enable", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        ActivityCompat.requestPermissions(AssignTabletMD.this, new String[]{Manifest.permission.CAMERA}, 1);
+                        ActivityCompat.requestPermissions(ReplaceTablet_MD.this, new String[]{Manifest.permission.CAMERA}, 1);
                     }
                 });
                 Dialog dialog = builder.create();
                 dialog.show();
             } else {
-                ActivityCompat.requestPermissions(AssignTabletMD.this, new String[]{Manifest.permission.CAMERA}, 1);
+                ActivityCompat.requestPermissions(ReplaceTablet_MD.this, new String[]{Manifest.permission.CAMERA}, 1);
             }
         } else {
             initCamera();
@@ -433,7 +349,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
 
     public void initCamera() {
         mScannerView = new ZXingScannerView(getApplicationContext());
-        mScannerView.setResultHandler(AssignTabletMD.this);
+        mScannerView.setResultHandler(ReplaceTablet_MD.this);
         qr_frame.addView((mScannerView));
         mScannerView.startCamera();
         //    mScannerView.resumeCameraPreview(Activity_QRScan.this);
@@ -450,9 +366,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
 
 
         try {
-         /*   JSONObject jsonObject = new JSONObject(result);
-            QrId = jsonObject.getString("QRCodeID");
-            prathamId = jsonObject.getString("PrathamCode");*/
+
             QrId = splitted[0];
             prathamId = splitted[1];
             if (QrId != null && prathamId != null && splitted.length == 2) {
@@ -460,11 +374,76 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                 if ((!prathamId.equalsIgnoreCase("None"))) {
                    /* List l = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().checkExistanceTabletManageDevice(QrId);
                     if (l.isEmpty()) {*/
-                    qr_pratham_id.setText(prathamId);
                     successMessage.setVisibility(View.VISIBLE);
-                    qr_serialNo.setText("");
-                    qr_serialNo.setEnabled(false);
-                     /*}else {
+                    if (tabStatus.equals(RETURN)) {
+                        if (newPratahmId == null || (!newPratahmId.equals(prathamId))) {
+                            oldPratahmId = prathamId;
+                            oldQrId = QrId;
+                            //      qr_pratham_id.setText(oldPratahmId);
+                        /*    qr_serialNo.setText("");
+                            qr_serialNo.setEnabled(false);*/
+                            new AlertDialog.Builder(this)
+                                    .setMessage("Step 1 successfully done Continue with step 2")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                            tabStatus = ASSIGN;
+                                            setPrathamIdAndQrIF(oldPratahmId, oldQrId);
+                                               /* returnTablet.setText(Html.fromHtml("<b><i>1.RETURN<i> <u>Pratham_id</u></b> : " + oldPratahmId + "<b><u> QrId</u></b>: " + oldQrId));
+                                                returnTablet.setTextColor(Color.parseColor("#FFFFFF"));
+                                                returnTablet.setBackgroundColor(Color.parseColor("#6AC259"));*/
+                                            comment = comments.getText().toString();
+                                            resetCamera();
+                                            controller();
+                                        }
+                                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    resetCamera();
+                                }
+                            }).show();
+                        } else {
+                            new AlertDialog.Builder(this)
+                                    .setMessage("You can not repalce  device with same device")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                            resetCamera();
+                                        }
+                                    }).show();
+                        }
+                    } else if (tabStatus.equals(ASSIGN)) {
+                        if (oldPratahmId == null || !oldPratahmId.equals(prathamId)) {
+                            newPratahmId = prathamId;
+                            newQrId = QrId;
+                            //    qr_pratham_id.setText(prathamId);
+                       /*     qr_serialNo.setText("");
+                            qr_serialNo.setEnabled(false);*/
+                            setPrathamIdAndQrIF(newPratahmId, newQrId);
+                            // qrData.setText(Html.fromHtml("<b><i>2.ASSIGN<i> <u>Pratham_id</u></b> : " + newPratahmId + "<b><u> QrId</u></b>: " + newQrId));
+                               /* assignTablet.setTextColor(Color.parseColor("#FFFFFF"));
+                                assignTablet.setBackgroundColor(Color.parseColor("#6AC259"));*/
+                            controller();
+                        } else {
+                            new AlertDialog.Builder(this)
+                                    .setMessage("You can not repalce  device with same device")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                            resetCamera();
+                                        }
+                                    }).show();
+                        }
+                    }
+
+             /*       } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setCancelable(false);
                         builder.setMessage("This QR Is Already Scanned. Do You Want To Replace Data?");
@@ -492,8 +471,8 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
 
                     }*/
                 } else {
-                    //todo show dialog
-                    if (internetIsAvailable) {
+                    // todo blank QR code
+                   /* if (internetIsAvailable) {
                         String url = APIs.DeviceList + LoggedcrlId;
                         loadDevises(url);
                     } else {
@@ -506,7 +485,8 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                                 dialog.dismiss();
                             }
                         }).create().show();
-                    }
+                    }*/
+                    Toast.makeText(context, "Blank Qr Not Supported", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 Toast.makeText(this, "Invalid QR ", Toast.LENGTH_LONG).show();
@@ -564,74 +544,56 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
     public void resetCamera() {
         mScannerView.stopCamera();
         mScannerView.startCamera();
-        mScannerView.resumeCameraPreview(AssignTabletMD.this);
+        mScannerView.resumeCameraPreview(ReplaceTablet_MD.this);
         prathamId = "";
         QrId = "";
-        qr_pratham_id.setText(prathamId);
+        //  qr_pratham_id.setText(prathamId);
         successMessage.setVisibility(View.GONE);
-        qr_serialNo.setText("");
-        qr_serialNo.setEnabled(true);
+      /*  qr_serialNo.setText("");
+        qr_serialNo.setEnabled(true);*/
     }
 
     @OnClick(R.id.qr_btn_save)
     public void saveTabTrack() {
-        String serialNO = qr_serialNo.getText().toString();
-        prathamId = qr_pratham_id.getText().toString();
-        if (!assignedCRL.equals("")) {
-            if ((!serialNO.equals("")) || !prathamId.equals("")) {
-                if (tabStatus.equals(RETURN)) {
-                    if ((isDamagedText.equals("Yes") && !damageTypeText.equals("")) || isDamagedText.equals("No")) {
-                        TabletManageDevice tabletManageDevice = new TabletManageDevice();
-                        tabletManageDevice.setQR_ID(QrId);
-                        tabletManageDevice.setStatus(tabStatus);
-                        tabletManageDevice.setLogged_CRL_ID(LoggedcrlId);
-                        tabletManageDevice.setAssigned_CRL_Name(LoggedcrlName);
-                        tabletManageDevice.setAssigned_CRL_ID(assignedCRL);
-                        tabletManageDevice.setAssigned_CRL_Name(assignedCrlName.getText().toString());
-                        tabletManageDevice.setPratham_ID(prathamId);
-                        tabletManageDevice.setTabSerial_ID(serialNO);
-                        tabletManageDevice.setIs_Damaged(isDamagedText);
-                        tabletManageDevice.setDamageType(damageTypeText);
-                        tabletManageDevice.setComment(comments.getText().toString());
-                        tabletManageDevice.setOldFlag(false);
-                        /*tabletStatus.setLoggedIn_CRL(LoggedcrlId);*/
-                        tabletManageDevice.setDate(DateFormat.getDateTimeInstance().format(new Date()));
-
-                        AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().insertTabletManageDevice(tabletManageDevice);
-                        Toast.makeText(AssignTabletMD.this, "Inserted Successfully ", Toast.LENGTH_LONG).show();
-                        setCount();
-                        cleaFields();
-                        resetCamera();
-                    } else {
-                        Toast.makeText(context, "select damage type", Toast.LENGTH_SHORT).show();
-                    }
-
-                } else {
-                    //Assigned Tab
+        newSerialId = qr_serialNo.getText().toString();
+        //   prathamId = qr_pratham_id.getText().toString();
+        // if ((!serialNO.equals("")) || !prathamId.equals("")) {
+       /*     if (tabStatus.equals(RETURN)) {*/
+        if ((oldPratahmId != null && oldQrId != null && !oldPratahmId.equals("") && !oldQrId.equals("")) || (oldSerialId != null && !oldSerialId.equals(""))) {
+            if ((newPratahmId != null && newQrId != null && !newPratahmId.equals("") && !newQrId.equals("")) || (newSerialId != null && !newSerialId.equals(""))) {
+                if ((isDamagedText.equals("Yes") && !damageTypeText.equals("")) || isDamagedText.equals("No")) {
                     TabletManageDevice tabletManageDevice = new TabletManageDevice();
-                    tabletManageDevice.setQR_ID(QrId);
-                    tabletManageDevice.setPratham_ID(prathamId);
-                    tabletManageDevice.setTabSerial_ID(serialNO);
-                    tabletManageDevice.setStatus(tabStatus);
+                    tabletManageDevice.setQR_ID(oldQrId);
+                    tabletManageDevice.setStatus(REPLACE);
                     tabletManageDevice.setLogged_CRL_ID(LoggedcrlId);
-                    tabletManageDevice.setLogged_CRL_NAME(LoggedcrlName);
-                    tabletManageDevice.setAssigned_CRL_ID(assignedCRL);
-                    tabletManageDevice.setAssigned_CRL_Name(assignedCrlName.getText().toString());
+                    tabletManageDevice.setAssigned_CRL_Name(LoggedcrlName);
+                    tabletManageDevice.setAssigned_CRL_ID(LoggedcrlId);
+                    tabletManageDevice.setAssigned_CRL_Name(LoggedcrlName);
+                    tabletManageDevice.setPratham_ID(oldPratahmId);
+                    tabletManageDevice.setTabSerial_ID(oldSerialId);
+                    tabletManageDevice.setIs_Damaged(isDamagedText);
+                    tabletManageDevice.setDamageType(damageTypeText);
+                    tabletManageDevice.setComment(comment);
                     tabletManageDevice.setOldFlag(false);
+                    tabletManageDevice.setNewPrathamID(newPratahmId);
+                    tabletManageDevice.setNewQrID(newQrId);
+                    tabletManageDevice.setNew_Tab_serial_ID(newSerialId);
                     tabletManageDevice.setDate(DateFormat.getDateTimeInstance().format(new Date()));
-
                     AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().insertTabletManageDevice(tabletManageDevice);
-                    Toast.makeText(AssignTabletMD.this, "Inserted Successfully ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ReplaceTablet_MD.this, "Inserted Successfully ", Toast.LENGTH_LONG).show();
                     setCount();
                     cleaFields();
                     resetCamera();
+                } else {
+                    Toast.makeText(context, "select damage type in return process", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(context, "Scan QR Or Enter Serial Id", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Scan qr for Assign ", Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(this, "Fill In All The Details", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Scan qr for Return", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     public void setCount() {
@@ -646,19 +608,26 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
         //   qr_spinner_crl.setEnabled(false);
         // qr_serialNo.setText("");
         // damageType.setVisibility(View.VISIBLE);
-        crlNameSpinner.setSelection(0);
+    /*    crlNameSpinner.setSelection(0);*/
         isDamaged.setSelection(0);
         comments.setText("");
-        qr_pratham_id.setText("");
+        oldPratahmId = null;
+        oldQrId = null;
+        newQrId = null;
+        newPratahmId = null;
+        oldSerialId = "";
+        newSerialId = "";
+        qr_serialNo.setText("");
+        setPrathamIdAndQrIF(newPratahmId, newQrId);
+        // qr_pratham_id.setText("");
     }
-
 
     @Override
     public void onBackPressed() {
         //todo
         tabletMD = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().getAllTabletManageDevice();
         if (!tabletMD.isEmpty()) {
-            customDialogQRScan_md = new CustomDialogQRScan_MD(this, tabletMD);
+            customDialogQRScan_md = new CustomDialogQRScan_MD(this, tabletMD, 1);
             customDialogQRScan_md.show();
             txt_count.setText("Count " + 0);
         } else {
@@ -680,13 +649,13 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                 dialog.dismiss();
                 customDialogQRScan_md.dismiss();
                 //todo user Based delete
-                AppDatabase.getDatabaseInstance(AssignTabletMD.this).getTabletManageDeviceDoa().deleteAllTabletManageDevice();
+                AppDatabase.getDatabaseInstance(ReplaceTablet_MD.this).getTabletManageDeviceDoa().deleteAllTabletManageDevice();
                 finish();
             }
 
             @Override
             public void onError(ANError anError) {
-                Toast.makeText(AssignTabletMD.this, "NO Internet Connection", Toast.LENGTH_LONG).show();
+                Toast.makeText(ReplaceTablet_MD.this, "NO Internet Connection", Toast.LENGTH_LONG).show();
                 //Log.d("anError", "" + anError);
                 dialog.dismiss();
             }
@@ -726,25 +695,25 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
     @Override
     public void clearChanges() {
         //todo
-        AppDatabase.getDatabaseInstance(AssignTabletMD.this).getTabletManageDeviceDoa().deleteAllTabletManageDevice();
+        AppDatabase.getDatabaseInstance(ReplaceTablet_MD.this).getTabletManageDeviceDoa().deleteAllTabletManageDevice();
         customDialogQRScan_md.dismiss();
     }
 
-    @Override
+   /* @Override
     public void getPrathamId(final String prathamIdNew, final String QrIdNEW) {
         if (QrIdNEW != null && prathamIdNew != null) {
             myDeviceList.dismiss();
-            /* check prathamID is not none ie for Not blank QR code*/
+            *//* check prathamID is not none ie for Not blank QR code*//*
             if ((!prathamIdNew.equalsIgnoreCase("None"))) {
-              /*  List l = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().checkExistanceTabletManageDevice(QrId);
-                if (l.isEmpty()) {*/
-                // QrId = QrIdNEW;
-                prathamId = prathamIdNew;
-                qr_pratham_id.setText(prathamId);
-                successMessage.setVisibility(View.VISIBLE);
-                qr_serialNo.setText("");
-                qr_serialNo.setEnabled(false);
-                 /*}else {
+                List l = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().checkExistanceTabletManageDevice(QrId);
+                if (l.isEmpty()) {
+                    // QrId = QrIdNEW;
+                    prathamId = prathamIdNew;
+                   // qr_pratham_id.setText(prathamId);
+                    successMessage.setVisibility(View.VISIBLE);
+                    qr_serialNo.setText("");
+                    qr_serialNo.setEnabled(false);
+                } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setCancelable(false);
                     builder.setMessage("This QR Is Already Scanned. Do You Want To Replace Data?");
@@ -753,7 +722,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //  QrId = QrIdNEW;
                             prathamId = prathamIdNew;
-                            qr_pratham_id.setText(prathamId);
+                          //  qr_pratham_id.setText(prathamId);
                             successMessage.setVisibility(View.VISIBLE);
                             qr_serialNo.setText("");
                             qr_serialNo.setEnabled(false);
@@ -772,12 +741,53 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                     Dialog dialog = builder.create();
                     dialog.show();
 
-                }*/
+                }
             } else {
 
             }
         } else {
             Toast.makeText(this, "Invalid QR ", Toast.LENGTH_LONG).show();
         }
+    }*/
+
+    @OnClick(R.id.refresh)
+    public void refresh() {
+        new AlertDialog.Builder(this)
+                .setMessage("Do you want to Restart again")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        startActivity(getIntent());
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
     }
+
+    @OnClick(R.id.btn_returnTablet)
+    public void returnTablet() {
+        tabStatus = RETURN;
+        controller();
+    }
+
+    @OnClick(R.id.btn_assignTablet)
+    public void assignTablet() {
+        tabStatus = ASSIGN;
+        controller();
+    }
+
+    public void setPrathamIdAndQrIF(String prathamId, String qr_id) {
+        if (prathamId != null && qr_id != null) {
+            qrData.setText(Html.fromHtml("<b> <u>Pratham_id</u></b> : " + prathamId + "<b><u> QrId</u></b>: " + qr_id));
+        } else {
+            qrData.setText(Html.fromHtml(""));
+        }
+    }
+
 }

@@ -17,7 +17,7 @@
         <HorizontalScrollView
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="1">
+            android:layout_weight=".5">
 
             <TextView
                 android:id="@+id/ad_status"
@@ -35,7 +35,7 @@
         <HorizontalScrollView
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="2">
+            android:layout_weight="1.7">
 
             <TextView
                 android:id="@+id/ad_assignedTo"
@@ -53,7 +53,7 @@
         <HorizontalScrollView
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="1">
+            android:layout_weight="0.5">
 
             <TextView
                 android:id="@+id/ad_AssignedBy"
@@ -76,7 +76,6 @@
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:paddingTop="16dp"
-            android:text="QR ID"
             android:textColor="#000000" />
 
         <HorizontalScrollView
@@ -92,24 +91,22 @@
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
                 android:paddingTop="16dp"
-                android:text="pratham id"
                 android:textColor="#000000" />
         </HorizontalScrollView>
 
         <HorizontalScrollView
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="1.5">
+            android:layout_weight="1">
 
             <TextView
-                android:id="@+id/txt_date"
+                android:id="@+id/serialId"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:paddingBottom="16dp"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
                 android:paddingTop="16dp"
-                android:text="date"
                 android:textColor="#000000" />
         </HorizontalScrollView>
         <!--
@@ -131,28 +128,64 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/replaceStatus"
+                android:id="@+id/newSerialID"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:paddingBottom="16dp"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
                 android:paddingTop="16dp"
-                android:text="replace status"
-                android:textColor="#000000" />
+                android:textColor="#000000"
+                android:textStyle="bold"/>
         </HorizontalScrollView>
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/newPrathamID"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="16dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="16dp"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+        </ScrollView>
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/newqr_id"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="16dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="16dp"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+        </ScrollView>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:padding="4dp"
-            android:layout_weight="1">
+            android:layout_weight=".5"
+            android:padding="4dp">
+
             <ImageView
                 android:id="@+id/ad_iv_delete"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:gravity="left"
                 android:layout_gravity="left"
-                android:src="@drawable/delete" />
+                android:gravity="left"
+                app:srcCompat="@drawable/delete" />
         </LinearLayout>
 
     </LinearLayout>

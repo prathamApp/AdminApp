@@ -12,6 +12,7 @@ import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Completion;
 import com.pratham.admin.modalclasses.Course;
+import com.pratham.admin.util.BackupDatabase;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class SaveDataTask extends AsyncTask<Void, Integer, Void> {
     private List CompletionList;
     private List coachList;
     private List villageList;
-    private List aserList;
+    private List<Aser> aserList;
     private Context context;
     private ProgressDialog dialog;
     private OnSavedData onSavedData;
@@ -67,6 +68,7 @@ public class SaveDataTask extends AsyncTask<Void, Integer, Void> {
         AppDatabase.getDatabaseInstance(context).getVillageDao().insertAllVillages(villageList);
         AppDatabase.getDatabaseInstance(context).getAserDao().insertAllAserList(aserList);
         AppDatabase.destroyInstance();
+        BackupDatabase.backup(context);
         return null;
     }
 

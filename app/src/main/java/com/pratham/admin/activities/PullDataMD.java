@@ -25,6 +25,7 @@ import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.modalclasses.CRLmd;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.APIs;
+import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 
 import org.json.JSONArray;
@@ -41,7 +42,7 @@ import static com.pratham.admin.util.APIs.PI;
 import static com.pratham.admin.util.APIs.RI;
 import static com.pratham.admin.util.APIs.SC;
 
-public class PullDataMD extends AppCompatActivity implements ConnectionReceiverListener {
+public class PullDataMD extends BaseActivity implements ConnectionReceiverListener {
     @BindView(R.id.rg_programs)
     RadioGroup radioGroupPrograms;
 
@@ -138,6 +139,9 @@ public class PullDataMD extends AppCompatActivity implements ConnectionReceiverL
                                     pullCRL(APIs.HLpullCrlsURL + selectedState);
                                 case APIs.UP:
                                     pullCRL(APIs.UPpullCrlsURL + selectedState);
+                                    break;
+                                case APIs.KGBV:
+                                    pullCRL(APIs.KGBVpullCrlsURL + selectedState);
                                     break;
                                 case APIs.ECE:
                                     pullCRL(APIs.ECEpullCrlsURL + selectedState);

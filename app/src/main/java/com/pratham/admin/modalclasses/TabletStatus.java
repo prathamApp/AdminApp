@@ -16,17 +16,29 @@ public class TabletStatus {
     @NonNull
     @PrimaryKey
     @Expose
+    @SerializedName("QR_ID")
     String qrID;
+
     @Expose
+    @SerializedName("CRL_ID_LoggedIN")
     String loggedCRL_Id;
+
     @Expose
+    @SerializedName("CRL_NAME_LoggedIN")
     String loggedCRL_Name;
+
     @Expose
+    @SerializedName("Pratham_ID")
     String prathamId;
+
     @Expose
+    @SerializedName("Date")
     String date;
+
     @Expose
+    @SerializedName("Tab_serial_ID")
     String serialNo;
+
     @Expose
     String status;
 
