@@ -2,6 +2,7 @@ package com.pratham.admin.activities;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,7 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -24,14 +25,22 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+import com.google.gson.Gson;
+import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
+import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.modalclasses.Aser;
 import com.pratham.admin.modalclasses.Groups;
+import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
+import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.DatePickerFragment;
 import com.pratham.admin.util.Utility;
 
@@ -40,10 +49,14 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class EditStudent extends BaseActivity {
+import static com.pratham.admin.util.APIs.PushForms;
+
+public class EditStudent extends BaseActivity implements ConnectionReceiverListener {
 
     private static final int TAKE_Thumbnail = 1;
     private static final int REQUEST_WRITE_STORAGE = 112;
@@ -88,6 +101,8 @@ public class EditStudent extends BaseActivity {
     List<Groups> GroupsVillages = new ArrayList<Groups>();
     private boolean captureButtonPressed = false;
 
+    boolean internetIsAvailable = false;
+
     @Subscribe
     public void onEvent(String msg) {
         if (!msg.isEmpty()) {
@@ -102,6 +117,8 @@ public class EditStudent extends BaseActivity {
         getSupportActionBar().hide();
 
         EventBus.getDefault().register(EditStudent.this);
+
+        checkConnection();
 
         initializeVariables();
         populateStatesSpinner();
@@ -288,6 +305,10 @@ public class EditStudent extends BaseActivity {
                             if (result) {
                                 //update
                                 AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().UpdateAserData("", aserDate, langSpin, numSpin, OA, OS, OM, OD, WA, WS, createdBy, Util.GetCurrentDate(), IC, 0, StudentUniqID, testT);
+
+                                BackupDatabase.backup(EditStudent.this);
+                                PushData(StudentUniqID, testT);
+
                             } else {
                                 // new entry
                                 Aser asr = new Aser();
@@ -310,6 +331,9 @@ public class EditStudent extends BaseActivity {
                                 asr.CreatedOn = new Utility().GetCurrentDateTime(false);
                                 asr.sentFlag = 0;
                                 AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().insertAser(asr);
+
+                                BackupDatabase.backup(EditStudent.this);
+                                PushData(StudentUniqID, testT);
                             }
 
                             BackupDatabase.backup(EditStudent.this);
@@ -537,6 +561,10 @@ public class EditStudent extends BaseActivity {
                             if (result) {
                                 //update
                                 AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().UpdateAserData("", aserDate, langSpin, numSpin, OA, OS, OM, OD, WA, WS, createdBy, Util.GetCurrentDate(), IC, 0, StudentUniqID, testT);
+
+                                BackupDatabase.backup(EditStudent.this);
+                                PushData(StudentUniqID, testT);
+
                             } else {
                                 // new entry
                                 Aser asr = new Aser();
@@ -559,6 +587,9 @@ public class EditStudent extends BaseActivity {
                                 asr.CreatedOn = new Utility().GetCurrentDateTime(false);
                                 asr.sentFlag = 0;
                                 AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().insertAser(asr);
+
+                                BackupDatabase.backup(EditStudent.this);
+                                PushData(StudentUniqID, testT);
                             }
                             BackupDatabase.backup(EditStudent.this);
                             Toast.makeText(EditStudent.this, "Endline 2 Updated !", Toast.LENGTH_SHORT).show();
@@ -784,6 +815,8 @@ public class EditStudent extends BaseActivity {
                             if (result) {
                                 //update
                                 AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().UpdateAserData("", aserDate, langSpin, numSpin, OA, OS, OM, OD, WA, WS, createdBy, Util.GetCurrentDate(), IC, 0, StudentUniqID, testT);
+                                BackupDatabase.backup(EditStudent.this);
+                                PushData(StudentUniqID, testT);
                             } else {
                                 // new entry
                                 Aser asr = new Aser();
@@ -806,6 +839,8 @@ public class EditStudent extends BaseActivity {
                                 asr.CreatedOn = new Utility().GetCurrentDateTime(false);
                                 asr.sentFlag = 0;
                                 AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().insertAser(asr);
+                                BackupDatabase.backup(EditStudent.this);
+                                PushData(StudentUniqID, testT);
                             }
                             BackupDatabase.backup(EditStudent.this);
                             Toast.makeText(EditStudent.this, "Endline 3 Updated !", Toast.LENGTH_SHORT).show();
@@ -1031,6 +1066,8 @@ public class EditStudent extends BaseActivity {
                             if (result) {
                                 //update
                                 AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().UpdateAserData("", aserDate, langSpin, numSpin, OA, OS, OM, OD, WA, WS, createdBy, Util.GetCurrentDate(), IC, 0, StudentUniqID, testT);
+                                BackupDatabase.backup(EditStudent.this);
+                                PushData(StudentUniqID, testT);
                             } else {
                                 // new entry
                                 Aser asr = new Aser();
@@ -1053,6 +1090,8 @@ public class EditStudent extends BaseActivity {
                                 asr.CreatedOn = new Utility().GetCurrentDateTime(false);
                                 asr.sentFlag = 0;
                                 AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().insertAser(asr);
+                                BackupDatabase.backup(EditStudent.this);
+                                PushData(StudentUniqID, testT);
                             }
                             BackupDatabase.backup(EditStudent.this);
                             Toast.makeText(EditStudent.this, "Endline 4 Updated !", Toast.LENGTH_SHORT).show();
@@ -1127,6 +1166,8 @@ public class EditStudent extends BaseActivity {
                         if (result) {
                             //update
                             AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().UpdateAserData("", AserTestDate, langSpin, numSpin, OA, OS, OM, OD, WA, WS, createdBy, Util.GetCurrentDate(), IC, 0, StudentUniqID, testT);
+                            BackupDatabase.backup(EditStudent.this);
+                            PushData(StudentUniqID, testT);
                         } else {
                             // new entry
                             Aser asr = new Aser();
@@ -1150,6 +1191,8 @@ public class EditStudent extends BaseActivity {
                             asr.sentFlag = 0;
                             try {
                                 AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().insertAser(asr);
+                                BackupDatabase.backup(EditStudent.this);
+                                PushData(StudentUniqID, testT);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Toast.makeText(EditStudent.this, "Baseline Insertion Failed !", Toast.LENGTH_SHORT).show();
@@ -1607,6 +1650,116 @@ public class EditStudent extends BaseActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            internetIsAvailable = false;
+        } else {
+            internetIsAvailable = true;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkConnection();
+        ApplicationController.getInstance().setConnectionListener(this);
+    }
+
+    private void checkConnection() {
+        boolean isConnected = ConnectionReceiver.isConnected();
+        if (!isConnected) {
+            internetIsAvailable = false;
+        } else {
+            internetIsAvailable = true;
+        }
+    }
+
+    private String customParse(List<MetaData> metaDataList) {
+        String json = "{";
+
+        for (int i = 0; i < metaDataList.size(); i++) {
+            json = json + "\"" + metaDataList.get(i).getKeys() + "\":\"" + metaDataList.get(i).getValue() + "\"";
+            if (i < metaDataList.size() - 1) {
+                json = json + ",";
+            }
+        }
+        json = json + "}";
+
+        return json;
+    }
+
+
+    // Push To Server
+    public void PushData(final String stdUUID, final int TestType) {
+        try {
+            if (internetIsAvailable) {
+                String StudentJSON = "", AserJSON = "", json = "";
+
+                Gson gson = new Gson();
+                if (TestType == 0) {
+                    List<Student> stdObj = AppDatabase.getDatabaseInstance(EditStudent.this).getStudentDao().getStudentByID(stdUUID);
+                    StudentJSON = gson.toJson(stdObj);
+                } else {
+                    List<Aser> aserObj = AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().GetAllByStudentID(stdUUID, TestType);
+                    AserJSON = gson.toJson(aserObj);
+                }
+
+                MetaData metaData = new MetaData();
+                metaData.setKeys("pushDataTime");
+                metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+                List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(EditStudent.this).getMetaDataDao().getAllMetaData();
+                String metaDataJSON = customParse(metaDataList);
+                AppDatabase.getDatabaseInstance(EditStudent.this).getMetaDataDao().insertMetadata(metaData);
+
+                if (TestType == 0) {
+                    json = "{ \"StudentJSON\":" + StudentJSON + ",\"metadata\":" + metaDataJSON + "}";
+                } else {
+                    json = "{ \"AserJSON\":" + AserJSON + ",\"metadata\":" + metaDataJSON + "}";
+                }
+
+
+                final ProgressDialog dialog = new ProgressDialog(EditStudent.this);
+                dialog.setTitle("UPLOADING ... ");
+                dialog.setCancelable(false);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+
+                AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("responce", response);
+                        if (TestType == 0)
+                            AppDatabase.getDatabaseInstance(EditStudent.this).getStudentDao().updateSentFlag(1, stdUUID);
+                        else
+                            AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().updateSentFlag(1, stdUUID, TestType);
+
+                        Toast.makeText(EditStudent.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Toast.makeText(EditStudent.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+
+                        if (TestType == 0)
+                            AppDatabase.getDatabaseInstance(EditStudent.this).getStudentDao().updateSentFlag(0, stdUUID);
+                        else
+                            AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().updateSentFlag(0, stdUUID, TestType);
+
+                        dialog.dismiss();
+                    }
+                });
+
+            } else {
+                Toast.makeText(EditStudent.this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
 

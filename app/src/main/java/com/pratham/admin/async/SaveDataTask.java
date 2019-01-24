@@ -12,6 +12,7 @@ import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Completion;
 import com.pratham.admin.modalclasses.Course;
+import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.util.BackupDatabase;
 
 import java.util.List;
@@ -69,6 +70,23 @@ public class SaveDataTask extends AsyncTask<Void, Integer, Void> {
         AppDatabase.getDatabaseInstance(context).getAserDao().insertAllAserList(aserList);
         AppDatabase.destroyInstance();
         BackupDatabase.backup(context);
+
+        try {
+            // Delete Deleted Group's Students
+            List<Groups> delGrps = AppDatabase.getDatabaseInstance(context).getGroupDao().GetDeletedGroups();
+            for (int i = 0; i < delGrps.size(); i++) {
+                AppDatabase.getDatabaseInstance(context).getStudentDao().deleteDeletedGrpsStdRecords(delGrps.get(i).GroupId);
+            }
+            // Delete Deleted Groups
+            AppDatabase.getDatabaseInstance(context).getGroupDao().removeDeletedGroupRecords();
+
+            // Delete Deleted Students
+            AppDatabase.getDatabaseInstance(context).getStudentDao().removeDeletedStudentRecords();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        BackupDatabase.backup(context);
+
         return null;
     }
 

@@ -106,6 +106,23 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
 
         populateProgramID();
 
+        populateApkVersion();
+
+    }
+
+    private void populateApkVersion() {
+        MetaData metaData = new MetaData();
+        PackageInfo pInfo = null;
+        String verCode = "";
+        try {
+            pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+            verCode = pInfo.versionName;
+            metaData.setKeys("apkVersion");
+            metaData.setValue(verCode);
+            AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private void populateProgramID() {

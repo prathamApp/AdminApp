@@ -108,6 +108,4 @@ public class APIs {
 
     //Store person AOI
     public static final String storePersonAPI = "http://www.swap.prathamcms.org/api/Vendor?programId=17&statecode=";
-
-
 }

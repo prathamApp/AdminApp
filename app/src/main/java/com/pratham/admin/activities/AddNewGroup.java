@@ -1,9 +1,10 @@
 package com.pratham.admin.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,19 +13,31 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+import com.google.gson.Gson;
+import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
+import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.modalclasses.Groups;
+import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
+import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.Utility;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class AddNewGroup extends BaseActivity {
+import static com.pratham.admin.util.APIs.PushForms;
+
+public class AddNewGroup extends BaseActivity implements ConnectionReceiverListener {
 
     Spinner states_spinner, blocks_spinner, villages_spinner;
     EditText edt_NewGroupName;
@@ -40,6 +53,7 @@ public class AddNewGroup extends BaseActivity {
     Context sessionContex;
     boolean timer;
     Utility util;
+    boolean internetIsAvailable = false;
 
 
     @Override
@@ -49,6 +63,8 @@ public class AddNewGroup extends BaseActivity {
 
         // Hide Actionbar
         getSupportActionBar().hide();
+
+        checkConnection();
 
         sessionContex = this;
 
@@ -127,9 +143,58 @@ public class AddNewGroup extends BaseActivity {
 
                         AppDatabase.getDatabaseInstance(AddNewGroup.this).getGroupDao().insertGroup(grpobj);
 
+                        // Push To Server
+                        try {
+                            if (internetIsAvailable) {
+                                Gson gson = new Gson();
+                                String GroupJSON = gson.toJson(grpobj);
+
+                                MetaData metaData = new MetaData();
+                                metaData.setKeys("pushDataTime");
+                                metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+                                List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(AddNewGroup.this).getMetaDataDao().getAllMetaData();
+                                String metaDataJSON = customParse(metaDataList);
+                                AppDatabase.getDatabaseInstance(AddNewGroup.this).getMetaDataDao().insertMetadata(metaData);
+
+                                String json = "{ \"GroupJSON\":" + GroupJSON + ",\"metadata\":" + metaDataJSON + "}";
+                                Log.d("json :::", json);
+
+                                final ProgressDialog dialog = new ProgressDialog(AddNewGroup.this);
+                                dialog.setTitle("UPLOADING ... ");
+                                dialog.setCancelable(false);
+                                dialog.setCanceledOnTouchOutside(false);
+                                dialog.show();
+
+                                AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Log.d("responce", response);
+                                        AppDatabase.getDatabaseInstance(AddNewGroup.this).getGroupDao().updateSentFlag(1, randomUUIDGroup);
+                                        BackupDatabase.backup(AddNewGroup.this);
+                                        Toast.makeText(AddNewGroup.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
+                                        BackupDatabase.backup(grpContext);
+                                        FormReset();
+                                        dialog.dismiss();
+                                    }
+
+                                    @Override
+                                    public void onError(ANError anError) {
+                                        Toast.makeText(AddNewGroup.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                                        AppDatabase.getDatabaseInstance(AddNewGroup.this).getGroupDao().updateSentFlag(0, randomUUIDGroup);
+                                        BackupDatabase.backup(grpContext);
+                                        FormReset();
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                            } else {
+                                Toast.makeText(AddNewGroup.this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                         Toast.makeText(AddNewGroup.this, "Record Inserted Successfully !!!", Toast.LENGTH_SHORT).show();
-                        BackupDatabase.backup(grpContext);
-                        FormReset();
                     } else {
                         Toast.makeText(AddNewGroup.this, "Please Enter less than 21 Alphabets only as Group Name !!!", Toast.LENGTH_SHORT).show();
                     }
@@ -230,6 +295,45 @@ public class AddNewGroup extends BaseActivity {
         // Unique ID For GroupID
         uuid = UUID.randomUUID();
         randomUUIDGroup = uuid.toString();
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            internetIsAvailable = false;
+        } else {
+            internetIsAvailable = true;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkConnection();
+        ApplicationController.getInstance().setConnectionListener(this);
+    }
+
+    private void checkConnection() {
+        boolean isConnected = ConnectionReceiver.isConnected();
+        if (!isConnected) {
+            internetIsAvailable = false;
+        } else {
+            internetIsAvailable = true;
+        }
+    }
+
+    private String customParse(List<MetaData> metaDataList) {
+        String json = "{";
+
+        for (int i = 0; i < metaDataList.size(); i++) {
+            json = json + "\"" + metaDataList.get(i).getKeys() + "\":\"" + metaDataList.get(i).getValue() + "\"";
+            if (i < metaDataList.size() - 1) {
+                json = json + ",";
+            }
+        }
+        json = json + "}";
+
+        return json;
     }
 
 

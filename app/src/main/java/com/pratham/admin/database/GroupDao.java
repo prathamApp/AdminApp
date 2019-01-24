@@ -31,4 +31,14 @@ public interface GroupDao {
 
     @Query("UPDATE Groups SET sentFlag=:pushStatus")
     void updateAllSentFlag(int pushStatus);
+
+    @Query("UPDATE Groups SET sentFlag=:pushStatus WHERE GroupId =:gID")
+    void updateSentFlag(int pushStatus, String gID);
+
+    @Query("select * from Groups WHERE DeviceID = 'deleted'")
+    public List<Groups> GetDeletedGroups();
+
+    @Query("DELETE FROM Groups WHERE DeviceId='deleted'")
+    public void removeDeletedGroupRecords();
+
 }

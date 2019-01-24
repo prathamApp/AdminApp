@@ -37,4 +37,7 @@ public interface AserDao {
 
     @Query("UPDATE Aser SET sentFlag=:pushStatus")
     void updateAllSentFlag(int pushStatus);
+
+    @Query("UPDATE Aser SET sentFlag=:pushStatus WHERE StudentId =:sID AND TestType=:testT")
+    void updateSentFlag(int pushStatus, String sID, int testT);
 }

@@ -30,6 +30,9 @@ public interface StudentDao {
     @Query("SELECT * FROM student WHERE GroupId=:gID")
     public List<Student> getGroupwiseStudents(String gID);
 
+    @Query("SELECT * FROM student WHERE StudentId =:sID")
+    public List<Student> getStudentByID(String sID);
+
     @Query("DELETE FROM Student Where StudentId=:stdID")
     public void deleteStudentByID(String stdID);
 
@@ -44,4 +47,14 @@ public interface StudentDao {
 
     @Query("UPDATE Student SET sentFlag=:pushStatus")
     void updateAllSentFlag(int pushStatus);
+
+    @Query("UPDATE Student SET sentFlag=:pushStatus WHERE StudentId =:sID")
+    void updateSentFlag(int pushStatus, String sID);
+
+    @Query("DELETE FROM Student WHERE Gender='deleted'")
+    public void removeDeletedStudentRecords();
+
+    @Query("DELETE FROM Student WHERE GroupId=:grpID")
+    public void deleteDeletedGrpsStdRecords(String grpID);
+
 }

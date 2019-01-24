@@ -4,6 +4,7 @@ package com.pratham.admin.activities;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -28,15 +30,24 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
+import com.google.gson.Gson;
+import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
+import com.pratham.admin.forms.CoachInformationForm;
+import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.modalclasses.Aser;
 import com.pratham.admin.modalclasses.Groups;
+import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.BirthDatePickerFragment;
+import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.DatePickerFragment;
 import com.pratham.admin.util.Utility;
 
@@ -45,15 +56,20 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class AddNewStudent extends BaseActivity {
+import static com.pratham.admin.util.APIs.PushForms;
+
+public class AddNewStudent extends BaseActivity implements ConnectionReceiverListener {
 
     private static final int TAKE_Thumbnail = 1;
     private static final int REQUEST_WRITE_STORAGE = 112;
@@ -92,6 +108,8 @@ public class AddNewStudent extends BaseActivity {
     String aserDate;
     private String GrpName = "";
 
+    boolean internetIsAvailable = false;
+
     @Subscribe
     public void onEvent(String msg) {
         if (!msg.isEmpty()) {
@@ -104,6 +122,7 @@ public class AddNewStudent extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_student);
         getSupportActionBar().hide();
+        checkConnection();
 
         EventBus.getDefault().register(AddNewStudent.this);
 
@@ -712,16 +731,70 @@ public class AddNewStudent extends BaseActivity {
                                 asr.sentFlag = 0;
                                 asr.CreatedOn = new Utility().GetCurrentDateTime(false);
 
+                                checkConnection();
+
                                 try {
                                     AppDatabase.getDatabaseInstance(AddNewStudent.this).getStudentDao().insertStudent(stdObj);
                                     AppDatabase.getDatabaseInstance(AddNewStudent.this).getAserDao().insertAser(asr);
                                     Toast.makeText(AddNewStudent.this, "Record Inserted Successfully !!!", Toast.LENGTH_SHORT).show();
                                     BackupDatabase.backup(AddNewStudent.this);
-                                    resetFormPartially();
+
+                                    // Push To Server
+                                    try {
+                                        if (internetIsAvailable) {
+                                            Gson gson = new Gson();
+                                            String StudentJSON = gson.toJson(Collections.singletonList(stdObj));
+                                            String AserJSON = gson.toJson(asr);
+
+                                            MetaData metaData = new MetaData();
+                                            metaData.setKeys("pushDataTime");
+                                            metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+                                            List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(AddNewStudent.this).getMetaDataDao().getAllMetaData();
+                                            String metaDataJSON = customParse(metaDataList);
+                                            AppDatabase.getDatabaseInstance(AddNewStudent.this).getMetaDataDao().insertMetadata(metaData);
+
+                                            String json = "{ \"StudentJSON\":" + StudentJSON + ",\"AserJSON\":" + AserJSON + ",\"metadata\":" + metaDataJSON + "}";
+                                            Log.d("json :::", json);
+
+                                            final ProgressDialog dialog = new ProgressDialog(AddNewStudent.this);
+                                            dialog.setTitle("UPLOADING ... ");
+                                            dialog.setCancelable(false);
+                                            dialog.setCanceledOnTouchOutside(false);
+                                            dialog.show();
+
+                                            AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
+                                                @Override
+                                                public void onResponse(String response) {
+                                                    Log.d("responce", response);
+                                                    AppDatabase.getDatabaseInstance(AddNewStudent.this).getStudentDao().updateSentFlag(1, randomUUIDStudent);
+                                                    Toast.makeText(AddNewStudent.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
+                                                    resetFormPartially();
+                                                    dialog.dismiss();
+                                                }
+
+                                                @Override
+                                                public void onError(ANError anError) {
+                                                    Toast.makeText(AddNewStudent.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                                                    AppDatabase.getDatabaseInstance(AddNewStudent.this).getCoachDao().updateSentFlag(0, randomUUIDStudent);
+                                                    resetFormPartially();
+                                                    dialog.dismiss();
+                                                }
+                                            });
+
+                                        } else {
+                                            resetFormPartially();
+                                            Toast.makeText(AddNewStudent.this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     Toast.makeText(AddNewStudent.this, "Record Insertion Failed !!!", Toast.LENGTH_SHORT).show();
                                 }
+
+
 
                             } else {
                                 Toast.makeText(AddNewStudent.this, "Please Fill All Fields !", Toast.LENGTH_SHORT).show();
@@ -1044,5 +1117,45 @@ public class AddNewStudent extends BaseActivity {
             }
         }
     }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            internetIsAvailable = false;
+        } else {
+            internetIsAvailable = true;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkConnection();
+        ApplicationController.getInstance().setConnectionListener(this);
+    }
+
+    private void checkConnection() {
+        boolean isConnected = ConnectionReceiver.isConnected();
+        if (!isConnected) {
+            internetIsAvailable = false;
+        } else {
+            internetIsAvailable = true;
+        }
+    }
+
+    private String customParse(List<MetaData> metaDataList) {
+        String json = "{";
+
+        for (int i = 0; i < metaDataList.size(); i++) {
+            json = json + "\"" + metaDataList.get(i).getKeys() + "\":\"" + metaDataList.get(i).getValue() + "\"";
+            if (i < metaDataList.size() - 1) {
+                json = json + ",";
+            }
+        }
+        json = json + "}";
+
+        return json;
+    }
+
 }
 
