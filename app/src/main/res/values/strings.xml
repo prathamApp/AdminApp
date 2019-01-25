@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Pratham QS</string>
+    <string name="app_name">Pratham Admin</string>
     <string name="login">Login</string>
     <string name="selectProgram">Select Program</string>
     <string name="qrscan">Scan QR</string>

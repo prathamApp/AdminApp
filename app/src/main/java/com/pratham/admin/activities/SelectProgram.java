@@ -47,7 +47,6 @@ import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 
 import org.json.JSONArray;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -58,19 +57,29 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.pratham.admin.util.APIs.ECE;
+import static com.pratham.admin.util.APIs.ECEpullAserURL;
 import static com.pratham.admin.util.APIs.GP;
+import static com.pratham.admin.util.APIs.GPpullAserURL;
 import static com.pratham.admin.util.APIs.HG;
+import static com.pratham.admin.util.APIs.HGpullAserURL;
 import static com.pratham.admin.util.APIs.HL;
+import static com.pratham.admin.util.APIs.HLpullAserURL;
+import static com.pratham.admin.util.APIs.KGBpullAserURL;
 import static com.pratham.admin.util.APIs.PI;
+import static com.pratham.admin.util.APIs.PIpullAserURL;
 import static com.pratham.admin.util.APIs.PullCoaches;
 import static com.pratham.admin.util.APIs.PullCourses;
 import static com.pratham.admin.util.APIs.PullHLCourseCommunity;
 import static com.pratham.admin.util.APIs.PullHLCourseCompletion;
 import static com.pratham.admin.util.APIs.RI;
+import static com.pratham.admin.util.APIs.RIpullAserURL;
 import static com.pratham.admin.util.APIs.SC;
+import static com.pratham.admin.util.APIs.SCpullAserURL;
+import static com.pratham.admin.util.APIs.UPpullAserURL;
 import static com.pratham.admin.util.APIs.village;
 
 public class SelectProgram extends BaseActivity implements ConnectionReceiverListener, OnSavedData, VillageListLisner {
+
     @BindView(R.id.spinner_state)
     Spinner spinner_state;
 
@@ -451,24 +460,51 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
 
         studentList.addAll(studentMoadal);
         if (studLoadCount == villageId.size()) {
-            if (program.equals(HG)) {
-                loadAserData();
-            } else {
-                dismissShownDialog();
-
-                pullStorePersons();
-                // mayur cha code
-                formsAPI();
+            switch (program) {
+                case APIs.HL:
+                    loadAserData(HLpullAserURL);
+                    break;
+                case APIs.UP:
+                    loadAserData(UPpullAserURL);
+                    break;
+                case APIs.KGBV:
+                    loadAserData(KGBpullAserURL);
+                    break;
+                case APIs.ECE:
+                    loadAserData(ECEpullAserURL);
+                    break;
+                case RI:
+                    loadAserData(RIpullAserURL);
+                    break;
+                case SC:
+                    loadAserData(SCpullAserURL);
+                    break;
+                case PI:
+                    loadAserData(PIpullAserURL);
+                    break;
+                case HG:
+                    loadAserData(HGpullAserURL);
+                    break;
+                case APIs.GP:
+                    loadAserData(GPpullAserURL);
+                    break;
+                default:
+                    dismissShownDialog();
+                    pullStorePersons();
+                    // mayur cha code
+                    formsAPI();
+                    break;
             }
+
         }
         //  Log.d("prathamS", studentList.toString());
     }
 
-    private void loadAserData() {
+    private void loadAserData(String url) {
         aserList.clear();
         countAser = 0;
         for (String id : selectedVillage) {
-            downloadAserData(APIs.HGpullAserURL + id);
+            downloadAserData(/*APIs.HGpullAserURL */url + id);
         }
     }
 
@@ -704,7 +740,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SelectProgram.this, android.R.style.Theme_Material_Light_Dialog);
         dialogBuilder.setCancelable(false);
         dialogBuilder.setTitle("Data Preview");
-        dialogBuilder.setMessage("CRLList : " + CRLList.size() + "\nstudentList : " + studentList.size() + "\ngroupsList : " + groupsList.size() + "\nCourseList : " + CourseList.size() + "\nCoachList : " + CoachList.size() + "\nCommunityList : " + CommunityList.size() + "\nCompletionList : " + CompletionList.size());
+        dialogBuilder.setMessage("CRLList : " + CRLList.size() + "\nstudentList : " + studentList.size() + "\ngroupsList : " + groupsList.size() + "\nCourseList : " + CourseList.size() + "\nCoachList : " + CoachList.size() + "\nCommunityList : " + CommunityList.size() + "\nCompletionList : " + CompletionList.size()+ "\nAserList : " + aserList.size());
         if (CRLList.size() > 0) {
             dialogBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {

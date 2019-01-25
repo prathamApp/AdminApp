@@ -103,9 +103,9 @@ public class MainActivity extends BaseActivity implements DialogInterface {
         password.setText("pratham123");
 */
 
-        userName.setText("amolmoghe");
+/*        userName.setText("amolmoghe");
         password.setText("pratham@123");
-/*        userName.setText("ganeshtupe54");
+        userName.setText("ganeshtupe54");
         password.setText("pratham");
         userName.setText("amolmoghe");
         password.setText("pratham@123");
@@ -116,8 +116,8 @@ public class MainActivity extends BaseActivity implements DialogInterface {
 */
 
 
-//        userName.setText("");
-//        password.setText("");
+        userName.setText("");
+        password.setText("");
         userName.requestFocus();
         SharedPreferences preferences = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
         String program = preferences.getString("program", "null");
