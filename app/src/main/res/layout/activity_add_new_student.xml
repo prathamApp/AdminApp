@@ -17,21 +17,21 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/_8sdp"
             android:background="@drawable/custom_border"
             android:fontFamily="monospace"
             android:gravity="center"
-            android:padding="16dp"
+            android:padding="@dimen/_8sdp"
             android:text="Add New Student"
             android:textColor="@color/colorAccent"
-            android:textSize="32sp"
+            android:textSize="@dimen/_20sdp"
             android:textStyle="bold" />
 
         <!--Spinners-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/_8sdp"
             android:orientation="horizontal"
             android:weightSum="2">
 
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/spinner_SelectState"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="1"
                 android:background="@drawable/spinner_background_forms"
                 android:textAlignment="center" />
@@ -63,7 +63,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:orientation="horizontal"
             android:weightSum="2">
             <!--Village Drop Down List-->
@@ -73,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/spinner_SelectBlock"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="1"
                 android:background="@drawable/spinner_background_forms"
                 android:textAlignment="center" />
@@ -85,8 +84,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/spinner_selectVillage"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginRight="@dimen/_8sdp"
                 android:layout_weight="1"
                 android:background="@drawable/spinner_background_forms"
                 android:textAlignment="center" />
@@ -96,7 +95,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/_8sdp"
             android:orientation="horizontal"
             android:weightSum="3">
 
@@ -113,13 +112,13 @@
                 android:singleLine="true"
                 android:textColor="#000000"
                 android:textColorHint="@color/text_hint"
-                android:textSize="16sp" />
+                android:textSize="@dimen/_12sdp" />
 
             <EditText
                 android:id="@+id/edt_MiddleName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="1"
                 android:hint="Enter Middle Name"
                 android:imeOptions="actionNext"
@@ -129,13 +128,13 @@
                 android:singleLine="true"
                 android:textColor="#000000"
                 android:textColorHint="@color/text_hint"
-                android:textSize="16sp" />
+                android:textSize="@dimen/_12sdp" />
 
             <EditText
                 android:id="@+id/edt_LastName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="1"
                 android:hint="Enter Last Name"
                 android:imeOptions="actionNext"
@@ -145,7 +144,7 @@
                 android:singleLine="true"
                 android:textColor="#000000"
                 android:textColorHint="@color/text_hint"
-                android:textSize="16sp" />
+                android:textSize="@dimen/_12sdp" />
 
         </LinearLayout>
 
@@ -153,7 +152,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:orientation="horizontal"
             android:weightSum="5">
 
@@ -161,7 +159,7 @@
                 android:id="@+id/edt_Age"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="2"
                 android:digits="0123456789"
                 android:hint="Enter Age"
@@ -173,29 +171,29 @@
                 android:singleLine="true"
                 android:textColor="#000000"
                 android:textColorHint="@color/text_hint"
-                android:textSize="16sp"
+                android:textSize="@dimen/_12sdp"
                 android:visibility="gone" />
 
             <Button
                 android:id="@+id/btn_BirthDatePicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="2"
                 android:background="@color/button"
                 android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-                android:drawablePadding="4dp"
+                android:drawablePadding="@dimen/_4sdp"
                 android:text="Birth Date"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
-                android:textSize="16sp" />
+                android:textSize="@dimen/_12sdp" />
 
 
             <EditText
                 android:id="@+id/edt_Class"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="2"
                 android:digits="0123456789"
                 android:hint="Enter Class"
@@ -204,7 +202,7 @@
                 android:singleLine="true"
                 android:textColor="#000000"
                 android:textColorHint="@color/text_hint"
-                android:textSize="16sp" />
+                android:textSize="@dimen/_12sdp" />
 
 
             <!--Radio Button to Select Gender-->
@@ -217,34 +215,34 @@
                 android:weightSum="3">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:text="Select Gender"
                     android:textColor="@color/button"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
 
                 <RadioButton
                     android:id="@+id/rb_Male"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:checked="true"
                     android:text="Male"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
 
                 <RadioButton
                     android:id="@+id/rb_Female"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:text="Female"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
 
             </RadioGroup>
@@ -256,58 +254,57 @@
             android:id="@+id/AserForm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/_8sdp"
             android:orientation="vertical">
 
             <!--Baseline, AserDate, Lang, Number Reco-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:weightSum="4">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
                     android:text="Baseline Information -->"
                     android:textColor="@color/button"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
 
                 <!--Aser Date-->
                 <Button
                     android:id="@+id/btn_DatePicker"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/button"
                     android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-                    android:drawablePadding="4dp"
+                    android:drawablePadding="@dimen/_4sdp"
                     android:text="Aser Date"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <!--Baseline Lang-->
                 <Spinner
                     android:id="@+id/spinner_BaselineLang"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:background="@drawable/spinner_background_forms" />
 
                 <!--Number Reco-->
                 <Spinner
                     android:id="@+id/spinner_NumberReco"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:background="@drawable/spinner_background_forms" />
 
@@ -317,7 +314,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:orientation="horizontal"
                 android:weightSum="4">
 
@@ -329,40 +326,40 @@
                     android:background="@color/button"
                     android:text="  Endline 1  "
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <Button
                     android:id="@+id/btn_Endline2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:background="@color/button"
                     android:text="  Endline 2  "
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <Button
                     android:id="@+id/btn_Endline3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:background="@color/button"
                     android:text="  Endline 3  "
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <Button
                     android:id="@+id/btn_Endline4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:background="@color/button"
                     android:text="  Endline 4  "
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
 
@@ -381,12 +378,12 @@
                 android:id="@+id/btn_Capture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="1"
                 android:background="@color/button"
                 android:text="Take Photo"
                 android:textColor="#FFFFFF"
-                android:textSize="16sp"
+                android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />
 
             <ImageView
@@ -403,7 +400,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/_8sdp"
             android:orientation="horizontal"
             android:weightSum="3">
 
@@ -415,19 +412,19 @@
                 android:background="@color/album_title"
                 android:text="Submit"
                 android:textColor="#FFFFFF"
-                android:textSize="20sp"
+                android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btn_Clear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="2"
                 android:background="@color/album_title"
                 android:text="Clear"
                 android:textColor="#FFFFFF"
-                android:textSize="20sp"
+                android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />
 
         </LinearLayout>

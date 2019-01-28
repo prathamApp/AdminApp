@@ -38,7 +38,7 @@ public class GroupSession {
     public String PresentStudents;
 
     @SerializedName("sentFlag")
-    public int sentFlag;
+    public int sentFlag = 1;
 
     @Override
     public String toString() {

@@ -31,7 +31,7 @@ public class Course {
     @TypeConverters(JSONArrayToString.class)
     public JsonArray listTopic;
     @SerializedName("sentFlag")
-    public int sentFlag;
+    public int sentFlag = 1;
 
     @Override
     public String toString() {

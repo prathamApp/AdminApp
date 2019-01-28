@@ -24,6 +24,6 @@ public class Attendance {
     @SerializedName("Present")
     public int Present;
     @SerializedName("sentFlag")
-    public int sentFlag;
+    public int sentFlag = 1;
 
 }

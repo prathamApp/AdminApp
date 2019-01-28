@@ -62,7 +62,7 @@ public class Aser {
 
     // new fields db version 4
     @SerializedName("sentFlag")
-    public int sentFlag;
+    public int sentFlag = 1;
 
     @Override
     public String toString() {

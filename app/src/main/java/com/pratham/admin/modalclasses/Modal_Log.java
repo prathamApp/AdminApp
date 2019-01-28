@@ -27,7 +27,7 @@ public class Modal_Log {
     @SerializedName("LogDetail")
     public String LogDetail;
     @SerializedName("sentFlag")
-    public int sentFlag;
+    public int sentFlag = 1;
     @SerializedName("sessionId")
     public String sessionId;
     @Override

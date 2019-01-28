@@ -25,7 +25,7 @@ public class Topic {
     @SerializedName("IsDelete")
     public Boolean IsDelete;
     @SerializedName("sentFlag")
-    public int sentFlag;
+    public int sentFlag = 1;
 
     @Override
     public String toString() {

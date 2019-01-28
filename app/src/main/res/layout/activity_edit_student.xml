@@ -17,21 +17,20 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/_8sdp"
             android:background="@drawable/custom_border"
             android:fontFamily="monospace"
             android:gravity="center"
-            android:padding="16dp"
+            android:padding="@dimen/_8sdp"
             android:text="Edit Student Details"
             android:textColor="@color/colorAccent"
-            android:textSize="32sp"
+            android:textSize="@dimen/_24sdp"
             android:textStyle="bold" />
 
         <!--Spinners-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:orientation="horizontal"
             android:weightSum="3">
 
@@ -41,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="1"
                 android:background="@drawable/spinner_background_forms"
                 android:textAlignment="center" />
@@ -53,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/spinner_SelectState"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="1"
                 android:background="@drawable/spinner_background_forms"
                 android:textAlignment="center" />
@@ -65,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/spinner_SelectBlock"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="1"
                 android:background="@drawable/spinner_background_forms"
                 android:textAlignment="center" />
@@ -76,7 +75,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:orientation="horizontal"
             android:weightSum="2">
 
@@ -87,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/spinner_selectVillage"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="1"
                 android:background="@drawable/spinner_background_forms"
                 android:textAlignment="center" />
@@ -99,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/spinner_SelectGroups"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="1"
                 android:background="@drawable/spinner_background_forms"
                 android:textAlignment="center" />
@@ -109,10 +108,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
             android:background="@drawable/custom_border"
             android:orientation="vertical">
 
@@ -124,16 +123,16 @@
                 android:text="Student Details"
                 android:textAllCaps="true"
                 android:textColor="@color/button"
-                android:textSize="18sp"
+                android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />
 
             <!--Name-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
                 android:orientation="horizontal"
                 android:weightSum="3">
 
@@ -141,7 +140,7 @@
                     android:id="@+id/edt_FirstName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:hint="First Name"
                     android:inputType="textCapWords"
@@ -154,7 +153,7 @@
                     android:id="@+id/edt_MiddleName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:hint="Middle Name"
                     android:inputType="textCapWords"
@@ -167,7 +166,7 @@
                     android:id="@+id/edt_LastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:hint="Last Name"
                     android:inputType="textCapWords"
@@ -182,9 +181,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
                 android:orientation="horizontal"
                 android:weightSum="3">
 
@@ -192,7 +191,7 @@
                     android:id="@+id/edt_Age"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:digits="0123456789"
                     android:hint="Age"
@@ -206,7 +205,7 @@
                     android:id="@+id/edt_Class"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:digits="0123456789"
                     android:hint="Class"
@@ -220,7 +219,7 @@
                     android:id="@+id/tv_Gender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:digits="0123456789"
                     android:hint="Gender"
@@ -240,10 +239,10 @@
             android:id="@+id/AserForm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
             android:background="@drawable/custom_border"
             android:orientation="vertical">
 
@@ -251,16 +250,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:weightSum="4">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
                     android:text="Baseline Information -->"
@@ -271,7 +270,7 @@
                 <!--Aser Date-->
                 <Button
                     android:id="@+id/btn_DatePicker"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/button"
@@ -285,19 +284,19 @@
                 <!--Baseline Lang-->
                 <Spinner
                     android:id="@+id/spinner_BaselineLang"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:background="@drawable/spinner_background_forms" />
 
                 <!--Number Reco-->
                 <Spinner
                     android:id="@+id/spinner_NumberReco"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_marginRight="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:background="@drawable/spinner_background_forms" />
 
@@ -307,10 +306,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
                 android:orientation="horizontal"
                 android:weightSum="4">
 
@@ -328,7 +327,7 @@
                     android:id="@+id/btn_Endline2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:background="@color/button"
                     android:text="  Endline 2  "
@@ -339,7 +338,7 @@
                     android:id="@+id/btn_Endline3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:background="@color/button"
                     android:text="  Endline 3  "
@@ -350,7 +349,7 @@
                     android:id="@+id/btn_Endline4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:background="@color/button"
                     android:text="  Endline 4  "
@@ -374,7 +373,7 @@
                 android:id="@+id/btn_Capture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="1"
                 android:background="@color/button"
                 android:text="Take Photo"
@@ -396,7 +395,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/_8sdp"
             android:orientation="horizontal"
             android:weightSum="3">
 
@@ -408,19 +407,19 @@
                 android:background="@color/album_title"
                 android:text="Submit"
                 android:textColor="#FFFFFF"
-                android:textSize="20sp"
+                android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btn_Clear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="2"
                 android:background="@color/album_title"
                 android:text="Clear"
                 android:textColor="#FFFFFF"
-                android:textSize="20sp"
+                android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />
 
         </LinearLayout>

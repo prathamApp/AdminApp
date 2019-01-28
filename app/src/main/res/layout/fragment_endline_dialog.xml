@@ -3,11 +3,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="4dp"
+    android:layout_margin="@dimen/_4sdp"
     android:background="@drawable/custom_border"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="@dimen/_16sdp">
 
     <LinearLayout
         android:id="@+id/Line1"
@@ -21,10 +21,10 @@
             android:id="@+id/tv_EndlineTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
+            android:padding="@dimen/_8sdp"
             android:text="Endline"
             android:textColor="#FFFFFF"
-            android:textSize="24sp"
+            android:textSize="@dimen/_18sdp"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -32,21 +32,22 @@
         android:id="@+id/Line2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/_16sdp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="3">
 
         <!--Aser Date-->
         <Button
             android:id="@+id/btn_EndlineDatePicker"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/_8sdp"
             android:layout_weight="1"
             android:background="@color/button"
             android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-            android:drawablePadding="4dp"
-            android:padding="4dp"
+            android:drawablePadding="@dimen/_4sdp"
+            android:padding="@dimen/_4sdp"
             android:text="Aser Date"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
@@ -54,25 +55,25 @@
 
         <Spinner
             android:id="@+id/spinner_BaselineLang"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:background="@drawable/spinner_background_forms"
-            android:minWidth="250dp" />
+            android:layout_margin="@dimen/_8sdp"
+            android:layout_weight="1"
+            android:background="@drawable/spinner_background_forms" />
 
         <Spinner
             android:id="@+id/spinner_NumberReco"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:background="@drawable/spinner_background_forms"
-            android:minWidth="250dp" />
+            android:layout_margin="@dimen/_8sdp"
+            android:layout_weight="1"
+            android:background="@drawable/spinner_background_forms" />
 
         <Switch
             android:id="@+id/switch_isSelected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/_8sdp"
             android:text="Selected  "
             android:textColor="@color/button"
             android:visibility="gone" />
@@ -83,7 +84,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/_16sdp"
         android:gravity="center"
         android:orientation="horizontal"
         android:visibility="gone">
@@ -100,8 +101,8 @@
             android:id="@+id/OprAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:paddingLeft="8dp"
+            android:layout_margin="@dimen/_8sdp"
+            android:paddingLeft="@dimen/_8sdp"
             android:text="Add"
             android:textColor="#000000"
             android:textSize="16sp" />
@@ -110,8 +111,8 @@
             android:id="@+id/OprSub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:paddingLeft="8dp"
+            android:layout_margin="@dimen/_8sdp"
+            android:paddingLeft="@dimen/_8sdp"
             android:text="Sub"
             android:textColor="#000000"
             android:textSize="16sp" />
@@ -120,8 +121,8 @@
             android:id="@+id/OprMul"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:paddingLeft="8dp"
+            android:layout_margin="@dimen/_8sdp"
+            android:paddingLeft="@dimen/_8sdp"
             android:text="Mul"
             android:textColor="#000000"
             android:textSize="16sp" />
@@ -130,8 +131,8 @@
             android:id="@+id/OprDiv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:paddingLeft="8dp"
+            android:layout_margin="@dimen/_8sdp"
+            android:paddingLeft="@dimen/_8sdp"
             android:text="Div"
             android:textColor="#000000"
             android:textSize="16sp" />
@@ -142,7 +143,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/_16sdp"
         android:gravity="center"
         android:orientation="horizontal"
         android:visibility="gone">
@@ -160,8 +161,8 @@
             android:id="@+id/WordAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:paddingLeft="8dp"
+            android:layout_margin="@dimen/_8sdp"
+            android:paddingLeft="@dimen/_8sdp"
             android:text="Add"
             android:textColor="#000000"
             android:textSize="16sp" />
@@ -170,8 +171,8 @@
             android:id="@+id/WordSub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:paddingLeft="8dp"
+            android:layout_margin="@dimen/_8sdp"
+            android:paddingLeft="@dimen/_8sdp"
             android:text="Sub"
             android:textColor="#000000"
             android:textSize="16sp" />
@@ -183,12 +184,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/_8sdp"
         android:background="@color/button"
         android:text="Submit"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:textSize="@dimen/_16sdp"
         android:textStyle="bold" />
 
 </LinearLayout>

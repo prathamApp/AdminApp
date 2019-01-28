@@ -89,7 +89,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
         // Create the recyclerview.
         RecyclerView dashRecyclerView = (RecyclerView) findViewById(R.id.card_view_recycler_list);
         // Create the grid layout manager with 2 columns.
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 5);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
         // Set layout manager.
         dashRecyclerView.setLayoutManager(gridLayoutManager);
 
@@ -168,7 +168,8 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
         WifiInfo wInfo = wifiManager.getConnectionInfo();
         WiFiMac = wInfo.getMacAddress();
 
-        tv_appInfo.setText("Apk Version : " + apkVersion + "\nWiFi MAC : " + WiFiMac + "\nDevice ID : " + deviceID + "\nSerial ID : " + serialID);
+        tv_appInfo.setText("Apk Version : " + apkVersion + "\t\t\tWiFi-MAC : " + WiFiMac +
+                "\nDevice ID : " + deviceID + "\t\t\tSerial ID : " + serialID);
     }
 
     @Override

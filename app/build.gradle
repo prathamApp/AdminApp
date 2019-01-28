@@ -60,4 +60,7 @@ dependencies {
     // Time Range Picker
     implementation 'com.github.PuffoCyano:Range-Time-Picker-Dialog:v1.5'
     implementation 'org.greenrobot:eventbus:3.1.1'
+
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+
 }

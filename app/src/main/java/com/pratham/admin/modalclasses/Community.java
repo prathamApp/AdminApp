@@ -46,7 +46,7 @@ public class Community {
     public String CreatedDate;
 
     @SerializedName("sentFlag")
-    public int sentFlag;
+    public int sentFlag = 1;
 
 
     @Override

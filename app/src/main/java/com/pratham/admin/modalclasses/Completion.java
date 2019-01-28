@@ -38,7 +38,7 @@ public class Completion {
     public String CreatedBy;
 
     @SerializedName("sentFlag")
-    public int sentFlag;
+    public int sentFlag = 1;
 
     @Override
     public String toString() {

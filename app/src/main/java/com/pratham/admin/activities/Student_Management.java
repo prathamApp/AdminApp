@@ -94,8 +94,8 @@ public class Student_Management extends BaseActivity implements ConnectionReceiv
         WifiInfo wInfo = wifiManager.getConnectionInfo();
         WiFiMac = wInfo.getMacAddress();
 
-        tv_appInfo.setText("Apk Version : " + apkVersion + "\nWiFi MAC : " + WiFiMac
-                + "\nDevice ID : " + deviceID + "\nSerial ID : " + serialID);
+        tv_appInfo.setText("Apk Version : " + apkVersion + "\t\t\tWiFi-MAC : " + WiFiMac +
+                "\nDevice ID : " + deviceID + "\t\t\tSerial ID : " + serialID);
     }
 
 

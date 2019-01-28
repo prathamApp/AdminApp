@@ -28,7 +28,7 @@ public class Student {
     public String Gender;
 
     @SerializedName("sentFlag")
-    public int sentFlag;
+    public int sentFlag = 1;
 
     @NonNull
     @PrimaryKey

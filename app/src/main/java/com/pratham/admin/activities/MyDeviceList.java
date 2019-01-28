@@ -26,7 +26,7 @@ public class MyDeviceList extends Dialog {
     Context context;
 
     public MyDeviceList(@NonNull Context context, JSONArray response) {
-        super(context);
+        super(context, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
         Gson gson = new Gson();
         Type devicesList = new TypeToken<ArrayList<DeviseList>>() {
         }.getType();

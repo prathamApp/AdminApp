@@ -33,7 +33,7 @@ public class Groups {
     @SerializedName("CreatedOn")
     public String CreatedOn;
     @SerializedName("sentFlag")
-    public int sentFlag;
+    public int sentFlag = 1;
 
 
     // new Methods
