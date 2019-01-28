@@ -7,7 +7,7 @@
         android:largeScreens="true"
         android:normalScreens="true"
         android:resizeable="true"
-        android:smallScreens="true" />
+        android:smallScreens="true"/>
 
     <uses-feature android:name="android.hardware.location.gps" />
 
@@ -43,15 +43,15 @@
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".activities.AddNewStudent"
             android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".activities.AddNewGroup"
             android:screenOrientation="sensorLandscape"
@@ -158,7 +158,7 @@
             android:screenOrientation="sensorLandscape"
             android:theme="@style/NoActionBr"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".activities.CatchoTransparentActivity" />
+        <activity android:name=".activities.CatchoTransparentActivity"/>
     </application>
 
 </manifest>
