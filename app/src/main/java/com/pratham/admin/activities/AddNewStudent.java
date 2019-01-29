@@ -69,7 +69,7 @@ import java.util.UUID;
 
 import static com.pratham.admin.util.APIs.PushForms;
 
-public class AddNewStudent extends BaseActivity implements ConnectionReceiverListener {
+public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverListener */{
 
     private static final int TAKE_Thumbnail = 1;
     private static final int REQUEST_WRITE_STORAGE = 112;
@@ -108,7 +108,7 @@ public class AddNewStudent extends BaseActivity implements ConnectionReceiverLis
     String aserDate;
     private String GrpName = "";
 
-    boolean internetIsAvailable = false;
+//    boolean internetIsAvailable = false;
 
     @Subscribe
     public void onEvent(String msg) {
@@ -122,7 +122,7 @@ public class AddNewStudent extends BaseActivity implements ConnectionReceiverLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_student);
         getSupportActionBar().hide();
-        checkConnection();
+//        checkConnection();
 
         EventBus.getDefault().register(AddNewStudent.this);
 
@@ -731,16 +731,17 @@ public class AddNewStudent extends BaseActivity implements ConnectionReceiverLis
                                 asr.sentFlag = 0;
                                 asr.CreatedOn = new Utility().GetCurrentDateTime(false);
 
-                                checkConnection();
+//                                checkConnection();
 
                                 try {
                                     AppDatabase.getDatabaseInstance(AddNewStudent.this).getStudentDao().insertStudent(stdObj);
                                     AppDatabase.getDatabaseInstance(AddNewStudent.this).getAserDao().insertAser(asr);
                                     Toast.makeText(AddNewStudent.this, "Record Inserted Successfully !!!", Toast.LENGTH_SHORT).show();
                                     BackupDatabase.backup(AddNewStudent.this);
+                                    resetFormPartially();
 
                                     // Push To Server
-                                    try {
+                                    /*try {
                                         if (internetIsAvailable) {
                                             Gson gson = new Gson();
                                             String StudentJSON = gson.toJson(Collections.singletonList(stdObj));
@@ -787,7 +788,7 @@ public class AddNewStudent extends BaseActivity implements ConnectionReceiverLis
                                         }
                                     } catch (Exception e) {
                                         e.printStackTrace();
-                                    }
+                                    }*/
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -1118,7 +1119,7 @@ public class AddNewStudent extends BaseActivity implements ConnectionReceiverLis
         }
     }
 
-    @Override
+  /*  @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (!isConnected) {
             internetIsAvailable = false;
@@ -1155,7 +1156,7 @@ public class AddNewStudent extends BaseActivity implements ConnectionReceiverLis
         json = json + "}";
 
         return json;
-    }
+    }*/
 
 }
 

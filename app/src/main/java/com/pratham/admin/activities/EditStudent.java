@@ -56,7 +56,7 @@ import java.util.List;
 
 import static com.pratham.admin.util.APIs.PushForms;
 
-public class EditStudent extends BaseActivity implements ConnectionReceiverListener {
+public class EditStudent extends BaseActivity/* implements ConnectionReceiverListener */{
 
     private static final int TAKE_Thumbnail = 1;
     private static final int REQUEST_WRITE_STORAGE = 112;
@@ -101,7 +101,7 @@ public class EditStudent extends BaseActivity implements ConnectionReceiverListe
     List<Groups> GroupsVillages = new ArrayList<Groups>();
     private boolean captureButtonPressed = false;
 
-    boolean internetIsAvailable = false;
+//    boolean internetIsAvailable = false;
 
     @Subscribe
     public void onEvent(String msg) {
@@ -118,7 +118,7 @@ public class EditStudent extends BaseActivity implements ConnectionReceiverListe
 
         EventBus.getDefault().register(EditStudent.this);
 
-        checkConnection();
+//        checkConnection();
 
         initializeVariables();
         populateStatesSpinner();
@@ -307,7 +307,7 @@ public class EditStudent extends BaseActivity implements ConnectionReceiverListe
                                 AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().UpdateAserData("", aserDate, langSpin, numSpin, OA, OS, OM, OD, WA, WS, createdBy, Util.GetCurrentDate(), IC, 0, StudentUniqID, testT);
 
                                 BackupDatabase.backup(EditStudent.this);
-                                PushData(StudentUniqID, testT);
+//                                PushData(StudentUniqID, testT);
 
                             } else {
                                 // new entry
@@ -333,7 +333,7 @@ public class EditStudent extends BaseActivity implements ConnectionReceiverListe
                                 AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().insertAser(asr);
 
                                 BackupDatabase.backup(EditStudent.this);
-                                PushData(StudentUniqID, testT);
+//                                PushData(StudentUniqID, testT);
                             }
 
                             BackupDatabase.backup(EditStudent.this);
@@ -563,7 +563,7 @@ public class EditStudent extends BaseActivity implements ConnectionReceiverListe
                                 AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().UpdateAserData("", aserDate, langSpin, numSpin, OA, OS, OM, OD, WA, WS, createdBy, Util.GetCurrentDate(), IC, 0, StudentUniqID, testT);
 
                                 BackupDatabase.backup(EditStudent.this);
-                                PushData(StudentUniqID, testT);
+//                                PushData(StudentUniqID, testT);
 
                             } else {
                                 // new entry
@@ -589,7 +589,7 @@ public class EditStudent extends BaseActivity implements ConnectionReceiverListe
                                 AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().insertAser(asr);
 
                                 BackupDatabase.backup(EditStudent.this);
-                                PushData(StudentUniqID, testT);
+//                                PushData(StudentUniqID, testT);
                             }
                             BackupDatabase.backup(EditStudent.this);
                             Toast.makeText(EditStudent.this, "Endline 2 Updated !", Toast.LENGTH_SHORT).show();
@@ -816,7 +816,7 @@ public class EditStudent extends BaseActivity implements ConnectionReceiverListe
                                 //update
                                 AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().UpdateAserData("", aserDate, langSpin, numSpin, OA, OS, OM, OD, WA, WS, createdBy, Util.GetCurrentDate(), IC, 0, StudentUniqID, testT);
                                 BackupDatabase.backup(EditStudent.this);
-                                PushData(StudentUniqID, testT);
+//                                PushData(StudentUniqID, testT);
                             } else {
                                 // new entry
                                 Aser asr = new Aser();
@@ -840,7 +840,7 @@ public class EditStudent extends BaseActivity implements ConnectionReceiverListe
                                 asr.sentFlag = 0;
                                 AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().insertAser(asr);
                                 BackupDatabase.backup(EditStudent.this);
-                                PushData(StudentUniqID, testT);
+//                                PushData(StudentUniqID, testT);
                             }
                             BackupDatabase.backup(EditStudent.this);
                             Toast.makeText(EditStudent.this, "Endline 3 Updated !", Toast.LENGTH_SHORT).show();
@@ -1067,7 +1067,7 @@ public class EditStudent extends BaseActivity implements ConnectionReceiverListe
                                 //update
                                 AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().UpdateAserData("", aserDate, langSpin, numSpin, OA, OS, OM, OD, WA, WS, createdBy, Util.GetCurrentDate(), IC, 0, StudentUniqID, testT);
                                 BackupDatabase.backup(EditStudent.this);
-                                PushData(StudentUniqID, testT);
+//                                PushData(StudentUniqID, testT);
                             } else {
                                 // new entry
                                 Aser asr = new Aser();
@@ -1091,7 +1091,7 @@ public class EditStudent extends BaseActivity implements ConnectionReceiverListe
                                 asr.sentFlag = 0;
                                 AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().insertAser(asr);
                                 BackupDatabase.backup(EditStudent.this);
-                                PushData(StudentUniqID, testT);
+//                                PushData(StudentUniqID, testT);
                             }
                             BackupDatabase.backup(EditStudent.this);
                             Toast.makeText(EditStudent.this, "Endline 4 Updated !", Toast.LENGTH_SHORT).show();
@@ -1167,7 +1167,7 @@ public class EditStudent extends BaseActivity implements ConnectionReceiverListe
                             //update
                             AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().UpdateAserData("", AserTestDate, langSpin, numSpin, OA, OS, OM, OD, WA, WS, createdBy, Util.GetCurrentDate(), IC, 0, StudentUniqID, testT);
                             BackupDatabase.backup(EditStudent.this);
-                            PushData(StudentUniqID, testT);
+//                            PushData(StudentUniqID, testT);
                         } else {
                             // new entry
                             Aser asr = new Aser();
@@ -1192,7 +1192,7 @@ public class EditStudent extends BaseActivity implements ConnectionReceiverListe
                             try {
                                 AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().insertAser(asr);
                                 BackupDatabase.backup(EditStudent.this);
-                                PushData(StudentUniqID, testT);
+//                                PushData(StudentUniqID, testT);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Toast.makeText(EditStudent.this, "Baseline Insertion Failed !", Toast.LENGTH_SHORT).show();
@@ -1651,6 +1651,7 @@ public class EditStudent extends BaseActivity implements ConnectionReceiverListe
         }
     }
 
+/*
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (!isConnected) {
@@ -1759,6 +1760,7 @@ public class EditStudent extends BaseActivity implements ConnectionReceiverListe
             e.printStackTrace();
         }
     }
+*/
 
 
 }

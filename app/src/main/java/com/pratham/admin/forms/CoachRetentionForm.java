@@ -46,7 +46,7 @@ import butterknife.OnClick;
 
 import static com.pratham.admin.util.APIs.PushForms;
 
-public class CoachRetentionForm extends BaseActivity implements ConnectionReceiverListener {
+public class CoachRetentionForm extends BaseActivity/* implements ConnectionReceiverListener */{
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;
@@ -63,7 +63,7 @@ public class CoachRetentionForm extends BaseActivity implements ConnectionReceiv
     List<Village> villageList = new ArrayList<>();
     List<Coach> coachList = new ArrayList<>();
     String selectedCoachID = "";
-    boolean internetIsAvailable = false;
+//    boolean internetIsAvailable = false;
     List<Coach> updatedCoachList = new ArrayList<>();
     String villageName;
     String vid;
@@ -75,7 +75,7 @@ public class CoachRetentionForm extends BaseActivity implements ConnectionReceiv
         setContentView(R.layout.activity_coach_retention_form);
         ButterKnife.bind(this);
 
-        checkConnection();
+//        checkConnection();
 
         // Hide Actionbar
         getSupportActionBar().hide();
@@ -99,7 +99,7 @@ public class CoachRetentionForm extends BaseActivity implements ConnectionReceiv
 
         if ((sp_Village.getSelectedItemPosition() > 0) && (sp_SelectCoach.getSelectedItemPosition() > 0)) {
 
-            checkConnection();
+//            checkConnection();
 
             String endDate = btn_DatePicker.getText().toString().trim();
 
@@ -139,13 +139,14 @@ public class CoachRetentionForm extends BaseActivity implements ConnectionReceiv
 
             if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
 
-                checkConnection();
+//                checkConnection();
 
                 AppDatabase.getDatabaseInstance(this).getCoachDao().updateCoachStatus(status, endDate, coachID);
                 Toast.makeText(this, "Form Submitted to DB !!!", Toast.LENGTH_SHORT).show();
+                resetForm();
 
                 // Push To Server
-                try {
+               /* try {
                     if (internetIsAvailable) {
                         Gson gson = new Gson();
                         String CoachRetentionJSON = gson.toJson(Collections.singletonList(cObj));
@@ -191,7 +192,7 @@ public class CoachRetentionForm extends BaseActivity implements ConnectionReceiv
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
+                }*/
             } else {
                 // Preview Dialog
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CoachRetentionForm.this, android.R.style.Theme_Material_Light_Dialog);
@@ -327,6 +328,7 @@ public class CoachRetentionForm extends BaseActivity implements ConnectionReceiv
         newFragment.show(getFragmentManager(), "DatePicker");
     }
 
+/*
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (!isConnected) {
@@ -365,5 +367,6 @@ public class CoachRetentionForm extends BaseActivity implements ConnectionReceiv
 
         return json;
     }
+*/
 
 }

@@ -3,12 +3,9 @@ package com.pratham.admin.forms;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,23 +14,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
-import com.google.gson.Gson;
-import com.mcsoft.timerangepickerdialog.RangeTimePickerDialog;
-import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.custom.MultiSpinner;
+import com.pratham.admin.custom.RangeTimePickerDialog;
 import com.pratham.admin.database.AppDatabase;
-import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.GroupSession;
 import com.pratham.admin.modalclasses.Groups;
-import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.BaseActivity;
-import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.CustomGroup;
 import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.Utility;
@@ -50,9 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.pratham.admin.util.APIs.PushForms;
-
-public class GroupSessionForm extends BaseActivity implements ConnectionReceiverListener, RangeTimePickerDialog.ISelectedTime {
+public class GroupSessionForm extends BaseActivity implements /*ConnectionReceiverListener,*/ RangeTimePickerDialog.ISelectedTime {
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;
@@ -71,7 +58,7 @@ public class GroupSessionForm extends BaseActivity implements ConnectionReceiver
     @BindView(R.id.btn_Submit)
     Button btn_Submit;
 
-    boolean internetIsAvailable = false;
+//    boolean internetIsAvailable = false;
 
     List<Village> villageList = new ArrayList<>();
     List<Coach> coachList = new ArrayList<>();
@@ -119,7 +106,7 @@ public class GroupSessionForm extends BaseActivity implements ConnectionReceiver
         // Hide Actionbar
         getSupportActionBar().hide();
 
-        checkConnection();
+//        checkConnection();
 
         // Generate Random UUID
         uniqueVisitID = UUID.randomUUID().toString();
@@ -147,6 +134,7 @@ public class GroupSessionForm extends BaseActivity implements ConnectionReceiver
 
     }
 
+/*
     @Override
     protected void onResume() {
         super.onResume();
@@ -177,9 +165,10 @@ public class GroupSessionForm extends BaseActivity implements ConnectionReceiver
         return json;
     }
 
+*/
 
     private void resetForm() {
-        checkConnection();
+//        checkConnection();
         btn_TimeRangePicker.setText("Select Time");
         btn_Submit.setText("Preview");
         edt_PresentStdCount.getText().clear();
@@ -235,6 +224,7 @@ public class GroupSessionForm extends BaseActivity implements ConnectionReceiver
         FragmentManager fragmentManager = getFragmentManager();
         dialog.show(fragmentManager, "");
     }
+
 
     @Override
     public void onSelectedTime(int hourStart, int minuteStart, int hourEnd, int minuteEnd) {
@@ -447,6 +437,7 @@ public class GroupSessionForm extends BaseActivity implements ConnectionReceiver
         }
     };
 
+/*
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (!isConnected) {
@@ -455,6 +446,7 @@ public class GroupSessionForm extends BaseActivity implements ConnectionReceiver
             internetIsAvailable = true;
         }
     }
+*/
 
     @OnClick(R.id.btn_Submit)
     public void submitForm(View view) {
@@ -464,7 +456,7 @@ public class GroupSessionForm extends BaseActivity implements ConnectionReceiver
                 && (edt_PresentStdCount.getText().toString().trim().length() > 0)) {
             try {
 
-                checkConnection();
+//                checkConnection();
 
                 String date = btn_DatePicker.getText().toString().trim();
 
@@ -487,9 +479,10 @@ public class GroupSessionForm extends BaseActivity implements ConnectionReceiver
 
                     AppDatabase.getDatabaseInstance(this).getGroupSessionDao().insertAllGroupSession(Collections.singletonList(grpSessionObj));
                     Toast.makeText(this, "Form Saved to Database !!!", Toast.LENGTH_SHORT).show();
+                    resetForm();
 
                     // Push To Server
-                    try {
+                   /* try {
                         if (internetIsAvailable) {
                             Gson gson = new Gson();
                             String GroupSessionJSON = gson.toJson(Collections.singletonList(grpSessionObj));
@@ -538,7 +531,7 @@ public class GroupSessionForm extends BaseActivity implements ConnectionReceiver
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                    }
+                    }*/
                 } else {
                     // Preview Dialog
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(GroupSessionForm.this, android.R.style.Theme_Material_Light_Dialog);

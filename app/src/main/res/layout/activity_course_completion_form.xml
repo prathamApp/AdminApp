@@ -14,21 +14,21 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="32dp"
+            android:layout_margin="@dimen/_16sdp"
             android:background="@drawable/custom_border"
             android:fontFamily="monospace"
             android:gravity="center"
-            android:padding="16dp"
+            android:padding="@dimen/_8sdp"
             android:text="Course Completion"
             android:textColor="@color/colorAccent"
-            android:textSize="28sp"
+            android:textSize="@dimen/_20sdp"
             android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
+            android:layout_marginLeft="@dimen/_16sdp"
+            android:layout_marginRight="@dimen/_16sdp"
             android:background="@drawable/custom_border"
             android:orientation="vertical">
 
@@ -43,20 +43,20 @@
                     android:id="@+id/sp_Village"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <!--Select Group-->
                 <Spinner
                     android:id="@+id/sp_Groups"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/_12sdp" />
 
 
             </LinearLayout>
@@ -65,14 +65,14 @@
                 android:id="@+id/tv_Course_Warning"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_margin="@dimen/_8sdp"
                 android:background="@drawable/custom_border"
                 android:drawableLeft="@drawable/ic_warning"
                 android:gravity="center"
-                android:padding="16dp"
+                android:padding="@dimen/_8sdp"
                 android:text="No Courses/ Topics Available !!!"
                 android:textColor="#FF0000"
-                android:textSize="18sp"
+                android:textSize="@dimen/_12sdp"
                 android:textStyle="bold"
                 android:visibility="gone" />
 
@@ -81,7 +81,7 @@
                 android:id="@+id/card_view_recycler_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_margin="@dimen/_8sdp"
                 tools:itemCount="2"
                 tools:listitem="@layout/course_topic_completion_items"
                 tools:orientation="horizontal" />
@@ -96,11 +96,11 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:text="Start Date"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
 
                 <!--Start Date-->
@@ -108,25 +108,25 @@
                     android:id="@+id/btn_DatePicker"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:background="@color/colorPrimaryDark"
                     android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-                    android:paddingLeft="16dp"
+                    android:paddingLeft="@dimen/_8sdp"
                     android:text="Date"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <!--End Date-->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:text="End Date"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
 
                 <!--End Date-->
@@ -134,15 +134,15 @@
                     android:id="@+id/btn_DatePickerTwo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:background="@color/colorPrimaryDark"
                     android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-                    android:paddingLeft="16dp"
+                    android:paddingLeft="@dimen/_8sdp"
                     android:text="Date"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
 
@@ -164,31 +164,31 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
+                        android:layout_margin="@dimen/_8sdp"
                         android:layout_weight="1"
                         android:text="Was it an Event ?"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/_12sdp"
                         android:textStyle="bold" />
 
                     <RadioButton
                         android:id="@+id/rb_Yes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
+                        android:layout_margin="@dimen/_8sdp"
                         android:layout_weight="1.5"
                         android:checked="true"
                         android:text="Yes"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/_12sdp" />
 
                     <RadioButton
                         android:id="@+id/rb_No"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
+                        android:layout_margin="@dimen/_8sdp"
                         android:layout_weight="1.5"
                         android:text="No"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/_12sdp" />
 
                 </RadioGroup>
 
@@ -197,7 +197,7 @@
                     android:id="@+id/edt_ParentCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:digits="0123456789"
                     android:hint="no of parents present"
@@ -205,7 +205,7 @@
                     android:maxLength="2"
                     android:singleLine="true"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
 
@@ -215,12 +215,12 @@
             android:id="@+id/btn_Submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="32dp"
+            android:layout_margin="@dimen/_16sdp"
             android:background="@color/colorPrimaryDark"
             android:text="Preview"
             android:textAllCaps="true"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"
+            android:textSize="@dimen/_16sdp"
             android:textStyle="bold" />
 
     </LinearLayout>

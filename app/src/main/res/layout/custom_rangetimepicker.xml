@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ly_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            app:tabGravity="fill"
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed">
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/tabStartTime"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:icon="@drawable/ic_start_time_black_24dp"
+                android:text="Start time" />
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/tabEndTime"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:icon="@drawable/ic_end_time_black_24dp"
+                android:text="End time" />
+        </android.support.design.widget.TabLayout>
+
+        <LinearLayout
+            android:id="@+id/options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnPositiveDialog"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:text="Accept"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <Button
+                android:id="@+id/btnNegativeDialog"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:text="Close"
+                android:textColor="@color/colorPrimaryDark" />
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutTimePicker"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/options"
+            android:layout_below="@+id/tabLayout"
+            android:gravity="center">
+
+            <TimePicker
+                android:id="@+id/timePickerStart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:headerBackground="@color/colorPrimary" />
+
+            <TimePicker
+                android:id="@+id/timePickerEnd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:headerBackground="@color/colorPrimary"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

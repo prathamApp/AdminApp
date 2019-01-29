@@ -58,7 +58,7 @@ import static com.pratham.admin.util.APIs.PushForms;
 
 // CourseEnrollment = CourseCommunity
 
-public class CourseEnrollmentForm extends BaseActivity implements ConnectionReceiverListener {
+public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionReceiverListener */{
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;
@@ -124,7 +124,7 @@ public class CourseEnrollmentForm extends BaseActivity implements ConnectionRece
     String selectedPC = "";
     String selectedPCNames = "";
 
-    boolean internetIsAvailable = false;
+//    boolean internetIsAvailable = false;
     private String villageName;
     List<String> uniqueIDList = new ArrayList<>();
 
@@ -134,7 +134,7 @@ public class CourseEnrollmentForm extends BaseActivity implements ConnectionRece
         setContentView(R.layout.activity_course_enrollment_form);
         ButterKnife.bind(this);
 
-        checkConnection();
+//        checkConnection();
 
         // Hide Actionbar
         getSupportActionBar().hide();
@@ -171,6 +171,7 @@ public class CourseEnrollmentForm extends BaseActivity implements ConnectionRece
 
     }
 
+/*
     @Override
     protected void onResume() {
         super.onResume();
@@ -200,6 +201,7 @@ public class CourseEnrollmentForm extends BaseActivity implements ConnectionRece
 
         return json;
     }
+*/
 
 
     @OnClick(R.id.btn_Submit)
@@ -210,7 +212,7 @@ public class CourseEnrollmentForm extends BaseActivity implements ConnectionRece
 
             try {
 
-                checkConnection();
+//                checkConnection();
 
 /*                // parentsParticipation
                 int selectedId = rg_ParentsParticipation.getCheckedRadioButtonId();
@@ -255,9 +257,10 @@ public class CourseEnrollmentForm extends BaseActivity implements ConnectionRece
                 if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
                     AppDatabase.getDatabaseInstance(this).getCommunityDao().insertCommunity(commList);
                     Toast.makeText(this, "Form Saved to Database !!!", Toast.LENGTH_SHORT).show();
+                    resetForm();
 
                     // Push To Server
-                    try {
+                    /*try {
                         if (internetIsAvailable) {
                             Gson gson = new Gson();
                             String CommunityJSON = gson.toJson(commList);
@@ -306,7 +309,7 @@ public class CourseEnrollmentForm extends BaseActivity implements ConnectionRece
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                    }
+                    }*/
                 } else {
                     // Preview Dialog
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CourseEnrollmentForm.this, android.R.style.Theme_Material_Light_Dialog);
@@ -605,6 +608,7 @@ public class CourseEnrollmentForm extends BaseActivity implements ConnectionRece
         }
     };
 
+/*
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (!isConnected) {
@@ -613,6 +617,7 @@ public class CourseEnrollmentForm extends BaseActivity implements ConnectionRece
             internetIsAvailable = true;
         }
     }
+*/
 
 }
 

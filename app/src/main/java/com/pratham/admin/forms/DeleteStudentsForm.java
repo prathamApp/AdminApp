@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -161,7 +160,7 @@ public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiv
 
                             @Override
                             public void onError(ANError anError) {
-                                Toast.makeText(DeleteStudentsForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                                Toast.makeText(DeleteStudentsForm.this, "Selected Students not Deleted as due to Network Issues !", Toast.LENGTH_LONG).show();
                                 dialog.dismiss();
                                 resetForm();
                             }

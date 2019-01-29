@@ -103,8 +103,8 @@ public class MainActivity extends BaseActivity implements DialogInterface {
         password.setText("pratham123");
 */
 
-        userName.setText("amolmoghe");
-        password.setText("pratham@123");
+//        userName.setText("amolmoghe");
+//        password.setText("pratham@123");
   /*      userName.setText("ganeshtupe54");
         password.setText("pratham");
         userName.setText("amolmoghe");
@@ -116,8 +116,8 @@ public class MainActivity extends BaseActivity implements DialogInterface {
 */
 
 
-//        userName.setText("");
-//        password.setText("");
+        userName.setText("");
+        password.setText("");
         userName.requestFocus();
         SharedPreferences preferences = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
         String program = preferences.getString("program", "null");
@@ -166,6 +166,9 @@ public class MainActivity extends BaseActivity implements DialogInterface {
                     metaData.setKeys("CRL_ID");
                     metaData.setValue(Crl.get(i).getCRLId());
                     AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
+
+
+
                     AppDatabase.destroyInstance();
                     crlName = Crl.get(i).getFirstName() + " " + Crl.get(i).getLastName(); //+ " (" + Crl.get(i).getCRLId() + ")";
                     this.crlID = Crl.get(i).getCRLId();

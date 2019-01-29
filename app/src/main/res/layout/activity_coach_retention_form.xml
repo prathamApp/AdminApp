@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     android:background="#FFFFFF">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,21 +17,21 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="32dp"
+            android:layout_margin="@dimen/_16sdp"
             android:background="@drawable/custom_border"
             android:fontFamily="monospace"
             android:gravity="center"
-            android:padding="16dp"
+            android:padding="@dimen/_8sdp"
             android:text="Coach Retention"
             android:textColor="@color/colorAccent"
-            android:textSize="32sp"
+            android:textSize="@dimen/_20sdp"
             android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
+            android:layout_marginLeft="@dimen/_16sdp"
+            android:layout_marginRight="@dimen/_16sdp"
             android:background="@drawable/custom_border"
             android:orientation="vertical">
 
@@ -38,6 +39,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
@@ -46,20 +48,20 @@
                     android:id="@+id/sp_Village"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <!--Coach-->
                 <Spinner
                     android:id="@+id/sp_SelectCoach"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
 
@@ -76,7 +78,7 @@
                     android:id="@+id/rg_DropOut"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:orientation="horizontal"
                     android:weightSum="4">
@@ -87,7 +89,7 @@
                         android:layout_weight="1"
                         android:text="Drop Out"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/_12sdp"
                         android:textStyle="bold" />
 
                     <RadioButton
@@ -97,7 +99,7 @@
                         android:layout_weight="1.5"
                         android:checked="true"
                         android:text="Yes"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/_12sdp" />
 
                     <RadioButton
                         android:id="@+id/rb_No"
@@ -106,14 +108,14 @@
                         android:layout_marginLeft="8dp"
                         android:layout_weight="1.5"
                         android:text="No"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/_12sdp" />
 
                 </RadioGroup>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:orientation="horizontal"
                     android:weightSum="2">
@@ -124,7 +126,7 @@
                         android:layout_weight="1"
                         android:text="End Date"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/_12sdp"
                         android:textStyle="bold" />
 
                     <Button
@@ -134,11 +136,11 @@
                         android:layout_weight="1"
                         android:background="@color/colorPrimaryDark"
                         android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-                        android:paddingLeft="16dp"
+                        android:paddingLeft="@dimen/_8sdp"
                         android:text="Date"
                         android:textAllCaps="false"
                         android:textColor="#FFFFFF"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/_12sdp" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -149,12 +151,12 @@
             android:id="@+id/btn_Submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="32dp"
+            android:layout_margin="@dimen/_16sdp"
             android:background="@color/colorPrimaryDark"
             android:text="Preview"
             android:textAllCaps="true"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"
+            android:textSize="@dimen/_12sdp"
             android:textStyle="bold" />
 
     </LinearLayout>

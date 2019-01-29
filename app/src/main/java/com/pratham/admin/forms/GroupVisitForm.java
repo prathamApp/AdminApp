@@ -21,10 +21,10 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
-import com.mcsoft.timerangepickerdialog.RangeTimePickerDialog;
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.custom.MultiSpinner;
+import com.pratham.admin.custom.RangeTimePickerDialog;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.modalclasses.Coach;
@@ -52,7 +52,7 @@ import butterknife.OnClick;
 
 import static com.pratham.admin.util.APIs.PushForms;
 
-public class GroupVisitForm extends BaseActivity implements ConnectionReceiverListener, RangeTimePickerDialog.ISelectedTime {
+public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiverListener, */RangeTimePickerDialog.ISelectedTime {
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;
@@ -74,7 +74,7 @@ public class GroupVisitForm extends BaseActivity implements ConnectionReceiverLi
     Button btn_Submit;
 
 
-    boolean internetIsAvailable = false;
+//    boolean internetIsAvailable = false;
 
     List<Village> villageList = new ArrayList<>();
     List<Coach> coachList = new ArrayList<>();
@@ -125,7 +125,7 @@ public class GroupVisitForm extends BaseActivity implements ConnectionReceiverLi
         setContentView(R.layout.activity_group_visit_form);
         ButterKnife.bind(this);
 
-        checkConnection();
+//        checkConnection();
 
         // Hide Actionbar
         getSupportActionBar().hide();
@@ -387,7 +387,7 @@ public class GroupVisitForm extends BaseActivity implements ConnectionReceiverLi
 
 
     private void resetForm() {
-        checkConnection();
+//        checkConnection();
         btn_TimeRangePicker.setText("Select Time");
         btn_Submit.setText("Preview");
         edt_PresentStdCount.getText().clear();
@@ -417,6 +417,7 @@ public class GroupVisitForm extends BaseActivity implements ConnectionReceiverLi
         coachList.clear();
     }
 
+/*
     @Override
     protected void onResume() {
         super.onResume();
@@ -446,6 +447,7 @@ public class GroupVisitForm extends BaseActivity implements ConnectionReceiverLi
 
         return json;
     }
+*/
 
     @OnClick(R.id.btn_DatePicker)
     public void visitDatePicker(View view) {
@@ -499,6 +501,7 @@ public class GroupVisitForm extends BaseActivity implements ConnectionReceiverLi
 
     }
 
+/*
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (!isConnected) {
@@ -507,6 +510,7 @@ public class GroupVisitForm extends BaseActivity implements ConnectionReceiverLi
             internetIsAvailable = true;
         }
     }
+*/
 
 
     @OnClick(R.id.btn_Submit)
@@ -518,7 +522,7 @@ public class GroupVisitForm extends BaseActivity implements ConnectionReceiverLi
                 && (edt_PresentStdCount.getText().toString().trim().length() > 0)) {
             try {
 
-                checkConnection();
+//                checkConnection();
 
                 String date = btn_DatePicker.getText().toString().trim();
 
@@ -542,9 +546,10 @@ public class GroupVisitForm extends BaseActivity implements ConnectionReceiverLi
 
                     AppDatabase.getDatabaseInstance(this).getGroupVisitDao().insertAllCRLVisit(Collections.singletonList(grpVisitObj));
                     Toast.makeText(this, "Form Saved to Database !!!", Toast.LENGTH_SHORT).show();
+                    resetForm();
 
                     // Push To Server
-                    try {
+                    /*try {
                         if (internetIsAvailable) {
                             Gson gson = new Gson();
                             String GroupVisitJSON = gson.toJson(Collections.singletonList(grpVisitObj));
@@ -593,7 +598,7 @@ public class GroupVisitForm extends BaseActivity implements ConnectionReceiverLi
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                    }
+                    }*/
                 } else {
                     // Preview Dialog
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(GroupVisitForm.this, android.R.style.Theme_Material_Light_Dialog);

@@ -4,12 +4,9 @@ package com.pratham.admin.forms;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,10 +18,6 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
-import com.google.gson.Gson;
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.custom.MultiSpinner;
@@ -40,11 +33,9 @@ import com.pratham.admin.util.CustomGroup;
 import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.Utility;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,9 +43,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.pratham.admin.util.APIs.PushForms;
-
-public class CoachInformationForm extends BaseActivity implements ConnectionReceiverListener {
+public class CoachInformationForm extends BaseActivity/* implements ConnectionReceiverListener */{
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;
@@ -107,7 +96,7 @@ public class CoachInformationForm extends BaseActivity implements ConnectionRece
     String selectedGroups = "";
     String selectedGroupNames = "";
 
-    boolean internetIsAvailable = false;
+//    boolean internetIsAvailable = false;
 
     String selectedEdu;
 
@@ -122,7 +111,7 @@ public class CoachInformationForm extends BaseActivity implements ConnectionRece
         // Hide Actionbar
         getSupportActionBar().hide();
 
-        checkConnection();
+//        checkConnection();
 
         // Generate Random UUID
         uniqueCoachID = UUID.randomUUID().toString();
@@ -457,13 +446,15 @@ public class CoachInformationForm extends BaseActivity implements ConnectionRece
 
                 if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
 
-                    checkConnection();
+//                    checkConnection();
 
                     AppDatabase.getDatabaseInstance(this).getCoachDao().insertCoach(Collections.singletonList(cObj));
                     Toast.makeText(this, "Form Submitted to DB !!!", Toast.LENGTH_SHORT).show();
+                    resetForm();
+
 
                     // Push To Server
-                    try {
+                    /*try {
                         if (internetIsAvailable) {
                             Gson gson = new Gson();
                             String CoachInfoJSON = gson.toJson(Collections.singletonList(cObj));
@@ -509,7 +500,7 @@ public class CoachInformationForm extends BaseActivity implements ConnectionRece
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                    }
+                    }*/
                 } else {
                     // Preview Dialog
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CoachInformationForm.this, android.R.style.Theme_Material_Light_Dialog);
@@ -581,7 +572,7 @@ public class CoachInformationForm extends BaseActivity implements ConnectionRece
         uniqueCoachID = UUID.randomUUID().toString();
     }
 
-    @Override
+    /*@Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (!isConnected) {
             internetIsAvailable = false;
@@ -618,6 +609,6 @@ public class CoachInformationForm extends BaseActivity implements ConnectionRece
         json = json + "}";
 
         return json;
-    }
+    }*/
 
 }

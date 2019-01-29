@@ -18,21 +18,22 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="32dp"
+            android:layout_margin="@dimen/_16sdp"
             android:background="@drawable/custom_border"
             android:fontFamily="monospace"
             android:gravity="center"
+            android:padding="@dimen/_8sdp"
             android:text="Group Session"
             android:textColor="@color/colorAccent"
-            android:textSize="28sp"
+            android:textSize="@dimen/_20sdp"
             android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
+            android:layout_marginLeft="@dimen/_16sdp"
+            android:layout_marginRight="@dimen/_16sdp"
+            android:layout_marginBottom="@dimen/_16sdp"
             android:background="@drawable/custom_border"
             android:orientation="vertical">
 
@@ -46,40 +47,43 @@
                     android:id="@+id/sp_Village"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <!--Multi Select Groups Dynamically-->
                 <com.pratham.admin.custom.MultiSpinner
                     android:id="@+id/sp_VisitedGroups_multiselect"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:layout_weight="1" />
+                    android:layout_margin="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:padding="@dimen/_4sdp" />
 
                 <!--Multi Select Present Coach Dynamically-->
                 <com.pratham.admin.custom.MultiSpinner
                     android:id="@+id/sp_PresentCoaches_multiselect"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:layout_weight="1" />
+                    android:layout_margin="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:padding="@dimen/_4sdp" />
 
                 <!--Multi Select WorkCrosscheckedGrps-->
                 <com.pratham.admin.custom.MultiSpinner
                     android:id="@+id/sp_WorkCrosscheckedGrps_multiselect"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:layout_weight="1" />
+                    android:layout_margin="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:padding="@dimen/_4sdp" />
 
                 <!--Present Students Count-->
                 <EditText
                     android:id="@+id/edt_PresentStdCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:digits="0123456789"
                     android:hint="no of students present"
@@ -87,7 +91,7 @@
                     android:maxLength="2"
                     android:singleLine="true"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -100,30 +104,30 @@
                         android:id="@+id/btn_DatePicker"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
+                        android:layout_margin="@dimen/_8sdp"
                         android:layout_weight="1"
                         android:background="@color/colorPrimaryDark"
                         android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-                        android:paddingLeft="16dp"
+                        android:paddingLeft="@dimen/_8sdp"
                         android:text="Date"
                         android:textAllCaps="false"
                         android:textColor="#FFFFFF"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/_12sdp" />
 
                     <!--Time Range Picker-->
                     <Button
                         android:id="@+id/btn_TimeRangePicker"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
+                        android:layout_margin="@dimen/_8sdp"
                         android:layout_weight="1"
                         android:background="@color/colorPrimaryDark"
                         android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-                        android:paddingLeft="16dp"
+                        android:paddingLeft="@dimen/_8sdp"
                         android:text="Select Time"
                         android:textAllCaps="false"
                         android:textColor="#FFFFFF"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/_12sdp" />
 
                 </LinearLayout>
 
@@ -138,14 +142,14 @@
             android:id="@+id/btn_Submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
+            android:layout_marginLeft="@dimen/_16sdp"
+            android:layout_marginRight="@dimen/_16sdp"
+            android:layout_marginBottom="@dimen/_16sdp"
             android:background="@color/colorPrimaryDark"
             android:text="Submit"
             android:textAllCaps="true"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"
+            android:textSize="@dimen/_12sdp"
             android:textStyle="bold" />
 
 

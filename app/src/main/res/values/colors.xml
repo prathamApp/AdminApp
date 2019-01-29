@@ -10,5 +10,9 @@
     <color name="button">#2E96BB</color>
     <color name="album_title">#4c4c4c</color>
     <color name="green">#00ff00</color>
+    <color name="Yellow">#ffdd00</color>
+    <color name="White">#fff</color>
+    <color name="CyanWater">#09b6b3</color>
+
 
 </resources>

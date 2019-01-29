@@ -57,7 +57,7 @@ import butterknife.OnClick;
 
 import static com.pratham.admin.util.APIs.PushForms;
 
-public class CourseCompletionForm extends BaseActivity implements DashRVClickListener, ConnectionReceiverListener {
+public class CourseCompletionForm extends BaseActivity implements DashRVClickListener/*, ConnectionReceiverListener */{
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;
@@ -94,7 +94,7 @@ public class CourseCompletionForm extends BaseActivity implements DashRVClickLis
     String villageID;
     String groupId;
 
-    boolean internetIsAvailable = false;
+//    boolean internetIsAvailable = false;
     private String villageName;
     private String groupName;
     private String selectedTopicNames;
@@ -166,6 +166,7 @@ public class CourseCompletionForm extends BaseActivity implements DashRVClickLis
         }
     }
 
+/*
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (!isConnected) {
@@ -204,12 +205,13 @@ public class CourseCompletionForm extends BaseActivity implements DashRVClickLis
 
         return json;
     }
+*/
 
 
     @OnClick(R.id.btn_Submit)
     public void submitForm(View view) {
 
-        checkConnection();
+//        checkConnection();
 
         // getting Selected Items
         selectedCourseIDs = "";
@@ -269,9 +271,10 @@ public class CourseCompletionForm extends BaseActivity implements DashRVClickLis
             if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
                 AppDatabase.getDatabaseInstance(this).getCompletionDao().insertCompletion(Collections.singletonList(compObj));
                 Toast.makeText(this, "Form Submitted to DB !!!", Toast.LENGTH_SHORT).show();
+                resetForm();
 
                 // Push To Server
-                try {
+                /*try {
                     if (internetIsAvailable) {
                         Gson gson = new Gson();
                         String CompletionJSON = gson.toJson(Collections.singletonList(compObj));
@@ -316,7 +319,7 @@ public class CourseCompletionForm extends BaseActivity implements DashRVClickLis
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
+                }*/
             } else {
                 // Preview Dialog
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CourseCompletionForm.this, android.R.style.Theme_Material_Light_Dialog);

@@ -37,7 +37,7 @@ import java.util.UUID;
 
 import static com.pratham.admin.util.APIs.PushForms;
 
-public class AddNewGroup extends BaseActivity implements ConnectionReceiverListener {
+public class AddNewGroup extends BaseActivity/* implements ConnectionReceiverListener */{
 
     Spinner states_spinner, blocks_spinner, villages_spinner;
     EditText edt_NewGroupName;
@@ -53,7 +53,7 @@ public class AddNewGroup extends BaseActivity implements ConnectionReceiverListe
     Context sessionContex;
     boolean timer;
     Utility util;
-    boolean internetIsAvailable = false;
+//    boolean internetIsAvailable = false;
 
 
     @Override
@@ -64,7 +64,7 @@ public class AddNewGroup extends BaseActivity implements ConnectionReceiverListe
         // Hide Actionbar
         getSupportActionBar().hide();
 
-        checkConnection();
+//        checkConnection();
 
         sessionContex = this;
 
@@ -142,9 +142,10 @@ public class AddNewGroup extends BaseActivity implements ConnectionReceiverListe
                         grpobj.sentFlag = 0;
 
                         AppDatabase.getDatabaseInstance(AddNewGroup.this).getGroupDao().insertGroup(grpobj);
+                        FormReset();
 
                         // Push To Server
-                        try {
+                       /* try {
                             if (internetIsAvailable) {
                                 Gson gson = new Gson();
                                 String GroupJSON = gson.toJson(grpobj);
@@ -192,7 +193,7 @@ public class AddNewGroup extends BaseActivity implements ConnectionReceiverListe
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                        }
+                        }*/
 
                         Toast.makeText(AddNewGroup.this, "Record Inserted Successfully !!!", Toast.LENGTH_SHORT).show();
                     } else {
@@ -297,7 +298,7 @@ public class AddNewGroup extends BaseActivity implements ConnectionReceiverListe
         randomUUIDGroup = uuid.toString();
     }
 
-    @Override
+    /*@Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (!isConnected) {
             internetIsAvailable = false;
@@ -335,6 +336,6 @@ public class AddNewGroup extends BaseActivity implements ConnectionReceiverListe
 
         return json;
     }
-
+*/
 
 }

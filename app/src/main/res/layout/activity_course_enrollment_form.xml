@@ -15,20 +15,20 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/_8sdp"
             android:background="@drawable/custom_border"
             android:fontFamily="monospace"
             android:gravity="center"
-            android:padding="16dp"
+            android:padding="@dimen/_8sdp"
             android:text="Course Enrollment"
             android:textColor="@color/colorAccent"
-            android:textSize="28sp"
+            android:textSize="@dimen/_20sdp"
             android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/_8sdp"
             android:background="@drawable/custom_border"
             android:orientation="vertical">
 
@@ -43,27 +43,27 @@
                     android:id="@+id/sp_Village"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <!--Select Groups-->
                 <com.pratham.admin.custom.MultiSpinner
                     android:id="@+id/sp_Groups"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <!--Select Coach-->
                 <com.pratham.admin.custom.MultiSpinner
                     android:id="@+id/sp_SelectCoach"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/_12sdp" />
 
 
             </LinearLayout>
@@ -79,38 +79,39 @@
                     android:id="@+id/sp_Course"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <!--Select SubjectExpert Multiselect-->
                 <com.pratham.admin.custom.MultiSpinner
                     android:id="@+id/ms_sp_Topics"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
-                    android:paddingLeft="8dp"
+                    android:paddingLeft="@dimen/_4sdp"
                     android:textColor="#000000"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="4">
 
                 <!--Community-->
                 <RadioGroup
                     android:id="@+id/rg_Community"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:orientation="horizontal"
-                    android:weightSum="4">
+                    android:weightSum="3">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -118,26 +119,27 @@
                         android:layout_weight="1"
                         android:text="Community or School"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/_12sdp"
                         android:textStyle="bold" />
 
                     <RadioButton
                         android:id="@+id/rb_Community"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
+                        android:layout_marginLeft="@dimen/_4sdp"
+                        android:layout_weight="1"
                         android:checked="true"
                         android:text="Community"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/_12sdp" />
 
                     <RadioButton
                         android:id="@+id/rb_School"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_weight="1.5"
+                        android:layout_marginLeft="@dimen/_4sdp"
+                        android:layout_weight="1"
                         android:text="School"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/_12sdp" />
 
                 </RadioGroup>
 
@@ -146,15 +148,15 @@
                     android:id="@+id/btn_DatePicker"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:layout_weight="1"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:layout_weight="3"
                     android:background="@color/colorPrimaryDark"
                     android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-                    android:paddingLeft="16dp"
+                    android:paddingLeft="@dimen/_8sdp"
                     android:text="Date"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/_12sdp" />
 
 
             </LinearLayout>
@@ -171,40 +173,40 @@
                     android:id="@+id/rg_ParentsParticipation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:orientation="horizontal"
                     android:visibility="gone"
-                    android:weightSum="4">
+                    android:weightSum="1">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginLeft="@dimen/_4sdp"
                         android:layout_weight="1"
                         android:text="Parents Participation"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/_12sdp"
                         android:textStyle="bold" />
 
                     <RadioButton
                         android:id="@+id/rb_Yes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_weight="1.5"
+                        android:layout_marginLeft="@dimen/_4sdp"
+                        android:layout_weight="1"
                         android:checked="true"
                         android:text="Yes"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/_12sdp" />
 
                     <RadioButton
                         android:id="@+id/rb_No"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_weight="1.5"
+                        android:layout_marginLeft="@dimen/_4sdp"
+                        android:layout_weight="1"
                         android:text="No"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/_12sdp" />
 
                 </RadioGroup>
 
@@ -213,7 +215,7 @@
                     android:id="@+id/edt_PresentStdCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:digits="0123456789"
                     android:hint="present students count ?"
@@ -221,7 +223,7 @@
                     android:maxLength="3"
                     android:textAllCaps="false"
                     android:textColor="#000000"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/_12sdp"
                     android:visibility="gone" />
 
 
@@ -234,12 +236,12 @@
             android:id="@+id/btn_Submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/_8sdp"
             android:background="@color/colorPrimaryDark"
             android:text="Preview"
             android:textAllCaps="true"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"
+            android:textSize="@dimen/_12sdp"
             android:textStyle="bold" />
 
     </LinearLayout>

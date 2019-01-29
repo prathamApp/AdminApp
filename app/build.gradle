@@ -8,8 +8,10 @@ android {
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
-        versionName "1.02"
+        versionName "1.03"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        renderscriptTargetApi 27
+        renderscriptSupportModeEnabled true
     }
     buildTypes {
         release {
@@ -58,9 +60,10 @@ dependencies {
 
 
     // Time Range Picker
-    implementation 'com.github.PuffoCyano:Range-Time-Picker-Dialog:v1.5'
     implementation 'org.greenrobot:eventbus:3.1.1'
 
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
+    implementation 'com.kyleduo.blurpopupwindow:blurpopupwindow:1.0.9'
+    implementation 'com.airbnb.android:lottie:2.7.0'
 
 }

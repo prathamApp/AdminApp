@@ -47,7 +47,7 @@ public class FormsActivity extends BaseActivity implements DashRVClickListener {
         LoggedCRLnameSwapStd = getIntent().getStringExtra("CRLnameSwapStd");
 
         // Start WiFi
-        turnOnWifi();
+//        turnOnWifi();
 
         // Recycler View
         initializeItemList();
@@ -68,14 +68,16 @@ public class FormsActivity extends BaseActivity implements DashRVClickListener {
 
     }
 
+/*
     @Override
     protected void onResume() {
         super.onResume();
         // Start WiFi
         turnOnWifi();
     }
+*/
 
-    private void turnOnWifi() {
+    /*private void turnOnWifi() {
         //enable wifi
         WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         boolean wifiEnabled = wifiManager.isWifiEnabled();
@@ -83,7 +85,7 @@ public class FormsActivity extends BaseActivity implements DashRVClickListener {
             wifiManager.setWifiEnabled(true);
         }
     }
-
+*/
     /* Initialise items in list. */
     private void initializeItemList() {
         if (DashboardItemList == null) {
