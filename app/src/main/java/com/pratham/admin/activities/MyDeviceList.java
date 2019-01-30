@@ -1,7 +1,9 @@
 package com.pratham.admin.activities;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.admin.R;
 import com.pratham.admin.adapters.DeviceListAdapter;
+import com.pratham.admin.forms.CourseCompletionForm;
 import com.pratham.admin.modalclasses.DeviseList;
 
 import org.json.JSONArray;
@@ -26,7 +29,7 @@ public class MyDeviceList extends Dialog {
     Context context;
 
     public MyDeviceList(@NonNull Context context, JSONArray response) {
-        super(context, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
+        super(context, android.R.style.Theme_Material_Light_DarkActionBar);
         Gson gson = new Gson();
         Type devicesList = new TypeToken<ArrayList<DeviseList>>() {
         }.getType();
