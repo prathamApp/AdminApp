@@ -15,7 +15,7 @@ import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 
-public class PullData extends BaseActivity implements ConnectionReceiverListener {
+public class PullData extends BaseActivity/* implements ConnectionReceiverListener */{
 
     boolean internetIsAvailable = false;
     String LoggedcrlId = "", LoggedcrlName = "", LoggedCRLnameSwapStd = "";
@@ -27,11 +27,14 @@ public class PullData extends BaseActivity implements ConnectionReceiverListener
         setContentView(R.layout.activity_pull_data);
         getSupportActionBar().hide();
 
+/*
         turnOnWifi();
         checkConnection();
+*/
 
     }
 
+/*
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (!isConnected) {
@@ -40,14 +43,17 @@ public class PullData extends BaseActivity implements ConnectionReceiverListener
             internetIsAvailable = true;
         }
     }
+*/
 
     @Override
     protected void onResume() {
         super.onResume();
         // Start WiFi
+/*
         turnOnWifi();
         checkConnection();
         ApplicationController.getInstance().setConnectionListener(this);
+*/
         initializeAppInfo();
     }
 
@@ -67,6 +73,7 @@ public class PullData extends BaseActivity implements ConnectionReceiverListener
 
     }
 
+/*
 
     private void checkConnection() {
         boolean isConnected = ConnectionReceiver.isConnected();
@@ -85,5 +92,6 @@ public class PullData extends BaseActivity implements ConnectionReceiverListener
             wifiManager.setWifiEnabled(true);
         }
     }
+*/
 
 }

@@ -27,7 +27,7 @@ public class PushData extends BaseActivity implements ConnectionReceiverListener
         setContentView(R.layout.activity_push_data);
         getSupportActionBar().hide();
 
-        turnOnWifi();
+//        turnOnWifi();
         checkConnection();
 
     }
@@ -45,7 +45,7 @@ public class PushData extends BaseActivity implements ConnectionReceiverListener
     protected void onResume() {
         super.onResume();
         // Start WiFi
-        turnOnWifi();
+//        turnOnWifi();
         checkConnection();
         ApplicationController.getInstance().setConnectionListener(this);
         initializeAppInfo();
@@ -76,6 +76,7 @@ public class PushData extends BaseActivity implements ConnectionReceiverListener
         }
     }
 
+/*
     private void turnOnWifi() {
         //enable wifi
         WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -84,5 +85,6 @@ public class PushData extends BaseActivity implements ConnectionReceiverListener
             wifiManager.setWifiEnabled(true);
         }
     }
+*/
 
 }

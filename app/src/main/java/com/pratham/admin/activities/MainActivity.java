@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity implements DialogInterface {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         // Start WiFi
-        turnOnWifi();
+//        turnOnWifi();
         PackageInfo pinfo = null;
         try {
             pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -78,6 +78,7 @@ public class MainActivity extends BaseActivity implements DialogInterface {
         }
     }
 
+/*
     private void turnOnWifi() {
         //enable wifi
         WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -86,6 +87,7 @@ public class MainActivity extends BaseActivity implements DialogInterface {
             wifiManager.setWifiEnabled(true);
         }
     }
+*/
 
 
     @Override
@@ -94,7 +96,7 @@ public class MainActivity extends BaseActivity implements DialogInterface {
         super.onResume();
 
         // Start WiFi
-        turnOnWifi();
+//        turnOnWifi();
         /*userName.setText("admin");
         password.setText("admin");*/
 

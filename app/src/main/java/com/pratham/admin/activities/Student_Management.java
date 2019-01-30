@@ -24,7 +24,7 @@ import com.pratham.admin.util.ConnectionReceiver;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class Student_Management extends BaseActivity implements ConnectionReceiverListener {
+public class Student_Management extends BaseActivity/* implements ConnectionReceiverListener */{
 
     @BindView(R.id.tv_appInfo)
     TextView tv_appInfo;
@@ -47,8 +47,10 @@ public class Student_Management extends BaseActivity implements ConnectionReceiv
     }
 
     private void initialDashboardSetup() {
+/*
         checkConnection();
         turnOnWifi();
+*/
 
         LoggedcrlId = getIntent().getStringExtra("CRLid");
         LoggedcrlName = getIntent().getStringExtra("CRLname");
@@ -60,6 +62,7 @@ public class Student_Management extends BaseActivity implements ConnectionReceiv
         wakeLock.acquire();
     }
 
+/*
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (!isConnected) {
@@ -68,14 +71,17 @@ public class Student_Management extends BaseActivity implements ConnectionReceiv
             internetIsAvailable = true;
         }
     }
+*/
 
     @Override
     protected void onResume() {
         super.onResume();
         // Start WiFi
+/*
         turnOnWifi();
         checkConnection();
         ApplicationController.getInstance().setConnectionListener(this);
+*/
         initializeAppInfo();
 
     }
@@ -99,7 +105,7 @@ public class Student_Management extends BaseActivity implements ConnectionReceiv
     }
 
 
-    private void checkConnection() {
+ /*   private void checkConnection() {
         boolean isConnected = ConnectionReceiver.isConnected();
         if (!isConnected) {
             internetIsAvailable = false;
@@ -116,7 +122,7 @@ public class Student_Management extends BaseActivity implements ConnectionReceiv
             wifiManager.setWifiEnabled(true);
         }
     }
-
+*/
     public void AddNewGroup(View view) {
         Intent intent = new Intent(this, AddNewGroup.class);
         intent.putExtra("CRLid", LoggedcrlId);
