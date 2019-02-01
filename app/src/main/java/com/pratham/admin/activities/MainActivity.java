@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.wifi.WifiManager;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,20 +19,26 @@ import android.widget.Toast;
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
+import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.DialogInterface;
 import com.pratham.admin.modalclasses.CRL;
 import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.util.BaseActivity;
+import com.pratham.admin.util.ConnectionReceiver;
+import com.pratham.admin.util.Utility;
+
+import org.jsoup.Jsoup;
 
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements DialogInterface {
+public class MainActivity extends BaseActivity implements DialogInterface, ConnectionReceiverListener {
 
     @BindView(R.id.userName)
     EditText userName;
@@ -49,6 +57,7 @@ public class MainActivity extends BaseActivity implements DialogInterface {
     String lastOfflineSavedDate;
     String crlName;
     String crlID;
+    boolean internetIsAvailable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +125,9 @@ public class MainActivity extends BaseActivity implements DialogInterface {
         userName.setText("ganeshtupe54");
         password.setText("pratham");
 */
-
+        // check connection & then upgrade latest version if available
+        ApplicationController.getInstance().setConnectionListener(this);
+        checkConnection();
 
         userName.setText("");
         password.setText("");
@@ -135,6 +146,113 @@ public class MainActivity extends BaseActivity implements DialogInterface {
             programInfoLayout.setVisibility(View.INVISIBLE);
         }
     }
+
+    private void checkConnection() {
+
+        try {
+            boolean isConnected = ConnectionReceiver.isConnected();
+            if (!isConnected) {
+                internetIsAvailable = false;
+            } else {
+                internetIsAvailable = true;
+                checkVersion();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            internetIsAvailable = false;
+        } else {
+            internetIsAvailable = true;
+        }
+    }
+
+
+    private class GetLatestVersion extends AsyncTask<String, String, String> {
+        String latestVersion;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                //It retrieves the latest version by scraping the content of current version from play store at runtime
+                String urlOfAppFromPlayStore = "https://play.google.com/store/apps/details?id=com.pratham.admin&hl=en";
+                // Document doc = w3cDom.fromJsoup(Jsoup.connect(urlOfAppFromPlayStore).get());
+                //Log.d(TAG,"playstore doc "+getStringFromDoc(doc));
+                latestVersion = Jsoup.connect(urlOfAppFromPlayStore)
+                        .timeout(30000)
+                        .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
+                        .referrer("http://www.google.com")
+                        .get()
+                        .select("div.hAyfc:nth-child(4) > span:nth-child(2) > div:nth-child(1) > span:nth-child(1)")
+                        .first()
+                        .ownText();
+                Log.d("latest::", latestVersion);
+                //latestVersion = doc.getElementsByTagName("softwareVersion").first().text();
+                //latestVersion = "1.5";
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return latestVersion;
+        }
+    }
+
+    private void checkVersion() {
+        String latestVersion = "";
+        String currentVersion = Utility.getCurrentVersion(MainActivity.this);
+        Log.d("version::", "Current version = " + currentVersion);
+        try {
+            latestVersion = new GetLatestVersion().execute().get();
+            Log.d("version::", "Latest version = " + latestVersion);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        // Force Update Code
+        if ((!currentVersion.equals(latestVersion)) && latestVersion != null) {
+
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Material_Light_Dialog);
+            dialogBuilder.setCancelable(false);
+            dialogBuilder.setIcon(R.drawable.ic_warning);
+            dialogBuilder.setTitle("Upgrade your app !");
+            dialogBuilder.setMessage("Please upgrade your app in order to use latest features.");
+            dialogBuilder.setPositiveButton("Upgrade", new android.content.DialogInterface.OnClickListener() {
+                public void onClick(android.content.DialogInterface dialog, int whichButton) {
+
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.pratham.admin&hl=en")));
+                        dialog.dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+
+            dialogBuilder.setNegativeButton("Cancel", new android.content.DialogInterface.OnClickListener() {
+                public void onClick(android.content.DialogInterface dialog, int whichButton) {
+                    try {
+                        dialog.dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            AlertDialog b = dialogBuilder.create();
+            b.show();
+        }
+    }
+
 
     @OnClick(R.id.btn_login)
     public void loginCheck(View view) {
@@ -168,7 +286,6 @@ public class MainActivity extends BaseActivity implements DialogInterface {
                     metaData.setKeys("CRL_ID");
                     metaData.setValue(Crl.get(i).getCRLId());
                     AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
-
 
 
                     AppDatabase.destroyInstance();

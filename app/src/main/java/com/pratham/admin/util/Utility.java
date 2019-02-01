@@ -2,6 +2,8 @@ package com.pratham.admin.util;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.provider.Settings;
 
@@ -40,6 +42,19 @@ public class Utility {
         if (dialog != null) {
             dialog.dismiss();
         }
+    }
+
+    public static String getCurrentVersion(Context context) {
+        PackageManager pm = context.getPackageManager();
+        PackageInfo pInfo = null;
+        try {
+            pInfo = pm.getPackageInfo(context.getPackageName(), 0);
+
+        } catch (PackageManager.NameNotFoundException e1) {
+            e1.printStackTrace();
+        }
+        String currentVersion = pInfo.versionName;
+        return currentVersion;
     }
 
 
