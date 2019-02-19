@@ -64,6 +64,13 @@ public class Aser {
     @SerializedName("sentFlag")
     public int sentFlag = 1;
 
+    // new fields db version 5
+    @SerializedName("English")
+    public int English = 0;
+    @SerializedName("EnglishSelected")
+    public int EnglishSelected = 0;
+
+
     @Override
     public String toString() {
         return "Aser{" +
@@ -91,15 +98,16 @@ public class Aser {
                 ", appName='" + appName + '\'' +
                 ", CreatedOn='" + CreatedOn + '\'' +
                 ", sentFlag=" + sentFlag +
+                ", English=" + English +
+                ", EnglishSelected=" + EnglishSelected +
                 '}';
     }
 
-    @NonNull
     public int getAserID() {
         return AserID;
     }
 
-    public void setAserID(@NonNull int aserID) {
+    public void setAserID(int aserID) {
         AserID = aserID;
     }
 
@@ -285,5 +293,21 @@ public class Aser {
 
     public void setSentFlag(int sentFlag) {
         this.sentFlag = sentFlag;
+    }
+
+    public int getEnglish() {
+        return English;
+    }
+
+    public void setEnglish(int english) {
+        English = english;
+    }
+
+    public int getEnglishSelected() {
+        return EnglishSelected;
+    }
+
+    public void setEnglishSelected(int englishSelected) {
+        EnglishSelected = englishSelected;
     }
 }

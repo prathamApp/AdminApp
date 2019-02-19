@@ -32,10 +32,10 @@
         android:id="@+id/Line2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_16sdp"
+        android:layout_margin="@dimen/_8sdp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:weightSum="3">
+        android:weightSum="4">
 
         <!--Aser Date-->
         <Button
@@ -69,6 +69,16 @@
             android:layout_weight="1"
             android:background="@drawable/spinner_background_forms" />
 
+        <!--English-->
+        <Spinner
+            android:id="@+id/spinner_Engish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_8sdp"
+            android:layout_weight="1"
+            android:background="@drawable/spinner_background_forms" />
+
+
         <Switch
             android:id="@+id/switch_isSelected"
             android:layout_width="wrap_content"
@@ -80,6 +90,52 @@
 
 
     </LinearLayout>
+
+    <!--Radio Button to Select Eng Selected-->
+    <RadioGroup
+        android:id="@+id/rg_EngSelected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_8sdp"
+        android:layout_marginRight="@dimen/_8sdp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:weightSum="3">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:layout_weight="1"
+            android:text="Meaning : "
+            android:textColor="@color/button"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold" />
+
+        <RadioButton
+            android:id="@+id/rb_Yes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:layout_weight="1"
+            android:checked="false"
+            android:text="Yes"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold" />
+
+        <RadioButton
+            android:id="@+id/rb_No"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="No"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold" />
+
+    </RadioGroup>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -189,7 +245,7 @@
         android:text="Submit"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
-        android:textSize="@dimen/_16sdp"
+        android:textSize="@dimen/_14sdp"
         android:textStyle="bold" />
 
 </LinearLayout>

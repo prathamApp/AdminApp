@@ -2,7 +2,6 @@ package com.pratham.admin.activities;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,7 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -21,26 +20,20 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
-import com.google.gson.Gson;
-import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
-import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.modalclasses.Aser;
 import com.pratham.admin.modalclasses.Groups;
-import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
-import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.DatePickerFragment;
 import com.pratham.admin.util.Utility;
 
@@ -49,14 +42,10 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import static com.pratham.admin.util.APIs.PushForms;
-
-public class EditStudent extends BaseActivity/* implements ConnectionReceiverListener */{
+public class EditStudent extends BaseActivity/* implements ConnectionReceiverListener */ {
 
     private static final int TAKE_Thumbnail = 1;
     private static final int REQUEST_WRITE_STORAGE = 112;
@@ -83,10 +72,10 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
     String StudentUniqID;
     boolean timer;
     String createdBy = "";
-    Spinner sp_BaselineLang, sp_NumberReco;
+    Spinner sp_BaselineLang, sp_NumberReco, sp_English;
     Button btn_EndlineDatePicker, btn_DatePicker, btn_Endline1, btn_Endline2, btn_Endline3, btn_Endline4;
     LinearLayout AserForm;
-    int testT = 0, langSpin, numSpin;
+    int testT = 0, langSpin, numSpin, engSpin;
     int OA = 0;
     int OS = 0;
     int OM = 0;
@@ -100,6 +89,11 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
     String aserDate;
     List<Groups> GroupsVillages = new ArrayList<Groups>();
     private boolean captureButtonPressed = false;
+
+    int engMeaning = 0;
+    AlertDialog meaningDialog;
+    CharSequence[] values = {" Yes", "No"};
+
 
 //    boolean internetIsAvailable = false;
 
@@ -125,6 +119,64 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
         initializeBaselineSpinner();
         initializeNumberRecoSpinner();
         initializeAserDate();
+        initializeEnglishSpinner();
+
+        sp_English.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                // if Word or Sentence selected & dont popup show if fetched from db
+                if ((pos == 4 || pos == 5) && !(engMeaning == 1 || engMeaning == 2)) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EditStudent.this);
+                    builder.setTitle("Meaning : ");
+                    // check meaning & set checked item accordingly
+                    int checkedItemValue = 1;
+                    if (engMeaning == 0 || engMeaning == 2)
+                        checkedItemValue = 1;
+                    else
+                        checkedItemValue = 0;
+                    builder.setSingleChoiceItems(values, checkedItemValue, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int item) {
+                            switch (item) {
+                                case 0:
+                                    engMeaning = 1;
+                                    break;
+                                case 1:
+                                    engMeaning = 2;
+                                    break;
+                            }
+//                            meaningDialog.dismiss();
+                        }
+                    });
+                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            sp_English.setSelection(0);
+                            engMeaning = 0;
+                            dialog.dismiss();
+                        }
+                    });
+
+                    builder.setCancelable(false);
+                    meaningDialog = builder.create();
+                    meaningDialog.setCanceledOnTouchOutside(false);
+                    meaningDialog.setCancelable(false);
+                    meaningDialog.show();
+                } else {
+                    engMeaning = 0;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
 
         btn_Endline1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,6 +193,10 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                 TextView title = endlineDialog.findViewById(R.id.tv_EndlineTitle);
                 final Spinner spinner_BaselineLang = endlineDialog.findViewById(R.id.spinner_BaselineLang);
                 final Spinner spinner_NumberReco = endlineDialog.findViewById(R.id.spinner_NumberReco);
+                final Spinner spinner_English = endlineDialog.findViewById(R.id.spinner_Engish);
+                final RadioGroup rg_Meaning = endlineDialog.findViewById(R.id.rg_EngSelected);
+                final RadioButton rb_Yes = endlineDialog.findViewById(R.id.rb_Yes);
+                final RadioButton rb_No = endlineDialog.findViewById(R.id.rb_No);
                 final CheckBox OprAdd = endlineDialog.findViewById(R.id.OprAdd);
                 final CheckBox OprSub = endlineDialog.findViewById(R.id.OprSub);
                 final CheckBox OprMul = endlineDialog.findViewById(R.id.OprMul);
@@ -171,6 +227,10 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                 ArrayAdapter<String> recoAdapter = new ArrayAdapter<String>(EditStudent.this, R.layout.custom_spinner, NumberRecoAdapter);
                 spinner_NumberReco.setAdapter(recoAdapter);
 
+                String[] engAdapter = {"Baseline (English)", "Beg", "Capital Letter", "Small Letter", "Word", "Sentence"};
+                ArrayAdapter<String> EnglishAdapter = new ArrayAdapter<String>(EditStudent.this, R.layout.custom_spinner, engAdapter);
+                spinner_English.setAdapter(EnglishAdapter);
+
                 // show dialog
                 endlineDialog.setCanceledOnTouchOutside(false);
                 endlineDialog.show();
@@ -183,11 +243,31 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                     btn_EndlineDatePicker.setText(Util.GetCurrentDate().toString());
                     spinner_BaselineLang.setSelection(0);
                     spinner_NumberReco.setSelection(0);
+                    spinner_English.setSelection(0);
+
+                    spinner_English.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                            // if Word or Sentence selected
+                            if (pos == 4 || pos == 5)
+                                rg_Meaning.setVisibility(View.VISIBLE);
+                            else
+                                rg_Meaning.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+                        }
+                    });
+
                 } else {
-                    // fetch baseline aser
+                    // fetch endline 1 aser
+                    engSpin = AserData.get(0).English;
+                    engMeaning = AserData.get(0).EnglishSelected;
                     testT = AserData.get(0).TestType;
                     langSpin = AserData.get(0).Lang;
                     numSpin = AserData.get(0).Num;
+                    engSpin = AserData.get(0).English;
                     aserDate = AserData.get(0).TestDate;
                     OA = AserData.get(0).OAdd;
                     OS = AserData.get(0).OSub;
@@ -196,8 +276,28 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                     WA = AserData.get(0).WAdd;
                     WS = AserData.get(0).WSub;
 
+                    spinner_English.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                            // if Word or Sentence selected
+                            if (pos == 4 || pos == 5) {
+                                rg_Meaning.setVisibility(View.VISIBLE);
+                                if (engMeaning == 1)
+                                    rb_Yes.setChecked(true);
+                                else
+                                    rb_No.setChecked(true);
+                            } else {
+                                rg_Meaning.setVisibility(View.GONE);
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+                        }
+                    });
+                    // set endline 1 aser
+                    spinner_English.setSelection(engSpin);
                     btn_EndlineDatePicker.setText(aserDate);
-                    // set baseline aser
                     spinner_BaselineLang.setSelection(langSpin);
                     spinner_NumberReco.setSelection(numSpin);
 
@@ -282,8 +382,25 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                     public void onClick(View v) {
                         int BaselineSpinnerValue = spinner_BaselineLang.getSelectedItemPosition();
                         int NumberSpinnerValue = spinner_NumberReco.getSelectedItemPosition();
+                        int EngSpinnerValue = spinner_English.getSelectedItemPosition();
 
-                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0) {
+                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0 && EngSpinnerValue > 0) {
+                            sp_English.setSelection(0);
+                            engSpin = EngSpinnerValue;
+                            if (engSpin == 4 || engSpin == 5) {
+                                int selectedId = rg_Meaning.getCheckedRadioButtonId();
+                                RadioButton selectedMeaning = (RadioButton) endlineDialog.findViewById(selectedId);
+                                String selected = selectedMeaning.getText().toString();
+                                if (selected.equalsIgnoreCase("yes"))
+                                    engMeaning = 1;
+                                else if (selected.equalsIgnoreCase("no"))
+                                    engMeaning = 2;
+                                else
+                                    engMeaning = 0;
+                            } else {
+                                engMeaning = 0;
+                            }
+
                             sp_BaselineLang.setSelection(0);
                             sp_NumberReco.setSelection(0);
                             EndlineButtonClicked = true;
@@ -291,7 +408,7 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                             testT = 1;
                             langSpin = BaselineSpinnerValue;
                             numSpin = NumberSpinnerValue;
-
+                            //engMeaning;
                             OA = OprAdd.isChecked() ? 1 : 0;
                             OS = OprSub.isChecked() ? 1 : 0;
                             OM = OprMul.isChecked() ? 1 : 0;
@@ -304,11 +421,9 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                             result = AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().CheckDataExists(StudentUniqID, testT);
                             if (result) {
                                 //update
-                                AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().UpdateAserData("", aserDate, langSpin, numSpin, OA, OS, OM, OD, WA, WS, createdBy, Util.GetCurrentDate(), IC, 0, StudentUniqID, testT);
-
+                                AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().UpdateAserData(engSpin, engMeaning, "", aserDate, langSpin, numSpin, OA, OS, OM, OD, WA, WS, createdBy, Util.GetCurrentDate(), IC, 0, StudentUniqID, testT);
                                 BackupDatabase.backup(EditStudent.this);
 //                                PushData(StudentUniqID, testT);
-
                             } else {
                                 // new entry
                                 Aser asr = new Aser();
@@ -319,6 +434,8 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                                 asr.TestDate = aserDate;
                                 asr.Lang = langSpin;
                                 asr.Num = numSpin;
+                                asr.English = engSpin;
+                                asr.EnglishSelected = engMeaning;
                                 asr.CreatedBy = AppDatabase.getDatabaseInstance(EditStudent.this).getMetaDataDao().getCrlMetaData();
                                 asr.CreatedDate = new Utility().GetCurrentDate();
                                 asr.DeviceId = Util.GetDeviceID();
@@ -358,15 +475,19 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                             sp_BaselineLang.setSelection(0);
                             sp_NumberReco.setSelection(0);
                             btn_DatePicker.setText(Util.GetCurrentDate().toString());
+                            sp_English.setSelection(0);
                         } else {
                             // fetch baseline aser
+                            engSpin = AserData.get(0).English;
+                            engMeaning = AserData.get(0).EnglishSelected;
+                            AserTestDate = AserData.get(0).TestDate;
                             testT = 0;
                             langSpin = AserData.get(0).Lang;
                             numSpin = AserData.get(0).Num;
-                            AserTestDate = AserData.get(0).TestDate;
                             // set baseline aser
                             sp_BaselineLang.setSelection(langSpin);
                             sp_NumberReco.setSelection(numSpin);
+                            sp_English.setSelection(engSpin);
                             btn_DatePicker.setText(AserTestDate);
                             EndlineButtonClicked = false;
                             OA = 0;
@@ -396,6 +517,10 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                 TextView title = endlineDialog.findViewById(R.id.tv_EndlineTitle);
                 final Spinner spinner_BaselineLang = endlineDialog.findViewById(R.id.spinner_BaselineLang);
                 final Spinner spinner_NumberReco = endlineDialog.findViewById(R.id.spinner_NumberReco);
+                final Spinner spinner_English = endlineDialog.findViewById(R.id.spinner_Engish);
+                final RadioGroup rg_Meaning = endlineDialog.findViewById(R.id.rg_EngSelected);
+                final RadioButton rb_Yes = endlineDialog.findViewById(R.id.rb_Yes);
+                final RadioButton rb_No = endlineDialog.findViewById(R.id.rb_No);
                 final CheckBox OprAdd = endlineDialog.findViewById(R.id.OprAdd);
                 final CheckBox OprSub = endlineDialog.findViewById(R.id.OprSub);
                 final CheckBox OprMul = endlineDialog.findViewById(R.id.OprMul);
@@ -426,6 +551,10 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                 ArrayAdapter<String> recoAdapter = new ArrayAdapter<String>(EditStudent.this, R.layout.custom_spinner, NumberRecoAdapter);
                 spinner_NumberReco.setAdapter(recoAdapter);
 
+                String[] engAdapter = {"Baseline (English)", "Beg", "Capital Letter", "Small Letter", "Word", "Sentence"};
+                ArrayAdapter<String> EnglishAdapter = new ArrayAdapter<String>(EditStudent.this, R.layout.custom_spinner, engAdapter);
+                spinner_English.setAdapter(EnglishAdapter);
+
                 // show dialog
                 endlineDialog.setCanceledOnTouchOutside(false);
                 endlineDialog.show();
@@ -438,8 +567,27 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                     btn_EndlineDatePicker.setText(Util.GetCurrentDate().toString());
                     spinner_BaselineLang.setSelection(0);
                     spinner_NumberReco.setSelection(0);
+                    spinner_English.setSelection(0);
+
+                    spinner_English.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                            // if Word or Sentence selected
+                            if (pos == 4 || pos == 5)
+                                rg_Meaning.setVisibility(View.VISIBLE);
+                            else
+                                rg_Meaning.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+                        }
+                    });
+
                 } else {
-                    // fetch baseline aser
+                    // fetch endline 2 aser
+                    engSpin = AserData.get(0).English;
+                    engMeaning = AserData.get(0).EnglishSelected;
                     testT = AserData.get(0).TestType;
                     langSpin = AserData.get(0).Lang;
                     numSpin = AserData.get(0).Num;
@@ -451,8 +599,28 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                     WA = AserData.get(0).WAdd;
                     WS = AserData.get(0).WSub;
 
+                    spinner_English.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                            // if Word or Sentence selected
+                            if (pos == 4 || pos == 5) {
+                                rg_Meaning.setVisibility(View.VISIBLE);
+                                if (engMeaning == 1)
+                                    rb_Yes.setChecked(true);
+                                else
+                                    rb_No.setChecked(true);
+                            } else {
+                                rg_Meaning.setVisibility(View.GONE);
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+                        }
+                    });
+                    // set endline 2 aser
+                    spinner_English.setSelection(engSpin);
                     btn_EndlineDatePicker.setText(aserDate);
-                    // set baseline aser
                     spinner_BaselineLang.setSelection(langSpin);
                     spinner_NumberReco.setSelection(numSpin);
 
@@ -537,8 +705,25 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                     public void onClick(View v) {
                         int BaselineSpinnerValue = spinner_BaselineLang.getSelectedItemPosition();
                         int NumberSpinnerValue = spinner_NumberReco.getSelectedItemPosition();
+                        int EngSpinnerValue = spinner_English.getSelectedItemPosition();
 
-                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0) {
+                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0 && EngSpinnerValue > 0) {
+                            sp_English.setSelection(0);
+                            engSpin = EngSpinnerValue;
+                            if (engSpin == 4 || engSpin == 5) {
+                                int selectedId = rg_Meaning.getCheckedRadioButtonId();
+                                RadioButton selectedMeaning = (RadioButton) endlineDialog.findViewById(selectedId);
+                                String selected = selectedMeaning.getText().toString();
+                                if (selected.equalsIgnoreCase("yes"))
+                                    engMeaning = 1;
+                                else if (selected.equalsIgnoreCase("no"))
+                                    engMeaning = 2;
+                                else
+                                    engMeaning = 0;
+                            } else {
+                                engMeaning = 0;
+                            }
+
                             sp_BaselineLang.setSelection(0);
                             sp_NumberReco.setSelection(0);
                             EndlineButtonClicked = true;
@@ -560,7 +745,7 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                             result = AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().CheckDataExists(StudentUniqID, testT);
                             if (result) {
                                 //update
-                                AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().UpdateAserData("", aserDate, langSpin, numSpin, OA, OS, OM, OD, WA, WS, createdBy, Util.GetCurrentDate(), IC, 0, StudentUniqID, testT);
+                                AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().UpdateAserData(engSpin, engMeaning, "", aserDate, langSpin, numSpin, OA, OS, OM, OD, WA, WS, createdBy, Util.GetCurrentDate(), IC, 0, StudentUniqID, testT);
 
                                 BackupDatabase.backup(EditStudent.this);
 //                                PushData(StudentUniqID, testT);
@@ -575,6 +760,8 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                                 asr.TestDate = aserDate;
                                 asr.Lang = langSpin;
                                 asr.Num = numSpin;
+                                asr.English = engSpin;
+                                asr.EnglishSelected = engMeaning;
                                 asr.CreatedBy = AppDatabase.getDatabaseInstance(EditStudent.this).getMetaDataDao().getCrlMetaData();
                                 asr.CreatedDate = new Utility().GetCurrentDate();
                                 asr.DeviceId = Util.GetDeviceID();
@@ -612,8 +799,11 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                             sp_BaselineLang.setSelection(0);
                             sp_NumberReco.setSelection(0);
                             btn_DatePicker.setText(Util.GetCurrentDate().toString());
+                            sp_English.setSelection(0);
                         } else {
                             // fetch baseline aser
+                            engSpin = AserData.get(0).English;
+                            engMeaning = AserData.get(0).EnglishSelected;
                             testT = 0;
                             langSpin = AserData.get(0).Lang;
                             numSpin = AserData.get(0).Num;
@@ -650,6 +840,10 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                 TextView title = endlineDialog.findViewById(R.id.tv_EndlineTitle);
                 final Spinner spinner_BaselineLang = endlineDialog.findViewById(R.id.spinner_BaselineLang);
                 final Spinner spinner_NumberReco = endlineDialog.findViewById(R.id.spinner_NumberReco);
+                final Spinner spinner_English = endlineDialog.findViewById(R.id.spinner_Engish);
+                final RadioGroup rg_Meaning = endlineDialog.findViewById(R.id.rg_EngSelected);
+                final RadioButton rb_Yes = endlineDialog.findViewById(R.id.rb_Yes);
+                final RadioButton rb_No = endlineDialog.findViewById(R.id.rb_No);
                 final CheckBox OprAdd = endlineDialog.findViewById(R.id.OprAdd);
                 final CheckBox OprSub = endlineDialog.findViewById(R.id.OprSub);
                 final CheckBox OprMul = endlineDialog.findViewById(R.id.OprMul);
@@ -680,6 +874,10 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                 ArrayAdapter<String> recoAdapter = new ArrayAdapter<String>(EditStudent.this, R.layout.custom_spinner, NumberRecoAdapter);
                 spinner_NumberReco.setAdapter(recoAdapter);
 
+                String[] engAdapter = {"Baseline (English)", "Beg", "Capital Letter", "Small Letter", "Word", "Sentence"};
+                ArrayAdapter<String> EnglishAdapter = new ArrayAdapter<String>(EditStudent.this, R.layout.custom_spinner, engAdapter);
+                spinner_English.setAdapter(EnglishAdapter);
+
                 // show dialog
                 endlineDialog.setCanceledOnTouchOutside(false);
                 endlineDialog.show();
@@ -692,8 +890,27 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                     btn_EndlineDatePicker.setText(Util.GetCurrentDate().toString());
                     spinner_BaselineLang.setSelection(0);
                     spinner_NumberReco.setSelection(0);
+                    spinner_English.setSelection(0);
+
+                    spinner_English.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                            // if Word or Sentence selected
+                            if (pos == 4 || pos == 5)
+                                rg_Meaning.setVisibility(View.VISIBLE);
+                            else
+                                rg_Meaning.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+                        }
+                    });
+
                 } else {
-                    // fetch baseline aser
+                    // fetch endline 3 aser
+                    engSpin = AserData.get(0).English;
+                    engMeaning = AserData.get(0).EnglishSelected;
                     testT = AserData.get(0).TestType;
                     langSpin = AserData.get(0).Lang;
                     numSpin = AserData.get(0).Num;
@@ -705,8 +922,28 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                     WA = AserData.get(0).WAdd;
                     WS = AserData.get(0).WSub;
 
+                    spinner_English.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                            // if Word or Sentence selected
+                            if (pos == 4 || pos == 5) {
+                                rg_Meaning.setVisibility(View.VISIBLE);
+                                if (engMeaning == 1)
+                                    rb_Yes.setChecked(true);
+                                else
+                                    rb_No.setChecked(true);
+                            } else {
+                                rg_Meaning.setVisibility(View.GONE);
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+                        }
+                    });
+                    // set endline 3 aser
+                    spinner_English.setSelection(engSpin);
                     btn_EndlineDatePicker.setText(aserDate);
-                    // set baseline aser
                     spinner_BaselineLang.setSelection(langSpin);
                     spinner_NumberReco.setSelection(numSpin);
 
@@ -791,8 +1028,25 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                     public void onClick(View v) {
                         int BaselineSpinnerValue = spinner_BaselineLang.getSelectedItemPosition();
                         int NumberSpinnerValue = spinner_NumberReco.getSelectedItemPosition();
+                        int EngSpinnerValue = spinner_English.getSelectedItemPosition();
 
-                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0) {
+                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0 && EngSpinnerValue > 0) {
+                            sp_English.setSelection(0);
+                            engSpin = EngSpinnerValue;
+                            if (engSpin == 4 || engSpin == 5) {
+                                int selectedId = rg_Meaning.getCheckedRadioButtonId();
+                                RadioButton selectedMeaning = (RadioButton) endlineDialog.findViewById(selectedId);
+                                String selected = selectedMeaning.getText().toString();
+                                if (selected.equalsIgnoreCase("yes"))
+                                    engMeaning = 1;
+                                else if (selected.equalsIgnoreCase("no"))
+                                    engMeaning = 2;
+                                else
+                                    engMeaning = 0;
+                            } else {
+                                engMeaning = 0;
+                            }
+
                             sp_BaselineLang.setSelection(0);
                             sp_NumberReco.setSelection(0);
                             EndlineButtonClicked = true;
@@ -814,7 +1068,7 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                             result = AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().CheckDataExists(StudentUniqID, testT);
                             if (result) {
                                 //update
-                                AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().UpdateAserData("", aserDate, langSpin, numSpin, OA, OS, OM, OD, WA, WS, createdBy, Util.GetCurrentDate(), IC, 0, StudentUniqID, testT);
+                                AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().UpdateAserData(engSpin, engMeaning, "", aserDate, langSpin, numSpin, OA, OS, OM, OD, WA, WS, createdBy, Util.GetCurrentDate(), IC, 0, StudentUniqID, testT);
                                 BackupDatabase.backup(EditStudent.this);
 //                                PushData(StudentUniqID, testT);
                             } else {
@@ -827,6 +1081,8 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                                 asr.TestDate = aserDate;
                                 asr.Lang = langSpin;
                                 asr.Num = numSpin;
+                                asr.English = engSpin;
+                                asr.EnglishSelected = engMeaning;
                                 asr.CreatedBy = AppDatabase.getDatabaseInstance(EditStudent.this).getMetaDataDao().getCrlMetaData();
                                 asr.CreatedDate = new Utility().GetCurrentDate();
                                 asr.DeviceId = Util.GetDeviceID();
@@ -863,8 +1119,11 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                             sp_BaselineLang.setSelection(0);
                             sp_NumberReco.setSelection(0);
                             btn_DatePicker.setText(Util.GetCurrentDate().toString());
+                            sp_English.setSelection(0);
                         } else {
                             // fetch baseline aser
+                            engSpin = AserData.get(0).English;
+                            engMeaning = AserData.get(0).EnglishSelected;
                             testT = 0;
                             langSpin = AserData.get(0).Lang;
                             numSpin = AserData.get(0).Num;
@@ -901,6 +1160,10 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                 TextView title = endlineDialog.findViewById(R.id.tv_EndlineTitle);
                 final Spinner spinner_BaselineLang = endlineDialog.findViewById(R.id.spinner_BaselineLang);
                 final Spinner spinner_NumberReco = endlineDialog.findViewById(R.id.spinner_NumberReco);
+                final Spinner spinner_English = endlineDialog.findViewById(R.id.spinner_Engish);
+                final RadioGroup rg_Meaning = endlineDialog.findViewById(R.id.rg_EngSelected);
+                final RadioButton rb_Yes = endlineDialog.findViewById(R.id.rb_Yes);
+                final RadioButton rb_No = endlineDialog.findViewById(R.id.rb_No);
                 final CheckBox OprAdd = endlineDialog.findViewById(R.id.OprAdd);
                 final CheckBox OprSub = endlineDialog.findViewById(R.id.OprSub);
                 final CheckBox OprMul = endlineDialog.findViewById(R.id.OprMul);
@@ -931,6 +1194,10 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                 ArrayAdapter<String> recoAdapter = new ArrayAdapter<String>(EditStudent.this, R.layout.custom_spinner, NumberRecoAdapter);
                 spinner_NumberReco.setAdapter(recoAdapter);
 
+                String[] engAdapter = {"Baseline (English)", "Beg", "Capital Letter", "Small Letter", "Word", "Sentence"};
+                ArrayAdapter<String> EnglishAdapter = new ArrayAdapter<String>(EditStudent.this, R.layout.custom_spinner, engAdapter);
+                spinner_English.setAdapter(EnglishAdapter);
+
                 // show dialog
                 endlineDialog.setCanceledOnTouchOutside(false);
                 endlineDialog.show();
@@ -943,8 +1210,27 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                     btn_EndlineDatePicker.setText(Util.GetCurrentDate().toString());
                     spinner_BaselineLang.setSelection(0);
                     spinner_NumberReco.setSelection(0);
+                    spinner_English.setSelection(0);
+
+                    spinner_English.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                            // if Word or Sentence selected
+                            if (pos == 4 || pos == 5)
+                                rg_Meaning.setVisibility(View.VISIBLE);
+                            else
+                                rg_Meaning.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+                        }
+                    });
+
                 } else {
-                    // fetch baseline aser
+                    // fetch endline 4 aser
+                    engSpin = AserData.get(0).English;
+                    engMeaning = AserData.get(0).EnglishSelected;
                     testT = AserData.get(0).TestType;
                     langSpin = AserData.get(0).Lang;
                     numSpin = AserData.get(0).Num;
@@ -956,8 +1242,28 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                     WA = AserData.get(0).WAdd;
                     WS = AserData.get(0).WSub;
 
+                    spinner_English.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                            // if Word or Sentence selected
+                            if (pos == 4 || pos == 5) {
+                                rg_Meaning.setVisibility(View.VISIBLE);
+                                if (engMeaning == 1)
+                                    rb_Yes.setChecked(true);
+                                else
+                                    rb_No.setChecked(true);
+                            } else {
+                                rg_Meaning.setVisibility(View.GONE);
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+                        }
+                    });
+                    // set endline 4 aser
+                    spinner_English.setSelection(engSpin);
                     btn_EndlineDatePicker.setText(aserDate);
-                    // set baseline aser
                     spinner_BaselineLang.setSelection(langSpin);
                     spinner_NumberReco.setSelection(numSpin);
 
@@ -1042,8 +1348,25 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                     public void onClick(View v) {
                         int BaselineSpinnerValue = spinner_BaselineLang.getSelectedItemPosition();
                         int NumberSpinnerValue = spinner_NumberReco.getSelectedItemPosition();
+                        int EngSpinnerValue = spinner_English.getSelectedItemPosition();
 
-                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0) {
+                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0 && EngSpinnerValue > 0) {
+                            sp_English.setSelection(0);
+                            engSpin = EngSpinnerValue;
+                            if (engSpin == 4 || engSpin == 5) {
+                                int selectedId = rg_Meaning.getCheckedRadioButtonId();
+                                RadioButton selectedMeaning = (RadioButton) endlineDialog.findViewById(selectedId);
+                                String selected = selectedMeaning.getText().toString();
+                                if (selected.equalsIgnoreCase("yes"))
+                                    engMeaning = 1;
+                                else if (selected.equalsIgnoreCase("no"))
+                                    engMeaning = 2;
+                                else
+                                    engMeaning = 0;
+                            } else {
+                                engMeaning = 0;
+                            }
+
                             sp_BaselineLang.setSelection(0);
                             sp_NumberReco.setSelection(0);
                             EndlineButtonClicked = true;
@@ -1065,7 +1388,7 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                             result = AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().CheckDataExists(StudentUniqID, testT);
                             if (result) {
                                 //update
-                                AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().UpdateAserData("", aserDate, langSpin, numSpin, OA, OS, OM, OD, WA, WS, createdBy, Util.GetCurrentDate(), IC, 0, StudentUniqID, testT);
+                                AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().UpdateAserData(engSpin, engMeaning, "", aserDate, langSpin, numSpin, OA, OS, OM, OD, WA, WS, createdBy, Util.GetCurrentDate(), IC, 0, StudentUniqID, testT);
                                 BackupDatabase.backup(EditStudent.this);
 //                                PushData(StudentUniqID, testT);
                             } else {
@@ -1078,6 +1401,8 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                                 asr.TestDate = aserDate;
                                 asr.Lang = langSpin;
                                 asr.Num = numSpin;
+                                asr.English = engSpin;
+                                asr.EnglishSelected = engMeaning;
                                 asr.CreatedBy = AppDatabase.getDatabaseInstance(EditStudent.this).getMetaDataDao().getCrlMetaData();
                                 asr.CreatedDate = new Utility().GetCurrentDate();
                                 asr.DeviceId = Util.GetDeviceID();
@@ -1114,8 +1439,11 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                             sp_BaselineLang.setSelection(0);
                             sp_NumberReco.setSelection(0);
                             btn_DatePicker.setText(Util.GetCurrentDate().toString());
+                            sp_English.setSelection(0);
                         } else {
                             // fetch baseline aser
+                            engSpin = AserData.get(0).English;
+                            engMeaning = AserData.get(0).EnglishSelected;
                             testT = 0;
                             langSpin = AserData.get(0).Lang;
                             numSpin = AserData.get(0).Num;
@@ -1157,15 +1485,16 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                     testT = 0;
                     langSpin = sp_BaselineLang.getSelectedItemPosition();
                     numSpin = sp_NumberReco.getSelectedItemPosition();
+                    engSpin = sp_English.getSelectedItemPosition();
                     AserTestDate = btn_DatePicker.getText().toString();
 
-                    if (langSpin > 0 && numSpin > 0) {
+                    if (langSpin > 0 && numSpin > 0 && engSpin > 0) {
                         // insert or update baseline in db
                         boolean result;
                         result = AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().CheckDataExists(StudentUniqID, testT);
                         if (result) {
                             //update
-                            AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().UpdateAserData("", AserTestDate, langSpin, numSpin, OA, OS, OM, OD, WA, WS, createdBy, Util.GetCurrentDate(), IC, 0, StudentUniqID, testT);
+                            AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().UpdateAserData(engSpin, engMeaning, "", AserTestDate, langSpin, numSpin, OA, OS, OM, OD, WA, WS, createdBy, Util.GetCurrentDate(), IC, 0, StudentUniqID, testT);
                             BackupDatabase.backup(EditStudent.this);
 //                            PushData(StudentUniqID, testT);
                         } else {
@@ -1177,6 +1506,8 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                             asr.TestType = testT;
                             asr.TestDate = AserTestDate;
                             asr.Lang = langSpin;
+                            asr.English = engSpin;
+                            asr.EnglishSelected = engMeaning;
                             asr.Num = numSpin;
                             asr.CreatedBy = AppDatabase.getDatabaseInstance(EditStudent.this).getMetaDataDao().getCrlMetaData();
                             asr.CreatedDate = new Utility().GetCurrentDate();
@@ -1245,6 +1576,12 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
         sp_BaselineLang.setAdapter(baselineAdapter);
     }
 
+    private void initializeEnglishSpinner() {
+        String[] engAdapter = {"Baseline (English)", "Beg", "Capital Letter", "Small Letter", "Word", "Sentence"};
+        ArrayAdapter<String> EnglishAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, engAdapter);
+        sp_English.setAdapter(EnglishAdapter);
+    }
+
     private void populateStatesSpinner() {
         //Get Villages Data for States AllSpinners
         List<String> States = new ArrayList<>();
@@ -1276,6 +1613,7 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
     }
 
     private void initializeVariables() {
+        sp_English = (Spinner) findViewById(R.id.spinner_Engish);
         groups_spinner = (Spinner) findViewById(R.id.spinner_SelectGroups);
         states_spinner = (Spinner) findViewById(R.id.spinner_SelectState);
         villages_spinner = (Spinner) findViewById(R.id.spinner_selectVillage);
@@ -1404,6 +1742,7 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                 btn_DatePicker.setText(Util.GetCurrentDate().toString());
                 sp_BaselineLang.setSelection(0);
                 sp_NumberReco.setSelection(0);
+                sp_English.setSelection(0);
                 setDefaults();
                 AserForm.setVisibility(View.GONE);
 
@@ -1540,16 +1879,20 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
             setDefaults();
             sp_BaselineLang.setSelection(0);
             sp_NumberReco.setSelection(0);
+            sp_English.setSelection(0);
             btn_DatePicker.setText(Util.GetCurrentDate().toString());
         } else {
             // fetch baseline aser
             testT = 0;
             langSpin = AserData.get(0).Lang;
             numSpin = AserData.get(0).Num;
+            engSpin = AserData.get(0).English;
+            engMeaning = AserData.get(0).EnglishSelected;
             AserTestDate = AserData.get(0).TestDate;
             // set baseline aser
             sp_BaselineLang.setSelection(langSpin);
             sp_NumberReco.setSelection(numSpin);
+            sp_English.setSelection(engSpin);
             btn_DatePicker.setText(AserTestDate);
             EndlineButtonClicked = false;
             OA = 0;
@@ -1595,6 +1938,7 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
         btn_DatePicker.setText(Util.GetCurrentDate().toString());
         sp_BaselineLang.setSelection(0);
         sp_NumberReco.setSelection(0);
+        sp_English.setSelection(0);
         setDefaults();
         AserForm.setVisibility(View.GONE);
     }
@@ -1609,6 +1953,8 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
         OD = 0;
         WA = 0;
         WS = 0;
+        engSpin = 0;
+        engMeaning = 0;
     }
 
     @Override

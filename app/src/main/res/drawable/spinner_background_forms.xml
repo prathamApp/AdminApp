@@ -5,9 +5,9 @@
             <item>
                 <shape>
                     <solid android:color="#FFFFFF" />
-                    <corners android:radius="@dimen/_3sdp" />
-                    <padding android:bottom="@dimen/_4sdp" android:left="@dimen/_10sdp" android:right="10dp" android:top="4dp" />
-                    <stroke android:width="@dimen/_2sdp" android:color="#A9A9A9" />
+                    <corners android:radius="@dimen/_2sdp" />
+                    <padding android:bottom="@dimen/_2sdp" android:left="@dimen/_10sdp" android:right="10dp" android:top="2dp" />
+                    <stroke android:width="@dimen/_1sdp" android:color="#A9A9A9" />
                 </shape>
             </item>
             <item>

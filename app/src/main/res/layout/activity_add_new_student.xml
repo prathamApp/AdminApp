@@ -24,7 +24,7 @@
             android:padding="@dimen/_8sdp"
             android:text="Add New Student"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/_20sdp"
+            android:textSize="@dimen/_18sdp"
             android:textStyle="bold" />
 
         <!--Spinners-->
@@ -257,13 +257,13 @@
             android:layout_margin="@dimen/_8sdp"
             android:orientation="vertical">
 
-            <!--Baseline, AserDate, Lang, Number Reco-->
+            <!--Baseline, AserDate, Lang, Number Reco, English-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:weightSum="4">
+                android:weightSum="5">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -302,6 +302,15 @@
                 <!--Number Reco-->
                 <Spinner
                     android:id="@+id/spinner_NumberReco"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/spinner_background_forms" />
+
+                <!--English-->
+                <Spinner
+                    android:id="@+id/spinner_Engish"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_8sdp"

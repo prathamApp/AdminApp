@@ -4,16 +4,15 @@ package com.pratham.admin.activities;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -30,24 +29,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
-import com.google.gson.Gson;
-import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
-import com.pratham.admin.forms.CoachInformationForm;
-import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.modalclasses.Aser;
 import com.pratham.admin.modalclasses.Groups;
-import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.BirthDatePickerFragment;
-import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.DatePickerFragment;
 import com.pratham.admin.util.Utility;
 
@@ -56,20 +46,15 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-import static com.pratham.admin.util.APIs.PushForms;
-
-public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverListener */{
+public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverListener */ {
 
     private static final int TAKE_Thumbnail = 1;
     private static final int REQUEST_WRITE_STORAGE = 112;
@@ -95,10 +80,10 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
     boolean timer;
     int stdAge = 0;
     Utility util;
-    Spinner sp_BaselineLang, sp_NumberReco;
+    Spinner sp_BaselineLang, sp_NumberReco, sp_English;
     Button btn_EndlineDatePicker, btn_DatePicker, btn_Endline1, btn_Endline2, btn_Endline3, btn_Endline4;
     LinearLayout AserForm;
-    int testT, langSpin, numSpin;
+    int testT, langSpin, numSpin, engSpin;
     int OA = 0;
     int OS = 0;
     int OM = 0;
@@ -107,6 +92,10 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
     int WS = 0;
     String aserDate;
     private String GrpName = "";
+    int engMeaning = 0;
+    AlertDialog meaningDialog;
+    CharSequence[] values = {" Yes", "No"};
+
 
 //    boolean internetIsAvailable = false;
 
@@ -132,6 +121,57 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
         initializeNumberRecoSpinner();
         initializeAserDate();
         initializeBirthDate();
+        initializeEnglishSpinner();
+
+        sp_English.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                // if Word or Sentence selected
+                if (pos == 4 || pos == 5) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(AddNewStudent.this);
+                    builder.setTitle("Meaning : ");
+                    builder.setSingleChoiceItems(values, 1, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int item) {
+                            switch (item) {
+                                case 0:
+                                    engMeaning = 1;
+                                    break;
+                                case 1:
+                                    engMeaning = 2;
+                                    break;
+                            }
+//                            meaningDialog.dismiss();
+                        }
+                    });
+                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            sp_English.setSelection(0);
+                            engMeaning = 0;
+                            dialog.dismiss();
+                        }
+                    });
+
+                    builder.setCancelable(false);
+                    meaningDialog = builder.create();
+                    meaningDialog.setCanceledOnTouchOutside(false);
+                    meaningDialog.setCancelable(false);
+                    meaningDialog.show();
+                } else {
+                    engMeaning = 0;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
 
         btn_Capture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +195,8 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                 TextView title = endlineDialog.findViewById(R.id.tv_EndlineTitle);
                 final Spinner spinner_BaselineLang = endlineDialog.findViewById(R.id.spinner_BaselineLang);
                 final Spinner spinner_NumberReco = endlineDialog.findViewById(R.id.spinner_NumberReco);
+                final Spinner spinner_English = endlineDialog.findViewById(R.id.spinner_Engish);
+                final RadioGroup rg_Meaning = endlineDialog.findViewById(R.id.rg_EngSelected);
                 final CheckBox OprAdd = endlineDialog.findViewById(R.id.OprAdd);
                 final CheckBox OprSub = endlineDialog.findViewById(R.id.OprSub);
                 final CheckBox OprMul = endlineDialog.findViewById(R.id.OprMul);
@@ -184,6 +226,26 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                 String[] NumberRecoAdapter = {"Number Recognition", "Beg", "0-9", "10-99", "Sub", "Div"};
                 ArrayAdapter<String> recoAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, NumberRecoAdapter);
                 spinner_NumberReco.setAdapter(recoAdapter);
+
+                String[] engAdapter = {"Baseline (English)", "Beg", "Capital Letter", "Small Letter", "Word", "Sentence"};
+                ArrayAdapter<String> EnglishAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, engAdapter);
+                spinner_English.setAdapter(EnglishAdapter);
+
+                spinner_English.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                        // if Word or Sentence selected
+                        if (pos == 4 || pos == 5) {
+                            rg_Meaning.setVisibility(View.VISIBLE);
+                        } else {
+                            rg_Meaning.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                    }
+                });
 
                 // show dialog
                 endlineDialog.setCanceledOnTouchOutside(false);
@@ -236,15 +298,32 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                     public void onClick(View v) {
                         int BaselineSpinnerValue = spinner_BaselineLang.getSelectedItemPosition();
                         int NumberSpinnerValue = spinner_NumberReco.getSelectedItemPosition();
+                        int EnglishSpinnerValue = spinner_English.getSelectedItemPosition();
 
-                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0) {
+                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0 && EnglishSpinnerValue > 0) {
                             sp_BaselineLang.setSelection(0);
                             sp_NumberReco.setSelection(0);
+                            sp_English.setSelection(0);
                             EndlineButtonClicked = true;
 
                             testT = 1;
                             langSpin = BaselineSpinnerValue;
                             numSpin = NumberSpinnerValue;
+                            engSpin = EnglishSpinnerValue;
+
+                            if (engSpin == 4 || engSpin == 5) {
+                                int selectedId = rg_Meaning.getCheckedRadioButtonId();
+                                RadioButton selectedMeaning = (RadioButton) endlineDialog.findViewById(selectedId);
+                                String selected = selectedMeaning.getText().toString();
+                                if (selected.equalsIgnoreCase("yes"))
+                                    engMeaning = 1;
+                                else if (selected.equalsIgnoreCase("no"))
+                                    engMeaning = 2;
+                                else
+                                    engMeaning = 0;
+                            } else {
+                                engMeaning = 0;
+                            }
                             aserDate = btn_EndlineDatePicker.getText().toString();
                             OA = OprAdd.isChecked() ? 1 : 0;
                             OS = OprSub.isChecked() ? 1 : 0;
@@ -280,6 +359,8 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                 TextView title = endlineDialog.findViewById(R.id.tv_EndlineTitle);
                 final Spinner spinner_BaselineLang = endlineDialog.findViewById(R.id.spinner_BaselineLang);
                 final Spinner spinner_NumberReco = endlineDialog.findViewById(R.id.spinner_NumberReco);
+                final Spinner spinner_English = endlineDialog.findViewById(R.id.spinner_Engish);
+                final RadioGroup rg_Meaning = endlineDialog.findViewById(R.id.rg_EngSelected);
                 final CheckBox OprAdd = endlineDialog.findViewById(R.id.OprAdd);
                 final CheckBox OprSub = endlineDialog.findViewById(R.id.OprSub);
                 final CheckBox OprMul = endlineDialog.findViewById(R.id.OprMul);
@@ -309,6 +390,27 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                 String[] NumberRecoAdapter = {"Number Recognition", "Beg", "0-9", "10-99", "Sub", "Div"};
                 ArrayAdapter<String> recoAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, NumberRecoAdapter);
                 spinner_NumberReco.setAdapter(recoAdapter);
+
+                String[] engAdapter = {"Baseline (English)", "Beg", "Capital Letter", "Small Letter", "Word", "Sentence"};
+                ArrayAdapter<String> EnglishAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, engAdapter);
+                spinner_English.setAdapter(EnglishAdapter);
+
+                spinner_English.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                        // if Word or Sentence selected
+                        if (pos == 4 || pos == 5) {
+                            rg_Meaning.setVisibility(View.VISIBLE);
+                        } else {
+                            rg_Meaning.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                    }
+                });
+
 
                 // show dialog
                 endlineDialog.setCanceledOnTouchOutside(false);
@@ -361,14 +463,33 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                     public void onClick(View v) {
                         int BaselineSpinnerValue = spinner_BaselineLang.getSelectedItemPosition();
                         int NumberSpinnerValue = spinner_NumberReco.getSelectedItemPosition();
+                        int EnglishSpinnerValue = spinner_English.getSelectedItemPosition();
 
-                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0) {
+                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0 && EnglishSpinnerValue > 0) {
                             sp_BaselineLang.setSelection(0);
                             sp_NumberReco.setSelection(0);
+                            sp_English.setSelection(0);
                             EndlineButtonClicked = true;
+
                             testT = 2;
                             langSpin = BaselineSpinnerValue;
                             numSpin = NumberSpinnerValue;
+                            engSpin = EnglishSpinnerValue;
+
+                            if (engSpin == 4 || engSpin == 5) {
+                                int selectedId = rg_Meaning.getCheckedRadioButtonId();
+                                RadioButton selectedMeaning = (RadioButton) endlineDialog.findViewById(selectedId);
+                                String selected = selectedMeaning.getText().toString();
+                                if (selected.equalsIgnoreCase("yes"))
+                                    engMeaning = 1;
+                                else if (selected.equalsIgnoreCase("no"))
+                                    engMeaning = 2;
+                                else
+                                    engMeaning = 0;
+                            } else {
+                                engMeaning = 0;
+                            }
+
                             aserDate = btn_EndlineDatePicker.getText().toString();
 
                             OA = OprAdd.isChecked() ? 1 : 0;
@@ -405,6 +526,8 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                 TextView title = endlineDialog.findViewById(R.id.tv_EndlineTitle);
                 final Spinner spinner_BaselineLang = endlineDialog.findViewById(R.id.spinner_BaselineLang);
                 final Spinner spinner_NumberReco = endlineDialog.findViewById(R.id.spinner_NumberReco);
+                final Spinner spinner_English = endlineDialog.findViewById(R.id.spinner_Engish);
+                final RadioGroup rg_Meaning = endlineDialog.findViewById(R.id.rg_EngSelected);
                 final CheckBox OprAdd = endlineDialog.findViewById(R.id.OprAdd);
                 final CheckBox OprSub = endlineDialog.findViewById(R.id.OprSub);
                 final CheckBox OprMul = endlineDialog.findViewById(R.id.OprMul);
@@ -434,6 +557,27 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                 String[] NumberRecoAdapter = {"Number Recognition", "Beg", "0-9", "10-99", "Sub", "Div"};
                 ArrayAdapter<String> recoAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, NumberRecoAdapter);
                 spinner_NumberReco.setAdapter(recoAdapter);
+
+                String[] engAdapter = {"Baseline (English)", "Beg", "Capital Letter", "Small Letter", "Word", "Sentence"};
+                ArrayAdapter<String> EnglishAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, engAdapter);
+                spinner_English.setAdapter(EnglishAdapter);
+
+                spinner_English.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                        // if Word or Sentence selected
+                        if (pos == 4 || pos == 5) {
+                            rg_Meaning.setVisibility(View.VISIBLE);
+                        } else {
+                            rg_Meaning.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                    }
+                });
+
 
                 // show dialog
                 endlineDialog.setCanceledOnTouchOutside(false);
@@ -486,14 +630,32 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                     public void onClick(View v) {
                         int BaselineSpinnerValue = spinner_BaselineLang.getSelectedItemPosition();
                         int NumberSpinnerValue = spinner_NumberReco.getSelectedItemPosition();
+                        int EnglishSpinnerValue = spinner_English.getSelectedItemPosition();
 
-                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0) {
+                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0 && EnglishSpinnerValue > 0) {
                             sp_BaselineLang.setSelection(0);
                             sp_NumberReco.setSelection(0);
+                            sp_English.setSelection(0);
                             EndlineButtonClicked = true;
+
                             testT = 3;
                             langSpin = BaselineSpinnerValue;
                             numSpin = NumberSpinnerValue;
+                            engSpin = EnglishSpinnerValue;
+                            if (engSpin == 4 || engSpin == 5) {
+                                int selectedId = rg_Meaning.getCheckedRadioButtonId();
+                                RadioButton selectedMeaning = (RadioButton) endlineDialog.findViewById(selectedId);
+                                String selected = selectedMeaning.getText().toString();
+                                if (selected.equalsIgnoreCase("yes"))
+                                    engMeaning = 1;
+                                else if (selected.equalsIgnoreCase("no"))
+                                    engMeaning = 2;
+                                else
+                                    engMeaning = 0;
+                            } else {
+                                engMeaning = 0;
+                            }
+
                             aserDate = btn_EndlineDatePicker.getText().toString();
 
                             OA = OprAdd.isChecked() ? 1 : 0;
@@ -530,6 +692,8 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                 TextView title = endlineDialog.findViewById(R.id.tv_EndlineTitle);
                 final Spinner spinner_BaselineLang = endlineDialog.findViewById(R.id.spinner_BaselineLang);
                 final Spinner spinner_NumberReco = endlineDialog.findViewById(R.id.spinner_NumberReco);
+                final Spinner spinner_English = endlineDialog.findViewById(R.id.spinner_Engish);
+                final RadioGroup rg_Meaning = endlineDialog.findViewById(R.id.rg_EngSelected);
                 final CheckBox OprAdd = endlineDialog.findViewById(R.id.OprAdd);
                 final CheckBox OprSub = endlineDialog.findViewById(R.id.OprSub);
                 final CheckBox OprMul = endlineDialog.findViewById(R.id.OprMul);
@@ -559,6 +723,27 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                 String[] NumberRecoAdapter = {"Number Recognition", "Beg", "0-9", "10-99", "Sub", "Div"};
                 ArrayAdapter<String> recoAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, NumberRecoAdapter);
                 spinner_NumberReco.setAdapter(recoAdapter);
+
+                String[] engAdapter = {"Baseline (English)", "Beg", "Capital Letter", "Small Letter", "Word", "Sentence"};
+                ArrayAdapter<String> EnglishAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, engAdapter);
+                spinner_English.setAdapter(EnglishAdapter);
+
+                spinner_English.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                        // if Word or Sentence selected
+                        if (pos == 4 || pos == 5) {
+                            rg_Meaning.setVisibility(View.VISIBLE);
+                        } else {
+                            rg_Meaning.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                    }
+                });
+
 
                 // show dialog
                 endlineDialog.setCanceledOnTouchOutside(false);
@@ -611,14 +796,32 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                     public void onClick(View v) {
                         int BaselineSpinnerValue = spinner_BaselineLang.getSelectedItemPosition();
                         int NumberSpinnerValue = spinner_NumberReco.getSelectedItemPosition();
+                        int EnglishSpinnerValue = spinner_English.getSelectedItemPosition();
 
-                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0) {
+                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0 && EnglishSpinnerValue > 0) {
                             sp_BaselineLang.setSelection(0);
                             sp_NumberReco.setSelection(0);
+                            sp_English.setSelection(0);
                             EndlineButtonClicked = true;
+
                             testT = 4;
                             langSpin = BaselineSpinnerValue;
                             numSpin = NumberSpinnerValue;
+                            engSpin = EnglishSpinnerValue;
+                            if (engSpin == 4 || engSpin == 5) {
+                                int selectedId = rg_Meaning.getCheckedRadioButtonId();
+                                RadioButton selectedMeaning = (RadioButton) endlineDialog.findViewById(selectedId);
+                                String selected = selectedMeaning.getText().toString();
+                                if (selected.equalsIgnoreCase("yes"))
+                                    engMeaning = 1;
+                                else if (selected.equalsIgnoreCase("no"))
+                                    engMeaning = 2;
+                                else
+                                    engMeaning = 0;
+                            } else {
+                                engMeaning = 0;
+                            }
+
                             aserDate = btn_EndlineDatePicker.getText().toString();
 
                             OA = OprAdd.isChecked() ? 1 : 0;
@@ -674,8 +877,8 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                             stdAge = Integer.parseInt(Integer.toString(calculateAge(cal.getTimeInMillis())));
 
                             // either baseline spinners are fully filled or not filled at all
-                            if ((sp_BaselineLang.getSelectedItemPosition() > 0 && sp_NumberReco.getSelectedItemPosition() > 0)
-                                    || (sp_BaselineLang.getSelectedItemPosition() == 0 && sp_NumberReco.getSelectedItemPosition() == 0)) {
+                            if ((sp_BaselineLang.getSelectedItemPosition() > 0 && sp_NumberReco.getSelectedItemPosition() > 0 && sp_English.getSelectedItemPosition() > 0)
+                                    || (sp_BaselineLang.getSelectedItemPosition() == 0 && sp_NumberReco.getSelectedItemPosition() == 0 && sp_English.getSelectedItemPosition() == 0)) {
                                 // Populate Std Data
                                 Student stdObj = new Student();
                                 stdObj.StudentId = randomUUIDStudent;
@@ -694,7 +897,7 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                                 stdObj.DOB = btn_BirthDatePicker.getText().toString();
                                 stdObj.sentFlag = 0;
 
-                                if (sp_BaselineLang.getSelectedItemPosition() > 0 || sp_NumberReco.getSelectedItemPosition() > 0)
+                                if (sp_BaselineLang.getSelectedItemPosition() > 0 || sp_NumberReco.getSelectedItemPosition() > 0 || sp_English.getSelectedItemPosition() > 0)
                                     EndlineButtonClicked = false;
 
                                 if (!EndlineButtonClicked) {
@@ -702,6 +905,7 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                                     testT = 0;
                                     langSpin = sp_BaselineLang.getSelectedItemPosition();
                                     numSpin = sp_NumberReco.getSelectedItemPosition();
+                                    engSpin = sp_English.getSelectedItemPosition();
                                     aserDate = btn_DatePicker.getText().toString();
                                     OA = 0;
                                     OS = 0;
@@ -709,6 +913,9 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                                     OD = 0;
                                     WA = 0;
                                     WS = 0;
+                                    // get yes or not
+                                    if (engSpin == 0)
+                                        engMeaning = 0;
                                 }
                                 // Populate Aser Data
                                 Aser asr = new Aser();
@@ -719,6 +926,8 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                                 asr.TestDate = aserDate;
                                 asr.Lang = langSpin;
                                 asr.Num = numSpin;
+                                asr.English = engSpin;
+                                asr.EnglishSelected = engMeaning;
                                 asr.CreatedBy = AppDatabase.getDatabaseInstance(AddNewStudent.this).getMetaDataDao().getCrlMetaData();
                                 asr.CreatedDate = new Utility().GetCurrentDate();
                                 asr.DeviceId = util.GetDeviceID();
@@ -796,7 +1005,6 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                                 }
 
 
-
                             } else {
                                 Toast.makeText(AddNewStudent.this, "Please Fill All Fields !", Toast.LENGTH_SHORT).show();
                             }
@@ -846,6 +1054,7 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
         btn_DatePicker.setText(util.GetCurrentDate().toString());
         sp_BaselineLang.setSelection(0);
         sp_NumberReco.setSelection(0);
+        sp_English.setSelection(0);
         setDefaults();
     }
 
@@ -854,6 +1063,8 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
         testT = 0;
         langSpin = 0;
         numSpin = 0;
+        engSpin = 0;
+        engMeaning = 0;
         OA = 0;
         OS = 0;
         OM = 0;
@@ -865,6 +1076,7 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
     private void initializeVariables() {
         sp_NumberReco = findViewById(R.id.spinner_NumberReco);
         sp_BaselineLang = findViewById(R.id.spinner_BaselineLang);
+        sp_English = findViewById(R.id.spinner_Engish);
         states_spinner = (Spinner) findViewById(R.id.spinner_SelectState);
         blocks_spinner = (Spinner) findViewById(R.id.spinner_SelectBlock);
         villages_spinner = (Spinner) findViewById(R.id.spinner_selectVillage);
@@ -922,6 +1134,12 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
         ArrayAdapter<String> recoAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, NumberRecoAdapter);
         //sp_NumberReco.setPrompt("Number Reco Level");
         sp_NumberReco.setAdapter(recoAdapter);
+    }
+
+    private void initializeEnglishSpinner() {
+        String[] engAdapter = {"Baseline (English)", "Beg", "Capital Letter", "Small Letter", "Word", "Sentence"};
+        ArrayAdapter<String> EnglishAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, engAdapter);
+        sp_English.setAdapter(EnglishAdapter);
     }
 
     private void initializeBaselineSpinner() {

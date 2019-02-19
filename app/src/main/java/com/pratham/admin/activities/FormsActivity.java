@@ -96,7 +96,7 @@ public class FormsActivity extends BaseActivity implements DashRVClickListener {
             DashboardItemList.add(new DashboardItem("Group Session", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Group Visit", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Course Enrollment", R.drawable.ic_form));
-            DashboardItemList.add(new DashboardItem("Delete Students", R.drawable.ic_form));
+//            DashboardItemList.add(new DashboardItem("Delete Students", R.drawable.ic_form));
 //            DashboardItemList.add(new DashboardItem("CRL Visit", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Students Attendance", R.drawable.ic_form));
         }

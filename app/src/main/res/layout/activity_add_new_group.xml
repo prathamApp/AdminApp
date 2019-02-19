@@ -23,7 +23,7 @@
             android:padding="@dimen/_8sdp"
             android:text="Add New Group"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/_20sdp"
+            android:textSize="@dimen/_18sdp"
             android:textStyle="bold" />
 
 

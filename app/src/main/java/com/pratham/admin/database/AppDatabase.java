@@ -29,7 +29,7 @@ import com.pratham.admin.modalclasses.Village;
 
 //import com.pratham.admin.modalclasses.CRLVisit;
 
-@Database(entities = {Attendance.class, CRL.class, CRLmd.class, /*CRLVisit.class,*/ Coach.class, Course.class, Community.class, Completion.class, Groups.class, Student.class, GroupSession.class, GroupVisit.class, Village.class, MetaData.class, TempStudent.class, TabTrack.class, TabletManageDevice.class, Modal_Log.class, TabletStatus.class, Aser.class}, version = 4, exportSchema = false)
+@Database(entities = {Attendance.class, CRL.class, CRLmd.class, /*CRLVisit.class,*/ Coach.class, Course.class, Community.class, Completion.class, Groups.class, Student.class, GroupSession.class, GroupVisit.class, Village.class, MetaData.class, TempStudent.class, TabTrack.class, TabletManageDevice.class, Modal_Log.class, TabletStatus.class, Aser.class}, version = 5, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase DATABASEINSTANCE;
@@ -77,7 +77,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public static AppDatabase getDatabaseInstance(Context context) {
         if (DATABASEINSTANCE == null)
             DATABASEINSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "prathamDb")
-                    .addMigrations(MIGRATION_3_4)
+                    .addMigrations(MIGRATION_4_5)
                     .allowMainThreadQueries()
                     .build();
         return DATABASEINSTANCE;
@@ -100,6 +100,15 @@ public abstract class AppDatabase extends RoomDatabase {
             database.execSQL("ALTER TABLE Student ADD COLUMN CreatedOn TEXT");
             database.execSQL("ALTER TABLE Student ADD COLUMN UpdatedDate TEXT");
             database.execSQL("ALTER TABLE Student ADD COLUMN DOB TEXT");
+        }
+    };
+
+    static final Migration MIGRATION_4_5 = new Migration(4, 5) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            // Alter Queries for new columns as we don't want to lose existing data
+            database.execSQL("ALTER TABLE Aser ADD COLUMN English INTEGER DEFAULT 0");
+            database.execSQL("ALTER TABLE Aser ADD COLUMN EnglishSelected INTEGER DEFAULT 0");
         }
     };
 
