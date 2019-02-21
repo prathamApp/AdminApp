@@ -63,7 +63,7 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
     Spinner states_spinner, blocks_spinner, villages_spinner, groups_spinner;
     EditText edt_Fname, edt_Mname, edt_Lname, edt_Class;
     RadioGroup rg_Gender;
-    Button btn_Submit, btn_Clear, btn_Capture, btn_BirthDatePicker;
+    Button btn_Submit_Baseline, btn_Clear, btn_Capture, btn_BirthDatePicker;
     RadioButton rb_Male, rb_Female;
     String GrpID;
     List<String> Blocks = new ArrayList<>();
@@ -204,7 +204,7 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                 final TextView tv_WordProblem = endlineDialog.findViewById(R.id.tv_WordProblem);
                 final CheckBox WordAdd = endlineDialog.findViewById(R.id.WordAdd);
                 final CheckBox WordSub = endlineDialog.findViewById(R.id.WordSub);
-                Button btn_Submit = endlineDialog.findViewById(R.id.btn_Submit);
+                Button btn_Submit_endline1 = endlineDialog.findViewById(R.id.btn_Submit);
                 btn_EndlineDatePicker = endlineDialog.findViewById(R.id.btn_EndlineDatePicker);
                 btn_EndlineDatePicker.setText(util.GetCurrentDate().toString());
                 btn_EndlineDatePicker.setPadding(8, 8, 8, 8);
@@ -293,14 +293,15 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                     }
                 });
 
-                btn_Submit.setOnClickListener(new View.OnClickListener() {
+                btn_Submit_endline1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int BaselineSpinnerValue = spinner_BaselineLang.getSelectedItemPosition();
                         int NumberSpinnerValue = spinner_NumberReco.getSelectedItemPosition();
                         int EnglishSpinnerValue = spinner_English.getSelectedItemPosition();
 
-                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0 && EnglishSpinnerValue > 0) {
+//                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0 && EnglishSpinnerValue > 0) {
+                        if (BaselineSpinnerValue > 0 || NumberSpinnerValue > 0 || EnglishSpinnerValue > 0) {
                             sp_BaselineLang.setSelection(0);
                             sp_NumberReco.setSelection(0);
                             sp_English.setSelection(0);
@@ -368,7 +369,7 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                 final TextView tv_WordProblem = endlineDialog.findViewById(R.id.tv_WordProblem);
                 final CheckBox WordAdd = endlineDialog.findViewById(R.id.WordAdd);
                 final CheckBox WordSub = endlineDialog.findViewById(R.id.WordSub);
-                Button btn_Submit = endlineDialog.findViewById(R.id.btn_Submit);
+                Button btn_Submit_endline2 = endlineDialog.findViewById(R.id.btn_Submit);
                 btn_EndlineDatePicker = endlineDialog.findViewById(R.id.btn_EndlineDatePicker);
                 btn_EndlineDatePicker.setText(util.GetCurrentDate().toString());
                 btn_EndlineDatePicker.setPadding(8, 8, 8, 8);
@@ -458,14 +459,14 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                     }
                 });
 
-                btn_Submit.setOnClickListener(new View.OnClickListener() {
+                btn_Submit_endline2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int BaselineSpinnerValue = spinner_BaselineLang.getSelectedItemPosition();
                         int NumberSpinnerValue = spinner_NumberReco.getSelectedItemPosition();
                         int EnglishSpinnerValue = spinner_English.getSelectedItemPosition();
 
-                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0 && EnglishSpinnerValue > 0) {
+                        if (BaselineSpinnerValue > 0 || NumberSpinnerValue > 0 || EnglishSpinnerValue > 0) {
                             sp_BaselineLang.setSelection(0);
                             sp_NumberReco.setSelection(0);
                             sp_English.setSelection(0);
@@ -535,7 +536,7 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                 final TextView tv_WordProblem = endlineDialog.findViewById(R.id.tv_WordProblem);
                 final CheckBox WordAdd = endlineDialog.findViewById(R.id.WordAdd);
                 final CheckBox WordSub = endlineDialog.findViewById(R.id.WordSub);
-                Button btn_Submit = endlineDialog.findViewById(R.id.btn_Submit);
+                Button btn_Submit_endline3 = endlineDialog.findViewById(R.id.btn_Submit);
                 btn_EndlineDatePicker = endlineDialog.findViewById(R.id.btn_EndlineDatePicker);
                 btn_EndlineDatePicker.setText(util.GetCurrentDate().toString());
                 btn_EndlineDatePicker.setPadding(8, 8, 8, 8);
@@ -625,14 +626,14 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                     }
                 });
 
-                btn_Submit.setOnClickListener(new View.OnClickListener() {
+                btn_Submit_endline3.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int BaselineSpinnerValue = spinner_BaselineLang.getSelectedItemPosition();
                         int NumberSpinnerValue = spinner_NumberReco.getSelectedItemPosition();
                         int EnglishSpinnerValue = spinner_English.getSelectedItemPosition();
 
-                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0 && EnglishSpinnerValue > 0) {
+                        if (BaselineSpinnerValue > 0 || NumberSpinnerValue > 0 || EnglishSpinnerValue > 0) {
                             sp_BaselineLang.setSelection(0);
                             sp_NumberReco.setSelection(0);
                             sp_English.setSelection(0);
@@ -701,7 +702,7 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                 final TextView tv_WordProblem = endlineDialog.findViewById(R.id.tv_WordProblem);
                 final CheckBox WordAdd = endlineDialog.findViewById(R.id.WordAdd);
                 final CheckBox WordSub = endlineDialog.findViewById(R.id.WordSub);
-                Button btn_Submit = endlineDialog.findViewById(R.id.btn_Submit);
+                Button btn_Submit_endline4 = endlineDialog.findViewById(R.id.btn_Submit);
                 btn_EndlineDatePicker = endlineDialog.findViewById(R.id.btn_EndlineDatePicker);
                 btn_EndlineDatePicker.setText(util.GetCurrentDate().toString());
                 btn_EndlineDatePicker.setPadding(8, 8, 8, 8);
@@ -791,14 +792,14 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                     }
                 });
 
-                btn_Submit.setOnClickListener(new View.OnClickListener() {
+                btn_Submit_endline4.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int BaselineSpinnerValue = spinner_BaselineLang.getSelectedItemPosition();
                         int NumberSpinnerValue = spinner_NumberReco.getSelectedItemPosition();
                         int EnglishSpinnerValue = spinner_English.getSelectedItemPosition();
 
-                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0 && EnglishSpinnerValue > 0) {
+                        if (BaselineSpinnerValue > 0 || NumberSpinnerValue > 0 || EnglishSpinnerValue > 0) {
                             sp_BaselineLang.setSelection(0);
                             sp_NumberReco.setSelection(0);
                             sp_English.setSelection(0);
@@ -843,7 +844,7 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
             }
         });
 
-        btn_Submit.setOnClickListener(new View.OnClickListener() {
+        btn_Submit_Baseline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // get selected radio button from radioGroup
@@ -876,10 +877,10 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                             }
                             stdAge = Integer.parseInt(Integer.toString(calculateAge(cal.getTimeInMillis())));
 
-                            // either baseline spinners are fully filled or not filled at all
+                            /*// either baseline spinners are fully filled or not filled at all
                             if ((sp_BaselineLang.getSelectedItemPosition() > 0 && sp_NumberReco.getSelectedItemPosition() > 0 && sp_English.getSelectedItemPosition() > 0)
                                     || (sp_BaselineLang.getSelectedItemPosition() == 0 && sp_NumberReco.getSelectedItemPosition() == 0 && sp_English.getSelectedItemPosition() == 0)) {
-                                // Populate Std Data
+                            */    // Populate Std Data
                                 Student stdObj = new Student();
                                 stdObj.StudentId = randomUUIDStudent;
                                 stdObj.FirstName = edt_Fname.getText().toString();
@@ -1004,10 +1005,10 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                                     Toast.makeText(AddNewStudent.this, "Record Insertion Failed !!!", Toast.LENGTH_SHORT).show();
                                 }
 
-
-                            } else {
+                            // either baseline spinners are fully filled or not filled at all
+                            /*} else {
                                 Toast.makeText(AddNewStudent.this, "Please Fill All Fields !", Toast.LENGTH_SHORT).show();
-                            }
+                            }*/
 
                         } else {
                             Toast.makeText(AddNewStudent.this, "Please Enter Valid Input !!!", Toast.LENGTH_SHORT).show();
@@ -1092,7 +1093,7 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
         rg_Gender = (RadioGroup) findViewById(R.id.rg_Gender);
         btn_Capture = (Button) findViewById(R.id.btn_Capture);
         imgView = (ImageView) findViewById(R.id.imageView);
-        btn_Submit = (Button) findViewById(R.id.btn_Submit);
+        btn_Submit_Baseline = (Button) findViewById(R.id.btn_Submit);
         btn_Clear = (Button) findViewById(R.id.btn_Clear);
         util = new Utility();
         btn_DatePicker = findViewById(R.id.btn_DatePicker);

@@ -204,7 +204,7 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                 final TextView tv_WordProblem = endlineDialog.findViewById(R.id.tv_WordProblem);
                 final CheckBox WordAdd = endlineDialog.findViewById(R.id.WordAdd);
                 final CheckBox WordSub = endlineDialog.findViewById(R.id.WordSub);
-                Button btn_Submit = endlineDialog.findViewById(R.id.btn_Submit);
+                Button btn_Submit_endline1 = endlineDialog.findViewById(R.id.btn_Submit);
                 btn_EndlineDatePicker = endlineDialog.findViewById(R.id.btn_EndlineDatePicker);
                 btn_EndlineDatePicker.setText(Util.GetCurrentDate().toString());
                 btn_EndlineDatePicker.setPadding(8, 8, 8, 8);
@@ -377,14 +377,15 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                     }
                 });
 
-                btn_Submit.setOnClickListener(new View.OnClickListener() {
+                btn_Submit_endline1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int BaselineSpinnerValue = spinner_BaselineLang.getSelectedItemPosition();
                         int NumberSpinnerValue = spinner_NumberReco.getSelectedItemPosition();
                         int EngSpinnerValue = spinner_English.getSelectedItemPosition();
 
-                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0 && EngSpinnerValue > 0) {
+//                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0 && EngSpinnerValue > 0) {
+                        if (BaselineSpinnerValue > 0 || NumberSpinnerValue > 0 || EngSpinnerValue > 0) {
                             sp_English.setSelection(0);
                             engSpin = EngSpinnerValue;
                             if (engSpin == 4 || engSpin == 5) {
@@ -528,7 +529,7 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                 final TextView tv_WordProblem = endlineDialog.findViewById(R.id.tv_WordProblem);
                 final CheckBox WordAdd = endlineDialog.findViewById(R.id.WordAdd);
                 final CheckBox WordSub = endlineDialog.findViewById(R.id.WordSub);
-                Button btn_Submit = endlineDialog.findViewById(R.id.btn_Submit);
+                Button btn_Submit_endline2 = endlineDialog.findViewById(R.id.btn_Submit);
                 btn_EndlineDatePicker = endlineDialog.findViewById(R.id.btn_EndlineDatePicker);
                 btn_EndlineDatePicker.setText(Util.GetCurrentDate().toString());
                 btn_EndlineDatePicker.setPadding(8, 8, 8, 8);
@@ -700,14 +701,14 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                     }
                 });
 
-                btn_Submit.setOnClickListener(new View.OnClickListener() {
+                btn_Submit_endline2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int BaselineSpinnerValue = spinner_BaselineLang.getSelectedItemPosition();
                         int NumberSpinnerValue = spinner_NumberReco.getSelectedItemPosition();
                         int EngSpinnerValue = spinner_English.getSelectedItemPosition();
 
-                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0 && EngSpinnerValue > 0) {
+                        if (BaselineSpinnerValue > 0 || NumberSpinnerValue > 0 || EngSpinnerValue > 0) {
                             sp_English.setSelection(0);
                             engSpin = EngSpinnerValue;
                             if (engSpin == 4 || engSpin == 5) {
@@ -851,7 +852,7 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                 final TextView tv_WordProblem = endlineDialog.findViewById(R.id.tv_WordProblem);
                 final CheckBox WordAdd = endlineDialog.findViewById(R.id.WordAdd);
                 final CheckBox WordSub = endlineDialog.findViewById(R.id.WordSub);
-                Button btn_Submit = endlineDialog.findViewById(R.id.btn_Submit);
+                Button btn_Submit_endline3 = endlineDialog.findViewById(R.id.btn_Submit);
                 btn_EndlineDatePicker = endlineDialog.findViewById(R.id.btn_EndlineDatePicker);
                 btn_EndlineDatePicker.setText(Util.GetCurrentDate().toString());
                 btn_EndlineDatePicker.setPadding(8, 8, 8, 8);
@@ -1023,14 +1024,14 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                     }
                 });
 
-                btn_Submit.setOnClickListener(new View.OnClickListener() {
+                btn_Submit_endline3.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int BaselineSpinnerValue = spinner_BaselineLang.getSelectedItemPosition();
                         int NumberSpinnerValue = spinner_NumberReco.getSelectedItemPosition();
                         int EngSpinnerValue = spinner_English.getSelectedItemPosition();
 
-                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0 && EngSpinnerValue > 0) {
+                        if (BaselineSpinnerValue > 0 || NumberSpinnerValue > 0 || EngSpinnerValue > 0) {
                             sp_English.setSelection(0);
                             engSpin = EngSpinnerValue;
                             if (engSpin == 4 || engSpin == 5) {
@@ -1171,7 +1172,7 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                 final TextView tv_WordProblem = endlineDialog.findViewById(R.id.tv_WordProblem);
                 final CheckBox WordAdd = endlineDialog.findViewById(R.id.WordAdd);
                 final CheckBox WordSub = endlineDialog.findViewById(R.id.WordSub);
-                Button btn_Submit = endlineDialog.findViewById(R.id.btn_Submit);
+                Button btn_Submit_endline4 = endlineDialog.findViewById(R.id.btn_Submit);
                 btn_EndlineDatePicker = endlineDialog.findViewById(R.id.btn_EndlineDatePicker);
                 btn_EndlineDatePicker.setText(Util.GetCurrentDate().toString());
                 btn_EndlineDatePicker.setPadding(8, 8, 8, 8);
@@ -1343,14 +1344,14 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                     }
                 });
 
-                btn_Submit.setOnClickListener(new View.OnClickListener() {
+                btn_Submit_endline4.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int BaselineSpinnerValue = spinner_BaselineLang.getSelectedItemPosition();
                         int NumberSpinnerValue = spinner_NumberReco.getSelectedItemPosition();
                         int EngSpinnerValue = spinner_English.getSelectedItemPosition();
 
-                        if (BaselineSpinnerValue > 0 && NumberSpinnerValue > 0 && EngSpinnerValue > 0) {
+                        if (BaselineSpinnerValue > 0 || NumberSpinnerValue > 0 || EngSpinnerValue > 0) {
                             sp_English.setSelection(0);
                             engSpin = EngSpinnerValue;
                             if (engSpin == 4 || engSpin == 5) {
@@ -1488,7 +1489,8 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                     engSpin = sp_English.getSelectedItemPosition();
                     AserTestDate = btn_DatePicker.getText().toString();
 
-                    if (langSpin > 0 && numSpin > 0 && engSpin > 0) {
+//                    if (langSpin > 0 && numSpin > 0 && engSpin > 0) {
+                    if (langSpin > 0 || numSpin > 0 || engSpin > 0) {
                         // insert or update baseline in db
                         boolean result;
                         result = AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().CheckDataExists(StudentUniqID, testT);
