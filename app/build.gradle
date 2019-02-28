@@ -58,6 +58,7 @@ dependencies {
     implementation 'net.alhazmy13.catcho:library:1.1.0'
     // Time Range Picker
     implementation 'org.greenrobot:eventbus:3.1.1'
+
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.kyleduo.blurpopupwindow:blurpopupwindow:1.0.9'
     implementation 'com.airbnb.android:lottie:2.7.0'

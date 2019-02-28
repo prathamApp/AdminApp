@@ -2,6 +2,9 @@ package com.pratham.admin.util;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
+
+import com.pratham.admin.database.AppDatabase;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,28 +14,52 @@ import java.nio.channels.FileChannel;
 public class BackupDatabase {
 
     public static void backup(Context mContext) {
+
         try {
             File sd = Environment.getExternalStorageDirectory();
-            String DB_NAME = "prathamDb";
             if (sd.canWrite()) {
-                File file = mContext.getDir("databases", Context.MODE_PRIVATE);
-
-                String currentDBPath = file.getAbsolutePath().replace("app_databases", "databases") + "/" + DB_NAME;
-                String backupDBPath = DB_NAME + ".db";
-                File currentDB = new File(currentDBPath);
-                File backupDB = new File(sd, backupDBPath);
-
-                if (currentDB.exists()) {
-                    FileChannel src = new FileInputStream(currentDB).getChannel();
-                    FileChannel dst = new FileOutputStream(backupDB).getChannel();
+                File currentDB = mContext.getDatabasePath("prathamDb");
+                File parentPath = currentDB.getParentFile();
+                for (File f : parentPath.listFiles()) {
+                    File temp = new File(sd, f.getName());
+                    if (!temp.exists()) temp.createNewFile();
+                    FileChannel src = new FileInputStream(f).getChannel();
+                    FileChannel dst = new FileOutputStream(temp).getChannel();
                     dst.transferFrom(src, 0, src.size());
                     src.close();
                     dst.close();
                 }
+            } else {
+                Log.d("gg","kk");
+//EventBus.getDefault().post(PermissionUtils.WRITE_PERMISSION);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+/*try {
+File sd = Environment.getExternalStorageDirectory();
+
+if (sd.canWrite()) {
+File file = mContext.getDir("databases", Context.MODE_PRIVATE);
+
+String currentDBPath = file.getAbsolutePath().replace("app_databases","databases")+"/"+ DB_NAME;
+String backupDBPath = DB_NAME+".db";
+File currentDB = new File(currentDBPath);
+File backupDB = new File(sd, backupDBPath);
+
+if (currentDB.exists()) {
+FileChannel src = new FileInputStream(currentDB).getChannel();
+FileChannel dst = new FileOutputStream(backupDB).getChannel();
+dst.transferFrom(src, 0, src.size());
+src.close();
+dst.close();
+}
+}
+} catch (Exception e) {
+e.printStackTrace();
+}
+}*/
 
 }

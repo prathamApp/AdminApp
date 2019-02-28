@@ -13,7 +13,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.InputType;
 import android.util.Log;
@@ -45,6 +44,7 @@ import com.pratham.admin.interfaces.QRScanListener;
 import com.pratham.admin.modalclasses.CRL;
 import com.pratham.admin.modalclasses.TabletManageDevice;
 import com.pratham.admin.util.APIs;
+import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 
@@ -143,7 +143,7 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
         allCRLlist = new ArrayList<>();
         LoggedcrlId = getIntent().getStringExtra("CRLid");
         LoggedcrlName = getIntent().getStringExtra("CRLname");
-        tabStatus = RETURN;
+        tabStatus = ASSIGN;
         /*android.support.v7.app.ActionBar ab = getSupportActionBar();*/
 
 
@@ -194,7 +194,7 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
 
 
         } else {
-           /* setRules();*/
+            /* setRules();*/
             List<TabletManageDevice> oldList = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().getAllTabletManageDevice();
             if (!oldList.isEmpty()) {
                 for (int i = 0; i < oldList.size(); i++) {
@@ -204,7 +204,7 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
                 oldList.clear();
             }
 
-          /*  loadSpinner();*/
+            /*  loadSpinner();*/
             // qr_spinner_crl.setText(LoggedcrlName);
             setCount();
         }
@@ -214,6 +214,7 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
     private void controller() {
         checkbox_no_qr.setChecked(false);
         if (tabStatus.equals(ASSIGN)) {
+            resetCamera();
             btn_returnTablet.setBackground(getResources().getDrawable(R.drawable.btn_style_upper_rounded));
             btn_assignTablet.setBackground(getResources().getDrawable(R.drawable.btn_style_upper_rounded_white));
             setPrathamIdAndQrIF(newPratahmId, newQrId);
@@ -221,11 +222,11 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
                 btn_assignTablet.setElevation(30);
                 btn_returnTablet.setElevation(0);
             }
-            msg.setText("scan the tablet which want to Assign after that press save");
+            msg.setText("scan the tablet which want to Assign ");
             isDamaged.setVisibility(View.GONE);
             damageType.setVisibility(View.GONE);
             comments.setVisibility(View.GONE);
-            qr_btn_save.setVisibility(View.VISIBLE);
+            qr_btn_save.setVisibility(View.GONE);
             oldSerialId = qr_serialNo.getText().toString();
             if (newSerialId != null && !newSerialId.equals("")) {
                 qr_serialNo.setText(newSerialId);
@@ -233,7 +234,7 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
                 qr_serialNo.setText("");
             }
         } else if (tabStatus.equals(RETURN)) {
-            resetCamera();
+
             newSerialId = qr_serialNo.getText().toString();
             if (oldSerialId != null && !oldSerialId.equals("")) {
                 qr_serialNo.setText(oldSerialId);
@@ -247,11 +248,11 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
                 btn_returnTablet.setElevation(0);
             }
             setPrathamIdAndQrIF(oldPratahmId, oldQrId);
-            msg.setText("first fill details then scan the tablet which want to Return");
+            msg.setText("fill details then scan the tablet which want to Collect then press save");
             isDamaged.setVisibility(View.VISIBLE);
             damageType.setVisibility(View.VISIBLE);
             comments.setVisibility(View.VISIBLE);
-            qr_btn_save.setVisibility(View.INVISIBLE);
+            qr_btn_save.setVisibility(View.VISIBLE);
             setLisnerToRuturnTabletSpinner();
         } else if (tabStatus.equals(REPLACE)) {
             msg.setText("If all is good then save");
@@ -379,32 +380,12 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
                         if (newPratahmId == null || (!newPratahmId.equals(prathamId))) {
                             oldPratahmId = prathamId;
                             oldQrId = QrId;
+                            setPrathamIdAndQrIF(oldPratahmId, oldQrId);
+                            controller();
                             //      qr_pratham_id.setText(oldPratahmId);
                         /*    qr_serialNo.setText("");
                             qr_serialNo.setEnabled(false);*/
-                            new AlertDialog.Builder(this)
-                                    .setMessage("Step 1 successfully done Continue with step 2")
-                                    .setCancelable(false)
-                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                            tabStatus = ASSIGN;
-                                            setPrathamIdAndQrIF(oldPratahmId, oldQrId);
-                                               /* returnTablet.setText(Html.fromHtml("<b><i>1.RETURN<i> <u>Pratham_id</u></b> : " + oldPratahmId + "<b><u> QrId</u></b>: " + oldQrId));
-                                                returnTablet.setTextColor(Color.parseColor("#FFFFFF"));
-                                                returnTablet.setBackgroundColor(Color.parseColor("#6AC259"));*/
-                                            comment = comments.getText().toString();
-                                            resetCamera();
-                                            controller();
-                                        }
-                                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    resetCamera();
-                                }
-                            }).show();
+
                         } else {
                             new AlertDialog.Builder(this)
                                     .setMessage("You can not repalce  device with same device")
@@ -421,14 +402,37 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
                         if (oldPratahmId == null || !oldPratahmId.equals(prathamId)) {
                             newPratahmId = prathamId;
                             newQrId = QrId;
+                            new AlertDialog.Builder(this)
+                                    .setMessage("Step 1 successfully done Continue with step 2")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                            tabStatus = RETURN;
+                                            setPrathamIdAndQrIF(newPratahmId, newQrId);
+                                               /* returnTablet.setText(Html.fromHtml("<b><i>1.RETURN<i> <u>Pratham_id</u></b> : " + oldPratahmId + "<b><u> QrId</u></b>: " + oldQrId));
+                                                returnTablet.setTextColor(Color.parseColor("#FFFFFF"));
+                                                returnTablet.setBackgroundColor(Color.parseColor("#6AC259"));*/
+                                            comment = comments.getText().toString();
+                                            resetCamera();
+                                            controller();
+                                        }
+                                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    resetCamera();
+                                }
+                            }).show();
                             //    qr_pratham_id.setText(prathamId);
                        /*     qr_serialNo.setText("");
                             qr_serialNo.setEnabled(false);*/
-                            setPrathamIdAndQrIF(newPratahmId, newQrId);
+
                             // qrData.setText(Html.fromHtml("<b><i>2.ASSIGN<i> <u>Pratham_id</u></b> : " + newPratahmId + "<b><u> QrId</u></b>: " + newQrId));
                                /* assignTablet.setTextColor(Color.parseColor("#FFFFFF"));
                                 assignTablet.setBackgroundColor(Color.parseColor("#6AC259"));*/
-                            controller();
+
                         } else {
                             new AlertDialog.Builder(this)
                                     .setMessage("You can not repalce  device with same device")
@@ -555,43 +559,78 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
 
     @OnClick(R.id.qr_btn_save)
     public void saveTabTrack() {
-        newSerialId = qr_serialNo.getText().toString();
+        oldSerialId = qr_serialNo.getText().toString();
         //   prathamId = qr_pratham_id.getText().toString();
         // if ((!serialNO.equals("")) || !prathamId.equals("")) {
-       /*     if (tabStatus.equals(RETURN)) {*/
-        if ((oldPratahmId != null && oldQrId != null && !oldPratahmId.equals("") && !oldQrId.equals("")) || (oldSerialId != null && !oldSerialId.equals(""))) {
-            if ((newPratahmId != null && newQrId != null && !newPratahmId.equals("") && !newQrId.equals("")) || (newSerialId != null && !newSerialId.equals(""))) {
+        /*     if (tabStatus.equals(RETURN)) {*/
+        Log.d("data", oldSerialId);
+        if ((newPratahmId != null && newQrId != null && !newPratahmId.equals("") && !newQrId.equals("")) || (newSerialId != null && !newSerialId.equals(""))) {
+            if ((oldPratahmId != null && oldQrId != null && !oldPratahmId.equals("") && !oldQrId.equals("")) || (oldSerialId != null && !oldSerialId.equals(""))) {
                 if ((isDamagedText.equals("Yes") && !damageTypeText.equals("")) || isDamagedText.equals("No")) {
+                   /* boolean crlFound = false;
+                    String crlSeniosID = "";
+                    String blockName = AppDatabase.getDatabaseInstance(this).getCRLdao().getCRLsBlockName(LoggedcrlId);
+                    if (blockName != null || !blockName.isEmpty()) {
+                        List<CRL> crlList = AppDatabase.getDatabaseInstance(this).getCRLdao().getCRLBlockHeadBYBlockName(blockName);
+                        if (crlList != null || !crlList.isEmpty()) {
+                            crlFound = true;
+                            crlSeniosID = crlList.get(0).getCRLId();
+                        } else {
+                            List<CRL> crlListDistrict = AppDatabase.getDatabaseInstance(this).getCRLdao().getDistrictLeaderBYBlockName(blockName);
+                            if (crlListDistrict != null || !crlListDistrict.isEmpty()) {
+                                if (crlListDistrict.size() == 1) {
+                                    crlFound = true;
+                                    crlSeniosID = crlListDistrict.get(0).getCRLId();
+                                } else {
+                                    Toast.makeText(context, "more Than one district head Present", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    }
+                    if (crlFound) {*/
+                    Log.d("crlFound", "crlFound");
                     TabletManageDevice tabletManageDevice = new TabletManageDevice();
-                    tabletManageDevice.setQR_ID(oldQrId);
                     tabletManageDevice.setStatus(REPLACE);
                     tabletManageDevice.setLogged_CRL_ID(LoggedcrlId);
                     tabletManageDevice.setAssigned_CRL_Name(LoggedcrlName);
                     tabletManageDevice.setAssigned_CRL_ID(LoggedcrlId);
                     tabletManageDevice.setAssigned_CRL_Name(LoggedcrlName);
-                    tabletManageDevice.setPratham_ID(oldPratahmId);
-                    tabletManageDevice.setTabSerial_ID(oldSerialId);
+                    if (oldPratahmId != null && oldQrId != null && !oldPratahmId.equals("") && !oldQrId.equals("")) {
+                        tabletManageDevice.setCollectedTabPrathamID(oldPratahmId);
+                        tabletManageDevice.setCollectedTabQrID(oldQrId);
+                    } else {
+                        tabletManageDevice.setCollectedTabPrathamID(oldSerialId);
+                    }
+                    /* tabletManageDevice.setCollectedTabs_senior(crlSeniosID);*/
                     tabletManageDevice.setIs_Damaged(isDamagedText);
                     tabletManageDevice.setDamageType(damageTypeText);
                     tabletManageDevice.setComment(comment);
                     tabletManageDevice.setOldFlag(false);
-                    tabletManageDevice.setNewPrathamID(newPratahmId);
-                    tabletManageDevice.setNewQrID(newQrId);
-                    tabletManageDevice.setNew_Tab_serial_ID(newSerialId);
+                    if (newPratahmId != null && newQrId != null && !newPratahmId.equals("") && !newQrId.equals("")) {
+                        tabletManageDevice.setPratham_ID(newPratahmId);
+                        tabletManageDevice.setQR_ID(newQrId);
+                    } else {
+                        tabletManageDevice.setPratham_ID(newSerialId);
+                    }
                     tabletManageDevice.setDate(DateFormat.getDateTimeInstance().format(new Date()));
                     AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().insertTabletManageDevice(tabletManageDevice);
                     Toast.makeText(ReplaceTablet_MD.this, "Inserted Successfully ", Toast.LENGTH_LONG).show();
+                    BackupDatabase.backup(this);
+
                     setCount();
                     cleaFields();
                     resetCamera();
+                   /* } else {
+                        Toast.makeText(context, "No Senior Person Found", Toast.LENGTH_SHORT).show();
+                    }*/
                 } else {
-                    Toast.makeText(context, "select damage type in return process", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "select damage type in collect process", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(context, "Scan qr for Assign ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Scan qr for Collect", Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(context, "Scan qr for Return", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Scan qr for Assign ", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -608,7 +647,7 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
         //   qr_spinner_crl.setEnabled(false);
         // qr_serialNo.setText("");
         // damageType.setVisibility(View.VISIBLE);
-    /*    crlNameSpinner.setSelection(0);*/
+        /*    crlNameSpinner.setSelection(0);*/
         isDamaged.setSelection(0);
         comments.setText("");
         oldPratahmId = null;

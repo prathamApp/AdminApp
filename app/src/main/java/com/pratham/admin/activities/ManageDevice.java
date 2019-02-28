@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -30,16 +32,16 @@ import butterknife.ButterKnife;
 
 public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner, ConnectionReceiverListener {
     @BindView(R.id.btn_assignTablet)
-    Button btn_assignTablet;
+    CardView btn_assignTablet;
 
     @BindView(R.id.returnTablet)
-    Button returnTablet;
+    CardView returnTablet;
 
     @BindView(R.id.btn_replaceTab)
-    Button btn_replaceTab;
+    CardView btn_replaceTab;
 
     @BindView(R.id.acionstatus)
-    Button acionstatus;
+    CardView acionstatus;
 
     String LoggedcrlName;
     String LoggedcrlId;
@@ -59,6 +61,8 @@ public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_device);
         ButterKnife.bind(this);
+        // Hide Actionbar
+        getSupportActionBar().hide();
         LoggedcrlId = getIntent().getStringExtra("CRLid");
         LoggedcrlName = getIntent().getStringExtra("CRLname");
         context = ManageDevice.this;
@@ -77,6 +81,7 @@ public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner,
             switch (role) {
                 case ROll_ID.BRG_CRL_Tutor:
                     btn_assignTablet.setVisibility(View.GONE);
+                    returnTablet.setVisibility(View.GONE);
                     acionstatus.setVisibility(View.GONE);
                     /*only crl can replace tab*/
                     btn_replaceTab.setVisibility(View.VISIBLE);
@@ -84,23 +89,18 @@ public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner,
                 case ROll_ID.Block_Head:
                     acionstatus.setVisibility(View.GONE);
                     btn_replaceTab.setVisibility(View.GONE);
-
                     break;
                 case ROll_ID.District_Head:
                     acionstatus.setVisibility(View.GONE);
                     btn_replaceTab.setVisibility(View.GONE);
-
                     break;
-
                 case ROll_ID.Program_Head:
                     acionstatus.setVisibility(View.GONE);
                     btn_replaceTab.setVisibility(View.GONE);
-
                     break;
                 case ROll_ID.State_Program_Head:
                     acionstatus.setVisibility(View.GONE);
                     btn_replaceTab.setVisibility(View.GONE);
-
                     break;
            /* case ROll_ID.National_Program_Head:
                 acionstatus.setVisibility(View.GONE);
@@ -173,8 +173,21 @@ public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner,
             @Override
             public void onResponse(JSONArray response) {
                 progressDialog.dismiss();
-                MyDeviceList myDeviceList = new MyDeviceList(context, response);
-                myDeviceList.show();
+                if (response.length() > 0) {
+                    MyDeviceList myDeviceList = new MyDeviceList(context, response);
+                    myDeviceList.show();
+                } else {
+                    AlertDialog alertDialog = new AlertDialog.Builder(ManageDevice.this).create();
+                    alertDialog.setTitle("No Device found");
+                    alertDialog.setIcon(R.drawable.ic_error_outline_black_24dp);
+                    alertDialog.setButton("OK", new android.content.DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(android.content.DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    alertDialog.show();
+                }
             }
 
             @Override

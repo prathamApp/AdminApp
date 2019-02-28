@@ -49,9 +49,9 @@ public class QRScanAdapter_MD extends RecyclerView.Adapter<QRScanAdapter_MD.View
         holder.ad_AssignedBy.setText(tabletManageDevices.get(position).getLogged_CRL_ID());
         holder.qrID.setText(tabletManageDevices.get(position).getQR_ID());
         holder.pratham_id.setText(tabletManageDevices.get(position).getPratham_ID());
-        holder.serialId.setText(tabletManageDevices.get(position).getTabSerial_ID());
-        holder.newPrathamID.setText(tabletManageDevices.get(position).getNewPrathamID());
-        holder.newQrID.setText(tabletManageDevices.get(position).getNewQrID());
+      /*  holder.serialId.setText(tabletManageDevices.get(position).getTabSerial_ID());*/
+        holder.newPrathamID.setText(tabletManageDevices.get(position).getCollectedTabPrathamID());
+        holder.newQrID.setText(tabletManageDevices.get(position).getCollectedTabQrID());
        /* String replaceStaatus = "";
         if (tabletManageDevices.get(position).getIs_Damaged() != null) {
             replaceStaatus = tabletManageDevices.get(position).getIs_Damaged() + " ";
@@ -63,7 +63,7 @@ public class QRScanAdapter_MD extends RecyclerView.Adapter<QRScanAdapter_MD.View
             replaceStaatus += tabletManageDevices.get(position).getComment();
         }*/
 
-        holder.newSerialID.setText(tabletManageDevices.get(position).getNew_Tab_serial_ID());
+       /* holder.newSerialID.setText(tabletManageDevices.get(position).getCollectedTab_serial_ID());*/
 
       /*  holder.checkBox_student.setText(fname);
         holder.txt_crl_id.setText(tabletManageDevices.get(holder.getAdapterPosition()).getAssigned_CRL_ID());
@@ -100,9 +100,9 @@ public class QRScanAdapter_MD extends RecyclerView.Adapter<QRScanAdapter_MD.View
             ad_AssignedBy = itemView.findViewById(R.id.ad_AssignedBy);
             qrID = itemView.findViewById(R.id.qrID);
             pratham_id = itemView.findViewById(R.id.pratham_id);
-            serialId = itemView.findViewById(R.id.serialId);
+           /* serialId = itemView.findViewById(R.id.serialId);*/
             /* txt_loggedIn_crl = itemView.findViewById(R.id.txt_loggedIn_crl);*/
-            newSerialID = itemView.findViewById(R.id.newSerialID);
+           /* newSerialID = itemView.findViewById(R.id.newSerialID);*/
             newPrathamID = itemView.findViewById(R.id.newPrathamID);
             newQrID = itemView.findViewById(R.id.newqr_id);
             ad_iv_delete = itemView.findViewById(R.id.ad_iv_delete);

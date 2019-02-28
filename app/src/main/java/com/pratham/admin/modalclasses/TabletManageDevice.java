@@ -65,19 +65,34 @@ public class TabletManageDevice {
     String comment;
 
     @Expose
-    @SerializedName("newPrathamID")
-    String newPrathamID;
+    @SerializedName("collectedTabPrathamID")
+    String collectedTabPrathamID;
 
     @Expose
-    @SerializedName("newQrID")
-    String newQrID;
+    @SerializedName("collectedTabQrID")
+    String collectedTabQrID;
 
     @Expose
-    @SerializedName("new_Tab_serial_ID")
-    String new_Tab_serial_ID;
+    @SerializedName("collectedTab_serial_ID")
+    String collectedTab_serial_ID;
+
+
+    @Expose
+    @SerializedName("collectedTabs_seniorsID")
+    String collectedTabs_senior;
+
 
     @Expose(serialize = false)
     boolean oldFlag = false;
+
+
+    public String getCollectedTabs_senior() {
+        return collectedTabs_senior;
+    }
+
+    public void setCollectedTabs_senior(String collectedTabs_senior) {
+        this.collectedTabs_senior = collectedTabs_senior;
+    }
 
     @NonNull
     public Integer getId() {
@@ -194,27 +209,27 @@ public class TabletManageDevice {
         this.comment = comment;
     }
 
-    public String getNewPrathamID() {
-        return newPrathamID;
+    public String getCollectedTabPrathamID() {
+        return collectedTabPrathamID;
     }
 
-    public void setNewPrathamID(String newPrathamID) {
-        this.newPrathamID = newPrathamID;
+    public void setCollectedTabPrathamID(String collectedTabPrathamID) {
+        this.collectedTabPrathamID = collectedTabPrathamID;
     }
 
-    public String getNewQrID() {
-        return newQrID;
+    public String getCollectedTabQrID() {
+        return collectedTabQrID;
     }
 
-    public void setNewQrID(String newQrID) {
-        this.newQrID = newQrID;
+    public void setCollectedTabQrID(String collectedTabQrID) {
+        this.collectedTabQrID = collectedTabQrID;
     }
 
-    public String getNew_Tab_serial_ID() {
-        return new_Tab_serial_ID;
+    public String getCollectedTab_serial_ID() {
+        return collectedTab_serial_ID;
     }
 
-    public void setNew_Tab_serial_ID(String new_Tab_serial_ID) {
-        this.new_Tab_serial_ID = new_Tab_serial_ID;
+    public void setCollectedTab_serial_ID(String collectedTab_serial_ID) {
+        this.collectedTab_serial_ID = collectedTab_serial_ID;
     }
 }

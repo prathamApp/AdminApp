@@ -12,21 +12,11 @@
         android:id="@+id/linearLayout8"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <Button
-            android:id="@+id/btn_returnTablet"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/btn_style_upper_rounded"
-            android:text="Return Tablet" />
 
         <Button
             android:id="@+id/btn_assignTablet"
@@ -35,14 +25,22 @@
             android:layout_weight="1"
             android:background="@drawable/btn_style_upper_rounded"
             android:text="Assign Tablet" />
+
+        <Button
+            android:id="@+id/btn_returnTablet"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_style_upper_rounded"
+            android:text="Collect Tablet" />
+
+
     </LinearLayout>
 
     <android.support.v7.widget.LinearLayoutCompat
         android:id="@+id/linearLayoutCompat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:background="#e1a0a5"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:text="step 1:  Return Tablet"
+                    android:text="step 1:  Collect Tablet"
                     android:textSize="20dp" />
 
                 <!-- <TextView
@@ -102,11 +100,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/programInfo"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
         android:background="#e1a0a5"
         android:orientation="horizontal"
         android:weightSum="1"
@@ -248,7 +241,7 @@
                         android:layout_height="50dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:hint="Enter Qr code"
+                        android:hint="Enter pratham code"
                         android:maxLength="8"
                         android:textSize="15dp"
                         android:visibility="visible" />
@@ -261,7 +254,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:editable="false"
-                        android:hint="Serial NO"
+                        android:hint="Pratham ID"
                         android:inputType="none"
                         android:maxLength="8"
                         android:maxLines="1"
@@ -320,6 +313,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:weightSum="1">
 

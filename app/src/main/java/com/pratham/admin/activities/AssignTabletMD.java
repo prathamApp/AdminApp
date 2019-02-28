@@ -91,10 +91,10 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
     @BindView(R.id.isDamaged)
     Spinner isDamaged;
 
-   /* @BindView(R.id.assigned_crl_name)
-    TextView assigned_crl_name;
-    @BindView(R.id.assigned_crl_Id)
-    TextView assigned_crl_Id;*/
+    /* @BindView(R.id.assigned_crl_name)
+     TextView assigned_crl_name;
+     @BindView(R.id.assigned_crl_Id)
+     TextView assigned_crl_Id;*/
     @BindView(R.id.damageType)
     Spinner damageType;
     @BindView(R.id.comments)

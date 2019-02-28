@@ -122,9 +122,10 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
         password.setText("pratham@123");
         userName.setText("narayansiraswar410");
         password.setText("pratham");
-        userName.setText("ganeshtupe54");
-        password.setText("pratham");
-*/
+          userName.setText("ganeshtupe54");
+        password.setText("pratham");*/
+
+
         // check connection & then upgrade latest version if available
         ApplicationController.getInstance().setConnectionListener(this);
         checkConnection();
@@ -267,6 +268,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
             }*/
         } else {
             boolean userPass = false;
+
             List<CRL> Crl = AppDatabase.getDatabaseInstance(this).getCRLdao().getAllCRLs();
             for (int i = 0; i < Crl.size(); i++) {
                 // CRL crl=Crl.get(i);

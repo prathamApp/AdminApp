@@ -93,6 +93,7 @@ public class CustomDialogQRScan_MD extends Dialog implements QRRecyclerListener 
     public void clearChangesList() {
         qrScanListener.clearChanges();
         this.dismiss();
+        ((Activity) assignTabletMD).finish();
     }
 
     @Override

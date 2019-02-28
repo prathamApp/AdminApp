@@ -1,152 +1,347 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    tools:context=".activities.Student_Management">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <!--Title-->
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_8sdp"
+        android:background="@drawable/custom_border"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:padding="@dimen/_8sdp"
+        android:text="Student Management"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/_20sdp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:id="@+id/cards"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
-        android:gravity="center"
-        android:orientation="vertical"
-        tools:context=".activities.Student_Management">
+        android:layout_below="@id/header">
 
-        <!--Title-->
-        <TextView
-            android:layout_width="match_parent"
+        <ScrollView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_8sdp"
-            android:background="@drawable/custom_border"
-            android:fontFamily="monospace"
-            android:gravity="center"
-            android:padding="@dimen/_8sdp"
-            android:text="Student Management"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/_20sdp"
-            android:textStyle="bold" />
+            android:layout_centerInParent="true">
 
-        <LinearLayout
-            android:id="@+id/Line1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <Button
+            <LinearLayout
+                android:id="@+id/Line1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/_8sdp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimaryDark"
-                android:onClick="AddNewGroup"
-                android:text="Add New Group"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="@dimen/_12sdp" />
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/_8sdp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimaryDark"
-                android:onClick="AddNewStudent"
-                android:text="Add New Student"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="@dimen/_12sdp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/Line2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/Line1"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/_8sdp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimaryDark"
-                android:onClick="EditStudent"
-                android:text="Edit Student"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="@dimen/_12sdp" />
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/_8sdp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimaryDark"
-                android:onClick="DeleteStudent"
-                android:text="Delete Student"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="@dimen/_12sdp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/Line3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/Line2"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <Button
-                android:id="@+id/btn_AssessmentReport"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/_8sdp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimaryDark"
-                android:onClick="SwapStudents"
-                android:text="Swap Students"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="@dimen/_12sdp" />
-
-        </LinearLayout>
-
-        <HorizontalScrollView
-            android:id="@+id/linearLayout9"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_8sdp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <TextView
-                android:id="@+id/tv_appInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:gravity="center"
-                android:hint="App Info"
-                android:orientation="vertical"
-                android:textColor="@color/button"
-                android:textSize="@dimen/_12sdp" />
+                android:orientation="vertical">
+                <!--add new group-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-        </HorizontalScrollView>
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/AddNewGroup"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:onClick="AddNewGroup"
+                        app:cardCornerRadius="@dimen/_8sdp"
+                        app:cardElevation="@dimen/_20sdp">
 
-    </LinearLayout>
-</ScrollView>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="@dimen/_8sdp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="@dimen/_64sdp"
+                                android:layout_height="@dimen/_64sdp"
+                                android:layout_marginLeft="@dimen/_8sdp"
+                                android:layout_marginTop="@dimen/_16sdp"
+                                android:layout_marginRight="@dimen/_8sdp"
+                                android:scaleType="fitXY"
+                                app:srcCompat="@drawable/group_add_black_24dp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_margin="@dimen/_16sdp"
+                                android:gravity="center_horizontal"
+                                android:text="Add New Group"
+                                android:textColor="#000000"
+                                android:textSize="@dimen/_12sdp"
+                                android:textStyle="normal" />
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+                    <!-- <Button
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center"
+                         android:layout_margin="@dimen/_8sdp"
+                         android:layout_weight="1"
+                         android:background="@color/colorPrimaryDark"
+
+
+                         android:textAllCaps="false"
+                         android:textColor="#FFFFFF"
+                         android:textSize="@dimen/_12sdp" />-->
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/AddNewStudent"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:onClick="AddNewStudent"
+                        app:cardCornerRadius="@dimen/_8sdp"
+                        app:cardElevation="@dimen/_10sdp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="@dimen/_8sdp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="@dimen/_64sdp"
+                                android:layout_height="@dimen/_64sdp"
+                                android:layout_marginLeft="@dimen/_8sdp"
+                                android:layout_marginTop="@dimen/_16sdp"
+                                android:layout_marginRight="@dimen/_8sdp"
+                                android:scaleType="fitXY"
+                                app:srcCompat="@drawable/student_add_black_24dp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_margin="@dimen/_16sdp"
+                                android:gravity="center_horizontal"
+                                android:text="Add New Student"
+                                android:textColor="#000000"
+                                android:textSize="@dimen/_12sdp"
+                                android:textStyle="normal" />
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+                    <!--  <Button
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_gravity="center"
+                          android:layout_margin="@dimen/_8sdp"
+                          android:layout_weight="1"
+                          android:background="@color/colorPrimaryDark"
+                          android:onClick="AddNewStudent"
+                          android:text="Add New Student"
+                          android:textAllCaps="false"
+                          android:textColor="#FFFFFF"
+                          android:textSize="@dimen/_12sdp" />-->
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/EditStudent"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:onClick="EditStudent"
+                        app:cardCornerRadius="@dimen/_8sdp"
+                        app:cardElevation="@dimen/_10sdp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="@dimen/_8sdp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="@dimen/_64sdp"
+                                android:layout_height="@dimen/_64sdp"
+                                android:layout_marginLeft="@dimen/_8sdp"
+                                android:layout_marginTop="@dimen/_16sdp"
+                                android:layout_marginRight="@dimen/_8sdp"
+                                android:scaleType="fitXY"
+                                app:srcCompat="@drawable/edit_black_24dp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_margin="@dimen/_16sdp"
+                                android:gravity="center_horizontal"
+                                android:text="Edit Student"
+                                android:textColor="#000000"
+                                android:textSize="@dimen/_12sdp"
+                                android:textStyle="normal" />
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <!--     <Button
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="center"
+                             android:layout_margin="@dimen/_8sdp"
+                             android:layout_weight="1"
+                             android:background="@color/colorPrimaryDark"
+                             android:onClick="EditStudent"
+                             android:text="Edit Student"
+                             android:textAllCaps="false"
+                             android:textColor="#FFFFFF"
+                             android:textSize="@dimen/_12sdp" />-->
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/DeleteStudent"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:onClick="DeleteStudent"
+                        app:cardCornerRadius="@dimen/_8sdp"
+                        app:cardElevation="@dimen/_10sdp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="@dimen/_8sdp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="@dimen/_64sdp"
+                                android:layout_height="@dimen/_64sdp"
+                                android:layout_marginLeft="@dimen/_8sdp"
+                                android:layout_marginTop="@dimen/_16sdp"
+                                android:layout_marginRight="@dimen/_8sdp"
+                                android:scaleType="fitXY"
+                                app:srcCompat="@drawable/delete_forever_black_24dp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_margin="@dimen/_16sdp"
+                                android:gravity="center_horizontal"
+                                android:text="Delete Student"
+                                android:textColor="#000000"
+                                android:textSize="@dimen/_12sdp"
+                                android:textStyle="normal" />
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+                    <!--     <Button
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="center"
+                             android:layout_margin="@dimen/_8sdp"
+                             android:layout_weight="1"
+                             android:background="@color/colorPrimaryDark"
+                             android:onClick="DeleteStudent"
+                             android:text="Delete Student"
+                             android:textAllCaps="false"
+                             android:textColor="#FFFFFF"
+                             android:textSize="@dimen/_12sdp" />-->
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/btn_AssessmentReport"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:onClick="SwapStudents"
+                        app:cardCornerRadius="@dimen/_8sdp"
+                        app:cardElevation="@dimen/_10sdp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="@dimen/_8sdp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="@dimen/_64sdp"
+                                android:layout_height="@dimen/_64sdp"
+                                android:layout_marginLeft="@dimen/_8sdp"
+                                android:layout_marginTop="@dimen/_16sdp"
+                                android:layout_marginRight="@dimen/_8sdp"
+                                android:scaleType="fitXY"
+                                app:srcCompat="@drawable/ic_swap_black" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_margin="@dimen/_16sdp"
+                                android:gravity="center_horizontal"
+                                android:text="Swap Students"
+                                android:textColor="#000000"
+                                android:textSize="@dimen/_12sdp"
+                                android:textStyle="normal" />
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+                    <!--  <Button
+                          android:id="@+id/btn_AssessmentReport"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_gravity="center"
+                          android:layout_margin="@dimen/_8sdp"
+                          android:layout_weight="1"
+                          android:background="@color/colorPrimaryDark"
+                          android:onClick="SwapStudents"
+                          android:text="Swap Students"
+                          android:textAllCaps="false"
+                          android:textColor="#FFFFFF"
+                          android:textSize="@dimen/_12sdp" />-->
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </ScrollView>
+    </RelativeLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/linearLayout9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cards"
+        android:layout_margin="@dimen/_8sdp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_appInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:hint="App Info"
+            android:orientation="vertical"
+            android:textColor="@color/button"
+            android:textSize="@dimen/_12sdp" />
+
+    </HorizontalScrollView>
+
+</RelativeLayout>
+
+

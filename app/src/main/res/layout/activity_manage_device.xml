@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,39 +7,33 @@
     tools:context=".activities.ManageDevice">
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="0dp"
+        android:id="@+id/header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_margin="@dimen/_8sdp"
         android:background="@drawable/custom_border"
         android:fontFamily="monospace"
         android:gravity="center"
-        android:padding="8dp"
+        android:padding="@dimen/_8sdp"
         android:text="Manage Device"
         android:textColor="@color/colorAccent"
-        android:textSize="32sp"
+        android:textSize="@dimen/_20sdp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_centerInParent="true"
+            android:foregroundGravity="center">
+
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -48,135 +42,288 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
+                <!--//assign-->
+                <android.support.v7.widget.CardView
+                    android:id="@+id/btn_assignTablet"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_8sdp"
+
+                    android:onClick="assignTablet"
+                    app:cardCornerRadius="@dimen/_8sdp"
+                    app:cardElevation="@dimen/_10sdp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        tools:cardCornerRadius="@dimen/_8sdp"
+                        tools:cardElevation="@dimen/_10sdp">
+
+                        <ImageView
+                            android:id="@+id/card_view_image"
+                            android:layout_width="@dimen/_64sdp"
+                            android:layout_height="@dimen/_64sdp"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:layout_marginTop="@dimen/_16sdp"
+                            android:layout_marginRight="@dimen/_8sdp"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_qr_code_black" />
+
+                        <TextView
+                            android:id="@+id/card_view_image_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="@dimen/_16sdp"
+                            android:gravity="center_horizontal"
+                            android:text="Assign Tablet"
+                            android:textColor="#000000"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="normal" />
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+                <!--//return-->
+                <android.support.v7.widget.CardView
+                    android:id="@+id/returnTablet"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:onClick="returnTablet"
+                    app:cardCornerRadius="@dimen/_8sdp"
+                    app:cardElevation="@dimen/_10sdp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/imageView"
+                            android:layout_width="@dimen/_64sdp"
+                            android:layout_height="@dimen/_64sdp"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:layout_marginTop="@dimen/_16sdp"
+                            android:layout_marginRight="@dimen/_8sdp"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_qr_code_black" />
+
+                        <TextView
+                            android:id="@+id/card_view_image_titlereturn"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="@dimen/_16sdp"
+                            android:gravity="center_horizontal"
+                            android:text="Return Tablet"
+                            android:textColor="#000000"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="normal" />
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <!--//deviceloist-->
+                <android.support.v7.widget.CardView
+                    android:id="@+id/my_devicelist"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:onClick="myDeviceList"
+                    app:cardCornerRadius="@dimen/_8sdp"
+                    app:cardElevation="@dimen/_10sdp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/image_devicelist"
+                            android:layout_width="@dimen/_64sdp"
+                            android:layout_height="@dimen/_64sdp"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:layout_marginTop="@dimen/_16sdp"
+                            android:layout_marginRight="@dimen/_8sdp"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_qr_code_black" />
+
+                        <TextView
+                            android:id="@+id/card_view_image_titlemydevice"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="@dimen/_16sdp"
+                            android:gravity="center_horizontal"
+                            android:text="My Devices"
+                            android:textColor="#000000"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="normal" />
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/acionstatus"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:onClick="action_status"
+                    app:cardCornerRadius="@dimen/_8sdp"
+                    app:cardElevation="@dimen/_10sdp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/image_action"
+                            android:layout_width="@dimen/_64sdp"
+                            android:layout_height="@dimen/_64sdp"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:layout_marginTop="@dimen/_16sdp"
+                            android:layout_marginRight="@dimen/_8sdp"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_qr_code_black" />
+
+                        <TextView
+                            android:id="@+id/card_view_image_action"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="@dimen/_16sdp"
+                            android:gravity="center_horizontal"
+                            android:text="Action Status"
+                            android:textColor="#000000"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="normal" />
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
                 <!-- <Button
-                     android:layout_width="0dp"
+                     android:id="@+id/acionstatus"
+                   android:layout_width="@dimen/_120sdp"
                      android:layout_height="wrap_content"
                      android:layout_gravity="center"
                      android:layout_margin="16dp"
                      android:layout_weight="1"
                      android:background="@color/colorPrimaryDark"
-                     android:onClick="pullData"
-                     android:text="Pull Data"
+                     android:onClick="action_status"
+                     android:text="Action Status"
                      android:textAllCaps="false"
                      android:textColor="#FFFFFF"
                      android:textSize="16sp" />-->
 
-                <Button
-                    android:id="@+id/btn_assignTablet"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="16dp"
-                    android:layout_weight="1"
-                    android:background="@color/colorPrimaryDark"
-                    android:onClick="assignTablet"
-                    android:text="Assign Tablet"
-                    android:textAllCaps="false"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
-
-                <Button
-                    android:id="@+id/returnTablet"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="16dp"
-                    android:layout_weight="1"
-                    android:background="@color/colorPrimaryDark"
-                    android:onClick="returnTablet"
-                    android:text="Return Tablet"
-                    android:textAllCaps="false"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayout5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-
-                <Button
-                    android:id="@+id/my_devicelist"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="16dp"
-                    android:layout_weight="1"
-                    android:background="@color/colorPrimaryDark"
-                    android:onClick="myDeviceList"
-                    android:text="My Devices"
-                    android:textAllCaps="false"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
-
-                <Button
-                    android:id="@+id/acionstatus"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="16dp"
-                    android:layout_weight="1"
-                    android:background="@color/colorPrimaryDark"
-                    android:onClick="action_status"
-                    android:text="Action Status"
-                    android:textAllCaps="false"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayout7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
-
-                <Button
+                <android.support.v7.widget.CardView
                     android:id="@+id/btn_ScanQRCode"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/_120sdp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
-                    android:background="@color/colorPrimaryDark"
                     android:onClick="scanQR"
-                    android:text="Scan QR Code"
-                    android:textAllCaps="false"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
+                    app:cardCornerRadius="@dimen/_8sdp"
+                    app:cardElevation="@dimen/_10sdp">
 
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/repalceTabLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+                        <ImageView
+                            android:id="@+id/image_ScanQRCode"
+                            android:layout_width="@dimen/_64sdp"
+                            android:layout_height="@dimen/_64sdp"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:layout_marginTop="@dimen/_16sdp"
+                            android:layout_marginRight="@dimen/_8sdp"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_qr_code_black" />
 
-                <Button
+                        <TextView
+                            android:id="@+id/card_view_image_ScanQRCode"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="@dimen/_16sdp"
+                            android:gravity="center_horizontal"
+                            android:text="Scan QR Code"
+                            android:textColor="#000000"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="normal" />
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
                     android:id="@+id/btn_replaceTab"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/_120sdp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
-                    android:background="@color/colorPrimaryDark"
                     android:onClick="replaceTablet"
-                    android:text="Replace Tab"
-                    android:textAllCaps="false"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
+                    app:cardCornerRadius="@dimen/_8sdp"
+                    app:cardElevation="@dimen/_10sdp">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/image_replaceTab"
+                            android:layout_width="@dimen/_64sdp"
+                            android:layout_height="@dimen/_64sdp"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:layout_marginTop="@dimen/_16sdp"
+                            android:layout_marginRight="@dimen/_8sdp"
+                            android:scaleType="fitXY"
+                            app:srcCompat="@drawable/ic_qr_code_black" />
+
+                        <TextView
+                            android:id="@+id/card_view_image_replaceTab"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="@dimen/_16sdp"
+                            android:gravity="center_horizontal"
+                            android:text="Replace Tab"
+                            android:textColor="#000000"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="normal" />
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
             </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-</android.support.constraint.ConstraintLayout>
+
+        </HorizontalScrollView>
+    </RelativeLayout>
+</RelativeLayout>
