@@ -54,6 +54,11 @@ public class Student {
     @SerializedName("DOB")
     public String DOB;
 
+    @SerializedName("SchoolType")
+    public int SchoolType;
+    @SerializedName("GuardianName")
+    public String GuardianName;
+
 
     // new methods
     public Student() {

@@ -60,11 +60,11 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
     private static final int REQUEST_WRITE_STORAGE = 112;
     private static String TAG = "PermissionDemo";
     public boolean EndlineButtonClicked = false;
-    Spinner states_spinner, blocks_spinner, villages_spinner, groups_spinner;
-    EditText edt_Fname, edt_Mname, edt_Lname, edt_Class;
-    RadioGroup rg_Gender;
+    Spinner states_spinner, blocks_spinner, villages_spinner, groups_spinner, sp_Class;
+    EditText edt_Fname, edt_Mname, edt_Lname, edt_GuardianName;
+    RadioGroup rg_Gender, rg_SchoolType;
     Button btn_Submit_Baseline, btn_Clear, btn_Capture, btn_BirthDatePicker;
-    RadioButton rb_Male, rb_Female;
+    RadioButton rb_Male, rb_Female, rb_Govt, rb_Private;
     String GrpID;
     List<String> Blocks = new ArrayList<>();
     int vilID;
@@ -75,7 +75,7 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
     ImageView imgView;
     Uri uriSavedImage;
     UUID uuStdid;
-    RadioButton selectedGender;
+    RadioButton selectedGender, selectedSchoolType;
     List<Groups> GroupsVillages = new ArrayList<Groups>();
     boolean timer;
     int stdAge = 0;
@@ -116,6 +116,7 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
         EventBus.getDefault().register(AddNewStudent.this);
 
         initializeVariables();
+        initializeClassSpinner();
         initializeStatesSpinner();
         initializeBaselineSpinner();
         initializeNumberRecoSpinner();
@@ -853,20 +854,32 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                 selectedGender = (RadioButton) findViewById(selectedId);
                 gender = selectedGender.getText().toString();
 
+                // get selected radio button from radioGroup
+                int selId = rg_SchoolType.getCheckedRadioButtonId();
+                // find the radio button by returned id
+                selectedSchoolType = (RadioButton) findViewById(selId);
+                String schoolType = selectedSchoolType.getText().toString();
+                int stdSchoolType = 0;
+                if (schoolType.equalsIgnoreCase("Government"))
+                    stdSchoolType = 1;
+                else if (schoolType.equalsIgnoreCase("Private"))
+                    stdSchoolType = 2;
+
                 // Check AllSpinners Emptyness
                 int StatesSpinnerValue = states_spinner.getSelectedItemPosition();
+                int ClassSpinnerValue = sp_Class.getSelectedItemPosition();
                 int BlocksSpinnerValue = blocks_spinner.getSelectedItemPosition();
                 int VillagesSpinnerValue = villages_spinner.getSelectedItemPosition();
                 int GroupsSpinnerValue = groups_spinner.getSelectedItemPosition();
 
                 // Spinners Selection
-                if (StatesSpinnerValue > 0 && BlocksSpinnerValue > 0 && VillagesSpinnerValue > 0 && GroupsSpinnerValue > 0) {
+                if (StatesSpinnerValue > 0 && BlocksSpinnerValue > 0 && VillagesSpinnerValue > 0 && GroupsSpinnerValue > 0 && ClassSpinnerValue > 0) {
                     // Checking Emptyness
                     if ((!edt_Fname.getText().toString().isEmpty() || !edt_Lname.getText().toString().isEmpty())) {
                         // Validations
                         if ((edt_Fname.getText().toString().matches("[a-zA-Z.? ]*")) && (edt_Lname.getText().toString().matches("[a-zA-Z.? ]*"))
                                 && (edt_Mname.getText().toString().matches("[a-zA-Z.? ]*"))
-                                && (!btn_BirthDatePicker.getText().toString().contains("Birth")) && (edt_Class.getText().toString().matches("[0-9]+"))) {
+                                && (!btn_BirthDatePicker.getText().toString().contains("Birth")) && (!edt_GuardianName.getText().toString().isEmpty())) {
 
                             Calendar cal = Calendar.getInstance();
                             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
@@ -881,76 +894,87 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                             if ((sp_BaselineLang.getSelectedItemPosition() > 0 && sp_NumberReco.getSelectedItemPosition() > 0 && sp_English.getSelectedItemPosition() > 0)
                                     || (sp_BaselineLang.getSelectedItemPosition() == 0 && sp_NumberReco.getSelectedItemPosition() == 0 && sp_English.getSelectedItemPosition() == 0)) {
                             */    // Populate Std Data
-                                Student stdObj = new Student();
-                                stdObj.StudentId = randomUUIDStudent;
-                                stdObj.FirstName = edt_Fname.getText().toString();
-                                stdObj.MiddleName = edt_Mname.getText().toString();
-                                stdObj.LastName = edt_Lname.getText().toString();
-                                stdObj.FullName = edt_Fname.getText().toString() + " " + edt_Mname.getText().toString() + " " + edt_Lname.getText().toString();
-                                stdObj.Age = String.valueOf(stdAge);
-                                stdObj.Stud_Class = String.valueOf(edt_Class.getText());
-                                stdObj.UpdatedDate = util.GetCurrentDateTime(false);
-                                stdObj.Gender = gender;
-                                stdObj.GroupId = GrpID;
-                                stdObj.GroupName = GrpName;
-                                stdObj.CreatedBy = AppDatabase.getDatabaseInstance(AddNewStudent.this).getMetaDataDao().getCrlMetaData();
-                                stdObj.CreatedOn = util.GetCurrentDateTime(false).toString();
-                                stdObj.DOB = btn_BirthDatePicker.getText().toString();
-                                stdObj.sentFlag = 0;
+                            Student stdObj = new Student();
+                            stdObj.StudentId = randomUUIDStudent;
+                            stdObj.FirstName = edt_Fname.getText().toString();
+                            stdObj.MiddleName = edt_Mname.getText().toString();
+                            stdObj.LastName = edt_Lname.getText().toString();
+                            stdObj.FullName = edt_Fname.getText().toString() + " " + edt_Mname.getText().toString() + " " + edt_Lname.getText().toString();
+                            stdObj.Age = String.valueOf(stdAge);
 
-                                if (sp_BaselineLang.getSelectedItemPosition() > 0 || sp_NumberReco.getSelectedItemPosition() > 0 || sp_English.getSelectedItemPosition() > 0)
-                                    EndlineButtonClicked = false;
+                            // get Class
+                            if (sp_Class.getSelectedItem().toString().equalsIgnoreCase("Anganwadi"))
+                                stdObj.Stud_Class = String.valueOf(-1);
+                            else if (sp_Class.getSelectedItem().toString().equalsIgnoreCase("Balwadi"))
+                                stdObj.Stud_Class = String.valueOf(-3);
+                            else
+                                stdObj.Stud_Class = String.valueOf(ClassSpinnerValue);
 
-                                if (!EndlineButtonClicked) {
-                                    // Baseline
-                                    testT = 0;
-                                    langSpin = sp_BaselineLang.getSelectedItemPosition();
-                                    numSpin = sp_NumberReco.getSelectedItemPosition();
-                                    engSpin = sp_English.getSelectedItemPosition();
-                                    aserDate = btn_DatePicker.getText().toString();
-                                    OA = 0;
-                                    OS = 0;
-                                    OM = 0;
-                                    OD = 0;
-                                    WA = 0;
-                                    WS = 0;
-                                    // get yes or not
-                                    if (engSpin == 0)
-                                        engMeaning = 0;
-                                }
-                                // Populate Aser Data
-                                Aser asr = new Aser();
-                                asr.StudentId = randomUUIDStudent;
-                                asr.GroupID = GrpID;
-                                asr.ChildID = "";
-                                asr.TestType = testT;
-                                asr.TestDate = aserDate;
-                                asr.Lang = langSpin;
-                                asr.Num = numSpin;
-                                asr.English = engSpin;
-                                asr.EnglishSelected = engMeaning;
-                                asr.CreatedBy = AppDatabase.getDatabaseInstance(AddNewStudent.this).getMetaDataDao().getCrlMetaData();
-                                asr.CreatedDate = new Utility().GetCurrentDate();
-                                asr.DeviceId = util.GetDeviceID();
-                                asr.OAdd = OA;
-                                asr.OSub = OS;
-                                asr.OMul = OM;
-                                asr.ODiv = OD;
-                                asr.WAdd = WA;
-                                asr.WSub = WS;
-                                asr.sentFlag = 0;
-                                asr.CreatedOn = new Utility().GetCurrentDateTime(false);
+                            stdObj.GuardianName = edt_GuardianName.getText().toString();
+                            stdObj.SchoolType = stdSchoolType;
+
+                            stdObj.UpdatedDate = util.GetCurrentDateTime(false);
+                            stdObj.Gender = gender;
+                            stdObj.GroupId = GrpID;
+                            stdObj.GroupName = GrpName;
+                            stdObj.CreatedBy = AppDatabase.getDatabaseInstance(AddNewStudent.this).getMetaDataDao().getCrlMetaData();
+                            stdObj.CreatedOn = util.GetCurrentDateTime(false).toString();
+                            stdObj.DOB = btn_BirthDatePicker.getText().toString();
+                            stdObj.sentFlag = 0;
+
+                            if (sp_BaselineLang.getSelectedItemPosition() > 0 || sp_NumberReco.getSelectedItemPosition() > 0 || sp_English.getSelectedItemPosition() > 0)
+                                EndlineButtonClicked = false;
+
+                            if (!EndlineButtonClicked) {
+                                // Baseline
+                                testT = 0;
+                                langSpin = sp_BaselineLang.getSelectedItemPosition();
+                                numSpin = sp_NumberReco.getSelectedItemPosition();
+                                engSpin = sp_English.getSelectedItemPosition();
+                                aserDate = btn_DatePicker.getText().toString();
+                                OA = 0;
+                                OS = 0;
+                                OM = 0;
+                                OD = 0;
+                                WA = 0;
+                                WS = 0;
+                                // get yes or not
+                                if (engSpin == 0)
+                                    engMeaning = 0;
+                            }
+                            // Populate Aser Data
+                            Aser asr = new Aser();
+                            asr.StudentId = randomUUIDStudent;
+                            asr.GroupID = GrpID;
+                            asr.ChildID = "";
+                            asr.TestType = testT;
+                            asr.TestDate = aserDate;
+                            asr.Lang = langSpin;
+                            asr.Num = numSpin;
+                            asr.English = engSpin;
+                            asr.EnglishSelected = engMeaning;
+                            asr.CreatedBy = AppDatabase.getDatabaseInstance(AddNewStudent.this).getMetaDataDao().getCrlMetaData();
+                            asr.CreatedDate = new Utility().GetCurrentDate();
+                            asr.DeviceId = util.GetDeviceID();
+                            asr.OAdd = OA;
+                            asr.OSub = OS;
+                            asr.OMul = OM;
+                            asr.ODiv = OD;
+                            asr.WAdd = WA;
+                            asr.WSub = WS;
+                            asr.sentFlag = 0;
+                            asr.CreatedOn = new Utility().GetCurrentDateTime(false);
 
 //                                checkConnection();
 
-                                try {
-                                    AppDatabase.getDatabaseInstance(AddNewStudent.this).getStudentDao().insertStudent(stdObj);
-                                    AppDatabase.getDatabaseInstance(AddNewStudent.this).getAserDao().insertAser(asr);
-                                    Toast.makeText(AddNewStudent.this, "Record Inserted Successfully !!!", Toast.LENGTH_SHORT).show();
-                                    BackupDatabase.backup(AddNewStudent.this);
-                                    resetFormPartially();
+                            try {
+                                AppDatabase.getDatabaseInstance(AddNewStudent.this).getStudentDao().insertStudent(stdObj);
+                                AppDatabase.getDatabaseInstance(AddNewStudent.this).getAserDao().insertAser(asr);
+                                Toast.makeText(AddNewStudent.this, "Record Inserted Successfully !!!", Toast.LENGTH_SHORT).show();
+                                BackupDatabase.backup(AddNewStudent.this);
+                                resetFormPartially();
 
-                                    // Push To Server
+                                // Push To Server
                                     /*try {
                                         if (internetIsAvailable) {
                                             Gson gson = new Gson();
@@ -1000,10 +1024,10 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                                         e.printStackTrace();
                                     }*/
 
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    Toast.makeText(AddNewStudent.this, "Record Insertion Failed !!!", Toast.LENGTH_SHORT).show();
-                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Toast.makeText(AddNewStudent.this, "Record Insertion Failed !!!", Toast.LENGTH_SHORT).show();
+                            }
 
                             // either baseline spinners are fully filled or not filled at all
                             /*} else {
@@ -1046,13 +1070,14 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
         edt_Fname.getText().clear();
         edt_Mname.getText().clear();
         edt_Lname.getText().clear();
-        edt_Class.getText().clear();
+        edt_GuardianName.getText().clear();
         imgView.setImageDrawable(null);
         UUID uuStdid = UUID.randomUUID();
         randomUUIDStudent = uuStdid.toString();
         EndlineButtonClicked = false;
         btn_BirthDatePicker.setText("Birth Date");
         btn_DatePicker.setText(util.GetCurrentDate().toString());
+        sp_Class.setSelection(0);
         sp_BaselineLang.setSelection(0);
         sp_NumberReco.setSelection(0);
         sp_English.setSelection(0);
@@ -1078,19 +1103,23 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
         sp_NumberReco = findViewById(R.id.spinner_NumberReco);
         sp_BaselineLang = findViewById(R.id.spinner_BaselineLang);
         sp_English = findViewById(R.id.spinner_Engish);
+        sp_Class = findViewById(R.id.sp_Class);
         states_spinner = (Spinner) findViewById(R.id.spinner_SelectState);
         blocks_spinner = (Spinner) findViewById(R.id.spinner_SelectBlock);
         villages_spinner = (Spinner) findViewById(R.id.spinner_selectVillage);
         groups_spinner = (Spinner) findViewById(R.id.spinner_SelectGroups);
         rb_Male = (RadioButton) findViewById(R.id.rb_Male);
         rb_Female = (RadioButton) findViewById(R.id.rb_Female);
+        rb_Govt = (RadioButton) findViewById(R.id.rb_Govt);
+        rb_Private = (RadioButton) findViewById(R.id.rb_Private);
         uuStdid = UUID.randomUUID();
         randomUUIDStudent = uuStdid.toString();
         edt_Fname = (EditText) findViewById(R.id.edt_FirstName);
         edt_Mname = (EditText) findViewById(R.id.edt_MiddleName);
         edt_Lname = (EditText) findViewById(R.id.edt_LastName);
-        edt_Class = (EditText) findViewById(R.id.edt_Class);
+        edt_GuardianName = (EditText) findViewById(R.id.edt_GuardianName);
         rg_Gender = (RadioGroup) findViewById(R.id.rg_Gender);
+        rg_SchoolType = (RadioGroup) findViewById(R.id.rg_SchoolType);
         btn_Capture = (Button) findViewById(R.id.btn_Capture);
         imgView = (ImageView) findViewById(R.id.imageView);
         btn_Submit_Baseline = (Button) findViewById(R.id.btn_Submit);
@@ -1119,6 +1148,7 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
         });
     }
 
+
     private void initializeBirthDate() {
         btn_BirthDatePicker.setPadding(8, 8, 8, 8);
         btn_BirthDatePicker.setOnClickListener(new View.OnClickListener() {
@@ -1128,6 +1158,11 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                 newFragment.show(getFragmentManager(), "BirthDatePicker");
             }
         });
+    }
+
+    private void initializeClassSpinner() {
+        ArrayAdapter<String> classAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, getResources().getStringArray(R.array.array_Class));
+        sp_Class.setAdapter(classAdapter);
     }
 
     private void initializeNumberRecoSpinner() {
@@ -1284,12 +1319,13 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
         randomUUIDStudent = uuStdid.toString();
         states_spinner.setSelection(0);
         blocks_spinner.setSelection(0);
+        sp_Class.setSelection(0);
         villages_spinner.setSelection(0);
         groups_spinner.setSelection(0);
         edt_Fname.getText().clear();
         edt_Mname.getText().clear();
         edt_Lname.getText().clear();
-        edt_Class.getText().clear();
+        edt_GuardianName.getText().clear();
         sp_BaselineLang.setSelection(0);
         sp_NumberReco.setSelection(0);
         btn_DatePicker.setText(util.GetCurrentDate().toString());

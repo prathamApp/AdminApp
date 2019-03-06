@@ -57,4 +57,6 @@ public interface StudentDao {
     @Query("DELETE FROM Student WHERE GroupId=:grpID")
     public void deleteDeletedGrpsStdRecords(String grpID);
 
+    @Query("update Student set Stud_Class=:stdClass,GuardianName=:guardianName,SchoolType=:stdSchoolType, sentFlag=:sentFlag WHERE StudentId=:StudentUniqID")
+    public void UpdateStudent(String stdClass, String guardianName, int stdSchoolType, int sentFlag, String StudentUniqID);
 }

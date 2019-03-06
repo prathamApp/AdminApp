@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -52,7 +53,7 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
     private static String TAG = "PermissionDemo";
     public boolean EndlineButtonClicked = false;
     Spinner states_spinner, blocks_spinner, villages_spinner, groups_spinner, existingStudent_Spinner;
-    TextView edt_Fname, edt_Mname, edt_Lname, edt_Age, edt_Class, tv_Gender;
+    TextView edt_Fname, edt_Mname, edt_Lname, edt_Age, tv_Gender;
     Button btn_Baseline_Submit, btn_Clear, btn_Capture;
     String GrpID;
     List<String> Blocks = new ArrayList<>();
@@ -94,6 +95,12 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
     AlertDialog meaningDialog;
     CharSequence[] values = {" Yes", "No"};
 
+    Spinner sp_Class;
+    EditText edt_GuardianName;
+    RadioGroup rg_SchoolType;
+    RadioButton selectedSchoolType, rb_Govt, rb_Private;
+    private String guardian = "";
+
 
 //    boolean internetIsAvailable = false;
 
@@ -115,6 +122,7 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
 //        checkConnection();
 
         initializeVariables();
+        initializeClassSpinner();
         populateStatesSpinner();
         initializeBaselineSpinner();
         initializeNumberRecoSpinner();
@@ -1487,11 +1495,40 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                     langSpin = sp_BaselineLang.getSelectedItemPosition();
                     numSpin = sp_NumberReco.getSelectedItemPosition();
                     engSpin = sp_English.getSelectedItemPosition();
+                    int classSpin = sp_Class.getSelectedItemPosition();
                     AserTestDate = btn_DatePicker.getText().toString();
 
 //                    if (langSpin > 0 && numSpin > 0 && engSpin > 0) {
-                    if (langSpin > 0 || numSpin > 0 || engSpin > 0) {
-                        // insert or update baseline in db
+                    if ((langSpin > 0 || numSpin > 0 || engSpin > 0) || classSpin > 0 && !edt_GuardianName.getText().toString().isEmpty() && (rb_Govt.isChecked() || rb_Private.isChecked())) {
+
+                        // get selected radio button from radioGroup
+                        int selId = rg_SchoolType.getCheckedRadioButtonId();
+                        // find the radio button by returned id
+                        selectedSchoolType = (RadioButton) findViewById(selId);
+                        String schoolType = selectedSchoolType.getText().toString();
+                        int stdSchoolType = 0;
+                        if (schoolType.equalsIgnoreCase("Government"))
+                            stdSchoolType = 1;
+                        else if (schoolType.equalsIgnoreCase("Private"))
+                            stdSchoolType = 2;
+
+                        String guardianName = edt_GuardianName.getText().toString();
+
+                        String stdClass = "";
+                        // get Class
+                        if (sp_Class.getSelectedItem().toString().equalsIgnoreCase("Anganwadi"))
+                            stdClass = String.valueOf(-1);
+                        else if (sp_Class.getSelectedItem().toString().equalsIgnoreCase("Balwadi"))
+                            stdClass = String.valueOf(-3);
+                        else
+                            stdClass = String.valueOf(sp_Class.getSelectedItemPosition());
+
+                        int sentFlag = 0;
+
+                        // update class, guardian name, SchoolType
+                        AppDatabase.getDatabaseInstance(EditStudent.this).getStudentDao().UpdateStudent(stdClass, guardianName, stdSchoolType, sentFlag, StudentUniqID);
+
+                        // insert or update aser baseline in db
                         boolean result;
                         result = AppDatabase.getDatabaseInstance(EditStudent.this).getAserDao().CheckDataExists(StudentUniqID, testT);
                         if (result) {
@@ -1615,6 +1652,11 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
     }
 
     private void initializeVariables() {
+        edt_GuardianName = (EditText) findViewById(R.id.edt_GuardianName);
+        sp_Class = (Spinner) findViewById(R.id.sp_Class);
+        rg_SchoolType = (RadioGroup) findViewById(R.id.rg_SchoolType);
+        rb_Govt = (RadioButton) findViewById(R.id.rb_Govt);
+        rb_Private = (RadioButton) findViewById(R.id.rb_Private);
         sp_English = (Spinner) findViewById(R.id.spinner_Engish);
         groups_spinner = (Spinner) findViewById(R.id.spinner_SelectGroups);
         states_spinner = (Spinner) findViewById(R.id.spinner_SelectState);
@@ -1624,7 +1666,6 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
         edt_Mname = (TextView) findViewById(R.id.edt_MiddleName);
         edt_Lname = (TextView) findViewById(R.id.edt_LastName);
         edt_Age = (TextView) findViewById(R.id.edt_Age);
-        edt_Class = (TextView) findViewById(R.id.edt_Class);
         tv_Gender = (TextView) findViewById(R.id.tv_Gender);
         btn_Capture = (Button) findViewById(R.id.btn_Capture);
         imgView = (ImageView) findViewById(R.id.imageView);
@@ -1641,6 +1682,12 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
         AserForm = findViewById(R.id.AserForm);
         createdBy = AppDatabase.getDatabaseInstance(EditStudent.this).getMetaDataDao().getCrlMetaData();
     }
+
+    private void initializeClassSpinner() {
+        ArrayAdapter<String> classAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, getResources().getStringArray(R.array.array_Class));
+        sp_Class.setAdapter(classAdapter);
+    }
+
 
     public void populateBlock(String selectedState) {
         //Get Villages Data for Blocks AllSpinners
@@ -1737,7 +1784,10 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                 edt_Mname.setText("");
                 edt_Lname.setText("");
                 edt_Age.setText("");
-                edt_Class.setText("");
+                edt_GuardianName.setText("");
+                sp_Class.setSelection(0);
+                rb_Govt.setChecked(false);
+                rb_Private.setChecked(false);
                 imgView.setImageDrawable(null);
                 btn_Capture.setVisibility(View.GONE);
                 EndlineButtonClicked = false;
@@ -1837,6 +1887,7 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                 MiddleName = SelectedStudent.MiddleName;
                 LastName = SelectedStudent.LastName;
             }
+
             Age = Integer.parseInt(SelectedStudent.Age);
             String gen = SelectedStudent.Gender;
             if (gen.equals("Male") || gen.equals("M") || gen.equals("1")) {
@@ -1847,12 +1898,46 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                 // Default
                 Gender = "Male";
             }
-            String cls = String.valueOf(SelectedStudent.Stud_Class);
-            if (cls.length() > 0) {
-                Class = Integer.parseInt(SelectedStudent.Stud_Class);
-            } else {
-                Class = 0;
+
+            try {
+                if (SelectedStudent.GuardianName == null) {
+                    edt_GuardianName.setText("");
+                    guardian = "";
+                    edt_GuardianName.setText(guardian);
+                } else {
+                    guardian = SelectedStudent.GuardianName;
+                    edt_GuardianName.setText(guardian);
+                }
+            } catch (Exception e) {
+                edt_GuardianName.setText("");
+                guardian = "";
+                edt_GuardianName.setText(guardian);
             }
+
+            String cls = String.valueOf(SelectedStudent.Stud_Class);
+            if (!cls.isEmpty()) {
+                Class = Integer.parseInt(SelectedStudent.Stud_Class);
+                if (Class == -1)
+                    sp_Class.setSelection(13);
+                else if (Class == -3)
+                    sp_Class.setSelection(14);
+                else
+                    sp_Class.setSelection(Class);
+            } else {
+                sp_Class.setSelection(0);
+            }
+
+            try {
+                if (SelectedStudent.SchoolType == 1)
+                    rb_Govt.setChecked(true);
+                else if (SelectedStudent.SchoolType == 2)
+                    rb_Private.setChecked(true);
+            } catch (Exception e) {
+                rb_Govt.setChecked(false);
+                rb_Private.setChecked(false);
+            }
+
+
         }
 
         // set student data
@@ -1864,7 +1949,8 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
             edt_Mname.setText("Middle Name : " + MiddleName);
             edt_Lname.setText("Last Name : " + LastName);
             edt_Age.setText("Age : " + String.valueOf(Age));
-            edt_Class.setText("Class : " + String.valueOf(Class));
+
+
             tv_Gender.setText("Gender : " + Gender);
             btn_Capture.setVisibility(View.VISIBLE);
             btn_Capture.setOnClickListener(new View.OnClickListener() {
@@ -1907,6 +1993,10 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
     }
 
     public void FormReset() {
+        rb_Govt.setChecked(false);
+        rb_Private.setChecked(false);
+        sp_Class.setSelection(0);
+        edt_GuardianName.setText("");
         states_spinner.setSelection(0);
         blocks_spinner.setSelection(0);
         villages_spinner.setSelection(0);
@@ -1916,7 +2006,6 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
         edt_Mname.setText("");
         edt_Lname.setText("");
         edt_Age.setText("");
-        edt_Class.setText("");
         sp_BaselineLang.setSelection(0);
         sp_NumberReco.setSelection(0);
         btn_DatePicker.setText(Util.GetCurrentDate().toString());
@@ -1928,12 +2017,15 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
     }
 
     private void resetFormPartially() {
+        rb_Govt.setChecked(false);
+        rb_Private.setChecked(false);
+        sp_Class.setSelection(0);
+        edt_GuardianName.setText("");
         existingStudent_Spinner.setSelection(0);
         edt_Fname.setText("");
         edt_Mname.setText("");
         edt_Lname.setText("");
         edt_Age.setText("");
-        edt_Class.setText("");
         imgView.setImageDrawable(null);
         btn_Capture.setVisibility(View.GONE);
         EndlineButtonClicked = false;
