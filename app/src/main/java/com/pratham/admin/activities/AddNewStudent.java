@@ -905,8 +905,14 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                             // get Class
                             if (sp_Class.getSelectedItem().toString().equalsIgnoreCase("Anganwadi"))
                                 stdObj.Stud_Class = String.valueOf(-1);
+                            else if (sp_Class.getSelectedItem().toString().equalsIgnoreCase("Pre-School"))
+                                stdObj.Stud_Class = String.valueOf(-2);
                             else if (sp_Class.getSelectedItem().toString().equalsIgnoreCase("Balwadi"))
                                 stdObj.Stud_Class = String.valueOf(-3);
+                            else if (sp_Class.getSelectedItem().toString().equalsIgnoreCase("Dropout"))
+                                stdObj.Stud_Class = String.valueOf(-4);
+                            else if (sp_Class.getSelectedItem().toString().equalsIgnoreCase("Not Enrolled"))
+                                stdObj.Stud_Class = String.valueOf(-5);
                             else
                                 stdObj.Stud_Class = String.valueOf(ClassSpinnerValue);
 

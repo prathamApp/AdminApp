@@ -197,8 +197,11 @@
         <item>10</item>
         <item>11</item>
         <item>12</item>
-        <item>Anganwadi</item>
-        <item>Balwadi</item>
+        <item>Anganwadi</item> <!--value = -1-->
+        <item>Pre-School</item> <!--value = -2-->
+        <item>Balwadi</item> <!--value = -3-->
+        <item>Dropout</item> <!--value = -4-->
+        <item>Not Enrolled</item> <!--value = -5-->
     </string-array>
 
 

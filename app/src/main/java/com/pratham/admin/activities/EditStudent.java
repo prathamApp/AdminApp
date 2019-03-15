@@ -1518,8 +1518,14 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                         // get Class
                         if (sp_Class.getSelectedItem().toString().equalsIgnoreCase("Anganwadi"))
                             stdClass = String.valueOf(-1);
+                        else if (sp_Class.getSelectedItem().toString().equalsIgnoreCase("Pre-School"))
+                            stdClass = String.valueOf(-2);
                         else if (sp_Class.getSelectedItem().toString().equalsIgnoreCase("Balwadi"))
                             stdClass = String.valueOf(-3);
+                        else if (sp_Class.getSelectedItem().toString().equalsIgnoreCase("Dropout"))
+                            stdClass = String.valueOf(-4);
+                        else if (sp_Class.getSelectedItem().toString().equalsIgnoreCase("Not Enrolled"))
+                            stdClass = String.valueOf(-5);
                         else
                             stdClass = String.valueOf(sp_Class.getSelectedItemPosition());
 
@@ -1919,8 +1925,14 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                 Class = Integer.parseInt(SelectedStudent.Stud_Class);
                 if (Class == -1)
                     sp_Class.setSelection(13);
-                else if (Class == -3)
+                else if (Class == -2)
                     sp_Class.setSelection(14);
+                else if (Class == -3)
+                    sp_Class.setSelection(15);
+                else if (Class == -4)
+                    sp_Class.setSelection(16);
+                else if (Class == -5)
+                    sp_Class.setSelection(17);
                 else
                     sp_Class.setSelection(Class);
             } else {
@@ -1928,10 +1940,13 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
             }
 
             try {
-                if (SelectedStudent.SchoolType == 1)
+                if (SelectedStudent.SchoolType == 1) {
+                    rg_SchoolType.clearCheck();
                     rb_Govt.setChecked(true);
-                else if (SelectedStudent.SchoolType == 2)
+                } else if (SelectedStudent.SchoolType == 2) {
+                    rg_SchoolType.clearCheck();
                     rb_Private.setChecked(true);
+                }
             } catch (Exception e) {
                 rb_Govt.setChecked(false);
                 rb_Private.setChecked(false);
@@ -1995,6 +2010,7 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
     public void FormReset() {
         rb_Govt.setChecked(false);
         rb_Private.setChecked(false);
+        rg_SchoolType.clearCheck();
         sp_Class.setSelection(0);
         edt_GuardianName.setText("");
         states_spinner.setSelection(0);

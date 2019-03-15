@@ -17,6 +17,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,7 +112,21 @@ public class RangeTimePickerDialog extends DialogFragment {
         if (dialog != null) {
             int width = ViewGroup.LayoutParams.WRAP_CONTENT;
             int height = ViewGroup.LayoutParams.MATCH_PARENT;
-            dialog.getWindow().setLayout(1000, height);
+            int w;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                w = displayMetrics.widthPixels;
+            } else {
+                w = Resources.getSystem().getDisplayMetrics().widthPixels;
+            }
+
+            if (w > 1500)
+                dialog.getWindow().setLayout(1200, height);
+            else
+                dialog.getWindow().setLayout(800, height);
+
         }
     }
 
