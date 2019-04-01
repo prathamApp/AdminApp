@@ -221,7 +221,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
 
     @Override
     protected void onResume() {
-        super.onResume();
+         super.onResume();
         // Start WiFi
 //        turnOnWifi();
         checkConnection();
