@@ -46,7 +46,6 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-
         <activity
             android:name=".activities.MainActivity"
             android:screenOrientation="sensorLandscape"
@@ -57,6 +56,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.ECESampleAssessment"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.AddNewStudent"
             android:screenOrientation="sensorLandscape"
@@ -169,7 +172,6 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

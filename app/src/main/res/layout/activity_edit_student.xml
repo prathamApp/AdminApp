@@ -120,7 +120,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="@dimen/_4sdp"
                 android:gravity="center_horizontal"
                 android:text="Student Details"
                 android:textAllCaps="true"
@@ -132,7 +132,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginRight="@dimen/_8sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
                 android:orientation="horizontal"
@@ -144,12 +143,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:hint="First Name"
                     android:inputType="textCapWords"
                     android:singleLine="true"
                     android:textColor="@color/text_hint"
                     android:textColorHint="@color/text_hint"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <TextView
                     android:id="@+id/edt_MiddleName"
@@ -157,12 +157,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:hint="Middle Name"
                     android:inputType="textCapWords"
                     android:singleLine="true"
                     android:textColor="@color/text_hint"
                     android:textColorHint="@color/text_hint"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <TextView
                     android:id="@+id/edt_LastName"
@@ -170,12 +171,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:hint="Last Name"
                     android:inputType="textCapWords"
                     android:singleLine="true"
                     android:textColor="@color/text_hint"
                     android:textColorHint="@color/text_hint"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
 
@@ -183,7 +185,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginRight="@dimen/_8sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
                 android:orientation="horizontal"
@@ -206,12 +207,13 @@
                     android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:digits="0123456789"
+                    android:gravity="center"
                     android:hint="Age"
                     android:inputType="number"
                     android:singleLine="true"
                     android:textColor="@color/text_hint"
                     android:textColorHint="@color/text_hint"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <TextView
                     android:id="@+id/tv_Gender"
@@ -220,12 +222,13 @@
                     android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:digits="0123456789"
+                    android:gravity="center"
                     android:hint="Gender"
                     android:inputType="number"
                     android:singleLine="true"
                     android:textColor="@color/text_hint"
                     android:textColorHint="@color/text_hint"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
 
@@ -330,7 +333,7 @@
                     android:gravity="center_horizontal"
                     android:text="Baseline Information -->"
                     android:textColor="@color/button"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
 
                 <!--Aser Date-->
@@ -341,11 +344,11 @@
                     android:layout_weight="1"
                     android:background="@color/button"
                     android:drawableLeft="@android:drawable/ic_menu_my_calendar"
-                    android:drawablePadding="4dp"
+                    android:drawablePadding="@dimen/_4sdp"
                     android:text="Aser Date"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <!--Baseline Lang-->
                 <Spinner
@@ -396,7 +399,7 @@
                     android:background="@color/button"
                     android:text="  Endline 1  "
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <Button
                     android:id="@+id/btn_Endline2"
@@ -407,7 +410,7 @@
                     android:background="@color/button"
                     android:text="  Endline 2  "
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <Button
                     android:id="@+id/btn_Endline3"
@@ -418,7 +421,7 @@
                     android:background="@color/button"
                     android:text="  Endline 3  "
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <Button
                     android:id="@+id/btn_Endline4"
@@ -429,7 +432,7 @@
                     android:background="@color/button"
                     android:text="  Endline 4  "
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
 
@@ -453,7 +456,7 @@
                 android:background="@color/button"
                 android:text="Take Photo"
                 android:textColor="#FFFFFF"
-                android:textSize="16sp"
+                android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />
 
             <ImageView

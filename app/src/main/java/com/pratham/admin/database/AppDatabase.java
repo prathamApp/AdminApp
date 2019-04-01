@@ -15,6 +15,7 @@ import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Completion;
 import com.pratham.admin.modalclasses.Course;
+import com.pratham.admin.modalclasses.ECEAsmt;
 import com.pratham.admin.modalclasses.GroupSession;
 import com.pratham.admin.modalclasses.GroupVisit;
 import com.pratham.admin.modalclasses.Groups;
@@ -29,10 +30,12 @@ import com.pratham.admin.modalclasses.Village;
 
 //import com.pratham.admin.modalclasses.CRLVisit;
 
-@Database(entities = {Attendance.class, CRL.class, CRLmd.class, /*CRLVisit.class,*/ Coach.class, Course.class, Community.class, Completion.class, Groups.class, Student.class, GroupSession.class, GroupVisit.class, Village.class, MetaData.class, TempStudent.class, TabTrack.class, TabletManageDevice.class, Modal_Log.class, TabletStatus.class, Aser.class}, version = 6, exportSchema = false)
+@Database(entities = {ECEAsmt.class, Attendance.class, CRL.class, CRLmd.class, /*CRLVisit.class,*/ Coach.class, Course.class, Community.class, Completion.class, Groups.class, Student.class, GroupSession.class, GroupVisit.class, Village.class, MetaData.class, TempStudent.class, TabTrack.class, TabletManageDevice.class, Modal_Log.class, TabletStatus.class, Aser.class}, version = 7, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase DATABASEINSTANCE;
+
+    public abstract ECEAsmtDao getECEAsmtDao();
 
     public abstract AttendanceDao getAttendanceDao();
 
@@ -77,7 +80,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public static AppDatabase getDatabaseInstance(Context context) {
         if (DATABASEINSTANCE == null)
             DATABASEINSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "prathamDb")
-                    .addMigrations(MIGRATION_5_6)
+                    .addMigrations(MIGRATION_6_7)
                     .allowMainThreadQueries()
                     .build();
         return DATABASEINSTANCE;
@@ -118,6 +121,19 @@ public abstract class AppDatabase extends RoomDatabase {
             // Alter Queries for new columns as we don't want to lose existing data
             database.execSQL("ALTER TABLE Student ADD COLUMN SchoolType INTEGER DEFAULT 0");
             database.execSQL("ALTER TABLE Student ADD COLUMN GuardianName TEXT DEFAULT ''");
+        }
+    };
+
+    static final Migration MIGRATION_6_7 = new Migration(6, 7) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            // Alter Queries for new columns as we don't want to lose existing data
+            database.execSQL("CREATE TABLE ECEAsmt(ECEAsmtID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, StudentId TEXT, AsmtType INTEGER"
+                    + ", Date TEXT, StartTime TEXT, EndTime TEXT"
+                    + ", ActMatchingCards INTEGER, ActSequencingCards INTEGER, ActNumberReco INTEGER, ActWordReco INTEGER"
+                    + ", WS11a INTEGER, WS11b INTEGER, WS12a INTEGER, WS12b INTEGER"
+                    + ", OQ11 INTEGER, OQ12 INTEGER, OQ13 INTEGER, OQ14 INTEGER"
+                    + ", sentFlag INTEGER DEFAULT 0)");
         }
     };
 

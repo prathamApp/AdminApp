@@ -1607,7 +1607,7 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
 
     private void initializeNumberRecoSpinner() {
         sp_NumberReco = findViewById(R.id.spinner_NumberReco);
-        String[] NumberRecoAdapter = {"Baseline (Number Recognition)", "Beg", "0-9", "10-99", "Sub", "Div"};
+        String[] NumberRecoAdapter = {"Baseline (Number Reco)", "Beg", "0-9", "10-99", "Sub", "Div"};
         ArrayAdapter<String> recoAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, NumberRecoAdapter);
         //sp_NumberReco.setPrompt("Number Reco Level");
         sp_NumberReco.setAdapter(recoAdapter);
@@ -1851,6 +1851,13 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                 StudentUniqID = SelectedStudentData.getStudentId();
 
                 try {
+                    FirstName = "";
+                    MiddleName = "";
+                    LastName = "";
+                    edt_Fname.setText("");
+                    edt_Mname.setText("");
+                    edt_Lname.setText("");
+
                     populateStudentData(StudentUniqID);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1869,7 +1876,9 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
     private void populateStudentData(String studentUniqID) {
         // fetch student data
         Student SelectedStudent = AppDatabase.getDatabaseInstance(EditStudent.this).getStudentDao().GetStudentDataByStdID(studentUniqID);
-        if (SelectedStudent == null && existingStudent_Spinner.getSelectedItemPosition() > 0) {
+
+        if (SelectedStudent == null && existingStudent_Spinner.getSelectedItemPosition() == 0) {
+        } else if (SelectedStudent == null && existingStudent_Spinner.getSelectedItemPosition() > 0) {
             Toast.makeText(EditStudent.this, "Sorry !!! No Data Found !!!", Toast.LENGTH_SHORT).show();
         } else {
             if (SelectedStudent.FirstName == null) {
@@ -1892,6 +1901,18 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
                 FirstName = SelectedStudent.FullName;
                 MiddleName = SelectedStudent.MiddleName;
                 LastName = SelectedStudent.LastName;
+            }
+
+            edt_Mname.setVisibility(View.VISIBLE);
+            edt_Lname.setVisibility(View.VISIBLE);
+            edt_Fname.setText("First Name " + FirstName);
+            edt_Mname.setText("Middle Name " + MiddleName);
+            edt_Lname.setText("Last Name " + LastName);
+
+            if (SelectedStudent.FullName.contains(" ")) {
+                edt_Mname.setVisibility(View.GONE);
+                edt_Lname.setVisibility(View.GONE);
+                edt_Fname.setText("Student Name : " + SelectedStudent.FullName);
             }
 
             Age = Integer.parseInt(SelectedStudent.Age);
@@ -1960,9 +1981,22 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
             btn_Capture.setVisibility(View.GONE);
         } else {
             AserForm.setVisibility(View.VISIBLE);
-            edt_Fname.setText("First Name : " + FirstName);
-            edt_Mname.setText("Middle Name : " + MiddleName);
-            edt_Lname.setText("Last Name : " + LastName);
+
+            edt_Mname.setVisibility(View.VISIBLE);
+            edt_Lname.setVisibility(View.VISIBLE);
+            edt_Fname.setText("First Name " + FirstName);
+            edt_Mname.setText("Middle Name " + MiddleName);
+            edt_Lname.setText("Last Name " + LastName);
+
+            if (SelectedStudent.FullName.contains(" ")) {
+                edt_Mname.setVisibility(View.GONE);
+                edt_Lname.setVisibility(View.GONE);
+                edt_Fname.setText("Student Name : " + SelectedStudent.FullName);
+            }
+
+//            edt_Fname.setText("First Name : " + FirstName);
+//            edt_Mname.setText("Middle Name : " + MiddleName);
+//            edt_Lname.setText("Last Name : " + LastName);
             edt_Age.setText("Age : " + String.valueOf(Age));
 
 

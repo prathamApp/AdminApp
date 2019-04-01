@@ -10,21 +10,17 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.forms.DeleteStudentsForm;
-import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.util.BaseActivity;
-import com.pratham.admin.util.ConnectionReceiver;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class Student_Management extends BaseActivity/* implements ConnectionReceiverListener */{
+public class Student_Management extends BaseActivity/* implements ConnectionReceiverListener */ {
 
     @BindView(R.id.tv_appInfo)
     TextView tv_appInfo;
@@ -105,24 +101,24 @@ public class Student_Management extends BaseActivity/* implements ConnectionRece
     }
 
 
- /*   private void checkConnection() {
-        boolean isConnected = ConnectionReceiver.isConnected();
-        if (!isConnected) {
-            internetIsAvailable = false;
-        } else {
-            internetIsAvailable = true;
-        }
-    }
+    /*   private void checkConnection() {
+           boolean isConnected = ConnectionReceiver.isConnected();
+           if (!isConnected) {
+               internetIsAvailable = false;
+           } else {
+               internetIsAvailable = true;
+           }
+       }
 
-    private void turnOnWifi() {
-        //enable wifi
-        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        boolean wifiEnabled = wifiManager.isWifiEnabled();
-        if (!wifiEnabled) {
-            wifiManager.setWifiEnabled(true);
-        }
-    }
-*/
+       private void turnOnWifi() {
+           //enable wifi
+           WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+           boolean wifiEnabled = wifiManager.isWifiEnabled();
+           if (!wifiEnabled) {
+               wifiManager.setWifiEnabled(true);
+           }
+       }
+   */
     public void AddNewGroup(View view) {
         Intent intent = new Intent(this, AddNewGroup.class);
         intent.putExtra("CRLid", LoggedcrlId);
@@ -157,6 +153,14 @@ public class Student_Management extends BaseActivity/* implements ConnectionRece
 
     public void SwapStudents(View view) {
         Intent intent = new Intent(this, SwapStudentsActivity.class);
+        intent.putExtra("CRLid", LoggedcrlId);
+        intent.putExtra("CRLname", LoggedcrlName);
+        intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
+        startActivity(intent);
+    }
+
+    public void gotoECEAssessment(View view) {
+        Intent intent = new Intent(this, ECESampleAssessment.class);
         intent.putExtra("CRLid", LoggedcrlId);
         intent.putExtra("CRLname", LoggedcrlName);
         intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);

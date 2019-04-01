@@ -173,6 +173,7 @@
         <item>Yes</item>
         <item>No</item>
     </string-array>
+
     <string-array name="array_damgeType">
         <item>Select Damage Type</item>
         <item>Glass Broken</item>
@@ -204,5 +205,19 @@
         <item>Not Enrolled</item> <!--value = -5-->
     </string-array>
 
+    <string-array name="array_asmtType">
+        <item>Select Assessment Type</item>
+        <item>Baseline</item>
+        <item>Endline 1</item>
+        <item>Endline 2</item>
+        <item>Endline 3</item>
+        <item>Endline 4</item>
+    </string-array>
+
+    <string-array name="array_asmt_status">
+        <item>Not Attempted</item>
+        <item>Can Do</item>
+        <item>Need Help</item>
+    </string-array>
 
 </resources>

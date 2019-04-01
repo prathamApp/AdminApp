@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        tools:context=".activities.ECESampleAssessment">
+
+        <!--Title-->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:background="@drawable/custom_border"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:padding="@dimen/_8sdp"
+            android:text="ECE Sample Assessment"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/_18sdp"
+            android:textStyle="bold" />
+
+        <!--Spinners-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <!--Select State Drop Down List-->
+            <Spinner
+                android:id="@+id/sp_State"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_weight="1"
+                android:background="@drawable/spinner_background_forms"
+                android:textAlignment="center" />
+
+            <!--Select Block Drop Down List-->
+            <Spinner
+                android:id="@+id/sp_Block"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinner_SelectState"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_weight="1"
+                android:background="@drawable/spinner_background_forms"
+                android:textAlignment="center" />
+
+            <!--Village Drop Down List-->
+            <Spinner
+                android:id="@+id/sp_Village"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinner_SelectBlock"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_weight="1"
+                android:background="@drawable/spinner_background_forms"
+                android:textAlignment="center" />
+
+        </LinearLayout>
+
+        <!--Spinners-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <!--Select Groups-->
+            <Spinner
+                android:id="@+id/sp_Groups"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinner_selectVillage"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_weight="1"
+                android:background="@drawable/spinner_background_forms"
+                android:textAlignment="center" />
+
+            <!--For Editing Existing Student-->
+            <Spinner
+                android:id="@+id/sp_existingStudent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinner_SelectGroups"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_weight="1"
+                android:background="@drawable/spinner_background_forms"
+                android:textAlignment="center" />
+
+            <!--Assessment Type-->
+            <Spinner
+                android:id="@+id/sp_AsmtType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_weight="1"
+                android:background="@drawable/spinner_background_forms"
+                android:textAlignment="center" />
+
+        </LinearLayout>
+
+        <!--Basic Details-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:background="@drawable/custom_border"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:gravity="center_horizontal"
+                android:text="Basic Details"
+                android:textAllCaps="true"
+                android:textColor="@color/button"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold" />
+
+            <!--Student-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <TextView
+                    android:id="@+id/tv_FirstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="First Name"
+                    android:inputType="textCapWords"
+                    android:singleLine="true"
+                    android:textColor="@color/text_hint"
+                    android:textColorHint="@color/text_hint"
+                    android:textSize="@dimen/_12sdp" />
+
+                <TextView
+                    android:id="@+id/tv_MiddleName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="Middle Name"
+                    android:inputType="textCapWords"
+                    android:singleLine="true"
+                    android:textColor="@color/text_hint"
+                    android:textColorHint="@color/text_hint"
+                    android:textSize="@dimen/_12sdp" />
+
+                <TextView
+                    android:id="@+id/tv_LastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="Last Name"
+                    android:inputType="textCapWords"
+                    android:singleLine="true"
+                    android:textColor="@color/text_hint"
+                    android:textColorHint="@color/text_hint"
+                    android:textSize="@dimen/_12sdp" />
+
+            </LinearLayout>
+
+            <!--Date & Time-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!--Visit Date-->
+                <Button
+                    android:id="@+id/btn_DatePicker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimaryDark"
+                    android:drawableLeft="@android:drawable/ic_menu_my_calendar"
+                    android:paddingLeft="@dimen/_8sdp"
+                    android:text="Select Date"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/_12sdp" />
+
+                <!--Time Range Picker-->
+                <Button
+                    android:id="@+id/btn_TimeRangePicker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimaryDark"
+                    android:drawableLeft="@android:drawable/ic_menu_my_calendar"
+                    android:paddingLeft="@dimen/_8sdp"
+                    android:text="Select Time"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/_12sdp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!--Activities-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:background="@drawable/custom_border"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:gravity="center_horizontal"
+                android:text="Activities"
+                android:textAllCaps="true"
+                android:textColor="@color/button"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <!--Matching Cards-->
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/sp_MatchingCards"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:entries="@array/array_asmt_status"
+                    android:textAlignment="center"
+                    app:ms_arrowColor="#000000"
+                    app:ms_arrowSize="@dimen/_8sdp"
+                    app:ms_baseColor="@color/button"
+                    app:ms_enableErrorLabel="false"
+                    app:ms_enableFloatingLabel="true"
+                    app:ms_floatingLabelColor="@color/button"
+                    app:ms_floatingLabelText="Matching Cards"
+                    app:ms_highlightColor="@color/button"
+                    app:ms_hint="Matching Cards"
+                    app:ms_hintColor="@color/button"
+                    app:ms_hintTextSize="@dimen/_10sdp"
+                    app:ms_multiline="false" />
+
+                <!--Sequencing Cards-->
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/sp_SequencingCards"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:entries="@array/array_asmt_status"
+                    android:textAlignment="center"
+                    app:ms_arrowColor="#000000"
+                    app:ms_arrowSize="@dimen/_8sdp"
+                    app:ms_baseColor="@color/button"
+                    app:ms_enableErrorLabel="false"
+                    app:ms_enableFloatingLabel="true"
+                    app:ms_floatingLabelColor="@color/button"
+                    app:ms_floatingLabelText="Sequencing Cards"
+                    app:ms_highlightColor="@color/button"
+                    app:ms_hint="Sequence Cards"
+                    app:ms_hintColor="@color/button"
+                    app:ms_hintTextSize="@dimen/_10sdp"
+                    app:ms_multiline="false" />
+
+                <!--Number Recognition-->
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/sp_NumberRecognition"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:entries="@array/array_asmt_status"
+                    android:textAlignment="center"
+                    app:ms_arrowColor="#000000"
+                    app:ms_arrowSize="@dimen/_8sdp"
+                    app:ms_baseColor="@color/button"
+                    app:ms_enableErrorLabel="false"
+                    app:ms_enableFloatingLabel="true"
+                    app:ms_floatingLabelColor="@color/button"
+                    app:ms_floatingLabelText="Number Recognition"
+                    app:ms_highlightColor="@color/button"
+                    app:ms_hint="Number Reco"
+                    app:ms_hintColor="@color/button"
+                    app:ms_hintTextSize="@dimen/_10sdp"
+                    app:ms_multiline="false" />
+
+                <!--Alphabet/ Word Recognition-->
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/sp_WordRecognition"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_marginRight="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:entries="@array/array_asmt_status"
+                    android:textAlignment="center"
+                    app:ms_arrowColor="#000000"
+                    app:ms_arrowSize="@dimen/_8sdp"
+                    app:ms_baseColor="@color/button"
+                    app:ms_enableErrorLabel="false"
+                    app:ms_enableFloatingLabel="true"
+                    app:ms_floatingLabelColor="@color/button"
+                    app:ms_floatingLabelText="Alpha/ Word Reco"
+                    app:ms_highlightColor="@color/button"
+                    app:ms_hint="Word Reco"
+                    app:ms_hintColor="@color/button"
+                    app:ms_hintTextSize="@dimen/_10sdp"
+                    app:ms_multiline="false" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!--Worksheet-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:background="@drawable/custom_border"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:gravity="center_horizontal"
+                android:text="Worksheet"
+                android:textAllCaps="true"
+                android:textColor="@color/button"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!--W11a-->
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/sp_W11a"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:entries="@array/array_asmt_status"
+                    android:textAlignment="center"
+                    app:ms_arrowColor="#000000"
+                    app:ms_arrowSize="@dimen/_8sdp"
+                    app:ms_baseColor="@color/button"
+                    app:ms_enableErrorLabel="false"
+                    app:ms_enableFloatingLabel="true"
+                    app:ms_floatingLabelColor="@color/button"
+                    app:ms_floatingLabelText="1.1 a"
+                    app:ms_highlightColor="@color/button"
+                    app:ms_hint="1.1 a"
+                    app:ms_hintColor="@color/button"
+                    app:ms_hintTextSize="@dimen/_10sdp"
+                    app:ms_multiline="false" />
+
+                <!--W11b-->
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/sp_W11b"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:entries="@array/array_asmt_status"
+                    android:textAlignment="center"
+                    app:ms_arrowColor="#000000"
+                    app:ms_arrowSize="@dimen/_8sdp"
+                    app:ms_baseColor="@color/button"
+                    app:ms_enableErrorLabel="false"
+                    app:ms_enableFloatingLabel="true"
+                    app:ms_floatingLabelColor="@color/button"
+                    app:ms_floatingLabelText="1.1 b"
+                    app:ms_highlightColor="@color/button"
+                    app:ms_hint="1.1 b"
+                    app:ms_hintColor="@color/button"
+                    app:ms_hintTextSize="@dimen/_10sdp"
+                    app:ms_multiline="false" />
+
+                <!--W12a-->
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/sp_W12a"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:entries="@array/array_asmt_status"
+                    android:textAlignment="center"
+                    app:ms_arrowColor="#000000"
+                    app:ms_arrowSize="@dimen/_8sdp"
+                    app:ms_baseColor="@color/button"
+                    app:ms_enableErrorLabel="false"
+                    app:ms_enableFloatingLabel="true"
+                    app:ms_floatingLabelColor="@color/button"
+                    app:ms_floatingLabelText="1.2 a"
+                    app:ms_highlightColor="@color/button"
+                    app:ms_hint="1.2 a"
+                    app:ms_hintColor="@color/button"
+                    app:ms_hintTextSize="@dimen/_10sdp"
+                    app:ms_multiline="false" />
+
+                <!--W12b-->
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/sp_W12b"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_marginRight="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:entries="@array/array_asmt_status"
+                    android:textAlignment="center"
+                    app:ms_arrowColor="#000000"
+                    app:ms_arrowSize="@dimen/_8sdp"
+                    app:ms_baseColor="@color/button"
+                    app:ms_enableErrorLabel="false"
+                    app:ms_enableFloatingLabel="true"
+                    app:ms_floatingLabelColor="@color/button"
+                    app:ms_floatingLabelText="1.2 b"
+                    app:ms_highlightColor="@color/button"
+                    app:ms_hint="1.2 b"
+                    app:ms_hintColor="@color/button"
+                    app:ms_hintTextSize="@dimen/_10sdp"
+                    app:ms_multiline="false" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!--Oral Questions-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:background="@drawable/custom_border"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:gravity="center_horizontal"
+                android:text="Oral Questions"
+                android:textAllCaps="true"
+                android:textColor="@color/button"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!--OQ11-->
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/sp_OQ11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:entries="@array/array_asmt_status"
+                    android:textAlignment="center"
+                    app:ms_arrowColor="#000000"
+                    app:ms_arrowSize="@dimen/_8sdp"
+                    app:ms_baseColor="@color/button"
+                    app:ms_enableErrorLabel="false"
+                    app:ms_enableFloatingLabel="true"
+                    app:ms_floatingLabelColor="@color/button"
+                    app:ms_floatingLabelText="1.1"
+                    app:ms_highlightColor="@color/button"
+                    app:ms_hint="1.1"
+                    app:ms_hintColor="@color/button"
+                    app:ms_hintTextSize="@dimen/_10sdp"
+                    app:ms_multiline="false" />
+
+                <!--OQ12-->
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/sp_OQ12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:entries="@array/array_asmt_status"
+                    android:textAlignment="center"
+                    app:ms_arrowColor="#000000"
+                    app:ms_arrowSize="@dimen/_8sdp"
+                    app:ms_baseColor="@color/button"
+                    app:ms_enableErrorLabel="false"
+                    app:ms_enableFloatingLabel="true"
+                    app:ms_floatingLabelColor="@color/button"
+                    app:ms_floatingLabelText="1.2"
+                    app:ms_highlightColor="@color/button"
+                    app:ms_hint="1.2"
+                    app:ms_hintColor="@color/button"
+                    app:ms_hintTextSize="@dimen/_10sdp"
+                    app:ms_multiline="false" />
+
+                <!--OQ13-->
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/sp_OQ13"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:entries="@array/array_asmt_status"
+                    android:textAlignment="center"
+                    app:ms_arrowColor="#000000"
+                    app:ms_arrowSize="@dimen/_8sdp"
+                    app:ms_baseColor="@color/button"
+                    app:ms_enableErrorLabel="false"
+                    app:ms_enableFloatingLabel="true"
+                    app:ms_floatingLabelColor="@color/button"
+                    app:ms_floatingLabelText="1.3"
+                    app:ms_highlightColor="@color/button"
+                    app:ms_hint="1.3"
+                    app:ms_hintColor="@color/button"
+                    app:ms_hintTextSize="@dimen/_10sdp"
+                    app:ms_multiline="false" />
+
+                <!--OQ14-->
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/sp_OQ14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_marginRight="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:entries="@array/array_asmt_status"
+                    android:textAlignment="center"
+                    app:ms_arrowColor="#000000"
+                    app:ms_arrowSize="@dimen/_8sdp"
+                    app:ms_baseColor="@color/button"
+                    app:ms_enableErrorLabel="false"
+                    app:ms_enableFloatingLabel="true"
+                    app:ms_floatingLabelColor="@color/button"
+                    app:ms_floatingLabelText="1.4"
+                    app:ms_highlightColor="@color/button"
+                    app:ms_hint="1.4"
+                    app:ms_hintColor="@color/button"
+                    app:ms_hintTextSize="@dimen/_10sdp"
+                    app:ms_multiline="false" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!--Submit, Clear-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <Button
+                android:id="@+id/btn_Submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/album_title"
+                android:text="Submit"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_Clear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_weight="2"
+                android:background="@color/album_title"
+                android:text="Clear"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

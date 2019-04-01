@@ -37,6 +37,7 @@ import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Completion;
 import com.pratham.admin.modalclasses.DashboardItem;
+import com.pratham.admin.modalclasses.ECEAsmt;
 import com.pratham.admin.modalclasses.GroupSession;
 import com.pratham.admin.modalclasses.GroupVisit;
 import com.pratham.admin.modalclasses.Groups;
@@ -80,6 +81,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
     List<Student> stdObj = new ArrayList<>();
     List<Aser> aserObj = new ArrayList<>();
     List<Groups> grpObj = new ArrayList<>();
+    List<ECEAsmt> ECEAsmtObj = new ArrayList<>();
     List<MetaData> metaDataList = new ArrayList<>();
 
     String json = "";
@@ -279,6 +281,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
         stdObj = AppDatabase.getDatabaseInstance(this).getStudentDao().getNewStudents(0);
         aserObj = AppDatabase.getDatabaseInstance(this).getAserDao().getNewAser(0);
         grpObj = AppDatabase.getDatabaseInstance(this).getGroupDao().getNewGroups(0);
+        ECEAsmtObj = AppDatabase.getDatabaseInstance(this).getECEAsmtDao().getNewECEAsmt(0);
 
         // Push To Server
         try {
@@ -306,6 +309,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
                         + ",\"GroupsJSON\":" + "" + gson.toJson(grpObj).toString()
                         + ",\"GroupVisitsJSON\":" + "" + gson.toJson(GroupVisitObj).toString()
                         + ",\"GroupSessionJSON\":" + "" + gson.toJson(GroupSessionObj).toString()
+                        + ",\"ECEAsmtJSON\":" + "" + gson.toJson(ECEAsmtObj).toString()
                         + ",\"metadata\":" + "" + metaDataJSON + "}";
 
                 Log.d("json all push :::", json);
@@ -321,6 +325,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
                         + "\nGroups : " + grpObj.size()
                         + "\nGroupVisits : " + GroupVisitObj.size()
                         + "\nGroupSessions : " + GroupSessionObj.size()
+                        + "\nECE Assessments : " + ECEAsmtObj.size()
                 );
 
 
@@ -337,7 +342,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
 
                             if ((aObj.size() == 0) && (coachesObj.size() == 0) && (communitiesObj.size() == 0) && (completionsObj.size() == 0)
                                     && (GroupVisitObj.size() == 0) && (GroupSessionObj.size() == 0)
-                                    && (stdObj.size() == 0) && (aserObj.size() == 0) && (grpObj.size() == 0)
+                                    && (stdObj.size() == 0) && (aserObj.size() == 0) && (grpObj.size() == 0) && (ECEAsmtObj.size() == 0)
                                 /*&& (CRLVisitObj.size() == 0)*/) {
                                 // No Data Available
                                 Toast.makeText(Dashboard.this, "No New Data found for Pushing !", Toast.LENGTH_LONG).show();
@@ -361,6 +366,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
                                         AppDatabase.getDatabaseInstance(Dashboard.this).getStudentDao().updateAllSentFlag(1);
                                         AppDatabase.getDatabaseInstance(Dashboard.this).getAserDao().updateAllSentFlag(1);
                                         AppDatabase.getDatabaseInstance(Dashboard.this).getGroupDao().updateAllSentFlag(1);
+                                        AppDatabase.getDatabaseInstance(Dashboard.this).getECEAsmtDao().updateAllSentFlag(1);
                                         //AppDatabase.getDatabaseInstance(Dashboard.this).getCRLVisitdao().updateAllSentFlag(1);
                                         //AppDatabase.getDatabaseInstance(Dashboard.this).getCoursesDao().updateAllSentFlag(1);
 
@@ -400,6 +406,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
                                         AppDatabase.getDatabaseInstance(Dashboard.this).getStudentDao().updateAllSentFlag(0);
                                         AppDatabase.getDatabaseInstance(Dashboard.this).getAserDao().updateAllSentFlag(0);
                                         AppDatabase.getDatabaseInstance(Dashboard.this).getGroupDao().updateAllSentFlag(0);
+                                        AppDatabase.getDatabaseInstance(Dashboard.this).getECEAsmtDao().updateAllSentFlag(0);
                                         //AppDatabase.getDatabaseInstance(Dashboard.this).getCRLVisitdao().updateAllSentFlag(0);
                                         //AppDatabase.getDatabaseInstance(Dashboard.this).getCoursesDao().updateAllSentFlag(0);
 

@@ -337,6 +337,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
         AppDatabase.getDatabaseInstance(this).getStudentDao().deleteAllStudents();
         AppDatabase.getDatabaseInstance(this).getVillageDao().deleteAllVillages();
         AppDatabase.getDatabaseInstance(this).getCRLdao().deleteAllCRLs();
+        AppDatabase.getDatabaseInstance(this).getECEAsmtDao().deleteAllECEAsmt();
         AppDatabase.getDatabaseInstance(this).getAttendanceDao().deleteAllAttendances();
         AppDatabase.getDatabaseInstance(this).getTempStudentDao().deleteTempStudent();
         AppDatabase.getDatabaseInstance(this).getCoachDao().deleteAllCoaches();
