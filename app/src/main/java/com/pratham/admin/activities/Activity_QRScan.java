@@ -37,6 +37,7 @@ import com.pratham.admin.modalclasses.TabTrack;
 import com.pratham.admin.util.APIs;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
+import com.pratham.admin.util.Utility;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -347,7 +348,8 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
             tabTrack.setPratham_ID(prathamId);
             tabTrack.setOldFlag(false);
             /*tabletStatus.setLoggedIn_CRL(LoggedcrlId);*/
-            tabTrack.setDate(DateFormat.getDateTimeInstance().format(new Date()));
+//            tabTrack.setDate(DateFormat.getDateTimeInstance().format(new Date()));
+            tabTrack.setDate(new Utility().GetCurrentDateTime(false));
 
             AppDatabase.getDatabaseInstance(this).getTabTrackDao().insertTabTrack(tabTrack);
             Toast.makeText(Activity_QRScan.this, "Inserted Successfully ", Toast.LENGTH_LONG).show();

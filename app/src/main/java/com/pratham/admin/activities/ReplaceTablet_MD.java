@@ -47,6 +47,7 @@ import com.pratham.admin.util.APIs;
 import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
+import com.pratham.admin.util.Utility;
 
 import org.json.JSONArray;
 
@@ -612,7 +613,8 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
                     } else {
                         tabletManageDevice.setPratham_ID(newSerialId);
                     }
-                    tabletManageDevice.setDate(DateFormat.getDateTimeInstance().format(new Date()));
+//                    tabletManageDevice.setDate(DateFormat.getDateTimeInstance().format(new Date()));
+                    tabletManageDevice.setDate(new Utility().GetCurrentDateTime(false));
                     AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().insertTabletManageDevice(tabletManageDevice);
                     Toast.makeText(ReplaceTablet_MD.this, "Inserted Successfully ", Toast.LENGTH_LONG).show();
                     BackupDatabase.backup(this);

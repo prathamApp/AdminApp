@@ -45,6 +45,7 @@ import com.pratham.admin.util.APIs;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.CustomGroup;
+import com.pratham.admin.util.Utility;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -638,7 +639,8 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
         }
         SharedPreferences sharedPref = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("offlineSaveTime", DateFormat.getDateTimeInstance().format(new Date()));
+//        editor.putString("offlineSaveTime", DateFormat.getDateTimeInstance().format(new Date()));
+        editor.putString("offlineSaveTime", new Utility().GetCurrentDateTime(false));
         editor.commit();
 
     }
@@ -750,7 +752,8 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
                 String updatedStudentJSON = gson.toJson(tempStorageList);
                 MetaData metaData = new MetaData();
                 metaData.setKeys("pushDataTime");
-                metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+//                metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+                metaData.setValue(new Utility().GetCurrentDateTime(false));
 
                 AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
                 List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();

@@ -45,6 +45,7 @@ import com.pratham.admin.util.APIs;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.ROll_ID;
+import com.pratham.admin.util.Utility;
 
 import org.json.JSONArray;
 
@@ -595,7 +596,9 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                         tabletManageDevice.setComment(comments.getText().toString());
                         tabletManageDevice.setOldFlag(false);
                         /*tabletStatus.setLoggedIn_CRL(LoggedcrlId);*/
-                        tabletManageDevice.setDate(DateFormat.getDateTimeInstance().format(new Date()));
+//                        tabletManageDevice.setDate(DateFormat.getDateTimeInstance().format(new Date()));
+
+                        tabletManageDevice.setDate(new Utility().GetCurrentDateTime(false));
 
                         AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().insertTabletManageDevice(tabletManageDevice);
                         Toast.makeText(AssignTabletMD.this, "Inserted Successfully ", Toast.LENGTH_LONG).show();
@@ -618,7 +621,8 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                     tabletManageDevice.setAssigned_CRL_ID(assignedCRL);
                     tabletManageDevice.setAssigned_CRL_Name(assignedCrlName.getText().toString());
                     tabletManageDevice.setOldFlag(false);
-                    tabletManageDevice.setDate(DateFormat.getDateTimeInstance().format(new Date()));
+//                    tabletManageDevice.setDate(DateFormat.getDateTimeInstance().format(new Date()));
+                    tabletManageDevice.setDate(new Utility().GetCurrentDateTime(false));
 
                     AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().insertTabletManageDevice(tabletManageDevice);
                     Toast.makeText(AssignTabletMD.this, "Inserted Successfully ", Toast.LENGTH_LONG).show();

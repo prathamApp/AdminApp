@@ -282,7 +282,8 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
                     }
                     MetaData metaData = new MetaData();
                     metaData.setKeys("CRLloginTime");
-                    metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+//                    metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+                    metaData.setValue(new Utility().GetCurrentDateTime(false));
                     AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
 
                     metaData.setKeys("CRL_ID");

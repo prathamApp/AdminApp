@@ -47,6 +47,7 @@ import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.DashRVTouchListener;
+import com.pratham.admin.util.Utility;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -296,7 +297,8 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
                 Gson gson = new Gson();
                 metaData = new MetaData();
                 metaData.setKeys("pushDataTime");
-                metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+//                metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+                metaData.setValue(new Utility().GetCurrentDateTime(false));
                 metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
                 String metaDataJSON = customParse(metaDataList);
 

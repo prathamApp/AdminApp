@@ -28,10 +28,9 @@ import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.TempStudent;
 import com.pratham.admin.util.APIs;
 import com.pratham.admin.util.ConnectionReceiver;
+import com.pratham.admin.util.Utility;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -115,7 +114,8 @@ public class CustomDialog extends Dialog implements ConnectionReceiverListener {
                 String updatedStudentJSON = gson.toJson(tempList);
                 MetaData metaData = new MetaData();
                 metaData.setKeys("pushDataTime");
-                metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+//                metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+                metaData.setValue(new Utility().GetCurrentDateTime(false));
 
                 AppDatabase.getDatabaseInstance(context).getMetaDataDao().insertMetadata(metaData);
                 List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(context).getMetaDataDao().getAllMetaData();

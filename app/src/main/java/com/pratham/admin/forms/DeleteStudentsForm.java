@@ -29,6 +29,7 @@ import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.CustomGroup;
+import com.pratham.admin.util.Utility;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -130,7 +131,8 @@ public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiv
 
                         MetaData metaData = new MetaData();
                         metaData.setKeys("pushDataTime");
-                        metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+//                        metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
+                        metaData.setValue(new Utility().GetCurrentDateTime(false));
                         List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
                         String metaDataJSON = customParse(metaDataList);
                         AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
