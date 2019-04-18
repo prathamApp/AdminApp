@@ -19,6 +19,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -35,7 +41,7 @@ dependencies {
     //Android Networking Library
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
     //gson
-    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.code.gson:gson:2.8.5'
     //Room
     //  implementation 'com.android.support:support-vector-drawable:27.+'
     implementation "android.arch.persistence.room:runtime:1.1.1"

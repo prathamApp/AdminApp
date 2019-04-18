@@ -206,6 +206,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:hint="Pratham ID"
+                        android:digits="0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$_-~:=,.;'!"
                         android:editable="false"
                         android:inputType="none"
                         android:textColor="@android:color/black"
@@ -226,6 +227,7 @@
                         android:maxLength="8"
                         android:maxLines="1"
                         android:visibility="gone"
+                        android:digits="0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$_-~:=,.;'!"
                         android:singleLine="true"
                         android:textColor="@android:color/black"
                         android:textSize="15dp" />

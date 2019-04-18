@@ -10,9 +10,9 @@
         android:id="@+id/linearLayoutCompat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -197,13 +197,16 @@
                         android:layout_height="50dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
+                        android:digits="0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$_-~:=,.;'!"
                         android:editable="false"
                         android:hint="Pratham ID"
                         android:textColor="@android:color/black"
                         android:textSize="15dp" />
+
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="3dp" />
+
                     <EditText
                         android:id="@+id/qr_serialNo"
                         style="@style/CustomText"
@@ -211,15 +214,15 @@
                         android:layout_height="50dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
+                        android:editable="false"
                         android:hint="Serial NO"
+                        android:inputType="none"
                         android:maxLength="8"
                         android:maxLines="1"
-                        android:visibility="gone"
-                        android:editable="false"
-                        android:inputType="none"
                         android:singleLine="true"
                         android:textColor="@android:color/black"
-                        android:textSize="15dp" />
+                        android:textSize="15dp"
+                        android:visibility="gone" />
 
                     <Space
                         android:layout_width="match_parent"
@@ -249,6 +252,7 @@
                         android:id="@+id/comments"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:digits="0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$_-~:=,.;'!"
                         android:hint="Comments?" />
                     <!-- <EditText
                          android:id="@+id/qr_serialNo"

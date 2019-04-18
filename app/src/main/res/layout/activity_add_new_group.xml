@@ -68,6 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/spinner_selectVillage"
             android:layout_margin="@dimen/_16sdp"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:hint="enter new group name"
             android:inputType="textCapWords"
             android:singleLine="true"

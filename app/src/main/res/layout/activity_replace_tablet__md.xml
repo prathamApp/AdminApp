@@ -253,6 +253,7 @@
                         android:layout_height="50dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
+                        android:digits="0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$_-~:=,.;'!"
                         android:editable="false"
                         android:hint="Pratham ID"
                         android:inputType="none"
@@ -291,6 +292,7 @@
                         android:id="@+id/comments"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:digits="0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$_-~:=,.;'!"
                         android:hint="Comments?" />
                     <!-- <EditText
                          android:id="@+id/qr_serialNo"
