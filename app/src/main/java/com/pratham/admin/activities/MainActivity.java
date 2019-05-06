@@ -8,8 +8,11 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -23,14 +26,17 @@ import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.DialogInterface;
 import com.pratham.admin.modalclasses.CRL;
 import com.pratham.admin.modalclasses.MetaData;
+import com.pratham.admin.modalclasses.Modal_Log;
+import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
+import com.pratham.admin.util.PermissionResult;
+import com.pratham.admin.util.PermissionUtils;
 import com.pratham.admin.util.Utility;
 
 import org.jsoup.Jsoup;
 
-import java.text.DateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -38,7 +44,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements DialogInterface, ConnectionReceiverListener {
+import static com.pratham.admin.util.ActivityManagePermission.isPermissionsGranted;
+
+public class MainActivity extends BaseActivity implements DialogInterface, ConnectionReceiverListener, PermissionResult {
 
     @BindView(R.id.userName)
     EditText userName;
@@ -58,14 +66,23 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
     String crlName;
     String crlID;
     boolean internetIsAvailable = false;
+    private PermissionResult permissionResult;
+    private String permissionsAsk[];
+    private final int KEY_PERMISSION = 200;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        // Start WiFi
-//        turnOnWifi();
+
+        if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
+            String[] permissionArray = new String[]{PermissionUtils.Manifest_WRITE_EXTERNAL_STORAGE, PermissionUtils.Manifest_CAMERA, PermissionUtils.Manifest_ACCESS_FINE_LOCATION};
+            if (!isPermissionsGranted(MainActivity.this, permissionArray))
+                askCompactPermissions(permissionArray, this);
+        }
+
         PackageInfo pinfo = null;
         try {
             pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -73,7 +90,6 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
             SharedPreferences preferences = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
             String version = preferences.getString("version", "null");
             if (!versionName.equals(version)) {
-                //   Toast.makeText(this, "New Version Available", Toast.LENGTH_SHORT).show();
                 clearData();
                 SharedPreferences sharedPref = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
@@ -81,22 +97,55 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
                 editor.commit();
             }
         } catch (PackageManager.NameNotFoundException e) {
+            Modal_Log log = new Modal_Log();
+            log.setCurrentDateTime(new Utility().GetCurrentDate());
+            log.setErrorType("ERROR");
+            log.setExceptionMessage(e.getMessage());
+            log.setExceptionStackTrace(e.getStackTrace().toString());
+            log.setMethodName("MainActivity" + "_" + "packageNameOnCreate");
+            log.setDeviceId("");
+            AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+            BackupDatabase.backup(ApplicationController.getInstance());
+
             e.printStackTrace();
             Toast.makeText(ApplicationController.getInstance(), "On Exception data cleared", Toast.LENGTH_SHORT).show();
             clearData();
         }
     }
 
-/*
-    private void turnOnWifi() {
-        //enable wifi
-        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        boolean wifiEnabled = wifiManager.isWifiEnabled();
-        if (!wifiEnabled) {
-            wifiManager.setWifiEnabled(true);
+    public void askCompactPermissions(String permissions[], PermissionResult permissionResult) {
+        permissionsAsk = permissions;
+        this.permissionResult = permissionResult;
+        internalRequestPermission(permissionsAsk);
+    }
+
+    public boolean isPermissionGranted(Context context, String permission) {
+        boolean granted = ((Build.VERSION.SDK_INT < Build.VERSION_CODES.M) || (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED));
+        return granted;
+    }
+
+
+    private void internalRequestPermission(String[] permissionAsk) {
+        String arrayPermissionNotGranted[];
+        ArrayList<String> permissionsNotGranted = new ArrayList<>();
+
+        for (int i = 0; i < permissionAsk.length; i++) {
+            if (!isPermissionGranted(MainActivity.this, permissionAsk[i])) {
+                permissionsNotGranted.add(permissionAsk[i]);
+            }
+        }
+
+        if (permissionsNotGranted.isEmpty()) {
+
+            if (permissionResult != null)
+                permissionResult.permissionGranted();
+        } else {
+
+            arrayPermissionNotGranted = new String[permissionsNotGranted.size()];
+            arrayPermissionNotGranted = permissionsNotGranted.toArray(arrayPermissionNotGranted);
+            ActivityCompat.requestPermissions(MainActivity.this, arrayPermissionNotGranted, KEY_PERMISSION);
         }
     }
-*/
 
 
     @Override
@@ -104,27 +153,8 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
         //todo username password remove comment
         super.onResume();
 
-        // Start WiFi
-//        turnOnWifi();
-        /*userName.setText("admin");
-        password.setText("admin");*/
-
-/*
-        userName.setText("santoshborade");
-        password.setText("pratham123");
-*/
-
 //        userName.setText("amolmoghe");
 //        password.setText("pratham@123");
-  /*      userName.setText("ganeshtupe54");
-        password.setText("pratham");
-        userName.setText("amolmoghe");
-        password.setText("pratham@123");
-        userName.setText("narayansiraswar410");
-        password.setText("pratham");
-          userName.setText("ganeshtupe54");
-        password.setText("pratham");*/
-
 
         // check connection & then upgrade latest version if available
         ApplicationController.getInstance().setConnectionListener(this);
@@ -160,6 +190,16 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
             }
         } catch (Exception e) {
             e.printStackTrace();
+
+            Modal_Log log = new Modal_Log();
+            log.setCurrentDateTime(new Utility().GetCurrentDate());
+            log.setErrorType("ERROR");
+            log.setExceptionMessage(e.getMessage());
+            log.setExceptionStackTrace(e.getStackTrace().toString());
+            log.setMethodName("MainActivity" + "_" + "checkConnection");
+            log.setDeviceId("");
+            AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+            BackupDatabase.backup(ApplicationController.getInstance());
         }
     }
 
@@ -170,6 +210,37 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
         } else {
             internetIsAvailable = true;
         }
+    }
+
+    @Override
+    public void permissionGranted() {
+
+    }
+
+    @Override
+    public void permissionDenied() {
+        showPermissionWarningDilog();
+    }
+
+    @Override
+    public void permissionForeverDenied() {
+        showPermissionWarningDilog();
+    }
+
+    private void showPermissionWarningDilog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Alert");
+        alertDialogBuilder.setMessage("Denying the permissions may cause in application failure." + "\nPermissions can also be given through app settings.");
+
+        alertDialogBuilder.setPositiveButton("Ok", new android.content.DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(android.content.DialogInterface dialog, int which) {
+                /*UPLOAD TO SERVER*/
+                dialog.dismiss();
+                checkVersion();
+            }
+        });
+        alertDialogBuilder.show();
     }
 
 
@@ -200,6 +271,16 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
                 //latestVersion = doc.getElementsByTagName("softwareVersion").first().text();
                 //latestVersion = "1.5";
             } catch (Exception e) {
+                Modal_Log log = new Modal_Log();
+                log.setCurrentDateTime(new Utility().GetCurrentDate());
+                log.setErrorType("ERROR");
+                log.setExceptionMessage(e.getMessage());
+                log.setExceptionStackTrace(e.getStackTrace().toString());
+                log.setMethodName("MainActivity" + "_" + "getLatestVersion");
+                log.setDeviceId("");
+                AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+                BackupDatabase.backup(ApplicationController.getInstance());
+
                 e.printStackTrace();
             }
             return latestVersion;
@@ -233,6 +314,16 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.pratham.admin&hl=en")));
                         dialog.dismiss();
                     } catch (Exception e) {
+                        Modal_Log log = new Modal_Log();
+                        log.setCurrentDateTime(new Utility().GetCurrentDate());
+                        log.setErrorType("ERROR");
+                        log.setExceptionMessage(e.getMessage());
+                        log.setExceptionStackTrace(e.getStackTrace().toString());
+                        log.setMethodName("MainActivity" + "_" + "checkVersion");
+                        log.setDeviceId("");
+                        AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+                        BackupDatabase.backup(ApplicationController.getInstance());
+
                         e.printStackTrace();
                     }
 
@@ -260,18 +351,13 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
         String CRLuserName = userName.getText().toString();
         String CRLpassword = password.getText().toString();
         if (CRLuserName.equals("admin") && CRLpassword.equals("admin")) {
-            /*if (AppDatabase.getDatabaseInstance(this).getCRLdao().getAllCRLs().isEmpty()) {*/
             Intent intent = new Intent(this, SelectProgram.class);
             startActivity(intent);
-           /* } else {
-                Toast.makeText(this, "Enter CRL login details or clear data", Toast.LENGTH_LONG).show();
-            }*/
         } else {
             boolean userPass = false;
 
             List<CRL> Crl = AppDatabase.getDatabaseInstance(this).getCRLdao().getAllCRLs();
             for (int i = 0; i < Crl.size(); i++) {
-                // CRL crl=Crl.get(i);
                 if ((Crl.get(i).getUserName().equals(CRLuserName)) && (Crl.get(i).getPassword().equals(CRLpassword))) {
 
                     String crlID = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getCrlMetaData();
@@ -315,6 +401,12 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
                 alertDialog.show();
             }
         }
+
+        // Make a db backup if Storage permission granted
+        if (isPermissionGranted(MainActivity.this, PermissionUtils.Manifest_WRITE_EXTERNAL_STORAGE)) {
+            // Initiate Backup DB
+//            BackupDatabase.backup(MainActivity.this);
+        }
     }
 
     private void showDialog(String crlName) {
@@ -343,11 +435,11 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
         AppDatabase.getDatabaseInstance(this).getTempStudentDao().deleteTempStudent();
         AppDatabase.getDatabaseInstance(this).getCoachDao().deleteAllCoaches();
         AppDatabase.getDatabaseInstance(this).getCoursesDao().deleteAllCourses();
-//        AppDatabase.getDatabaseInstance(this).getCRLVisitdao().deleteAllCRLVisits();
         AppDatabase.getDatabaseInstance(this).getCommunityDao().deleteAllCommunity();
         AppDatabase.getDatabaseInstance(this).getCompletionDao().deleteAllCompletion();
         AppDatabase.getDatabaseInstance(this).getGroupSessionDao().deleteAllGroupSession();
         AppDatabase.getDatabaseInstance(this).getGroupVisitDao().deleteAllGroupVisit();
+        AppDatabase.getDatabaseInstance(this).getLogDao().deleteLogs();
         AppDatabase.destroyInstance();
         SharedPreferences preferences = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -376,34 +468,6 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
         intent.putExtra("CRLname", crlName);
         intent.putExtra("CRLnameSwapStd", crlName + "(" + crlID + ")");
         startActivity(intent);
-
- /*       //todo show dialog
-        final Dialog dialog = new Dialog(MainActivity.this);
-        dialog.setContentView(R.layout.option_dialog);
-        RelativeLayout scan_qr_code = (RelativeLayout) dialog.findViewById(R.id.scan_qr_code);
-        RelativeLayout swap_student = (RelativeLayout) dialog.findViewById(R.id.swap_student);
-        scan_qr_code.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Activity_QRScan.class);
-                intent.putExtra("CRLid", crlID);
-                intent.putExtra("CRLname", crlName);
-                startActivity(intent);
-                dialog.dismiss();
-            }
-        });
-
-        swap_student.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SwapStudentsActivity.class);
-                intent.putExtra("CRLname", crlName + "(" + crlID + ")");
-                startActivity(intent);
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-    }*/
     }
 
 }

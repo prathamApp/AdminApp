@@ -9,6 +9,8 @@ import android.provider.Settings;
 
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.activities.CatchoTransparentActivity;
+import com.pratham.admin.database.AppDatabase;
+import com.pratham.admin.modalclasses.Modal_Log;
 
 import net.alhazmy13.catcho.library.Catcho;
 
@@ -51,6 +53,16 @@ public class Utility {
             pInfo = pm.getPackageInfo(context.getPackageName(), 0);
 
         } catch (PackageManager.NameNotFoundException e1) {
+            Modal_Log log = new Modal_Log();
+            log.setCurrentDateTime(new Utility().GetCurrentDate());
+            log.setErrorType("ERROR");
+            log.setExceptionMessage(e1.getMessage());
+            log.setExceptionStackTrace(e1.getStackTrace().toString());
+            log.setMethodName("Utility" + "_" + "getCurrentVersion");
+            log.setDeviceId("");
+            AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+            BackupDatabase.backup(ApplicationController.getInstance());
+
             e1.printStackTrace();
         }
         String currentVersion = pInfo.versionName;
@@ -101,6 +113,16 @@ public class Utility {
             properties.load(inputStream);
             return properties.getProperty(key);
         } catch (Exception ex) {
+            Modal_Log log = new Modal_Log();
+            log.setCurrentDateTime(new Utility().GetCurrentDate());
+            log.setErrorType("ERROR");
+            log.setExceptionMessage(ex.getMessage());
+            log.setExceptionStackTrace(ex.getStackTrace().toString());
+            log.setMethodName("Utility" + "_" + "getProperty");
+            log.setDeviceId("");
+            AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+            BackupDatabase.backup(ApplicationController.getInstance());
+
             return null;
         }
     }
@@ -134,6 +156,16 @@ public class Utility {
             System.out.print(diffSeconds + " seconds.");
 
         } catch (Exception e) {
+            Modal_Log log = new Modal_Log();
+            log.setCurrentDateTime(new Utility().GetCurrentDate());
+            log.setErrorType("ERROR");
+            log.setExceptionMessage(e.getMessage());
+            log.setExceptionStackTrace(e.getStackTrace().toString());
+            log.setMethodName("Utility" + "_" + "DateDifference");
+            log.setDeviceId("");
+            AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+            BackupDatabase.backup(ApplicationController.getInstance());
+
             e.printStackTrace();
         }
         // in milis

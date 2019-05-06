@@ -29,4 +29,10 @@ public interface LogDao {
 
     @Query("update Logs set sentFlag=1 where sentFlag=0")
     public void setSentFlag();
+
+    @Query("SELECT * FROM Logs WHERE sentFlag=:status")
+    public List<Modal_Log> getAllLogs(int status);
+
+    @Query("UPDATE Logs SET sentFlag=:pushStatus")
+    void updateAllSentFlag(int pushStatus);
 }

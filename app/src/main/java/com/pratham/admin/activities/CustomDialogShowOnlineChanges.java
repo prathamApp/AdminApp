@@ -64,14 +64,6 @@ public class CustomDialogShowOnlineChanges extends Dialog {
         onlineChanges.update();
     }
 
-    /*@OnClick(R.id.close)
-    public void closeDialog() {
-        if(changesList!=null){
-            changesList.clear();
-        }
-        this.dismiss();
-    }*/
-
     @OnClick(R.id.txt_clear_changes_village)
     public void clearChangesList() {
         onlineChanges.clearList();

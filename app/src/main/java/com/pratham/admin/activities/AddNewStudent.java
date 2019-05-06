@@ -29,10 +29,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.modalclasses.Aser;
 import com.pratham.admin.modalclasses.Groups;
+import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.BackupDatabase;
@@ -54,7 +56,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverListener */ {
+public class AddNewStudent extends BaseActivity{
 
     private static final int TAKE_Thumbnail = 1;
     private static final int REQUEST_WRITE_STORAGE = 112;
@@ -69,15 +71,11 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
     List<String> Blocks = new ArrayList<>();
     int vilID;
     String gender;
-    List<String> ExistingStudents;
-    String StudentID, FirstName, MiddleName, LastName, Age, Class, UpdatedDate, Gender;
     String randomUUIDStudent;
     ImageView imgView;
-    Uri uriSavedImage;
     UUID uuStdid;
     RadioButton selectedGender, selectedSchoolType;
     List<Groups> GroupsVillages = new ArrayList<Groups>();
-    boolean timer;
     int stdAge = 0;
     Utility util;
     Spinner sp_BaselineLang, sp_NumberReco, sp_English;
@@ -96,9 +94,6 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
     AlertDialog meaningDialog;
     CharSequence[] values = {" Yes", "No"};
 
-
-//    boolean internetIsAvailable = false;
-
     @Subscribe
     public void onEvent(String msg) {
         if (!msg.isEmpty()) {
@@ -111,7 +106,6 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_student);
         getSupportActionBar().hide();
-//        checkConnection();
 
         EventBus.getDefault().register(AddNewStudent.this);
 
@@ -141,7 +135,6 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                                     engMeaning = 2;
                                     break;
                             }
-//                            meaningDialog.dismiss();
                         }
                     });
                     builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -971,8 +964,6 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                             asr.sentFlag = 0;
                             asr.CreatedOn = new Utility().GetCurrentDateTime(false);
 
-//                                checkConnection();
-
                             try {
                                 AppDatabase.getDatabaseInstance(AddNewStudent.this).getStudentDao().insertStudent(stdObj);
                                 AppDatabase.getDatabaseInstance(AddNewStudent.this).getAserDao().insertAser(asr);
@@ -980,65 +971,20 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                                 BackupDatabase.backup(AddNewStudent.this);
                                 resetFormPartially();
 
-                                // Push To Server
-                                    /*try {
-                                        if (internetIsAvailable) {
-                                            Gson gson = new Gson();
-                                            String StudentJSON = gson.toJson(Collections.singletonList(stdObj));
-                                            String AserJSON = gson.toJson(asr);
-
-                                            MetaData metaData = new MetaData();
-                                            metaData.setKeys("pushDataTime");
-                                            metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
-                                            List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(AddNewStudent.this).getMetaDataDao().getAllMetaData();
-                                            String metaDataJSON = customParse(metaDataList);
-                                            AppDatabase.getDatabaseInstance(AddNewStudent.this).getMetaDataDao().insertMetadata(metaData);
-
-                                            String json = "{ \"StudentJSON\":" + StudentJSON + ",\"AserJSON\":" + AserJSON + ",\"metadata\":" + metaDataJSON + "}";
-                                            Log.d("json :::", json);
-
-                                            final ProgressDialog dialog = new ProgressDialog(AddNewStudent.this);
-                                            dialog.setTitle("UPLOADING ... ");
-                                            dialog.setCancelable(false);
-                                            dialog.setCanceledOnTouchOutside(false);
-                                            dialog.show();
-
-                                            AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
-                                                @Override
-                                                public void onResponse(String response) {
-                                                    Log.d("responce", response);
-                                                    AppDatabase.getDatabaseInstance(AddNewStudent.this).getStudentDao().updateSentFlag(1, randomUUIDStudent);
-                                                    Toast.makeText(AddNewStudent.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
-                                                    resetFormPartially();
-                                                    dialog.dismiss();
-                                                }
-
-                                                @Override
-                                                public void onError(ANError anError) {
-                                                    Toast.makeText(AddNewStudent.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                                                    AppDatabase.getDatabaseInstance(AddNewStudent.this).getCoachDao().updateSentFlag(0, randomUUIDStudent);
-                                                    resetFormPartially();
-                                                    dialog.dismiss();
-                                                }
-                                            });
-
-                                        } else {
-                                            resetFormPartially();
-                                            Toast.makeText(AddNewStudent.this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
-                                        }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }*/
-
                             } catch (Exception e) {
+                                Modal_Log log = new Modal_Log();
+                                log.setCurrentDateTime(new Utility().GetCurrentDate());
+                                log.setErrorType("ERROR");
+                                log.setExceptionMessage(e.getMessage());
+                                log.setExceptionStackTrace(e.getStackTrace().toString());
+                                log.setMethodName("AddNewStudent" + "_" + "Submit");
+                                log.setDeviceId("");
+                                AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+                                BackupDatabase.backup(ApplicationController.getInstance());
+
                                 e.printStackTrace();
                                 Toast.makeText(AddNewStudent.this, "Record Insertion Failed !!!", Toast.LENGTH_SHORT).show();
                             }
-
-                            // either baseline spinners are fully filled or not filled at all
-                            /*} else {
-                                Toast.makeText(AddNewStudent.this, "Please Fill All Fields !", Toast.LENGTH_SHORT).show();
-                            }*/
 
                         } else {
                             Toast.makeText(AddNewStudent.this, "Please Enter Valid Input !!!", Toast.LENGTH_SHORT).show();
@@ -1373,51 +1319,22 @@ public class AddNewStudent extends BaseActivity/* implements ConnectionReceiverL
                         }
 
                     } catch (Exception e) {
+                        Modal_Log log = new Modal_Log();
+                        log.setCurrentDateTime(new Utility().GetCurrentDate());
+                        log.setErrorType("ERROR");
+                        log.setExceptionMessage(e.getMessage());
+                        log.setExceptionStackTrace(e.getStackTrace().toString());
+                        log.setMethodName("AddNewStudent" + "_" + "onActivityResult");
+                        log.setDeviceId("");
+                        AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+                        BackupDatabase.backup(ApplicationController.getInstance());
+
                         e.printStackTrace();
                     }
                 }
             }
         }
     }
-
-  /*  @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        if (!isConnected) {
-            internetIsAvailable = false;
-        } else {
-            internetIsAvailable = true;
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkConnection();
-        ApplicationController.getInstance().setConnectionListener(this);
-    }
-
-    private void checkConnection() {
-        boolean isConnected = ConnectionReceiver.isConnected();
-        if (!isConnected) {
-            internetIsAvailable = false;
-        } else {
-            internetIsAvailable = true;
-        }
-    }
-
-    private String customParse(List<MetaData> metaDataList) {
-        String json = "{";
-
-        for (int i = 0; i < metaDataList.size(); i++) {
-            json = json + "\"" + metaDataList.get(i).getKeys() + "\":\"" + metaDataList.get(i).getValue() + "\"";
-            if (i < metaDataList.size() - 1) {
-                json = json + ",";
-            }
-        }
-        json = json + "}";
-
-        return json;
-    }*/
 
 }
 

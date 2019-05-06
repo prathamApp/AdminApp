@@ -12,14 +12,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.custom.RangeTimePickerDialog;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.modalclasses.ECEAsmt;
 import com.pratham.admin.modalclasses.Groups;
+import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.Village;
+import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.DatePickerFragmentOne;
+import com.pratham.admin.util.Utility;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -101,7 +105,6 @@ public class ECESampleAssessment extends AppCompatActivity implements RangeTimeP
 
         populateAsmtSpinnerValues();
         populateAsmtSpinner();
-//        populateEmptyAsmtTypeSpinner();
         populateStatesSpinner();
     }
 
@@ -336,14 +339,6 @@ public class ECESampleAssessment extends AppCompatActivity implements RangeTimeP
         }
     }
 
-/*
-    private void populateEmptyAsmtTypeSpinner() {
-        String[] emptyArray = {"Select Assessment Type"};
-        ArrayAdapter<String> asmtAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, emptyArray);
-        sp_AsmtType.setAdapter(asmtAdapter);
-    }
-*/
-
     private void populateAsmtSpinner() {
         ArrayAdapter<String> asmtAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, getResources().getStringArray(R.array.array_asmtType));
         sp_AsmtType.setAdapter(asmtAdapter);
@@ -433,11 +428,7 @@ public class ECESampleAssessment extends AppCompatActivity implements RangeTimeP
     }
 
     private void resetFormPartially() {
-//        populateEmptyAsmtTypeSpinner();
         sp_AsmtType.setSelection(0);
-//        tv_FirstName.setText("");
-//        tv_MiddleName.setText("");
-//        tv_LastName.setText("");
         btn_DatePicker.setText("Select Date");
         btn_TimeRangePicker.setText("Select Time");
         sp_MatchingCards.setSelection(0);
@@ -555,6 +546,16 @@ public class ECESampleAssessment extends AppCompatActivity implements RangeTimeP
                     Toast.makeText(this, "Record updated successfully !", Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
+                Modal_Log log = new Modal_Log();
+                log.setCurrentDateTime(new Utility().GetCurrentDate());
+                log.setErrorType("ERROR");
+                log.setExceptionMessage(e.getMessage());
+                log.setExceptionStackTrace(e.getStackTrace().toString());
+                log.setMethodName("ECESampleAssessment" + "_" + "Save");
+                log.setDeviceId("");
+                AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+                BackupDatabase.backup(ApplicationController.getInstance());
+
                 e.printStackTrace();
             }
             resetFormPartially();

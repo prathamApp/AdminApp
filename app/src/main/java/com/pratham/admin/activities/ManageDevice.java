@@ -49,13 +49,6 @@ public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner,
     boolean internetIsAvailable = false;
     ProgressDialog progressDialog;
 
-   /* final String Admin = "7";
-    final String BRG_CRL_Tutor = "6";
-    final String Block_Head = "5";
-    final String District_Head = "4";
-    final String State_Program_Head = "3";
-    final String Program_Head = "2";*/
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,14 +95,10 @@ public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner,
                     acionstatus.setVisibility(View.GONE);
                     btn_replaceTab.setVisibility(View.GONE);
                     break;
-           /* case ROll_ID.National_Program_Head:
-                acionstatus.setVisibility(View.GONE);
-                break;*/
                 case ROll_ID.Vendor:
                     btn_replaceTab.setVisibility(View.GONE);
                     break;
                 case ROll_ID.Admin:
-                    // acionstatus.setVisibility(View.GONE);
                     break;
             }
         } else {

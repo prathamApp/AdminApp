@@ -31,7 +31,9 @@ import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.GroupVisit;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
+import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.Village;
+import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.CustomGroup;
@@ -496,6 +498,16 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
             endoutput = outputformat.format(edate);
             btn_TimeRangePicker.setText("From : " + startoutput + " | " + "\tTo : " + endoutput);
         } catch (Exception e) {
+            Modal_Log log = new Modal_Log();
+            log.setCurrentDateTime(new Utility().GetCurrentDate());
+            log.setErrorType("ERROR");
+            log.setExceptionMessage(e.getMessage());
+            log.setExceptionStackTrace(e.getStackTrace().toString());
+            log.setMethodName("GroupVisitForm" + "_" + "onSelectTime");
+            log.setDeviceId("");
+            AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+            BackupDatabase.backup(ApplicationController.getInstance());
+
             e.printStackTrace();
         }
 
@@ -628,6 +640,16 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
 
             } catch (Exception e) {
                 e.printStackTrace();
+                Modal_Log log = new Modal_Log();
+                log.setCurrentDateTime(new Utility().GetCurrentDate());
+                log.setErrorType("ERROR");
+                log.setExceptionMessage(e.getMessage());
+                log.setExceptionStackTrace(e.getStackTrace().toString());
+                log.setMethodName("GroupVisitForm" + "_" + "Submit");
+                log.setDeviceId("");
+                AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+                BackupDatabase.backup(ApplicationController.getInstance());
+
             }
 
         } else {

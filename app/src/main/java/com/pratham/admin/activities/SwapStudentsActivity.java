@@ -38,10 +38,12 @@ import com.pratham.admin.interfaces.OnCheckBoxSelectedItem;
 import com.pratham.admin.interfaces.OnlineChanges;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
+import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.TempStudent;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.APIs;
+import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.CustomGroup;
@@ -158,18 +160,11 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
                 String selected_village = adapterView.getItemAtPosition(pos).toString();
                 String selectedVillageID = "null";
                 List<Groups> villageWiseGroups = new ArrayList();
-               /* for (int i = 0; i < villageList.size(); i++) {
-                    if (selected_village.equals(villageList.get(i).getVillageName())) {
-                        selectedVillageID = villageList.get(i).getVillageId();
-                        break;
-                    }
-                }*/
                 String splitedVillageBracetRemoved = selected_village.substring(selected_village.indexOf("(") + 1, selected_village.indexOf(")"));
                 String[] splitedVillageData = splitedVillageBracetRemoved.split("ID::");
                 try {
                     selectedVillageID = splitedVillageData[1].trim();
                     selectedVillageID = selectedVillageID.replace(")", "");
-                    /*   idRightGroupSpinner = splitedGroupData[1].trim();*/
                 } catch (Exception e) {
 
                 }
@@ -181,10 +176,8 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
 
                 if (villageWiseGroups.size() == 0) {
                     groupNameList.add(new CustomGroup("NO GROUPS"));
-                    /*  groupNameList.add("NO GROUPS");*/
                 } else {
                     groupNameList.add(new CustomGroup("SELECT GROUPS"));
-                    //  groupNameList.add("SELECT GROUPS");
                     for (int i = 0; i < villageWiseGroups.size(); i++) {
                         if (villageWiseGroups.get(i).getGroupName() != null && (!"".equals(villageWiseGroups.get(i).getGroupName()))) {
                             groupNameList.add(new CustomGroup(villageWiseGroups.get(i).getGroupName(), villageWiseGroups.get(i).getGroupId()));
@@ -220,20 +213,7 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
     }
 
     private void setStudentDataToLeftSideSpinnerFromDb() {
-       /* ArrayList groupNameList = new ArrayList();
-        for (int i = 0; i < studGroupList.size(); i++) {
-            groupNameList.add(studGroupList.get(i).getGroupName());
-        }*/
-       /* List customGroups = new ArrayList();
-        for (int i = 0; i < groupNameList.size(); i++) {
-            String[] splitedGroupData=null;
-            try {
-                splitedGroupData = groupNameList.get(i).toString().split("=>");
-                customGroups.add(new CustomGroup(splitedGroupData[0].trim(), splitedGroupData[1].trim()));
-            } catch (ArrayIndexOutOfBoundsException e) {
-                customGroups.add(new CustomGroup(splitedGroupData[0].trim()));
-            }
-        }*/
+
         ArrayAdapter leftSideGroup = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, groupNameList);
         spinner_group_left.setAdapter(leftSideGroup);
         try {
@@ -264,6 +244,16 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
                 }
             });
         } catch (Exception e) {
+            Modal_Log log = new Modal_Log();
+            log.setCurrentDateTime(new Utility().GetCurrentDate());
+            log.setErrorType("ERROR");
+            log.setExceptionMessage(e.getMessage());
+            log.setExceptionStackTrace(e.getStackTrace().toString());
+            log.setMethodName("SwapStudentsActivity" + "_" + "setStudentDataToLeft");
+            log.setDeviceId("");
+            AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+            BackupDatabase.backup(ApplicationController.getInstance());
+
             e.printStackTrace();
         }
     }
@@ -282,14 +272,6 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
             }
         }
         idLeftGroupSpinner = null;
-        /*for (int i = 0; i < studGroupList.size(); i++) {
-            if (studGroupList.get(i).getGroupName().equals(selectedGroupName)) {
-                idLeftGroupSpinner = studGroupList.get(i).getGroupId();
-                nameLeftGroupSpinner = studGroupList.get(i).getGroupName();
-                break;
-            }
-        }*/
-
         nameLeftGroupSpinner = selectedGroupName;
         idLeftGroupSpinner = idLeftGroupSpinnerLocal;
 
@@ -300,7 +282,6 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
                 alertDialog.setCancelable(false);
                 alertDialog.setCanceledOnTouchOutside(false);
                 alertDialog.setIcon(R.drawable.ic_error_outline_black_24dp);
-                //alertDialog.setMessage("No Groups Available");
                 alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -415,14 +396,6 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
             }
         }
         idRightGroupSpinner = null;
-        /*for (int i = 0; i < studGroupList.size(); i++) {
-            if (studGroupList.get(i).getGroupName().equals(selectedGroupName)) {
-                idRightGroupSpinner = studGroupList.get(i).getGroupId();
-                nameRightGroupSpinner = studGroupList.get(i).getGroupName();
-                break;
-            }
-        }*/
-
         nameRightGroupSpinner = selectedGroupName;
         idRightGroupSpinner = idRightGroupSpinnerLocal;
 
@@ -432,7 +405,6 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
             alertDialog.setCancelable(false);
             alertDialog.setCanceledOnTouchOutside(false);
             alertDialog.setIcon(R.drawable.ic_error_outline_black_24dp);
-            //alertDialog.setMessage("No Groups Available");
             alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -442,8 +414,6 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
             });
             alertDialog.show();
         } else {
-            //  rightStudentList = AppDatabase.getDatabaseInstance(this).getStudentDao().getGroupwiseStudents(idRightGroupSpinner);
-            // AppDatabase.destroyInstance();
             if (rightStudentList != null) {
                 rightStudentList.clear();
             }
@@ -472,7 +442,6 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
                 Toast.makeText(this, "select a student for shifting", Toast.LENGTH_SHORT).show();
             } else {
                 DataChangedFlag = true;
-                //recyclerView_rightSide.scrollToPosition(0);
                 for (int i = 0; i < swappedStudents.size(); i++) {
                     swappedStudents.get(i).setChecked(false);
                     swappedStudents.get(i).setGroupId(idRightGroupSpinner);
@@ -522,14 +491,9 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
             swappedRightSideStudents.add(student);
             rightStudentList.get(pos).setChecked(true);
         }
-
-       /* if (leftSideAdapter!=null)
-            leftSideAdapter.notifyDataSetChanged();*/
-        //  Toast.makeText(SwapStudentsActivity.this, " RS " + swappedRightSideStudents.size(), Toast.LENGTH_SHORT).show();
-
     }
 
-    //todo try cath to all db operations and api operations
+    //try catch to all db operations and api operations
     @OnClick(R.id.btn_swap_and_push)
     public void pushToDB() {
         List<Student> convertedTempToStud = new ArrayList();
@@ -549,19 +513,6 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
         }
 
         if (!tempStorageList.isEmpty()) {
-            /*List duplicateElements = new ArrayList();
-            List<Student> originalDbList = new ArrayList();
-            originalDbList = AppDatabase.getDatabaseInstance(this).getStudentDao().getAllStudents();
-            for (int j = 0; j < tempStorageList.size(); j++) {
-                for (int i = 0; i < originalDbList.size(); i++) {
-                    if (originalDbList.get(i).getStudentId().equals(tempStorageList.get(j).getStudentId())) {
-                        if (originalDbList.get(i).getGroupId().equals(tempStorageList.get(j).getGroupId())) {
-                            duplicateElements.add(tempStorageList.get(j));
-                        }
-                    }
-                }
-            }
-            tempStorageList.removeAll(duplicateElements);*/
             if (!tempStorageList.isEmpty()) {
                 List unique = new ArrayList();
                 for (int i = 0; i < convertedTempToStud.size(); i++) {
@@ -639,7 +590,6 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
         }
         SharedPreferences sharedPref = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-//        editor.putString("offlineSaveTime", DateFormat.getDateTimeInstance().format(new Date()));
         editor.putString("offlineSaveTime", new Utility().GetCurrentDateTime(false));
         editor.commit();
 
@@ -667,7 +617,6 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
 
                 Toast.makeText(SwapStudentsActivity.this, "NO Internet Connection", Toast.LENGTH_LONG).show();
                 tempChangesSave();
-                //Log.d("anError", "" + anError);
                 dialog.dismiss();
             }
         });
@@ -696,33 +645,7 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
     @Override
     public void onBackPressed() {
         finish();
-//        super.onBackPressed();
-  /*      if (DataChangedFlag) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setCancelable(false);
-            builder.setTitle("WARNING !!!");
-            builder.setMessage("Do you want to leave this page?");
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //if user pressed "yes", then he is allowed to exit from application
-                    if (tempAllStudent != null) tempAllStudent.clear();
-                    if (tempStorageList != null) tempStorageList.clear();
-                    finish();
-                }
-            });
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //if user select "No", just cancel this dialog and continue with app
-                    dialog.cancel();
-                }
-            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        } else {
-            finish();
-        }*/
+
     }
 
     @Override
@@ -747,12 +670,10 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
     public void update() {
         if (internetIsAvailable) {
             if (!tempStorageList.isEmpty()) {
-                //List<Student> updatedStudent = AppDatabase.getDatabaseInstance(this).getStudentDao().getAllStudents();
                 Gson gson = new Gson();
                 String updatedStudentJSON = gson.toJson(tempStorageList);
                 MetaData metaData = new MetaData();
                 metaData.setKeys("pushDataTime");
-//                metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
                 metaData.setValue(new Utility().GetCurrentDateTime(false));
 
                 AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);

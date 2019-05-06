@@ -29,18 +29,19 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
 import com.google.zxing.Result;
+import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.QRScanListener;
+import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.TabTrack;
 import com.pratham.admin.util.APIs;
+import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.Utility;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -52,10 +53,6 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class Activity_QRScan extends BaseActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener {
 
     public ZXingScannerView mScannerView;
-    /* @BindView(R.id.qr_spinner_state)
-     Spinner qr_spinner_state;*/
-    //List<String> statewiseCRL;
-    // List<String> statewiseCRLID;
     @BindView(R.id.qr_frame)
     FrameLayout qr_frame;
     @BindView(R.id.programInfo)
@@ -76,8 +73,6 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
     EditText qr_serialNo;
     @BindView(R.id.successMessage)
     LinearLayout successMessage;
-    //  String selectedCRL;
-    // String selectedCRLID;
     String LoggedcrlId;
     String LoggedcrlName;
     String prathamId;
@@ -97,10 +92,6 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
         setContentView(R.layout.activity_qrscan);
         ButterKnife.bind(this);
 
-        /*prathamId = "tsy";
-        qr_pratham_id.setText("uuid");
-        qr_serialNo.setText("uiuif");
-        QrId = "Qfjj";*/
         LoggedcrlId = getIntent().getStringExtra("CRLid");
         LoggedcrlName = getIntent().getStringExtra("CRLname");
         //todo
@@ -174,73 +165,6 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
         // initLayout();
     }
 
-    private void initLayout() {
-            /*states = getResources().getStringArray(R.array.india_states);
-            statesCodes = getResources().getStringArray(R.array.india_states_shortcode);
-            ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, states);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            qr_spinner_state.setAdapter(adapter);
-
-        qr_spinner_state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                int selectedState = qr_spinner_state.getSelectedItemPosition();
-                selectedStateCode = statesCodes[selectedState];
-                if (selectedStateCode.equals("SELECT STATE")) {
-                    Toast.makeText(Activity_QRScan.this, "Please Select State", Toast.LENGTH_SHORT).show();
-                } else {
-                    showCRL(selectedStateCode);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-*/
-        //  showCRL();
-    }
-
-   /* public void showCRL() {
-        List<CRL> crls;
-        crls = AppDatabase.getDatabaseInstance(this).getCRLdao().getAllCRLs();
-        statewiseCRL = new ArrayList();
-     //   statewiseCRLID = new ArrayList<>();
-        if (crls != null && !crls.isEmpty()) {
-            statewiseCRL.add("SELECT CRL");
-            statewiseCRLID.add("SELECT CRL");
-            for (int i = 0; i < crls.size(); i++) {
-                statewiseCRL.add("" + crls.get(i).getFirstName() + " " + crls.get(i).getLastName());
-                statewiseCRLID.add("" + crls.get(i).getCRLId());
-            }
-            if (!statewiseCRL.isEmpty()) {
-                //  qr_spinner_crl.setEnabled(true);
-                ArrayAdapter crlAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, statewiseCRL);
-                crlAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-               *//* qr_spinner_crl.setAdapter(crlAdapter);
-                qr_spinner_crl.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                        int position = qr_spinner_crl.getSelectedItemPosition();
-                        selectedCRL = statewiseCRL.get(position);
-                        selectedCRLID = statewiseCRLID.get(position);
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-
-                    }
-                });*//*
-            } else {
-                //  qr_spinner_state.setSelection(0);
-                //  qr_spinner_crl.setSelection(0);
-                // qr_spinner_crl.setEnabled(false);
-            }
-        }
-    }*/
-
     public void initCamera() {
         mScannerView = new ZXingScannerView(getApplicationContext());
         mScannerView.setResultHandler(Activity_QRScan.this);
@@ -303,6 +227,16 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
                 Toast.makeText(this, "Invalid QR ", Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
+            Modal_Log log = new Modal_Log();
+            log.setCurrentDateTime(new Utility().GetCurrentDate());
+            log.setErrorType("ERROR");
+            log.setExceptionMessage(e.getMessage());
+            log.setExceptionStackTrace(e.getStackTrace().toString());
+            log.setMethodName("QRScan" + "_" + "handleResult");
+            log.setDeviceId("");
+            AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+            BackupDatabase.backup(ApplicationController.getInstance());
+
             e.printStackTrace();
             Toast.makeText(this, "Invalid QR ", Toast.LENGTH_LONG).show();
         }

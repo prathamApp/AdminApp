@@ -46,9 +46,6 @@ public class FormsActivity extends BaseActivity implements DashRVClickListener {
         LoggedcrlName = getIntent().getStringExtra("CRLname");
         LoggedCRLnameSwapStd = getIntent().getStringExtra("CRLnameSwapStd");
 
-        // Start WiFi
-//        turnOnWifi();
-
         // Recycler View
         initializeItemList();
 
@@ -68,24 +65,6 @@ public class FormsActivity extends BaseActivity implements DashRVClickListener {
 
     }
 
-/*
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // Start WiFi
-        turnOnWifi();
-    }
-*/
-
-    /*private void turnOnWifi() {
-        //enable wifi
-        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        boolean wifiEnabled = wifiManager.isWifiEnabled();
-        if (!wifiEnabled) {
-            wifiManager.setWifiEnabled(true);
-        }
-    }
-*/
     /* Initialise items in list. */
     private void initializeItemList() {
         if (DashboardItemList == null) {
@@ -96,8 +75,6 @@ public class FormsActivity extends BaseActivity implements DashRVClickListener {
             DashboardItemList.add(new DashboardItem("Group Session", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Group Visit", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Course Enrollment", R.drawable.ic_form));
-//            DashboardItemList.add(new DashboardItem("Delete Students", R.drawable.ic_form));
-//            DashboardItemList.add(new DashboardItem("CRL Visit", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Students Attendance", R.drawable.ic_form));
         }
     }

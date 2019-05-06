@@ -4,21 +4,29 @@ import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
+import com.pratham.admin.activities.SelectProgram;
 import com.pratham.admin.database.AppDatabase;
+import com.pratham.admin.modalclasses.Modal_Log;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 
+import static com.pratham.admin.database.AppDatabase.DB_NAME;
+
 public class BackupDatabase {
 
     public static void backup(Context mContext) {
-
         try {
-            File sd = Environment.getExternalStorageDirectory();
+            File sd = new File(Environment.getExternalStorageDirectory() + "/.PrathamAdmin");
+            if (!sd.exists())
+                sd.mkdir();
+
             if (sd.canWrite()) {
-                File currentDB = mContext.getDatabasePath("prathamDb");
+                File currentDB = mContext.getDatabasePath(DB_NAME);
                 File parentPath = currentDB.getParentFile();
                 for (File f : parentPath.listFiles()) {
                     File temp = new File(sd, f.getName());
@@ -30,36 +38,20 @@ public class BackupDatabase {
                     dst.close();
                 }
             } else {
-                Log.d("gg","kk");
-//EventBus.getDefault().post(PermissionUtils.WRITE_PERMISSION);
+                Log.d("gg", "kk");
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Modal_Log log = new Modal_Log();
+            log.setCurrentDateTime(new Utility().GetCurrentDate());
+            log.setErrorType("ERROR");
+            log.setExceptionMessage(e.getMessage());
+            log.setExceptionStackTrace(e.getStackTrace().toString());
+            log.setMethodName("BackupDatabase" + "_" + "backup");
+            log.setDeviceId("");
+            AppDatabase.getDatabaseInstance(mContext).getLogDao().insertLog(log);
+            BackupDatabase.backup(mContext);
+
         }
     }
-
-/*try {
-File sd = Environment.getExternalStorageDirectory();
-
-if (sd.canWrite()) {
-File file = mContext.getDir("databases", Context.MODE_PRIVATE);
-
-String currentDBPath = file.getAbsolutePath().replace("app_databases","databases")+"/"+ DB_NAME;
-String backupDBPath = DB_NAME+".db";
-File currentDB = new File(currentDBPath);
-File backupDB = new File(sd, backupDBPath);
-
-if (currentDB.exists()) {
-FileChannel src = new FileInputStream(currentDB).getChannel();
-FileChannel dst = new FileOutputStream(backupDB).getChannel();
-dst.transferFrom(src, 0, src.size());
-src.close();
-dst.close();
-}
-}
-} catch (Exception e) {
-e.printStackTrace();
-}
-}*/
-
 }

@@ -30,6 +30,7 @@ import com.google.gson.reflect.TypeToken;
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.async.SaveDataTask;
+import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.OnSavedData;
 import com.pratham.admin.interfaces.VillageListLisner;
@@ -40,11 +41,14 @@ import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Completion;
 import com.pratham.admin.modalclasses.Course;
 import com.pratham.admin.modalclasses.Groups;
+import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.APIs;
+import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
+import com.pratham.admin.util.Utility;
 
 import org.json.JSONArray;
 
@@ -83,9 +87,6 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
 
     @BindView(R.id.spinner_state)
     Spinner spinner_state;
-
-    /*@BindView(R.id.spinner_village)
-    Spinner spinner_village;*/
 
     @BindView(R.id.spinner_block)
     Spinner spinner_block;
@@ -498,7 +499,6 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
             }
 
         }
-        //  Log.d("prathamS", studentList.toString());
     }
 
     private void loadAserData(String url) {
@@ -583,25 +583,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
             groupsList.addAll(groupsMoadal);
         }
         if (groupLoadCount == villageId.size()) {
-            //if (groupsList.isEmpty()) {
-               /* AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                alertDialog.setTitle("No Groups Available");
-                alertDialog.setIcon(R.drawable.ic_error_outline_black_24dp);
-                //alertDialog.setMessage("No Groups Available");
-                alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
 
-                    }
-                });
-                btn_pullData.clearAnimation();
-                btn_pullData.setEnabled(false)
-                alertDialog.show();
-                alertDialog.show();*/
-            ;
-            /*  dismissShownDialog();*/
-
-            //  } else {
             for (int j = 0; j < villageId.size(); j++) {
                 switch (program) {
                     case APIs.HL:
@@ -633,7 +615,6 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                     case APIs.GP:
                         loadAPI(APIs.GPpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.GP);
                         break;
-                    // }
                 }
             }
         }
@@ -642,10 +623,6 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
     private void loadVillage(String json, String program) {
 
         spinner_block.setEnabled(true);
-        // spinner_village.setEnabled(false);
-        // spinner_village.setSelection(0);
-
-
         villageList.clear();
         Gson gson = new Gson();
         Type listType = new TypeToken<ArrayList<Village>>() {
@@ -676,21 +653,16 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 if ((!selectedBlock.equals("NO BLOCK")) && (!selectedBlock.equals("SELECT BLOCK"))) {
                     if (apiLoadFlag) {
 
-                        //  spinner_village.setEnabled(true);
                         btn_pullData.setEnabled(false);
                         btn_pullData.clearAnimation();
 
                         ArrayList<Village> villageName = new ArrayList();
-                        //  spinner_village.setVisibility(View.VISIBLE);
-                        //villageName.add("SELECT VILLAGE");
                         for (int i = 0; i < villageList.size(); i++) {
                             if (selectedBlock.equals(villageList.get(i).getBlock())) {
                                 villageName.add(villageList.get(i));
                             }
                         }
 
-                        //   ArrayAdapter villageAdapter = new ArrayAdapter(SelectProgram.this, android.R.layout.simple_spinner_dropdown_item, villageName);
-                        /*spinner_village.setAdapter(villageAdapter);*/
                         groupsList.clear();
                         studentList.clear();
                         groupLoadCount = 0;
@@ -698,11 +670,8 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                         countAser = 0;
                         SelectVillageDialog selectVillageDialog = new SelectVillageDialog(SelectProgram.this, villageName);
                         selectVillageDialog.show();
-                        //  dismissShownDialog();
                     }
                 } else {
-                    // spinner_village.setSelection(0);
-                    //  spinner_village.setEnabled(false);
                     btn_pullData.setEnabled(false);
                     btn_pullData.clearAnimation();
                     btn_saveData.setEnabled(false);
@@ -715,7 +684,6 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
 
             }
         });
-        // Log.d("prathamV", villageList.toString());
         dismissShownDialog();
     }
 
@@ -725,19 +693,6 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
         btn_saveData.clearAnimation();
         btn_saveData.setEnabled(false);
 
-        //  if (groupsList.isEmpty()) {
-        /*    AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle("No Groups Available");
-            alertDialog.setIcon(R.drawable.ic_error_outline_black_24dp);
-            //alertDialog.setMessage("No Groups Available");
-            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-
-                }
-            });
-            alertDialog.show();*/
-
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SelectProgram.this, android.R.style.Theme_Material_Light_Dialog);
         dialogBuilder.setCancelable(false);
         dialogBuilder.setTitle("Data Preview");
@@ -746,29 +701,20 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
             dialogBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     try {
-                       /* AppDatabase.getDatabaseInstance(SelectProgram.this).getGroupDao().deleteAllGroups();
-                        AppDatabase.getDatabaseInstance(SelectProgram.this).getStudentDao().deleteAllStudents();
-                        AppDatabase.getDatabaseInstance(SelectProgram.this).getVillageDao().deleteAllVillages();
-                        AppDatabase.getDatabaseInstance(SelectProgram.this).getCRLdao().deleteAllCRLs();
-
-                        // Save Pulled Data
-                        AppDatabase.getDatabaseInstance(SelectProgram.this).getCoursesDao().deleteAllCourses();
-                        AppDatabase.getDatabaseInstance(SelectProgram.this).getCoachDao().deleteAllCoaches();
-                        AppDatabase.getDatabaseInstance(SelectProgram.this).getCommunityDao().deleteAllCommunity();
-                        AppDatabase.getDatabaseInstance(SelectProgram.this).getCompletionDao().deleteAllCompletion();*/
-
-
-                        try {
-                            new SaveDataTask(SelectProgram.this, SelectProgram.this, CRLList, studentList, groupsList, villageId, CourseList, CoachList, CommunityList, CompletionList, aserList).execute();
-                        } catch (Exception e) {
-                            Toast.makeText(SelectProgram.this, "Insertion Fail", Toast.LENGTH_SHORT).show();
-                            e.printStackTrace();
-                        }
+                        new SaveDataTask(SelectProgram.this, SelectProgram.this, CRLList, studentList, groupsList, villageId, CourseList, CoachList, CommunityList, CompletionList, aserList).execute();
                     } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                    }
+                        Modal_Log log = new Modal_Log();
+                        log.setCurrentDateTime(new Utility().GetCurrentDate());
+                        log.setErrorType("ERROR");
+                        log.setExceptionMessage(e.getMessage());
+                        log.setExceptionStackTrace(e.getStackTrace().toString());
+                        log.setMethodName("SelectProgram" + "_" + "SaveData");
+                        log.setDeviceId("");
+                        AppDatabase.getDatabaseInstance(SelectProgram.this).getLogDao().insertLog(log);
+                        BackupDatabase.backup(SelectProgram.this);
 
+                        e.printStackTrace();
+                    }
                 }
             });
         }
@@ -791,13 +737,6 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
         });
         AlertDialog b = dialogBuilder.create();
         b.show();
-
-
-
-       /* } else {
-           // new SaveDataTask(SelectProgram.this, SelectProgram.this, CRLList, studentList, groupsList, villageId, CourseList, CoachList, CommunityList, CompletionList).execute();
-        }
-*/
     }
 
     private void saveDataToSharedPreference() {
@@ -805,7 +744,6 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("program", selectedProgram);
         editor.putString("state", selectedStateName);
-        //todo Shared preferences
         editor.putString("village", selectedVillage.get(0).toString());
         editor.commit();
     }
@@ -859,6 +797,16 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
             // Pull Courses
             pullCourses();
         } catch (Exception e) {
+            Modal_Log log = new Modal_Log();
+            log.setCurrentDateTime(new Utility().GetCurrentDate());
+            log.setErrorType("ERROR");
+            log.setExceptionMessage(e.getMessage());
+            log.setExceptionStackTrace(e.getStackTrace().toString());
+            log.setMethodName("SaveDataTast" + "_" + "formsAPI");
+            log.setDeviceId("");
+            AppDatabase.getDatabaseInstance(SelectProgram.this).getLogDao().insertLog(log);
+            BackupDatabase.backup(SelectProgram.this);
+
             e.printStackTrace();
         }
         try {
@@ -867,6 +815,16 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 pullCoaches(village.getVillageId());
             }
         } catch (Exception e) {
+            Modal_Log log = new Modal_Log();
+            log.setCurrentDateTime(new Utility().GetCurrentDate());
+            log.setErrorType("ERROR");
+            log.setExceptionMessage(e.getMessage());
+            log.setExceptionStackTrace(e.getStackTrace().toString());
+            log.setMethodName("SaveDataTast" + "_" + "formsAPI");
+            log.setDeviceId("");
+            AppDatabase.getDatabaseInstance(SelectProgram.this).getLogDao().insertLog(log);
+            BackupDatabase.backup(SelectProgram.this);
+
             e.printStackTrace();
         }
 
@@ -877,6 +835,16 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Modal_Log log = new Modal_Log();
+            log.setCurrentDateTime(new Utility().GetCurrentDate());
+            log.setErrorType("ERROR");
+            log.setExceptionMessage(e.getMessage());
+            log.setExceptionStackTrace(e.getStackTrace().toString());
+            log.setMethodName("SaveDataTast" + "_" + "formsAPI");
+            log.setDeviceId("");
+            AppDatabase.getDatabaseInstance(SelectProgram.this).getLogDao().insertLog(log);
+            BackupDatabase.backup(SelectProgram.this);
+
         }
         try {
             // HLCourseCompletion
@@ -885,6 +853,17 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
             }
         } catch (Exception e) {
             e.printStackTrace();
+
+            Modal_Log log = new Modal_Log();
+            log.setCurrentDateTime(new Utility().GetCurrentDate());
+            log.setErrorType("ERROR");
+            log.setExceptionMessage(e.getMessage());
+            log.setExceptionStackTrace(e.getStackTrace().toString());
+            log.setMethodName("SaveDataTast" + "_" + "formsAPI");
+            log.setDeviceId("");
+            AppDatabase.getDatabaseInstance(SelectProgram.this).getLogDao().insertLog(log);
+            BackupDatabase.backup(SelectProgram.this);
+
         }
 
 
@@ -945,6 +924,17 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                     ArrayList<Coach> modalCoachList = gson.fromJson(json, listType);
                     CoachList.addAll(modalCoachList);
                 } catch (JsonSyntaxException e) {
+
+                    Modal_Log log = new Modal_Log();
+                    log.setCurrentDateTime(new Utility().GetCurrentDate());
+                    log.setErrorType("ERROR");
+                    log.setExceptionMessage(e.getMessage());
+                    log.setExceptionStackTrace(e.getStackTrace().toString());
+                    log.setMethodName("SelectProgram" + "_" + "coachUrl");
+                    log.setDeviceId("");
+                    AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+                    BackupDatabase.backup(ApplicationController.getInstance());
+
                     e.printStackTrace();
                 }
                 dismissShownDialog();
@@ -1017,6 +1007,16 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                     ArrayList<Community> modalCommunityList = gson.fromJson(json, listType);
                     CommunityList.addAll(modalCommunityList);
                 } catch (JsonSyntaxException e) {
+                    Modal_Log log = new Modal_Log();
+                    log.setCurrentDateTime(new Utility().GetCurrentDate());
+                    log.setErrorType("ERROR");
+                    log.setExceptionMessage(e.getMessage());
+                    log.setExceptionStackTrace(e.getStackTrace().toString());
+                    log.setMethodName("SelectProgram" + "_" + "HLCourseCommunityUrl");
+                    log.setDeviceId("");
+                    AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+                    BackupDatabase.backup(ApplicationController.getInstance());
+
                     e.printStackTrace();
                 }
                 dismissShownDialog();
@@ -1076,6 +1076,16 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                     ArrayList<Course> modalCoursesList = gson.fromJson(json, listType);
                     CourseList.addAll(modalCoursesList);
                 } catch (JsonSyntaxException e) {
+                    Modal_Log log = new Modal_Log();
+                    log.setCurrentDateTime(new Utility().GetCurrentDate());
+                    log.setErrorType("ERROR");
+                    log.setExceptionMessage(e.getMessage());
+                    log.setExceptionStackTrace(e.getStackTrace().toString());
+                    log.setMethodName("SelectProgram" + "_" + "PullCourses");
+                    log.setDeviceId("");
+                    AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+                    BackupDatabase.backup(ApplicationController.getInstance());
+
                     e.printStackTrace();
                 }
                 dismissShownDialog();
@@ -1149,6 +1159,16 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                     ArrayList<Completion> modalCompletionList = gson.fromJson(json, listType);
                     CompletionList.addAll(modalCompletionList);
                 } catch (JsonSyntaxException e) {
+                    Modal_Log log = new Modal_Log();
+                    log.setCurrentDateTime(new Utility().GetCurrentDate());
+                    log.setErrorType("ERROR");
+                    log.setExceptionMessage(e.getMessage());
+                    log.setExceptionStackTrace(e.getStackTrace().toString());
+                    log.setMethodName("SelectProgram" + "_" + "HLCourseCompletion");
+                    log.setDeviceId("");
+                    AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+                    BackupDatabase.backup(ApplicationController.getInstance());
+
                     e.printStackTrace();
                 }
                 dismissShownDialog();
@@ -1157,7 +1177,6 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
             @Override
             public void onError(ANError error) {
                 errorDetected = true;
-//                spinner_state.setSelection(0);
                 if (!internetIsAvailable) {
                     Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
                 } else {

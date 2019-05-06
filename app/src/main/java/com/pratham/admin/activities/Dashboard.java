@@ -42,6 +42,7 @@ import com.pratham.admin.modalclasses.GroupSession;
 import com.pratham.admin.modalclasses.GroupVisit;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
+import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
@@ -49,9 +50,7 @@ import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.DashRVTouchListener;
 import com.pratham.admin.util.Utility;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -59,7 +58,6 @@ import butterknife.ButterKnife;
 
 import static com.pratham.admin.util.APIs.PushForms;
 
-//import com.pratham.admin.modalclasses.CRLVisit;
 
 public class Dashboard extends BaseActivity implements DashRVClickListener, ConnectionReceiverListener {
 
@@ -83,6 +81,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
     List<Aser> aserObj = new ArrayList<>();
     List<Groups> grpObj = new ArrayList<>();
     List<ECEAsmt> ECEAsmtObj = new ArrayList<>();
+    List<Modal_Log> LogObj = new ArrayList<>();
     List<MetaData> metaDataList = new ArrayList<>();
 
     String json = "";
@@ -122,10 +121,6 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
         dashRecyclerView.setAdapter(DataAdapter);
 
         dashRecyclerView.addOnItemTouchListener(new DashRVTouchListener(getApplicationContext(), dashRecyclerView, Dashboard.this));
-
-        // Start WiFi
-//        turnOnWifi();
-//        pushNewData();
 
         populateProgramID();
 
@@ -222,9 +217,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
 
     @Override
     protected void onResume() {
-         super.onResume();
-        // Start WiFi
-//        turnOnWifi();
+        super.onResume();
         checkConnection();
         ApplicationController.getInstance().setConnectionListener(this);
         initializeAppInfo();
@@ -238,17 +231,6 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
             internetIsAvailable = true;
         }
     }
-
-/*
-    private void turnOnWifi() {
-        //enable wifi
-        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        boolean wifiEnabled = wifiManager.isWifiEnabled();
-        if (!wifiEnabled) {
-            wifiManager.setWifiEnabled(true);
-        }
-    }
-*/
 
     private String customParse(List<MetaData> metaDataList) {
         String json = "{";
@@ -273,16 +255,13 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
         coachesObj = AppDatabase.getDatabaseInstance(this).getCoachDao().getNewCoaches(0);
         communitiesObj = AppDatabase.getDatabaseInstance(this).getCommunityDao().getNewCommunities(0);
         completionsObj = AppDatabase.getDatabaseInstance(this).getCompletionDao().getNewCompletions(0);
-//        List<Course> coursesObj = new ArrayList<>();
-//        coursesObj = AppDatabase.getDatabaseInstance(this).getCoursesDao().getNewCourses(0);
-//        List<CRLVisit> CRLVisitObj = new ArrayList<>();
-//        CRLVisitObj = AppDatabase.getDatabaseInstance(this).getCRLVisitdao().getNewCRLVisits(0);
         GroupSessionObj = AppDatabase.getDatabaseInstance(this).getGroupSessionDao().getNewGroupSessions(0);
         GroupVisitObj = AppDatabase.getDatabaseInstance(this).getGroupVisitDao().getNewGroupVisits(0);
         stdObj = AppDatabase.getDatabaseInstance(this).getStudentDao().getNewStudents(0);
         aserObj = AppDatabase.getDatabaseInstance(this).getAserDao().getNewAser(0);
         grpObj = AppDatabase.getDatabaseInstance(this).getGroupDao().getNewGroups(0);
         ECEAsmtObj = AppDatabase.getDatabaseInstance(this).getECEAsmtDao().getNewECEAsmt(0);
+        LogObj = AppDatabase.getDatabaseInstance(this).getLogDao().getAllLogs(0);
 
         // Push To Server
         try {
@@ -297,7 +276,6 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
                 Gson gson = new Gson();
                 metaData = new MetaData();
                 metaData.setKeys("pushDataTime");
-//                metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
                 metaData.setValue(new Utility().GetCurrentDateTime(false));
                 metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
                 String metaDataJSON = customParse(metaDataList);
@@ -312,6 +290,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
                         + ",\"GroupVisitsJSON\":" + "" + gson.toJson(GroupVisitObj).toString()
                         + ",\"GroupSessionJSON\":" + "" + gson.toJson(GroupSessionObj).toString()
                         + ",\"ECEAsmtJSON\":" + "" + gson.toJson(ECEAsmtObj).toString()
+                        + ",\"LogJSON\":" + "" + gson.toJson(LogObj).toString()
                         + ",\"metadata\":" + "" + metaDataJSON + "}";
 
                 Log.d("json all push :::", json);
@@ -328,6 +307,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
                         + "\nGroupVisits : " + GroupVisitObj.size()
                         + "\nGroupSessions : " + GroupSessionObj.size()
                         + "\nECE Assessments : " + ECEAsmtObj.size()
+                        + "\nLogs : " + LogObj.size()
                 );
 
 
@@ -344,7 +324,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
 
                             if ((aObj.size() == 0) && (coachesObj.size() == 0) && (communitiesObj.size() == 0) && (completionsObj.size() == 0)
                                     && (GroupVisitObj.size() == 0) && (GroupSessionObj.size() == 0)
-                                    && (stdObj.size() == 0) && (aserObj.size() == 0) && (grpObj.size() == 0) && (ECEAsmtObj.size() == 0)
+                                    && (stdObj.size() == 0) && (aserObj.size() == 0) && (grpObj.size() == 0) && (ECEAsmtObj.size() == 0) && (LogObj.size() == 0)
                                 /*&& (CRLVisitObj.size() == 0)*/) {
                                 // No Data Available
                                 Toast.makeText(Dashboard.this, "No New Data found for Pushing !", Toast.LENGTH_LONG).show();
@@ -369,8 +349,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
                                         AppDatabase.getDatabaseInstance(Dashboard.this).getAserDao().updateAllSentFlag(1);
                                         AppDatabase.getDatabaseInstance(Dashboard.this).getGroupDao().updateAllSentFlag(1);
                                         AppDatabase.getDatabaseInstance(Dashboard.this).getECEAsmtDao().updateAllSentFlag(1);
-                                        //AppDatabase.getDatabaseInstance(Dashboard.this).getCRLVisitdao().updateAllSentFlag(1);
-                                        //AppDatabase.getDatabaseInstance(Dashboard.this).getCoursesDao().updateAllSentFlag(1);
+                                        AppDatabase.getDatabaseInstance(Dashboard.this).getLogDao().updateAllSentFlag(1);
 
                                         new BlurPopupWindow.Builder(Dashboard.this)
                                                 .setContentView(R.layout.app_success_dialog)
@@ -382,7 +361,6 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
                                                 .setTintColor(0x30000000)
                                                 .build()
                                                 .show();
-//                                        Toast.makeText(Dashboard.this, "Data Pushed Successfully !", Toast.LENGTH_LONG).show();
                                         if (pd.isShowing())
                                             pd.dismiss();
                                     }
@@ -409,8 +387,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
                                         AppDatabase.getDatabaseInstance(Dashboard.this).getAserDao().updateAllSentFlag(0);
                                         AppDatabase.getDatabaseInstance(Dashboard.this).getGroupDao().updateAllSentFlag(0);
                                         AppDatabase.getDatabaseInstance(Dashboard.this).getECEAsmtDao().updateAllSentFlag(0);
-                                        //AppDatabase.getDatabaseInstance(Dashboard.this).getCRLVisitdao().updateAllSentFlag(0);
-                                        //AppDatabase.getDatabaseInstance(Dashboard.this).getCoursesDao().updateAllSentFlag(0);
+                                        AppDatabase.getDatabaseInstance(Dashboard.this).getLogDao().updateAllSentFlag(0);
 
                                         Toast.makeText(Dashboard.this, "Error in Data Pushing !", Toast.LENGTH_LONG).show();
                                         if (pd.isShowing())
@@ -419,6 +396,16 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
                                 });
                             }
                         } catch (Exception e) {
+                            Modal_Log log = new Modal_Log();
+                            log.setCurrentDateTime(new Utility().GetCurrentDate());
+                            log.setErrorType("ERROR");
+                            log.setExceptionMessage(e.getMessage());
+                            log.setExceptionStackTrace(e.getStackTrace().toString());
+                            log.setMethodName("Dashboard" + "_" + "PushNewData");
+                            log.setDeviceId("");
+                            AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+                            BackupDatabase.backup(ApplicationController.getInstance());
+
                             e.printStackTrace();
                         }
 
@@ -448,13 +435,23 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
                             .build()
                             .show();
                 } catch (Exception e) {
+
                     Toast.makeText(this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
 
-//                Toast.makeText(this, "Unable to Push !\nPlease check network !", Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
+            Modal_Log log = new Modal_Log();
+            log.setCurrentDateTime(new Utility().GetCurrentDate());
+            log.setErrorType("ERROR");
+            log.setExceptionMessage(e.getMessage());
+            log.setExceptionStackTrace(e.getStackTrace().toString());
+            log.setMethodName("Dashboard" + "_" + "PushNewData");
+            log.setDeviceId("");
+            AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+            BackupDatabase.backup(ApplicationController.getInstance());
+
             e.printStackTrace();
         }
     }
@@ -464,11 +461,8 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
     private void initializeItemList() {
         if (DashboardItemList == null) {
             DashboardItemList = new ArrayList<DashboardItem>();
-//            DashboardItemList.add(new DashboardItem("Scan QR Code", R.drawable.qr_code_selector));
-//            DashboardItemList.add(new DashboardItem("Swap Students", R.drawable.swap_selector));
             DashboardItemList.add(new DashboardItem("Forms", R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem("Student Management", R.drawable.ic_pos));
-//            DashboardItemList.add(new DashboardItem("Pull Data", R.drawable.ic_pull));
             DashboardItemList.add(new DashboardItem("Push Data", R.drawable.ic_push));
             DashboardItemList.add(new DashboardItem("Manage Device", R.drawable.tablet));
         }
@@ -500,21 +494,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
-        } else if (name.contains("Pull")) {
-            Intent intent = new Intent(Dashboard.this, PullData.class);
-            intent.putExtra("CRLid", LoggedcrlId);
-            intent.putExtra("CRLname", LoggedcrlName);
-            intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
-            startActivity(intent);
         } else if (name.contains("Push")) {
-            /*
-            Intent intent = new Intent(Dashboard.this, PushData.class);
-            intent.putExtra("CRLid", LoggedcrlId);
-            intent.putExtra("CRLname", LoggedcrlName);
-            intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
-            startActivity(intent);
-            */
-//            turnOnWifi();
             pushNewData();
 
         } else if (name.contains("Manage Device")) {

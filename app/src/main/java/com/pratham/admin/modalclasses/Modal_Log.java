@@ -3,12 +3,15 @@ package com.pratham.admin.modalclasses;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "Logs")
 public class Modal_Log {
+    @NonNull
     @PrimaryKey(autoGenerate = true)
+    @SerializedName("logId")
     public int logId;
     @SerializedName("currentDateTime")
     public String currentDateTime;
@@ -30,6 +33,7 @@ public class Modal_Log {
     public int sentFlag = 1;
     @SerializedName("sessionId")
     public String sessionId;
+
     @Override
     public String toString() {
         return "Modal_Log{" +

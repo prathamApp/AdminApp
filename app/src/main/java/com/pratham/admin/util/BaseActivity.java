@@ -10,23 +10,16 @@ import com.pratham.admin.interfaces.ConnectionReceiverListener;
 
 import net.alhazmy13.catcho.library.Catcho;
 
-
-/**
- * Created by Ameya on 15-Mar-18.
- */
-
 public class BaseActivity extends AppCompatActivity implements ConnectionReceiverListener {
     ConnectionReceiver connectivityReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-/*
         Catcho.Builder(this)
                 .activity(CatchoTransparentActivity.class)
-                .recipients("your-email@domain.com")
+                .recipients("abhishek.mittal@pratham.org")
                 .build();
-*/
 
     }
 
@@ -55,7 +48,6 @@ public class BaseActivity extends AppCompatActivity implements ConnectionReceive
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-
     }
 
     @Override

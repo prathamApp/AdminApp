@@ -35,6 +35,8 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase DATABASEINSTANCE;
 
+    public static final String DB_NAME = "prathamDb";
+
     public abstract ECEAsmtDao getECEAsmtDao();
 
     public abstract AttendanceDao getAttendanceDao();
@@ -79,7 +81,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public static AppDatabase getDatabaseInstance(Context context) {
         if (DATABASEINSTANCE == null)
-            DATABASEINSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "prathamDb")
+            DATABASEINSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DB_NAME)
                     .addMigrations(MIGRATION_6_7)
                     .allowMainThreadQueries()
                     .build();

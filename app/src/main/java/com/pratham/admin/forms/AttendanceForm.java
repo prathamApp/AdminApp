@@ -14,13 +14,16 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.custom.MultiSpinner;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.modalclasses.Attendance;
 import com.pratham.admin.modalclasses.Groups;
+import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.Village;
+import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.CustomGroup;
 import com.pratham.admin.util.DatePickerFragmentOne;
@@ -248,7 +251,15 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
                 }
 
             } catch (Exception e) {
-
+                Modal_Log log = new Modal_Log();
+                log.setCurrentDateTime(new Utility().GetCurrentDate());
+                log.setErrorType("ERROR");
+                log.setExceptionMessage(e.getMessage());
+                log.setExceptionStackTrace(e.getStackTrace().toString());
+                log.setMethodName("AttendanceForm" + "_" + "saveForm");
+                log.setDeviceId("");
+                AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+                BackupDatabase.backup(ApplicationController.getInstance());
             }
 
         } else {

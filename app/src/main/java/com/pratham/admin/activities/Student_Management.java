@@ -43,10 +43,6 @@ public class Student_Management extends BaseActivity/* implements ConnectionRece
     }
 
     private void initialDashboardSetup() {
-/*
-        checkConnection();
-        turnOnWifi();
-*/
 
         LoggedcrlId = getIntent().getStringExtra("CRLid");
         LoggedcrlName = getIntent().getStringExtra("CRLname");
@@ -58,26 +54,9 @@ public class Student_Management extends BaseActivity/* implements ConnectionRece
         wakeLock.acquire();
     }
 
-/*
-    @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        if (!isConnected) {
-            internetIsAvailable = false;
-        } else {
-            internetIsAvailable = true;
-        }
-    }
-*/
-
     @Override
     protected void onResume() {
         super.onResume();
-        // Start WiFi
-/*
-        turnOnWifi();
-        checkConnection();
-        ApplicationController.getInstance().setConnectionListener(this);
-*/
         initializeAppInfo();
 
     }
@@ -100,25 +79,6 @@ public class Student_Management extends BaseActivity/* implements ConnectionRece
                 "\nDevice ID : " + deviceID + "\t\t\tSerial ID : " + serialID);
     }
 
-
-    /*   private void checkConnection() {
-           boolean isConnected = ConnectionReceiver.isConnected();
-           if (!isConnected) {
-               internetIsAvailable = false;
-           } else {
-               internetIsAvailable = true;
-           }
-       }
-
-       private void turnOnWifi() {
-           //enable wifi
-           WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-           boolean wifiEnabled = wifiManager.isWifiEnabled();
-           if (!wifiEnabled) {
-               wifiManager.setWifiEnabled(true);
-           }
-       }
-   */
     public void AddNewGroup(View view) {
         Intent intent = new Intent(this, AddNewGroup.class);
         intent.putExtra("CRLid", LoggedcrlId);

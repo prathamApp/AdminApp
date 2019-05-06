@@ -13,7 +13,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,6 +32,7 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.zxing.Result;
+import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
@@ -40,8 +40,10 @@ import com.pratham.admin.interfaces.DevicePrathamIdLisner;
 import com.pratham.admin.interfaces.QRScanListener;
 import com.pratham.admin.modalclasses.CRL;
 import com.pratham.admin.modalclasses.CrlInfoRecycler;
+import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.TabletManageDevice;
 import com.pratham.admin.util.APIs;
+import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.ROll_ID;
@@ -49,9 +51,7 @@ import com.pratham.admin.util.Utility;
 
 import org.json.JSONArray;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -91,11 +91,6 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
     LinearLayout successMessage;
     @BindView(R.id.isDamaged)
     Spinner isDamaged;
-
-    /* @BindView(R.id.assigned_crl_name)
-     TextView assigned_crl_name;
-     @BindView(R.id.assigned_crl_Id)
-     TextView assigned_crl_Id;*/
     @BindView(R.id.damageType)
     Spinner damageType;
     @BindView(R.id.comments)
@@ -175,7 +170,6 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
             }
 
             loadSpinner();
-            // qr_spinner_crl.setText(LoggedcrlName);
             setCount();
         }
     }
@@ -207,11 +201,6 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                 case ROll_ID.Admin:
                     options = new String[]{ROll_ID.BRG_CRL_Tutor, ROll_ID.Block_Head, ROll_ID.District_Head, ROll_ID.State_Program_Head, ROll_ID.Vendor};
                     break;
-               /* case ROll_ID.National_Program_Head:
-                    options = new String[]{ROll_ID.State_Program_Head};
-                    break;*/
-
-
             }
         } else if (tabStatus.equals(RETURN)) {
             switch (role) {
@@ -230,10 +219,6 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                 case ROll_ID.Program_Head:
                     options = new String[]{ROll_ID.Vendor};
                     break;
-
-                /*case ROll_ID.National_Program_Head:
-                    options = new String[]{ROll_ID.Store};
-                    break;*/
                 case ROll_ID.Vendor:
                     options = new String[]{ROll_ID.Admin};
                     break;
@@ -338,10 +323,6 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
 
 
         //load spinner state from DB
-      /*  stateList = AppDatabase.getDatabaseInstance(context).getCRLmd_dao().getDistinctCRLs_mdRoleId();
-        ArrayAdapter stateAdapter=new ArrayAdapter(context,android.R.layout.simple_spinner_dropdown_item,stateList);
-        roleCrlSpinner.setPrompt("select state");
-        roleCrlSpinner.setAdapter(stateAdapter);*/
         roleCrlSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
@@ -350,7 +331,6 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                 if (pos > 0) {
                     //load spinner crl from db
                     String selectedRole = roleCrlSpinner.getSelectedItem().toString();
-                    // List<CRLmd> tempList = AppDatabase.getDatabaseInstance(context).getCRLmd_dao().getDistinctCRLs_mdUserName(selectedRole, programSpinner.getSelectedItem().toString());
                     List<CRL> tempList = AppDatabase.getDatabaseInstance(context).getCRLdao().getDistinctCRLsUserName(selectedRole, programSpinner.getSelectedItem().toString());
                     for (CRL crL : tempList) {
                         crlList_md.add(new CrlInfoRecycler(crL.getCRLId(), crL.getFirstName(), crL.getUserName()));
@@ -451,47 +431,16 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
 
 
         try {
-         /*   JSONObject jsonObject = new JSONObject(result);
-            QrId = jsonObject.getString("QRCodeID");
-            prathamId = jsonObject.getString("PrathamCode");*/
             QrId = splitted[0];
             prathamId = splitted[1];
             if (QrId != null && prathamId != null && splitted.length == 2) {
                 /* check prathamID is not none ie for Not blank QR code*/
                 if ((!prathamId.equalsIgnoreCase("None"))) {
-                   /* List l = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().checkExistanceTabletManageDevice(QrId);
-                    if (l.isEmpty()) {*/
                     qr_pratham_id.setText(prathamId);
                     successMessage.setVisibility(View.VISIBLE);
                     qr_serialNo.setText("");
                     qr_serialNo.setEnabled(false);
-                     /*}else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                        builder.setCancelable(false);
-                        builder.setMessage("This QR Is Already Scanned. Do You Want To Replace Data?");
-                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                qr_pratham_id.setText(prathamId);
-                                successMessage.setVisibility(View.VISIBLE);
-                                qr_serialNo.setText("");
-                                qr_serialNo.setEnabled(false);
-                                dialogInterface.dismiss();
-                       *//* AppDatabase.getDatabaseInstance(Activity_QRScan.this).getTabTrackDao().insertTabTrack(tabletStatus);
-                        Toast.makeText(Activity_QRScan.this, "Updated Successfully ", Toast.LENGTH_LONG).show();*//*
-                            }
-                        });
-                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                resetCamera();
-                                dialogInterface.dismiss();
-                            }
-                        });
-                        Dialog dialog = builder.create();
-                        dialog.show();
 
-                    }*/
                 } else {
                     //todo show dialog
                     if (internetIsAvailable) {
@@ -513,6 +462,16 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                 Toast.makeText(this, "Invalid QR ", Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
+            Modal_Log log = new Modal_Log();
+            log.setCurrentDateTime(new Utility().GetCurrentDate());
+            log.setErrorType("ERROR");
+            log.setExceptionMessage(e.getMessage());
+            log.setExceptionStackTrace(e.getStackTrace().toString());
+            log.setMethodName("AssignTabletMD" + "_" + "handleResult");
+            log.setDeviceId("");
+            AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+            BackupDatabase.backup(ApplicationController.getInstance());
+
             e.printStackTrace();
             Toast.makeText(this, "Invalid QR ", Toast.LENGTH_LONG).show();
         }
@@ -595,9 +554,6 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                         tabletManageDevice.setDamageType(damageTypeText);
                         tabletManageDevice.setComment(comments.getText().toString());
                         tabletManageDevice.setOldFlag(false);
-                        /*tabletStatus.setLoggedIn_CRL(LoggedcrlId);*/
-//                        tabletManageDevice.setDate(DateFormat.getDateTimeInstance().format(new Date()));
-
                         tabletManageDevice.setDate(new Utility().GetCurrentDateTime(false));
 
                         AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().insertTabletManageDevice(tabletManageDevice);
@@ -621,7 +577,6 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                     tabletManageDevice.setAssigned_CRL_ID(assignedCRL);
                     tabletManageDevice.setAssigned_CRL_Name(assignedCrlName.getText().toString());
                     tabletManageDevice.setOldFlag(false);
-//                    tabletManageDevice.setDate(DateFormat.getDateTimeInstance().format(new Date()));
                     tabletManageDevice.setDate(new Utility().GetCurrentDateTime(false));
 
                     AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().insertTabletManageDevice(tabletManageDevice);
@@ -639,17 +594,11 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
     }
 
     public void setCount() {
-        //todo
         int count = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().getAllTabletManageDevice().size();
         txt_count.setText("Count " + count);
     }
 
     private void cleaFields() {
-        //   qr_spinner_state.setSelection(0);
-        //  qr_spinner_crl.setSelection(0);
-        //   qr_spinner_crl.setEnabled(false);
-        // qr_serialNo.setText("");
-        // damageType.setVisibility(View.VISIBLE);
         crlNameSpinner.setSelection(0);
         isDamaged.setSelection(0);
         comments.setText("");
@@ -667,7 +616,6 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
             txt_count.setText("Count " + 0);
         } else {
             finish();
-            /*txt_count.setText("Count " + 0);*/
         }
     }
 
@@ -748,35 +696,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                 successMessage.setVisibility(View.VISIBLE);
                 qr_serialNo.setText("");
                 qr_serialNo.setEnabled(false);
-                 /*}else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setCancelable(false);
-                    builder.setMessage("This QR Is Already Scanned. Do You Want To Replace Data?");
-                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            //  QrId = QrIdNEW;
-                            prathamId = prathamIdNew;
-                            qr_pratham_id.setText(prathamId);
-                            successMessage.setVisibility(View.VISIBLE);
-                            qr_serialNo.setText("");
-                            qr_serialNo.setEnabled(false);
-                            dialogInterface.dismiss();
-                       *//* AppDatabase.getDatabaseInstance(Activity_QRScan.this).getTabTrackDao().insertTabTrack(tabletStatus);
-                        Toast.makeText(Activity_QRScan.this, "Updated Successfully ", Toast.LENGTH_LONG).show();*//*
-                        }
-                    });
-                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            resetCamera();
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    Dialog dialog = builder.create();
-                    dialog.show();
 
-                }*/
             } else {
 
             }

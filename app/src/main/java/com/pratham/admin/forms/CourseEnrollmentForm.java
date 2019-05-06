@@ -33,8 +33,10 @@ import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Course;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
+import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.Topic;
 import com.pratham.admin.modalclasses.Village;
+import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.CustomGroup;
@@ -338,6 +340,16 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
                 }
 
             } catch (Exception e) {
+                Modal_Log log = new Modal_Log();
+                log.setCurrentDateTime(new Utility().GetCurrentDate());
+                log.setErrorType("ERROR");
+                log.setExceptionMessage(e.getMessage());
+                log.setExceptionStackTrace(e.getStackTrace().toString());
+                log.setMethodName("CourseEnrollmentForm" + "_" + "Submit");
+                log.setDeviceId("");
+                AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+                BackupDatabase.backup(ApplicationController.getInstance());
+
                 e.printStackTrace();
             }
         } else {

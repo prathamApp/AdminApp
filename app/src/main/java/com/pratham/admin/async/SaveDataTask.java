@@ -13,7 +13,9 @@ import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Completion;
 import com.pratham.admin.modalclasses.Course;
 import com.pratham.admin.modalclasses.Groups;
+import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.util.BackupDatabase;
+import com.pratham.admin.util.Utility;
 
 import java.util.List;
 
@@ -83,6 +85,16 @@ public class SaveDataTask extends AsyncTask<Void, Integer, Void> {
             // Delete Deleted Students
             AppDatabase.getDatabaseInstance(context).getStudentDao().removeDeletedStudentRecords();
         } catch (Exception e) {
+            Modal_Log log = new Modal_Log();
+            log.setCurrentDateTime(new Utility().GetCurrentDate());
+            log.setErrorType("ERROR");
+            log.setExceptionMessage(e.getMessage());
+            log.setExceptionStackTrace(e.getStackTrace().toString());
+            log.setMethodName("SaveDataTast" + "_" + "doInBackground");
+            log.setDeviceId("");
+            AppDatabase.getDatabaseInstance(context).getLogDao().insertLog(log);
+            BackupDatabase.backup(context);
+
             e.printStackTrace();
         }
         BackupDatabase.backup(context);
