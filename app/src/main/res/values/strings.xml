@@ -215,9 +215,9 @@
     </string-array>
 
     <string-array name="array_asmt_status">
-        <item>Not Attempted</item>
-        <item>Can Do</item>
-        <item>Need Help</item>
+        <item>Not Attempted</item> <!--value = 1-->
+        <item>Can Do</item> <!--value = 2-->
+        <item>Need Help</item> <!--value = 3-->
     </string-array>
 
 </resources>

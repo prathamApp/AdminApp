@@ -3,12 +3,9 @@ package com.pratham.admin.forms;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,25 +14,18 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
-import com.google.gson.Gson;
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.custom.MultiSpinner;
 import com.pratham.admin.custom.RangeTimePickerDialog;
 import com.pratham.admin.database.AppDatabase;
-import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.GroupVisit;
 import com.pratham.admin.modalclasses.Groups;
-import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
-import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.CustomGroup;
 import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.Utility;
@@ -51,8 +41,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.pratham.admin.util.APIs.PushForms;
 
 public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiverListener, */RangeTimePickerDialog.ISelectedTime {
 
@@ -74,9 +62,6 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
     EditText edt_PresentStdCount;
     @BindView(R.id.btn_Submit)
     Button btn_Submit;
-
-
-//    boolean internetIsAvailable = false;
 
     List<Village> villageList = new ArrayList<>();
     List<Coach> coachList = new ArrayList<>();
@@ -126,10 +111,6 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_visit_form);
         ButterKnife.bind(this);
-
-//        checkConnection();
-
-        // Hide Actionbar
         getSupportActionBar().hide();
 
         // Generate Random UUID
@@ -206,13 +187,11 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
         selectedVGNames = "";
         registeredVGGRPs = new ArrayList();
         if (AllGroupsInDB != null) {
-//            VG = new String[AllGroupsInDB.size()];
             VG = new ArrayList<>();
             VGNames = new ArrayList<>();
             for (int i = 0; i < AllGroupsInDB.size(); i++) {
                 if (AllGroupsInDB.get(i).getVillageId().equals(villageID)) {
                     registeredVGGRPs.add(new CustomGroup(AllGroupsInDB.get(i).getGroupName(), AllGroupsInDB.get(i).getGroupId()));
-//                    VG[i] = AllGroupsInDB.get(i).getGroupId();
                     VG.add(AllGroupsInDB.get(i).getGroupId());
                     VGNames.add(AllGroupsInDB.get(i).getGroupName());
                 }
@@ -254,7 +233,6 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
             // Populate WorkCrosscheckedGrps
             populateWorkCrosscheckedGrps(selectedVGArray, selectedVGArrayName);
 
-//            Toast.makeText(CrlVisitForm.this, "" + selectedVG, Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -289,7 +267,6 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
                 }
                 selectedGWTG = selectedGWTG.replaceFirst(",", "");
                 selectedGWTGNames = selectedGWTGNames.replaceFirst(",", "");
-//                Toast.makeText(CrlVisitForm.this, "" + selectedGWTG, Toast.LENGTH_SHORT).show();
             }
         });
         // set initial selection
@@ -298,7 +275,6 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
         sp_GrpWithTheirGrp_multiselect.setHintTextColor(Color.BLACK);
 
     }
-
 
     // WorkCrosscheckedGrps GROUPS
     private void populateWorkCrosscheckedGrps(final List<String> selectedGrpID, final List<String> selectedgrpName) {
@@ -333,7 +309,6 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
                 }
                 selectedWCCG = selectedWCCG.replaceFirst(",", "");
                 selectedWCCGNames = selectedWCCGNames.replaceFirst(",", "");
-//                Toast.makeText(CrlVisitForm.this, "" + selectedWCCG, Toast.LENGTH_SHORT).show();
             }
         });
         // set initial selection
@@ -389,7 +364,6 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
 
 
     private void resetForm() {
-//        checkConnection();
         btn_TimeRangePicker.setText("Select Time");
         btn_Submit.setText("Preview");
         edt_PresentStdCount.getText().clear();
@@ -418,38 +392,6 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
         // Populate Coach Spinner
         coachList.clear();
     }
-
-/*
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkConnection();
-        ApplicationController.getInstance().setConnectionListener(this);
-    }
-
-    private void checkConnection() {
-        boolean isConnected = ConnectionReceiver.isConnected();
-        if (!isConnected) {
-            internetIsAvailable = false;
-        } else {
-            internetIsAvailable = true;
-        }
-    }
-
-    private String customParse(List<MetaData> metaDataList) {
-        String json = "{";
-
-        for (int i = 0; i < metaDataList.size(); i++) {
-            json = json + "\"" + metaDataList.get(i).getKeys() + "\":\"" + metaDataList.get(i).getValue() + "\"";
-            if (i < metaDataList.size() - 1) {
-                json = json + ",";
-            }
-        }
-        json = json + "}";
-
-        return json;
-    }
-*/
 
     @OnClick(R.id.btn_DatePicker)
     public void visitDatePicker(View view) {
@@ -513,18 +455,6 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
 
     }
 
-/*
-    @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        if (!isConnected) {
-            internetIsAvailable = false;
-        } else {
-            internetIsAvailable = true;
-        }
-    }
-*/
-
-
     @OnClick(R.id.btn_Submit)
     public void submitForm(View view) {
         if ((sp_Village.getSelectedItemPosition() > 0) && (selectedVG.trim().length() > 0)
@@ -533,8 +463,6 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
                 && (!btn_TimeRangePicker.getText().toString().equalsIgnoreCase("Select Time"))
                 && (edt_PresentStdCount.getText().toString().trim().length() > 0)) {
             try {
-
-//                checkConnection();
 
                 String date = btn_DatePicker.getText().toString().trim();
 
@@ -560,57 +488,6 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
                     Toast.makeText(this, "Form Saved to Database !!!", Toast.LENGTH_SHORT).show();
                     resetForm();
 
-                    // Push To Server
-                    /*try {
-                        if (internetIsAvailable) {
-                            Gson gson = new Gson();
-                            String GroupVisitJSON = gson.toJson(Collections.singletonList(grpVisitObj));
-
-                            MetaData metaData = new MetaData();
-                            metaData.setKeys("pushDataTime");
-                            metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
-                            List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
-                            String metaDataJSON = customParse(metaDataList);
-                            AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
-
-                            String json = "{ \"GroupVisitJSON\":" + GroupVisitJSON + ",\"metadata\":" + metaDataJSON + "}";
-                            Log.d("json :::", json);
-
-                            final ProgressDialog dialog = new ProgressDialog(this);
-                            dialog.setTitle("UPLOADING ... ");
-                            dialog.setCancelable(false);
-                            dialog.setCanceledOnTouchOutside(false);
-                            dialog.show();
-
-                            AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
-                                @Override
-                                public void onResponse(String response) {
-                                    Log.d("responce", response);
-                                    // update flag
-                                    AppDatabase.getDatabaseInstance(GroupVisitForm.this).getGroupVisitDao().updateSentFlag(1, uniqueVisitID);
-                                    Log.d("id :::", "inResponse" + uniqueVisitID);
-                                    Toast.makeText(GroupVisitForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
-                                    dialog.dismiss();
-                                    resetForm();
-                                }
-
-                                @Override
-                                public void onError(ANError anError) {
-                                    Toast.makeText(GroupVisitForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                                    AppDatabase.getDatabaseInstance(GroupVisitForm.this).getGroupVisitDao().updateSentFlag(0, uniqueVisitID);
-                                    Log.d("id :::", "inErrorResponse " + uniqueVisitID);
-                                    dialog.dismiss();
-                                    resetForm();
-                                }
-                            });
-
-                        } else {
-                            Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
-                            resetForm();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }*/
                 } else {
                     // Preview Dialog
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(GroupVisitForm.this, android.R.style.Theme_Material_Light_Dialog);
@@ -649,13 +526,10 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
                 log.setDeviceId("");
                 AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
                 BackupDatabase.backup(ApplicationController.getInstance());
-
             }
 
         } else {
             Toast.makeText(this, "Please fill all the fields !!!", Toast.LENGTH_SHORT).show();
         }
     }
-
-
 }

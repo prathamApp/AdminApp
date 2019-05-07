@@ -59,14 +59,11 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
     RadioGroup rg_Present;
     @BindView(R.id.rb_Yes)
     RadioButton rb_Yes;
-    //    boolean internetIsAvailable = false;
-    UUID uuid;
     String uniqueAttendanceID = "";
 
     List<Village> villageList = new ArrayList<>();
     List<Student> AllStudentsInDB = new ArrayList<>();
     List<Groups> AllGroupsInDB;
-    List registeredGRPs;
 
     // Selected Students
     List registeredStd;
@@ -77,7 +74,6 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
     String selectedStudentNames = "";
 
     String vid;
-    String groupId;
     String date;
     private String vName;
 
@@ -97,11 +93,7 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance_form);
         ButterKnife.bind(this);
-
-        // Hide Actionbar
         getSupportActionBar().hide();
-
-//        checkConnection();
 
         // Generate Random UUID
         uniqueAttendanceID = UUID.randomUUID().toString();
@@ -144,8 +136,6 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
 
             try {
 
-//                checkConnection();
-
                 // Presenty code
                 int selectedId = rg_Present.getCheckedRadioButtonId();
                 RadioButton selectedGender = (RadioButton) findViewById(selectedId);
@@ -175,55 +165,6 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
                     Toast.makeText(this, "Form Saved to Database !!!", Toast.LENGTH_SHORT).show();
                     resetForm();
 
-                    // Push To Server
-                   /* try {
-                        if (internetIsAvailable) {
-                            Gson gson = new Gson();
-                            String AttendanceJSON = gson.toJson(aObj);
-
-                            MetaData metaData = new MetaData();
-                            metaData.setKeys("pushDataTime");
-                            metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
-                            List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
-                            String metaDataJSON = customParse(metaDataList);
-                            AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
-
-                            String json = "{ \"AttendanceJSON\":" + AttendanceJSON + ",\"metadata\":" + metaDataJSON + "}";
-                            Log.d("json :::", json);
-
-                            final ProgressDialog dialog = new ProgressDialog(this);
-                            dialog.setTitle("UPLOADING ... ");
-                            dialog.setCancelable(false);
-                            dialog.setCanceledOnTouchOutside(false);
-                            dialog.show();
-
-                            AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
-                                @Override
-                                public void onResponse(String response) {
-                                    Log.d("responce", response);
-                                    // update flag
-                                    AppDatabase.getDatabaseInstance(AttendanceForm.this).getAttendanceDao().updateSentFlag(1, uniqueAttendanceID);
-                                    Toast.makeText(AttendanceForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
-                                    dialog.dismiss();
-                                    resetForm();
-                                }
-
-                                @Override
-                                public void onError(ANError anError) {
-                                    Toast.makeText(AttendanceForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                                    AppDatabase.getDatabaseInstance(AttendanceForm.this).getAttendanceDao().updateSentFlag(0, uniqueAttendanceID);
-                                    dialog.dismiss();
-                                    resetForm();
-                                }
-                            });
-
-                        } else {
-                            Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
-                            resetForm();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }*/
                 } else {
                     // Preview Dialog
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(AttendanceForm.this, android.R.style.Theme_Material_Light_Dialog);
@@ -307,39 +248,6 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
         uniqueAttendanceID = UUID.randomUUID().toString();
 //        checkConnection();
     }
-
-/*
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkConnection();
-        ApplicationController.getInstance().setConnectionListener(this);
-    }
-
-    private void checkConnection() {
-        boolean isConnected = ConnectionReceiver.isConnected();
-        if (!isConnected) {
-            internetIsAvailable = false;
-        } else {
-            internetIsAvailable = true;
-        }
-    }
-
-
-    private String customParse(List<MetaData> metaDataList) {
-        String json = "{";
-
-        for (int i = 0; i < metaDataList.size(); i++) {
-            json = json + "\"" + metaDataList.get(i).getKeys() + "\":\"" + metaDataList.get(i).getValue() + "\"";
-            if (i < metaDataList.size() - 1) {
-                json = json + ",";
-            }
-        }
-        json = json + "}";
-
-        return json;
-    }
-*/
 
 
     @OnClick(R.id.btn_DatePicker)
@@ -458,40 +366,6 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
         }
     };
 
-
-    /*private void populateRegisteredGroups(String villageID) {
-        // todo get registered grps
-        registeredGRPs = new ArrayList();
-        registeredGRPs.add(new CustomGroup("Select Groups"));
-        if (AllGroupsInDB != null) {
-            for (int i = 0; i < AllGroupsInDB.size(); i++) {
-                if (AllGroupsInDB.get(i).getVillageId().equals(villageID)) {
-                    registeredGRPs.add(new CustomGroup(AllGroupsInDB.get(i).getGroupName(), AllGroupsInDB.get(i).getGroupId()));
-                }
-            }
-        }
-
-        ArrayAdapter grpAdapter = new ArrayAdapter(AttendanceForm.this, android.R.layout.simple_spinner_dropdown_item, registeredGRPs);
-        sp_Groups.setAdapter(grpAdapter);
-        sp_Groups.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                btn_Submit.setText("Preview");
-                CustomGroup customGroup = (CustomGroup) registeredGRPs.get(pos);
-                groupId = customGroup.getId();
-                groupName = customGroup.getName();
-                // Populate Students according to Group Spinner
-                populateStudents(groupId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-    }*/
-
-
     // Selected Students
     private void populateStudents(final List<String> selectedgrpID, final List<String> selectedgrpName) {
         // todo get registered grps
@@ -537,16 +411,4 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
             selectedStudentNames = selectedStudentNames.replaceFirst(",", "");
         }
     };
-
-
-/*
-    @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        if (!isConnected) {
-            internetIsAvailable = false;
-        } else {
-            internetIsAvailable = true;
-        }
-    }
-*/
 }

@@ -63,7 +63,6 @@ public class CoachRetentionForm extends BaseActivity/* implements ConnectionRece
     List<Village> villageList = new ArrayList<>();
     List<Coach> coachList = new ArrayList<>();
     String selectedCoachID = "";
-//    boolean internetIsAvailable = false;
     List<Coach> updatedCoachList = new ArrayList<>();
     String villageName;
     String vid;
@@ -74,10 +73,6 @@ public class CoachRetentionForm extends BaseActivity/* implements ConnectionRece
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coach_retention_form);
         ButterKnife.bind(this);
-
-//        checkConnection();
-
-        // Hide Actionbar
         getSupportActionBar().hide();
 
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
@@ -98,9 +93,6 @@ public class CoachRetentionForm extends BaseActivity/* implements ConnectionRece
     public void submitForm(View view) {
 
         if ((sp_Village.getSelectedItemPosition() > 0) && (sp_SelectCoach.getSelectedItemPosition() > 0)) {
-
-//            checkConnection();
-
             String endDate = btn_DatePicker.getText().toString().trim();
 
             // Dropout code on Submit Click
@@ -139,60 +131,10 @@ public class CoachRetentionForm extends BaseActivity/* implements ConnectionRece
 
             if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
 
-//                checkConnection();
-
                 AppDatabase.getDatabaseInstance(this).getCoachDao().updateCoachStatus(status, endDate, coachID);
                 Toast.makeText(this, "Form Submitted to DB !!!", Toast.LENGTH_SHORT).show();
                 resetForm();
 
-                // Push To Server
-               /* try {
-                    if (internetIsAvailable) {
-                        Gson gson = new Gson();
-                        String CoachRetentionJSON = gson.toJson(Collections.singletonList(cObj));
-
-                        MetaData metaData = new MetaData();
-                        metaData.setKeys("pushDataTime");
-                        metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
-                        List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
-                        String metaDataJSON = customParse(metaDataList);
-                        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
-
-                        String json = "{ \"CoachRetentionJSON\":" + CoachRetentionJSON + ",\"metadata\":" + metaDataJSON + "}";
-                        Log.d("json :::", json);
-
-                        final ProgressDialog dialog = new ProgressDialog(this);
-                        dialog.setTitle("UPLOADING ... ");
-                        dialog.setCancelable(false);
-                        dialog.setCanceledOnTouchOutside(false);
-                        dialog.show();
-
-                        AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
-                            @Override
-                            public void onResponse(String response) {
-                                Log.d("responce", response);
-                                AppDatabase.getDatabaseInstance(CoachRetentionForm.this).getCoachDao().updateSentFlag(1, selectedCoachID);
-                                Toast.makeText(CoachRetentionForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
-                                dialog.dismiss();
-                                resetForm();
-                            }
-
-                            @Override
-                            public void onError(ANError anError) {
-                                Toast.makeText(CoachRetentionForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                                AppDatabase.getDatabaseInstance(CoachRetentionForm.this).getCoachDao().updateSentFlag(0, selectedCoachID);
-                                dialog.dismiss();
-                                resetForm();
-                            }
-                        });
-
-                    } else {
-                        Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
-                        resetForm();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }*/
             } else {
                 // Preview Dialog
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CoachRetentionForm.this, android.R.style.Theme_Material_Light_Dialog);
@@ -327,46 +269,4 @@ public class CoachRetentionForm extends BaseActivity/* implements ConnectionRece
         DialogFragment newFragment = new DatePickerFragmentOne();
         newFragment.show(getFragmentManager(), "DatePicker");
     }
-
-/*
-    @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        if (!isConnected) {
-            internetIsAvailable = false;
-        } else {
-            internetIsAvailable = true;
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkConnection();
-        ApplicationController.getInstance().setConnectionListener(this);
-    }
-
-    private void checkConnection() {
-        boolean isConnected = ConnectionReceiver.isConnected();
-        if (!isConnected) {
-            internetIsAvailable = false;
-        } else {
-            internetIsAvailable = true;
-        }
-    }
-
-    private String customParse(List<MetaData> metaDataList) {
-        String json = "{";
-
-        for (int i = 0; i < metaDataList.size(); i++) {
-            json = json + "\"" + metaDataList.get(i).getKeys() + "\":\"" + metaDataList.get(i).getValue() + "\"";
-            if (i < metaDataList.size() - 1) {
-                json = json + ",";
-            }
-        }
-        json = json + "}";
-
-        return json;
-    }
-*/
-
 }

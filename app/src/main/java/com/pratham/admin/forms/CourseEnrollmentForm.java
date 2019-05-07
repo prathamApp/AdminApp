@@ -74,10 +74,6 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
     MultiSpinner sp_SelectCoach;
     @BindView(R.id.btn_DatePicker)
     Button btn_DatePicker;
-    //    @BindView(R.id.edt_PresentStdCount)
-//    EditText edt_PresentStdCount;
-//    @BindView(R.id.rg_ParentsParticipation)
-//    RadioGroup rg_ParentsParticipation;
     @BindView(R.id.rg_Community)
     RadioGroup rg_Community;
     @BindView(R.id.rb_Yes)
@@ -91,7 +87,6 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
 
     List<Village> villageList = new ArrayList<>();
     List<Groups> AllGroupsInDB;
-    List registeredGRPs;
     List<Course> courseList = new ArrayList<>();
     List<Coach> coachList = new ArrayList<>();
     List<Course> courseDetails = new ArrayList<>();
@@ -126,7 +121,6 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
     String selectedPC = "";
     String selectedPCNames = "";
 
-//    boolean internetIsAvailable = false;
     private String villageName;
     List<String> uniqueIDList = new ArrayList<>();
 
@@ -135,10 +129,6 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_enrollment_form);
         ButterKnife.bind(this);
-
-//        checkConnection();
-
-        // Hide Actionbar
         getSupportActionBar().hide();
 
         // Set Default Todays date
@@ -173,39 +163,6 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
 
     }
 
-/*
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkConnection();
-        ApplicationController.getInstance().setConnectionListener(this);
-    }
-
-    private void checkConnection() {
-        boolean isConnected = ConnectionReceiver.isConnected();
-        if (!isConnected) {
-            internetIsAvailable = false;
-        } else {
-            internetIsAvailable = true;
-        }
-    }
-
-    private String customParse(List<MetaData> metaDataList) {
-        String json = "{";
-
-        for (int i = 0; i < metaDataList.size(); i++) {
-            json = json + "\"" + metaDataList.get(i).getKeys() + "\":\"" + metaDataList.get(i).getValue() + "\"";
-            if (i < metaDataList.size() - 1) {
-                json = json + ",";
-            }
-        }
-        json = json + "}";
-
-        return json;
-    }
-*/
-
-
     @OnClick(R.id.btn_Submit)
     public void submitForm(View view) {
 
@@ -213,20 +170,6 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
                 && (sp_Course.getSelectedItemPosition() > 0)) {
 
             try {
-
-//                checkConnection();
-
-/*                // parentsParticipation
-                int selectedId = rg_ParentsParticipation.getCheckedRadioButtonId();
-                RadioButton selectedOption = (RadioButton) findViewById(selectedId);
-                String parentsParticipation = selectedOption.getText().toString();
-                int status;
-                if (parentsParticipation.equalsIgnoreCase("Yes")) {
-                    status = 1; // Active
-                } else {
-                    status = 0; // InActive
-                }*/
-
                 // Community
                 int selectedCId = rg_Community.getCheckedRadioButtonId();
                 RadioButton selectedCOption = (RadioButton) findViewById(selectedCId);
@@ -241,7 +184,6 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
                     commObj.CommunityID = uniqueCommunityID;
                     commObj.VillageID = vid;
                     commObj.GroupID = selectedGroupsArray.get(x);
-//                    commObj.GroupID = selectedGroups;
                     commObj.CourseAdded = courseName;
                     commObj.TopicAdded = selectedTopicNames;
                     commObj.AddedTopicsID = selectedTopics;
@@ -261,57 +203,6 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
                     Toast.makeText(this, "Form Saved to Database !!!", Toast.LENGTH_SHORT).show();
                     resetForm();
 
-                    // Push To Server
-                    /*try {
-                        if (internetIsAvailable) {
-                            Gson gson = new Gson();
-                            String CommunityJSON = gson.toJson(commList);
-
-                            MetaData metaData = new MetaData();
-                            metaData.setKeys("pushDataTime");
-                            metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
-                            List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
-                            String metaDataJSON = customParse(metaDataList);
-                            AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
-
-                            String json = "{ \"CommunityJSON\":" + CommunityJSON + ",\"metadata\":" + metaDataJSON + "}";
-                            Log.d("json :::", json);
-
-                            final ProgressDialog dialog = new ProgressDialog(this);
-                            dialog.setTitle("UPLOADING ... ");
-                            dialog.setCancelable(false);
-                            dialog.setCanceledOnTouchOutside(false);
-                            dialog.show();
-
-                            AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
-                                @Override
-                                public void onResponse(String response) {
-                                    Log.d("responce", response);
-                                    // update flag
-                                    for (int i = 0; i < uniqueIDList.size(); i++)
-                                        AppDatabase.getDatabaseInstance(CourseEnrollmentForm.this).getCommunityDao().updateSentFlag(1, uniqueIDList.get(i));
-                                    Toast.makeText(CourseEnrollmentForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
-                                    dialog.dismiss();
-                                    resetForm();
-                                }
-
-                                @Override
-                                public void onError(ANError anError) {
-                                    Toast.makeText(CourseEnrollmentForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                                    for (int i = 0; i < uniqueIDList.size(); i++)
-                                        AppDatabase.getDatabaseInstance(CourseEnrollmentForm.this).getCommunityDao().updateSentFlag(0, uniqueIDList.get(i));
-                                    dialog.dismiss();
-                                    resetForm();
-                                }
-                            });
-
-                        } else {
-                            Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
-                            resetForm();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }*/
                 } else {
                     // Preview Dialog
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CourseEnrollmentForm.this, android.R.style.Theme_Material_Light_Dialog);
@@ -397,9 +288,6 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
         btn_DatePicker.setPadding(8, 8, 8, 8);
         rb_Community.setChecked(true);
-//        rg_ParentsParticipation.clearCheck();
-//        edt_PresentStdCount.getText().clear();
-//        rb_Yes.setChecked(true);
     }
 
 
@@ -619,17 +507,6 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
             selectedPCNames = selectedPCNames.replaceFirst(",", "");
         }
     };
-
-/*
-    @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        if (!isConnected) {
-            internetIsAvailable = false;
-        } else {
-            internetIsAvailable = true;
-        }
-    }
-*/
 
 }
 

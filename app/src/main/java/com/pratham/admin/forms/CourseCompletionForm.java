@@ -86,7 +86,6 @@ public class CourseCompletionForm extends BaseActivity implements DashRVClickLis
 
     private List<CourseTopicItem> CourseTopicItemList = new ArrayList<>();
     CourseTopicRVDataAdapter DataAdapter;
-    String topics = "";
 
     String selectedCourseIDs;
     String selectedTopicIDs;
@@ -94,7 +93,6 @@ public class CourseCompletionForm extends BaseActivity implements DashRVClickLis
     String villageID;
     String groupId;
 
-//    boolean internetIsAvailable = false;
     private String villageName;
     private String groupName;
     private String selectedTopicNames;
@@ -105,8 +103,6 @@ public class CourseCompletionForm extends BaseActivity implements DashRVClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_completion_form);
         ButterKnife.bind(this);
-
-        // Hide Actionbar
         getSupportActionBar().hide();
 
         uniqueCompletionID = UUID.randomUUID().toString();
@@ -166,53 +162,8 @@ public class CourseCompletionForm extends BaseActivity implements DashRVClickLis
         }
     }
 
-/*
-    @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        if (!isConnected) {
-            internetIsAvailable = false;
-        } else {
-            internetIsAvailable = true;
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkConnection();
-        ApplicationController.getInstance().setConnectionListener(this);
-    }
-
-    private void checkConnection() {
-        boolean isConnected = ConnectionReceiver.isConnected();
-        if (!isConnected) {
-            internetIsAvailable = false;
-        } else {
-            internetIsAvailable = true;
-        }
-    }
-
-    private String customParse(List<MetaData> metaDataList) {
-        String json = "{";
-
-        for (int i = 0; i < metaDataList.size(); i++) {
-            json = json + "\"" + metaDataList.get(i).getKeys() + "\":\"" + metaDataList.get(i).getValue() + "\"";
-            if (i < metaDataList.size() - 1) {
-                json = json + ",";
-            }
-        }
-        json = json + "}";
-
-        return json;
-    }
-*/
-
-
     @OnClick(R.id.btn_Submit)
     public void submitForm(View view) {
-
-//        checkConnection();
-
         // getting Selected Items
         selectedCourseIDs = "";
         selectedCourseNames = "";
@@ -273,53 +224,6 @@ public class CourseCompletionForm extends BaseActivity implements DashRVClickLis
                 Toast.makeText(this, "Form Submitted to DB !!!", Toast.LENGTH_SHORT).show();
                 resetForm();
 
-                // Push To Server
-                /*try {
-                    if (internetIsAvailable) {
-                        Gson gson = new Gson();
-                        String CompletionJSON = gson.toJson(Collections.singletonList(compObj));
-
-                        MetaData metaData = new MetaData();
-                        metaData.setKeys("pushDataTime");
-                        metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
-                        List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
-                        String metaDataJSON = customParse(metaDataList);
-                        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
-
-                        String json = "{ \"CompletionJSON\":" + CompletionJSON + ",\"metadata\":" + metaDataJSON + "}";
-
-                        final ProgressDialog dialog = new ProgressDialog(this);
-                        dialog.setTitle("UPLOADING ... ");
-                        dialog.setCancelable(false);
-                        dialog.setCanceledOnTouchOutside(false);
-                        dialog.show();
-
-                        AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
-                            @Override
-                            public void onResponse(String response) {
-                                Log.d("responce", response);
-                                AppDatabase.getDatabaseInstance(CourseCompletionForm.this).getCompletionDao().updateSentFlag(1, uniqueCompletionID);
-                                Toast.makeText(CourseCompletionForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
-                                dialog.dismiss();
-                                resetForm();
-                            }
-
-                            @Override
-                            public void onError(ANError anError) {
-                                Toast.makeText(CourseCompletionForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                                AppDatabase.getDatabaseInstance(CourseCompletionForm.this).getCompletionDao().updateSentFlag(0, uniqueCompletionID);
-                                dialog.dismiss();
-                                resetForm();
-                            }
-                        });
-
-                    } else {
-                        Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
-                        resetForm();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }*/
             } else {
                 // Preview Dialog
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CourseCompletionForm.this, android.R.style.Theme_Material_Light_Dialog);

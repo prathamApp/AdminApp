@@ -61,8 +61,6 @@ public class GroupSessionForm extends BaseActivity implements /*ConnectionReceiv
     @BindView(R.id.btn_Submit)
     Button btn_Submit;
 
-//    boolean internetIsAvailable = false;
-
     List<Village> villageList = new ArrayList<>();
     List<Coach> coachList = new ArrayList<>();
     List<Groups> AllGroupsInDB;
@@ -105,11 +103,7 @@ public class GroupSessionForm extends BaseActivity implements /*ConnectionReceiv
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_session_form);
         ButterKnife.bind(this);
-
-        // Hide Actionbar
         getSupportActionBar().hide();
-
-//        checkConnection();
 
         // Generate Random UUID
         uniqueVisitID = UUID.randomUUID().toString();
@@ -137,41 +131,7 @@ public class GroupSessionForm extends BaseActivity implements /*ConnectionReceiv
 
     }
 
-/*
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkConnection();
-        ApplicationController.getInstance().setConnectionListener(this);
-    }
-
-    private void checkConnection() {
-        boolean isConnected = ConnectionReceiver.isConnected();
-        if (!isConnected) {
-            internetIsAvailable = false;
-        } else {
-            internetIsAvailable = true;
-        }
-    }
-
-    private String customParse(List<MetaData> metaDataList) {
-        String json = "{";
-
-        for (int i = 0; i < metaDataList.size(); i++) {
-            json = json + "\"" + metaDataList.get(i).getKeys() + "\":\"" + metaDataList.get(i).getValue() + "\"";
-            if (i < metaDataList.size() - 1) {
-                json = json + ",";
-            }
-        }
-        json = json + "}";
-
-        return json;
-    }
-
-*/
-
     private void resetForm() {
-//        checkConnection();
         btn_TimeRangePicker.setText("Select Time");
         btn_Submit.setText("Preview");
         edt_PresentStdCount.getText().clear();
@@ -314,7 +274,6 @@ public class GroupSessionForm extends BaseActivity implements /*ConnectionReceiv
         selectedVGNames = "";
         registeredVGGRPs = new ArrayList();
         if (AllGroupsInDB != null) {
-//            VG = new String[AllGroupsInDB.size()];
             VG = new ArrayList<>();
             VGNames = new ArrayList<>();
             for (int i = 0; i < AllGroupsInDB.size(); i++) {
@@ -358,8 +317,6 @@ public class GroupSessionForm extends BaseActivity implements /*ConnectionReceiv
 
             // Populate WorkCrosscheckedGrps
             populateWorkCrosscheckedGrps(selectedVGArray, selectedVGArrayName);
-
-//            Toast.makeText(GroupSessionForm.this, "" + selectedVG, Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -397,7 +354,6 @@ public class GroupSessionForm extends BaseActivity implements /*ConnectionReceiv
                 }
                 selectedWCCG = selectedWCCG.replaceFirst(",", "");
                 selectedWCCGNames = selectedWCCGNames.replaceFirst(",", "");
-//                Toast.makeText(GroupSessionForm.this, "" + selectedWCCG, Toast.LENGTH_SHORT).show();
             }
         });
         // set initial selection
@@ -450,17 +406,6 @@ public class GroupSessionForm extends BaseActivity implements /*ConnectionReceiv
         }
     };
 
-/*
-    @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        if (!isConnected) {
-            internetIsAvailable = false;
-        } else {
-            internetIsAvailable = true;
-        }
-    }
-*/
-
     @OnClick(R.id.btn_Submit)
     public void submitForm(View view) {
         if ((sp_Village.getSelectedItemPosition() > 0) && (selectedVG.trim().length() > 0)
@@ -468,8 +413,6 @@ public class GroupSessionForm extends BaseActivity implements /*ConnectionReceiv
                 && (!btn_TimeRangePicker.getText().toString().equalsIgnoreCase("Select Time"))
                 && (edt_PresentStdCount.getText().toString().trim().length() > 0)) {
             try {
-
-//                checkConnection();
 
                 String date = btn_DatePicker.getText().toString().trim();
 
@@ -494,57 +437,6 @@ public class GroupSessionForm extends BaseActivity implements /*ConnectionReceiv
                     Toast.makeText(this, "Form Saved to Database !!!", Toast.LENGTH_SHORT).show();
                     resetForm();
 
-                    // Push To Server
-                   /* try {
-                        if (internetIsAvailable) {
-                            Gson gson = new Gson();
-                            String GroupSessionJSON = gson.toJson(Collections.singletonList(grpSessionObj));
-
-                            MetaData metaData = new MetaData();
-                            metaData.setKeys("pushDataTime");
-                            metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
-                            List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
-                            String metaDataJSON = customParse(metaDataList);
-                            AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
-
-                            String json = "{ \"GroupSessionJSON\":" + GroupSessionJSON + ",\"metadata\":" + metaDataJSON + "}";
-                            Log.d("json :::", json);
-
-                            final ProgressDialog dialog = new ProgressDialog(this);
-                            dialog.setTitle("UPLOADING ... ");
-                            dialog.setCancelable(false);
-                            dialog.setCanceledOnTouchOutside(false);
-                            dialog.show();
-
-                            AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
-                                @Override
-                                public void onResponse(String response) {
-                                    Log.d("responce", response);
-                                    // update flag
-                                    AppDatabase.getDatabaseInstance(GroupSessionForm.this).getGroupSessionDao().updateSentFlag(1, uniqueVisitID);
-                                    Log.d("id :::", "inResponse" + uniqueVisitID);
-                                    Toast.makeText(GroupSessionForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
-                                    dialog.dismiss();
-                                    resetForm();
-                                }
-
-                                @Override
-                                public void onError(ANError anError) {
-                                    Toast.makeText(GroupSessionForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                                    AppDatabase.getDatabaseInstance(GroupSessionForm.this).getGroupSessionDao().updateSentFlag(0, uniqueVisitID);
-                                    Log.d("id :::", "inErrorResponse " + uniqueVisitID);
-                                    dialog.dismiss();
-                                    resetForm();
-                                }
-                            });
-
-                        } else {
-                            Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
-                            resetForm();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }*/
                 } else {
                     // Preview Dialog
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(GroupSessionForm.this, android.R.style.Theme_Material_Light_Dialog);

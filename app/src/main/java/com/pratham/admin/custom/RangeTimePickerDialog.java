@@ -130,14 +130,6 @@ public class RangeTimePickerDialog extends DialogFragment {
         }
     }
 
-/*
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL,
-                android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-    }
-*/
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -258,7 +250,6 @@ public class RangeTimePickerDialog extends DialogFragment {
                     public void onTabUnselected(TabLayout.Tab tab) {
                         int tabIconColor = ContextCompat.getColor(getActivity(), colorTabUnselected);
                         tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
-                        //tab.getIcon().setTint(Color.WHITE);
                     }
 
                     @Override

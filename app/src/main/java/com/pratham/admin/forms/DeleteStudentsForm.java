@@ -81,7 +81,6 @@ public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiv
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_students_form);
         ButterKnife.bind(this);
-        // Hide Actionbar
         getSupportActionBar().hide();
 
         checkConnection();
@@ -133,7 +132,6 @@ public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiv
 
                         MetaData metaData = new MetaData();
                         metaData.setKeys("pushDataTime");
-//                        metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
                         metaData.setValue(new Utility().GetCurrentDateTime(false));
                         List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
                         String metaDataJSON = customParse(metaDataList);

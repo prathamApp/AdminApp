@@ -457,7 +457,8 @@ remove unwanted code & files --- done
 Note all crashes in catch and add to logDB --- done
 
 7 May 2019
+remove reset flag code in case if failure --- done
+remove unnecessary code from forms --- done
 Create separate class for Pushing the data ---
 push swapstudent data while pushing ---
 remove push from swapstudent activity ---
-remove reset flag code in case if failure ---

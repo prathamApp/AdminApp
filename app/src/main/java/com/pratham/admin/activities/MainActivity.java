@@ -150,18 +150,17 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
 
     @Override
     protected void onResume() {
-        //todo username password remove comment
         super.onResume();
 
-//        userName.setText("amolmoghe");
-//        password.setText("pratham@123");
+        userName.setText("amolmoghe");
+        password.setText("pratham@123");
 
         // check connection & then upgrade latest version if available
         ApplicationController.getInstance().setConnectionListener(this);
         checkConnection();
 
-        userName.setText("");
-        password.setText("");
+//        userName.setText("");
+//        password.setText("");
         userName.requestFocus();
         SharedPreferences preferences = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
         String program = preferences.getString("program", "null");
@@ -405,7 +404,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
         // Make a db backup if Storage permission granted
         if (isPermissionGranted(MainActivity.this, PermissionUtils.Manifest_WRITE_EXTERNAL_STORAGE)) {
             // Initiate Backup DB
-//            BackupDatabase.backup(MainActivity.this);
+            BackupDatabase.backup(MainActivity.this);
         }
     }
 

@@ -83,11 +83,9 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
     String selectedExpertSubjects = "";
 
     List<Groups> AllGroupsInDB;
-    List registeredGRPs;
 
     UUID UUID;
     String uniqueCoachID = "";
-    String grpID = "";
 
     // Selected Groups
     List<String> selectedGroupsArray;
@@ -98,10 +96,7 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
     String selectedGroups = "";
     String selectedGroupNames = "";
 
-//    boolean internetIsAvailable = false;
-
     String selectedEdu;
-
     String vid;
 
 
@@ -110,10 +105,7 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coach_information_form);
         ButterKnife.bind(this);
-        // Hide Actionbar
         getSupportActionBar().hide();
-
-//        checkConnection();
 
         // Generate Random UUID
         uniqueCoachID = UUID.randomUUID().toString();
@@ -213,7 +205,6 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
         sp_Education.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-//                education = "";
                 btn_Submit.setText("Preview");
                 selectedEdu = sp_Education.getSelectedItem().toString();
                 if (selectedEdu.contains("Select")) {
@@ -294,10 +285,7 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
     private void populateSubjectExpert() {
         ArrayAdapter subAdapter = new ArrayAdapter(CoachInformationForm.this, android.R.layout.simple_spinner_dropdown_item, ExpertSubj);
         sp_SubjectExpert.setAdapter(subAdapter, false, onSelectedListener);
-        // set initial selection
         selectedItems = new boolean[subAdapter.getCount()];
-//        selectedItems[0] = true; // select first item
-//        sp_SubjectExpert.setSelected(selectedItems);
         sp_SubjectExpert.setHint("Select Subject Expert");
         sp_SubjectExpert.setHintTextColor(Color.BLACK);
 
@@ -317,8 +305,6 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
                 }
             }
             selectedExpertSubjects = selectedExpertSubjects.replaceFirst(",", "");
-//            Toast.makeText(CoachInformationForm.this, "" + selectedExpertSubjects, Toast.LENGTH_SHORT).show();
-
         }
     };
 
@@ -362,7 +348,6 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
                     b.show();
                 } else {
                     occupation = selectedOccupation;
-//                    Toast.makeText(CoachInformationForm.this, "" + occupation, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -448,61 +433,10 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
 
                 if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
 
-//                    checkConnection();
-
                     AppDatabase.getDatabaseInstance(this).getCoachDao().insertCoach(Collections.singletonList(cObj));
                     Toast.makeText(this, "Form Submitted to DB !!!", Toast.LENGTH_SHORT).show();
                     resetForm();
 
-
-                    // Push To Server
-                    /*try {
-                        if (internetIsAvailable) {
-                            Gson gson = new Gson();
-                            String CoachInfoJSON = gson.toJson(Collections.singletonList(cObj));
-
-                            MetaData metaData = new MetaData();
-                            metaData.setKeys("pushDataTime");
-                            metaData.setValue(DateFormat.getDateTimeInstance().format(new Date()));
-                            List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
-                            String metaDataJSON = customParse(metaDataList);
-                            AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
-
-                            String json = "{ \"CoachInfoJSON\":" + CoachInfoJSON + ",\"metadata\":" + metaDataJSON + "}";
-                            Log.d("json :::", json);
-
-                            final ProgressDialog dialog = new ProgressDialog(this);
-                            dialog.setTitle("UPLOADING ... ");
-                            dialog.setCancelable(false);
-                            dialog.setCanceledOnTouchOutside(false);
-                            dialog.show();
-
-                            AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
-                                @Override
-                                public void onResponse(String response) {
-                                    Log.d("responce", response);
-                                    AppDatabase.getDatabaseInstance(CoachInformationForm.this).getCoachDao().updateSentFlag(1, uniqueCoachID);
-                                    Toast.makeText(CoachInformationForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
-                                    dialog.dismiss();
-                                    resetForm();
-                                }
-
-                                @Override
-                                public void onError(ANError anError) {
-                                    Toast.makeText(CoachInformationForm.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                                    AppDatabase.getDatabaseInstance(CoachInformationForm.this).getCoachDao().updateSentFlag(0, uniqueCoachID);
-                                    dialog.dismiss();
-                                    resetForm();
-                                }
-                            });
-
-                        } else {
-                            Toast.makeText(this, "Form Data not Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
-                            resetForm();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }*/
                 } else {
                     // Preview Dialog
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CoachInformationForm.this, android.R.style.Theme_Material_Light_Dialog);
@@ -583,44 +517,5 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
         btn_DatePicker.setPadding(8, 8, 8, 8);
         uniqueCoachID = UUID.randomUUID().toString();
     }
-
-    /*@Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        if (!isConnected) {
-            internetIsAvailable = false;
-        } else {
-            internetIsAvailable = true;
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkConnection();
-        ApplicationController.getInstance().setConnectionListener(this);
-    }
-
-    private void checkConnection() {
-        boolean isConnected = ConnectionReceiver.isConnected();
-        if (!isConnected) {
-            internetIsAvailable = false;
-        } else {
-            internetIsAvailable = true;
-        }
-    }
-
-    private String customParse(List<MetaData> metaDataList) {
-        String json = "{";
-
-        for (int i = 0; i < metaDataList.size(); i++) {
-            json = json + "\"" + metaDataList.get(i).getKeys() + "\":\"" + metaDataList.get(i).getValue() + "\"";
-            if (i < metaDataList.size() - 1) {
-                json = json + ",";
-            }
-        }
-        json = json + "}";
-
-        return json;
-    }*/
 
 }
