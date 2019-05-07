@@ -292,23 +292,172 @@ In "Manage Device" option, there are a few things which need to update ---  Pend
 New Assign Return Tablet API --- done
 New Device List API --- done
 
+28 Dec
+Add Student --- done
+Edit Student --- done
+Add Group --- done
+Changed Files -- studentPojo, groupspojo, village pojo, dashboard populate program id, metadata dao get programid, aserPojo --- done
+push newly added students --- done
+push edited students --- done
+push new groups --- done
+comment autopush dashboard & create push data button ---- done
+add student management section --- done
+shift scan qr code to manage devices --- done
+change db version & migrate db --- done
+change aser pojo delete aserid --- done
 
-30 Oct
-Display Device API --- Done
-Damaged QR Replacement Module in Return Tab ( Tabtrack ) --- done
-Damaged QR Replacement Module in Assign Tab ( Tabtrack ) --- done
-Damaged QR Replacement Module in Tab Status ( Tabtrack ) --- done
-Login Page info on Toolbar --- done
 
-
-3 Nov 18
-1 vendor added
-2 Second chance Api changed
 TODO
+Issues to be fixed :
+    Images load intermittently
+    Something went wrong
+    App crashes
+    Cannot handle load if queued many downloads at a time
+    Empty Data Push
+    Hotspot Creation Problems
+    Unable to load content on mobile data
+    Change UI of welcome screen
+
 student details section in admin app --- 
 ASER Levels ---
 pos feature under progress --- 
 crashlytics --- 
 
-29 11 2018
-Aser Hamara Gaon Added
+
+
+22 Jan 2019
+Aser UUId for AserID -- resolved
+check all forms apis like (need to merge or not) --- done
+student unable to push --- done
+pull aser data --- done
+
+23 Jan 2019
+add group push --- done
+edit student push --- done
+aser form unable to push --- done
+Add APK version in metadata --- done
+dont show deleted students after pulled --- done
+
+24 Jan 2019
+Push issues --- resolved
+Pull aser for all --- done
+
+25 Jan 2019
+rename app to Pratham Admin --- done
+Integrate new apis for student --- done
+generate signed apk --- done
+
+
+alias : PrathamAdmin.jks
+pass : android
+
+
+v1.03
+28 Jan 2019
+Change sent flag to 1 after pulling the data from server (default set to 1) --- done
+Multiscreen Support Student management --- done
+
+29 Jan 2019
+remove auto wifi on --- done
+remove auto push --- done
+Multiscreen Support Forms --- done
+keep internet for Delete Students Form --- done 
+show preview on push --- done
+Clear Pull/ Push messages --- done
+Change Toast to Alert --- done
+add apkversion, wifimac, deviceid, serial id in Metadata --- done
+
+
+v1.04
+http://swap.prathamcms.org/crlvisit/file_2019_1_30_15_1_32_ed61e28c-99c9-4365-8b03-1de0d279b9f6.json
+30 Jan
+remove auto net on from everywhere --- done
+test --- done
+
+
+v1.05
+31 Jan 2019
+Autofocus permission optional --- done
+
+1 Feb
+check push condition --- done
+force update --- done
+change state code --- done
+test push on prev version then update n check --- done
+dont change status of courses in db --- done
+
+
+18 Feb 2019
+Remove Delete Students from Forms  --- done
+Migrate DB --- done
+change db version --- done
+Add option 'English' is aser & add columns as English, EngSelected in AddNewStudent --- done
+
+19 Feb 2019
+Add option 'English' is aser & add columns as English, EngSelected in EditStudent --- done
+
+20 Feb 2019
+keep Baseline & Endline optional in addnewStudent --- done
+keep Baseline & Endline optional in EditStudent --- done
+change app version name & code --- done
+
+28 Feb 2019
+Replace Tab --- done
+
+
+
+6 March 2019
+v1.0.8
+add SchoolType (private = 2, Govt = 1), Guardian Name in Student Table db --- done
+add SchoolType (private = 2, Govt = 1), Guardian Name in Add Student --- done
+add class 1-12, Anganwadi (-1), Balwadi (-3) in class Add Student --- done
+add SchoolType (private = 2, Govt = 1), Guardian Name in Edit Student --- done
+add class 1-12, Anganwadi (-1), Balwadi (-3) in class Edit Student --- done
+update apk & db version for playstore --- done
+
+
+15 March 2019
+v1.09
+add class options (Dropout= -4, Pre-School= -2, Not Enrolled = -5 ) --- done
+
+
+27 March 2019
+v1.10
+ECE Assessment POJO --- done
+ECE Assessment DAO --- done
+ECE Assessment Clear Data --- done 
+ECE Assessment Migration --- done
+
+29 March
+ECE Form redesign --- done
+edit ece form --- done
+submit button --- done
+
+1 Apr 2019
+new launcher icons --- done
+push ece form on push button --- done
+Edit Student Display Student Name properly --- done
+update ui edit student --- done
+
+v1.11
+16 April
+Maintained Date Time format constant --- done
+
+18 Apr
+change all form input to en --- done
+
+6 May 2019
+Version 1.12
+enable catcho --- done
+backup db to root as admin folder --- done
+Runtime Permissions at first place only --- done
+push log table while pushing data --- done
+push the same to Server onpushdata --- done
+remove unwanted code & files --- done
+Note all crashes in catch and add to logDB --- done
+
+7 May 2019
+Create separate class for Pushing the data ---
+push swapstudent data while pushing ---
+remove push from swapstudent activity ---
+remove reset flag code in case if failure ---
