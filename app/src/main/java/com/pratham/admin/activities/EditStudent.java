@@ -1,5 +1,6 @@
 package com.pratham.admin.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
@@ -179,6 +180,7 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
 
 
         btn_Endline1.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
                 setDefaults();

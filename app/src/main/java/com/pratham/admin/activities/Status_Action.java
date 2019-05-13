@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -13,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,19 +23,17 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONArrayRequestListener;
-import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.zxing.Result;
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
+import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.DevicePrathamIdLisner;
+import com.pratham.admin.interfaces.NetworkCallListner;
 import com.pratham.admin.interfaces.QRScanListener;
 import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.TabletStatus;
@@ -49,6 +45,7 @@ import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.Utility;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.List;
 
@@ -57,7 +54,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class Status_Action extends BaseActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener, DevicePrathamIdLisner {
+public class Status_Action extends BaseActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener, DevicePrathamIdLisner, NetworkCallListner {
 
     public ZXingScannerView mScannerView;
     @BindView(R.id.qr_frame)
@@ -250,7 +247,8 @@ public class Status_Action extends BaseActivity implements ZXingScannerView.Resu
     }
 
     private void loadDevises(String url) {
-        final ProgressDialog progressDialog = new ProgressDialog(context);
+        NetworkCalls.getNetworkCallsInstance(this).getRequest(this, url, "Loading Devices...", "loading_devices");
+        /*final ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Loading Devices...");
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -275,7 +273,7 @@ public class Status_Action extends BaseActivity implements ZXingScannerView.Resu
                 resetCamera();
                 Toast.makeText(context, "Check internet conection", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 
     @Override
@@ -360,7 +358,8 @@ public class Status_Action extends BaseActivity implements ZXingScannerView.Resu
     }
 
     private void uploadAPI(String url, String json) {
-        final ProgressDialog dialog = new ProgressDialog(this);
+        NetworkCalls.getNetworkCallsInstance(this).postRequest(this, url, "UPLOADING ... ", json, "upload_changes");
+        /*final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setTitle("UPLOADING ... ");
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
@@ -379,7 +378,7 @@ public class Status_Action extends BaseActivity implements ZXingScannerView.Resu
                 Toast.makeText(Status_Action.this, "NO Internet Connection", Toast.LENGTH_LONG).show();
                 dialog.dismiss();
             }
-        });
+        });*/
     }
 
     @Override
@@ -464,6 +463,40 @@ public class Status_Action extends BaseActivity implements ZXingScannerView.Resu
             }
         } else {
             Toast.makeText(this, "Invalid QR ", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onResponce(String response, String header) {
+        if (header.equals("loading_devices")) {
+            try {
+                myDeviceList = new MyDeviceList(context, new JSONArray(response));
+                myDeviceList.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        resetCamera();
+                    }
+                });
+                myDeviceList.show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else if (header.equals("upload_changes")) {
+            //  dialog.dismiss();
+            customDialogTabletStatus.dismiss();
+            AppDatabase.getDatabaseInstance(Status_Action.this).getTabletStatusDao().deleteAllTabletStatus();
+            finish();
+        }
+    }
+
+    @Override
+    public void onError(ANError anError, String header) {
+        if (header.equals("loading_devices")) {
+            resetCamera();
+            Toast.makeText(context, "Check internet conection", Toast.LENGTH_SHORT).show();
+        } else if (header.equals("upload_changes")) {
+            Toast.makeText(Status_Action.this, "NO Internet Connection", Toast.LENGTH_LONG).show();
+            // dialog.dismiss();
         }
     }
 }

@@ -1,17 +1,14 @@
 package com.pratham.admin.activities;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -24,10 +21,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
-import com.google.gson.Gson;
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.adapters.LeftSideAdapter;
@@ -42,16 +35,13 @@ import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.TempStudent;
 import com.pratham.admin.modalclasses.Village;
-import com.pratham.admin.util.APIs;
 import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.CustomGroup;
 import com.pratham.admin.util.Utility;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -140,8 +130,6 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
         tempAllStudent = AppDatabase.getDatabaseInstance(this).getStudentDao().getAllStudents();
         studGroupList = AppDatabase.getDatabaseInstance(this).getGroupDao().getAllGroups();
         groupNameList = new ArrayList();
-
-
     }
 
     private void setVillagesToSpinner() {
@@ -569,7 +557,6 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
         } else {
             Toast.makeText(SwapStudentsActivity.this, "No Changes Available", Toast.LENGTH_LONG).show();
         }
-
     }
 
     private void tempChangesSave() {
@@ -592,12 +579,12 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("offlineSaveTime", new Utility().GetCurrentDateTime(false));
         editor.commit();
-
+        Toast.makeText(this, "saved offline", Toast.LENGTH_SHORT).show();
     }
 
-    private void uploadAPI(String url, String json) {
+    /*private void uploadAPI(String url, String json) {
         final ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setTitle("UPLOADING ... ");
+        dialog.setTitle("UPLOADING ....");
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
@@ -620,7 +607,7 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
                 dialog.dismiss();
             }
         });
-    }
+    }*/
 
     public boolean validateGroupName() {
         boolean returnFlag = true;
@@ -668,7 +655,9 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
 
     @Override
     public void update() {
-        if (internetIsAvailable) {
+        tempChangesSave();
+        //todo comment
+       /* if (internetIsAvailable) {
             if (!tempStorageList.isEmpty()) {
                 Gson gson = new Gson();
                 String updatedStudentJSON = gson.toJson(tempStorageList);
@@ -725,7 +714,7 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
                 AlertDialog alert = builder.create();
                 alert.show();
             }
-        }
+        }*/
     }
 
     private String customParse(List<MetaData> metaDataList) {

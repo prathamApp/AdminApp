@@ -1,36 +1,33 @@
 package com.pratham.admin.activities;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.pratham.admin.R;
+import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.DevicePrathamIdLisner;
+import com.pratham.admin.interfaces.NetworkCallListner;
 import com.pratham.admin.util.APIs;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.ROll_ID;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner, ConnectionReceiverListener {
+public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner, ConnectionReceiverListener, NetworkCallListner {
     @BindView(R.id.btn_assignTablet)
     CardView btn_assignTablet;
 
@@ -47,7 +44,7 @@ public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner,
     String LoggedcrlId;
     Context context;
     boolean internetIsAvailable = false;
-    ProgressDialog progressDialog;
+    //ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,7 +151,8 @@ public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner,
     }
 
     private void loadDevises(String url) {
-        progressDialog = new ProgressDialog(context);
+        NetworkCalls.getNetworkCallsInstance(this).getRequest(this, url, "Loading Devices..", "loading_devises");
+       /* progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Loading Devices..");
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -184,7 +182,7 @@ public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner,
                 progressDialog.dismiss();
                 Toast.makeText(context, "check internet connection", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 
     @Override
@@ -215,5 +213,39 @@ public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner,
         intent.putExtra("CRLid", LoggedcrlId);
         intent.putExtra("CRLname", LoggedcrlName);
         startActivity(intent);
+    }
+
+    @Override
+    public void onResponce(String response1, String header) {
+        if (header.equals("loading_devises")) {
+            JSONArray response = null;
+            try {
+                response = new JSONArray(response1);
+                if (response.length() > 0) {
+                    MyDeviceList myDeviceList = new MyDeviceList(context, response);
+                    myDeviceList.show();
+                } else {
+                    AlertDialog alertDialog = new AlertDialog.Builder(ManageDevice.this).create();
+                    alertDialog.setTitle("No Device found");
+                    alertDialog.setIcon(R.drawable.ic_error_outline_black_24dp);
+                    alertDialog.setButton("OK", new android.content.DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(android.content.DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    alertDialog.show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onError(ANError anError, String header) {
+        if (header.equals("loading_devises")) {
+            Toast.makeText(context, "check internet connection", Toast.LENGTH_SHORT).show();
+        }
     }
 }

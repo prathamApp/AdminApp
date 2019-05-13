@@ -20,17 +20,17 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
 import com.kyleduo.blurpopupwindow.library.BlurPopupWindow;
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.adapters.DashRVDataAdapter;
+import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.DashRVClickListener;
+import com.pratham.admin.interfaces.NetworkCallListner;
 import com.pratham.admin.modalclasses.Aser;
 import com.pratham.admin.modalclasses.Attendance;
 import com.pratham.admin.modalclasses.Coach;
@@ -59,7 +59,7 @@ import butterknife.ButterKnife;
 import static com.pratham.admin.util.APIs.PushForms;
 
 
-public class Dashboard extends BaseActivity implements DashRVClickListener, ConnectionReceiverListener {
+public class Dashboard extends BaseActivity implements DashRVClickListener, ConnectionReceiverListener, NetworkCallListner {
 
     // Ref : https://www.dev2qa.com/android-cardview-with-image-and-text-example/
     String LoggedcrlId = "", LoggedcrlName = "", LoggedCRLnameSwapStd = "";
@@ -327,17 +327,20 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
                                     && (stdObj.size() == 0) && (aserObj.size() == 0) && (grpObj.size() == 0) && (ECEAsmtObj.size() == 0) && (LogObj.size() == 0)
                                 /*&& (CRLVisitObj.size() == 0)*/) {
                                 // No Data Available
+                                showDialog(false);
                                 Toast.makeText(Dashboard.this, "No New Data found for Pushing !", Toast.LENGTH_LONG).show();
                                 Log.d("json not pushed:::", json);
                                 if (pd.isShowing())
                                     pd.dismiss();
                             } else {
-                                AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
+                                pd.dismiss();
+                                NetworkCalls.getNetworkCallsInstance(Dashboard.this).postRequest(Dashboard.this, PushForms, "uploading...", json, "push_forms");
+                               /* AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
                                     @Override
                                     public void onResponse(String response) {
                                         Log.d("responce", response);
                                         AppDatabase.getDatabaseInstance(Dashboard.this).getMetaDataDao().insertMetadata(metaData);
-
+                                        showDialog(true);
                                         // update flag
                                         AppDatabase.getDatabaseInstance(Dashboard.this).getAttendanceDao().updateAllSentFlag(1);
                                         AppDatabase.getDatabaseInstance(Dashboard.this).getCoachDao().updateAllSentFlag(1);
@@ -351,16 +354,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
                                         AppDatabase.getDatabaseInstance(Dashboard.this).getECEAsmtDao().updateAllSentFlag(1);
                                         AppDatabase.getDatabaseInstance(Dashboard.this).getLogDao().updateAllSentFlag(1);
 
-                                        new BlurPopupWindow.Builder(Dashboard.this)
-                                                .setContentView(R.layout.app_success_dialog)
-                                                .setGravity(Gravity.CENTER)
-                                                .setScaleRatio(0.2f)
-                                                .setDismissOnClickBack(true)
-                                                .setDismissOnTouchBackground(true)
-                                                .setBlurRadius(10)
-                                                .setTintColor(0x30000000)
-                                                .build()
-                                                .show();
+
                                         if (pd.isShowing())
                                             pd.dismiss();
                                     }
@@ -394,7 +388,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
                                         if (pd.isShowing())
                                             pd.dismiss();
                                     }
-                                });
+                                });*/
                             }
                         } catch (Exception e) {
                             Modal_Log log = new Modal_Log();
@@ -423,7 +417,6 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
                 b.show();
             } else {
                 //No Internet
-
                 try {
                     new BlurPopupWindow.Builder(Dashboard.this)
                             .setContentView(R.layout.app_failure_dialog)
@@ -457,6 +450,31 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
         }
     }
 
+    private void showDialog(boolean flag) {
+        SharedPreferences preferences = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
+        String lastOfflineSavedDate = preferences.getString("offlineSaveTime", "null");
+        List tempList = AppDatabase.getDatabaseInstance(this).getTempStudentDao().getAllempStudent();
+        CustomDialog customDialog;
+        if (tempList.size() >= 1) {
+            customDialog = new CustomDialog(this, tempList, LoggedcrlName, lastOfflineSavedDate);
+            customDialog.show();
+        } else {
+            if (flag) {
+                BlurPopupWindow.Builder blurPopupWindow = new BlurPopupWindow.Builder(Dashboard.this);
+                blurPopupWindow.setContentView(R.layout.app_success_dialog)
+                        .setGravity(Gravity.CENTER)
+                        .setScaleRatio(0.2f)
+                        .setDismissOnClickBack(true)
+                        .setDismissOnTouchBackground(true)
+                        .setBlurRadius(10)
+                        .setTintColor(0x30000000)
+                        .setAnimationDuration(2)
+                        .build()
+                        .show();
+            }
+        }
+
+    }
 
     /* Initialise items in list. */
     private void initializeItemList() {
@@ -509,5 +527,58 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
     @Override
     public void onLongClick(View view, int position) {
 
+    }
+
+    @Override
+    public void onResponce(String response, String header) {
+        if (header.equals("push_forms")) {
+            Log.d("responce", response);
+            AppDatabase.getDatabaseInstance(Dashboard.this).getMetaDataDao().insertMetadata(metaData);
+            showDialog(true);
+            // update flag
+            AppDatabase.getDatabaseInstance(Dashboard.this).getAttendanceDao().updateAllSentFlag(1);
+            AppDatabase.getDatabaseInstance(Dashboard.this).getCoachDao().updateAllSentFlag(1);
+            AppDatabase.getDatabaseInstance(Dashboard.this).getCommunityDao().updateAllSentFlag(1);
+            AppDatabase.getDatabaseInstance(Dashboard.this).getCompletionDao().updateAllSentFlag(1);
+            AppDatabase.getDatabaseInstance(Dashboard.this).getGroupSessionDao().updateAllSentFlag(1);
+            AppDatabase.getDatabaseInstance(Dashboard.this).getGroupVisitDao().updateAllSentFlag(1);
+            AppDatabase.getDatabaseInstance(Dashboard.this).getStudentDao().updateAllSentFlag(1);
+            AppDatabase.getDatabaseInstance(Dashboard.this).getAserDao().updateAllSentFlag(1);
+            AppDatabase.getDatabaseInstance(Dashboard.this).getGroupDao().updateAllSentFlag(1);
+            AppDatabase.getDatabaseInstance(Dashboard.this).getECEAsmtDao().updateAllSentFlag(1);
+            AppDatabase.getDatabaseInstance(Dashboard.this).getLogDao().updateAllSentFlag(1);
+
+        }
+    }
+
+    @Override
+    public void onError(ANError anError, String header) {
+        if (header.equals("push_forms")) {
+            new BlurPopupWindow.Builder(Dashboard.this)
+                    .setContentView(R.layout.app_failure_dialog)
+                    .setGravity(Gravity.CENTER)
+                    .setScaleRatio(0.2f)
+                    .setDismissOnClickBack(true)
+                    .setDismissOnTouchBackground(true)
+                    .setBlurRadius(10)
+                    .setTintColor(0x30000000)
+                    .build()
+                    .show();
+            Toast.makeText(Dashboard.this, "Error in Data Pushing !", Toast.LENGTH_LONG).show();
+
+//           No need to reset flag as All the Data will be either sent or not at all
+//           AppDatabase.getDatabaseInstance(Dashboard.this).getAttendanceDao().updateAllSentFlag(0);
+//           AppDatabase.getDatabaseInstance(Dashboard.this).getCoachDao().updateAllSentFlag(0);
+//           AppDatabase.getDatabaseInstance(Dashboard.this).getCommunityDao().updateAllSentFlag(0);
+//           AppDatabase.getDatabaseInstance(Dashboard.this).getCompletionDao().updateAllSentFlag(0);
+//           AppDatabase.getDatabaseInstance(Dashboard.this).getGroupVisitDao().updateAllSentFlag(0);
+//           AppDatabase.getDatabaseInstance(Dashboard.this).getGroupSessionDao().updateAllSentFlag(0);
+//           AppDatabase.getDatabaseInstance(Dashboard.this).getStudentDao().updateAllSentFlag(0);
+//           AppDatabase.getDatabaseInstance(Dashboard.this).getAserDao().updateAllSentFlag(0);
+//           AppDatabase.getDatabaseInstance(Dashboard.this).getGroupDao().updateAllSentFlag(0);
+//           AppDatabase.getDatabaseInstance(Dashboard.this).getECEAsmtDao().updateAllSentFlag(0);
+//           AppDatabase.getDatabaseInstance(Dashboard.this).getLogDao().updateAllSentFlag(0);
+
+        }
     }
 }

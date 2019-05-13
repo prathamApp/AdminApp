@@ -1,7 +1,6 @@
 package com.pratham.admin.forms;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,15 +12,15 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
+import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.custom.MultiSpinner;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
+import com.pratham.admin.interfaces.NetworkCallListner;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Modal_Log;
@@ -33,11 +32,9 @@ import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.CustomGroup;
 import com.pratham.admin.util.Utility;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -46,7 +43,7 @@ import butterknife.OnClick;
 
 import static com.pratham.admin.util.APIs.PushForms;
 
-public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiverListener {
+public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiverListener, NetworkCallListner {
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;
@@ -139,8 +136,8 @@ public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiv
 
                         String json = "{ \"DeleteStudentJSON\":" + DeleteStudentJSON + ",\"metadata\":" + metaDataJSON + "}";
                         Log.d("json :::", json);
-
-                        final ProgressDialog dialog = new ProgressDialog(this);
+                        NetworkCalls.getNetworkCallsInstance(this).postRequest(this, PushForms, "UPLOADING ... ", json, "delete_Student");
+                       /* final ProgressDialog dialog = new ProgressDialog(this);
                         dialog.setTitle("UPLOADING ... ");
                         dialog.setCancelable(false);
                         dialog.setCanceledOnTouchOutside(false);
@@ -166,7 +163,7 @@ public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiv
                                 dialog.dismiss();
                                 resetForm();
                             }
-                        });
+                        });*/
 
                     } else {
                         Toast.makeText(this, "Form Data NOT Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
@@ -400,4 +397,27 @@ public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiv
         return json;
     }
 
+    @Override
+    public void onResponce(String response, String header) {
+        if (header.equals("delete_Student")) {
+            Log.d("responce", response);
+            // delete if pushed
+            for (int i = 0; i < selectedStdList.size(); i++) {
+                AppDatabase.getDatabaseInstance(DeleteStudentsForm.this).getStudentDao().deleteStudentByID(selectedStdList.get(i).toString());
+            }
+            Toast.makeText(DeleteStudentsForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(DeleteStudentsForm.this, "Selected Students have been Deleted !!!", Toast.LENGTH_SHORT).show();
+            //dialog.dismiss();
+            resetForm();
+        }
+    }
+
+    @Override
+    public void onError(ANError anError, String header) {
+        if (header.equals("delete_Student")) {
+            Toast.makeText(DeleteStudentsForm.this, "Selected Students not Deleted as due to Network Issues !", Toast.LENGTH_LONG).show();
+            // dialog.dismiss();
+            resetForm();
+        }
+    }
 }

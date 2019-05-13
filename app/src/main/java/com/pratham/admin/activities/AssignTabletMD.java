@@ -24,19 +24,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONArrayRequestListener;
-import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.zxing.Result;
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
+import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.DevicePrathamIdLisner;
+import com.pratham.admin.interfaces.NetworkCallListner;
 import com.pratham.admin.interfaces.QRScanListener;
 import com.pratham.admin.modalclasses.CRL;
 import com.pratham.admin.modalclasses.CrlInfoRecycler;
@@ -50,6 +48,7 @@ import com.pratham.admin.util.ROll_ID;
 import com.pratham.admin.util.Utility;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -61,7 +60,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class AssignTabletMD extends BaseActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener, DevicePrathamIdLisner {
+public class AssignTabletMD extends BaseActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener, DevicePrathamIdLisner, NetworkCallListner {
     final String ASSIGN = "Assign";
     final String RETURN = "Return";
     public ZXingScannerView mScannerView;
@@ -479,7 +478,8 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
     }
 
     private void loadDevises(String url) {
-        progressDialog = new ProgressDialog(context);
+        NetworkCalls.getNetworkCallsInstance(this).getRequest(this, url, "loading Devices...", "loading_device");
+      /*  progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("loading Devices");
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -503,7 +503,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                 resetCamera();
                 Toast.makeText(context, "Check internet connection", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 
     @Override
@@ -620,13 +620,15 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
     }
 
     private void uploadAPI(String url, String json) {
-        final ProgressDialog dialog = new ProgressDialog(this);
+        NetworkCalls.getNetworkCallsInstance(this).postRequest(this, url, "UPLOADING ... ", json, "AssignTab");
+
+        /*final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setTitle("UPLOADING ... ");
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
+        dialog.show();*/
         //todo URL FOR AssignTab
-        AndroidNetworking.post(url).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
+        /*AndroidNetworking.post(url).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
             @Override
             public void onResponse(String response) {
                 dialog.dismiss();
@@ -642,7 +644,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                 //Log.d("anError", "" + anError);
                 dialog.dismiss();
             }
-        });
+        });*/
     }
 
     @Override
@@ -702,6 +704,41 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
             }
         } else {
             Toast.makeText(this, "Invalid QR ", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onResponce(String response, String header) {
+        if (header.equals("AssignTab")) {
+            customDialogQRScan_md.dismiss();
+            //todo user Based delete
+            AppDatabase.getDatabaseInstance(AssignTabletMD.this).getTabletManageDeviceDoa().deleteAllTabletManageDevice();
+            finish();
+        } else if (header.equals("loading_device")) {
+            try {
+                myDeviceList = new MyDeviceList(context, new JSONArray(response));
+                myDeviceList.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        resetCamera();
+                    }
+                });
+                myDeviceList.show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    @Override
+    public void onError(ANError anError, String header) {
+        if (header.equals("AssignTab")) {
+            Toast.makeText(AssignTabletMD.this, "NO Internet Connection", Toast.LENGTH_LONG).show();
+            //Log.d("anError", "" + anError);
+        } else if (header.equals("loading_device")) {
+            resetCamera();
+            Toast.makeText(context, "Check internet connection", Toast.LENGTH_SHORT).show();
         }
     }
 }

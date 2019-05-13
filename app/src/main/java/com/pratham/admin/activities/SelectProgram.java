@@ -20,18 +20,18 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
+import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.async.SaveDataTask;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
+import com.pratham.admin.interfaces.NetworkCallListner;
+import com.pratham.admin.interfaces.NetworkCallListnerSelectProgram;
 import com.pratham.admin.interfaces.OnSavedData;
 import com.pratham.admin.interfaces.VillageListLisner;
 import com.pratham.admin.modalclasses.Aser;
@@ -49,8 +49,6 @@ import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.Utility;
-
-import org.json.JSONArray;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -83,7 +81,7 @@ import static com.pratham.admin.util.APIs.SCpullAserURL;
 import static com.pratham.admin.util.APIs.UPpullAserURL;
 import static com.pratham.admin.util.APIs.village;
 
-public class SelectProgram extends BaseActivity implements ConnectionReceiverListener, OnSavedData, VillageListLisner {
+public class SelectProgram extends BaseActivity implements ConnectionReceiverListener, OnSavedData, VillageListLisner, NetworkCallListnerSelectProgram, NetworkCallListner {
 
     @BindView(R.id.spinner_state)
     Spinner spinner_state;
@@ -345,7 +343,8 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
 
     public void loadAPI(final String url, final String type, final String program) {
         showDialoginApiCalling(program, type);
-        AndroidNetworking.get(url).build().getAsJSONArray(new JSONArrayRequestListener() {
+        NetworkCalls.getNetworkCallsInstance(this).getRequestWithProgram(this, url, "loadAPI", type, program);
+      /*  AndroidNetworking.get(url).build().getAsJSONArray(new JSONArrayRequestListener() {
             @Override
             public void onResponse(JSONArray response) {
                 String json = response.toString();
@@ -361,7 +360,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                     spinner_state.setSelection(0);
                     dismissShownDialog();
                 }
-                /*  dismissShownDialog();*/
+                *//*  dismissShownDialog();*//*
                 parseJSON("[]", type, program);
                 if (!internetIsAvailable) {
                     Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
@@ -372,7 +371,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
 
                 apiLoadFlag = false;
             }
-        });
+        });*/
         //return json;
     }
 
@@ -510,7 +509,8 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
     }
 
     private void downloadAserData(String url) {
-        AndroidNetworking.get(url).setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
+        NetworkCalls.getNetworkCallsInstance(this).getRequestWithautLoader(this, url, "downloadAserData");
+       /* AndroidNetworking.get(url).setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
             @Override
             public void onResponse(JSONArray response) {
                 // do anything with response
@@ -538,12 +538,14 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 // mayur cha code
                 formsAPI();
             }
-        });
+        });*/
     }
 
     private void pullStorePersons() {
         String url = APIs.storePersonAPI + stateCode[selectedState];
-        final ProgressDialog progressDialog = new ProgressDialog(SelectProgram.this);
+        NetworkCalls.getNetworkCallsInstance(this).getRequest(this, url, "loading store person", "storeperson");
+
+       /* final ProgressDialog progressDialog = new ProgressDialog(SelectProgram.this);
         progressDialog.setMessage("loading store person");
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -567,7 +569,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 progressDialog.dismiss();
             }
         });
-
+*/
     }
 
 
@@ -912,8 +914,8 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 couchUrl = couchUrl + "villageid=" + vID + "&programid=13";
                 break;
         }
-
-        AndroidNetworking.get(couchUrl).build().getAsJSONArray(new JSONArrayRequestListener() {
+        NetworkCalls.getNetworkCallsInstance(this).getRequestWithautLoader(this, couchUrl, "couchUrl");
+       /* AndroidNetworking.get(couchUrl).build().getAsJSONArray(new JSONArrayRequestListener() {
             @Override
             public void onResponse(JSONArray response) {
                 String json = response.toString();
@@ -951,7 +953,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 dismissShownDialog();
                 apiLoadFlag = false;
             }
-        });
+        });*/
     }
 
 
@@ -996,7 +998,8 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 break;
         }
 
-        AndroidNetworking.get(pullHLCourseCommunityUrl).build().getAsJSONArray(new JSONArrayRequestListener() {
+        NetworkCalls.getNetworkCallsInstance(this).getRequestWithautLoader(this, pullHLCourseCommunityUrl, "pullHLCourseCommunityUrl");
+      /*  AndroidNetworking.get(pullHLCourseCommunityUrl).build().getAsJSONArray(new JSONArrayRequestListener() {
             @Override
             public void onResponse(JSONArray response) {
                 String json = response.toString();
@@ -1034,7 +1037,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 dismissShownDialog();
                 apiLoadFlag = false;
             }
-        });
+        });*/
     }
 
     private void pullCourses() {
@@ -1064,8 +1067,8 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 showDialoginApiCalling(HG, "Pulling Courses !!!");
                 break;
         }
-
-        AndroidNetworking.get(PullCourses).build().getAsJSONArray(new JSONArrayRequestListener() {
+        NetworkCalls.getNetworkCallsInstance(this).getRequestWithautLoader(this, PullCourses, "PullCourses");
+      /*  AndroidNetworking.get(PullCourses).build().getAsJSONArray(new JSONArrayRequestListener() {
             @Override
             public void onResponse(JSONArray response) {
                 String json = response.toString();
@@ -1102,7 +1105,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 dismissShownDialog();
                 apiLoadFlag = false;
             }
-        });
+        });*/
     }
 
     private void pullHLCourseCompletion(String vID) {
@@ -1147,8 +1150,8 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 13;
                 break;
         }
-
-        AndroidNetworking.get(PullHLCourseCompletionUrl).build().getAsJSONArray(new JSONArrayRequestListener() {
+        NetworkCalls.getNetworkCallsInstance(this).getRequestWithautLoader(this, PullHLCourseCompletionUrl, "PullHLCourseCompletionUrl");
+     /*   AndroidNetworking.get(PullHLCourseCompletionUrl).build().getAsJSONArray(new JSONArrayRequestListener() {
             @Override
             public void onResponse(JSONArray response) {
                 String json = response.toString();
@@ -1185,6 +1188,202 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 dismissShownDialog();
                 apiLoadFlag = false;
             }
-        });
+        });*/
+    }
+
+    @Override
+    public void onResponce(String response, String header, String type, String program) {
+        if (header.equals("loadAPI")) {
+            String json = response;
+            // Toast.makeText(SelectProgram.this, json, Toast.LENGTH_LONG).show();
+            apiLoadFlag = true;
+            parseJSON(json, type, program);
+        }
+    }
+
+    @Override
+    public void onError(ANError anError, String header, String type, String program) {
+        if (header.equals("loadAPI")) {
+            errorDetected = true;
+            if (type.equals("village")) {
+                spinner_state.setSelection(0);
+                dismissShownDialog();
+            }
+            /*  dismissShownDialog();*/
+            parseJSON("[]", type, program);
+            if (!internetIsAvailable) {
+                Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(SelectProgram.this, "Load API Failed." + type, Toast.LENGTH_LONG).show();
+            }
+            // Log.d("error", "" + error);
+
+            apiLoadFlag = false;
+        }
+    }
+
+    @Override
+    public void onResponce(String response, String header) {
+        if (header.equals("downloadAserData")) {
+            countAser++;
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ArrayList<Aser>>() {
+            }.getType();
+            ArrayList<Aser> AserMoadal = gson.fromJson(response.toString(), listType);
+            aserList.addAll(AserMoadal);
+            if (countAser == villageId.size()) {
+                dismissShownDialog();
+                pullStorePersons();
+                // mayur cha code
+                formsAPI();
+            }
+        } else if (header.equals("storeperson")) {
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ArrayList<CRL>>() {
+            }.getType();
+            ArrayList<CRL> CrlMoadal = gson.fromJson(response, listType);
+            CRLList.addAll(CrlMoadal);
+        } else if (header.equals("couchUrl")) {
+            String json = response.toString();
+            Gson gson = new Gson();
+            try {
+                Type listType = new TypeToken<ArrayList<Coach>>() {
+                }.getType();
+                ArrayList<Coach> modalCoachList = gson.fromJson(json, listType);
+                CoachList.addAll(modalCoachList);
+            } catch (JsonSyntaxException e) {
+
+                Modal_Log log = new Modal_Log();
+                log.setCurrentDateTime(new Utility().GetCurrentDate());
+                log.setErrorType("ERROR");
+                log.setExceptionMessage(e.getMessage());
+                log.setExceptionStackTrace(e.getStackTrace().toString());
+                log.setMethodName("SelectProgram" + "_" + "coachUrl");
+                log.setDeviceId("");
+                AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+                BackupDatabase.backup(ApplicationController.getInstance());
+
+                e.printStackTrace();
+            }
+            dismissShownDialog();
+        } else if (header.equals("pullHLCourseCommunityUrl")) {
+            String json = response.toString();
+            Gson gson = new Gson();
+            try {
+                Type listType = new TypeToken<ArrayList<Community>>() {
+                }.getType();
+                ArrayList<Community> modalCommunityList = gson.fromJson(json, listType);
+                CommunityList.addAll(modalCommunityList);
+            } catch (JsonSyntaxException e) {
+                Modal_Log log = new Modal_Log();
+                log.setCurrentDateTime(new Utility().GetCurrentDate());
+                log.setErrorType("ERROR");
+                log.setExceptionMessage(e.getMessage());
+                log.setExceptionStackTrace(e.getStackTrace().toString());
+                log.setMethodName("SelectProgram" + "_" + "HLCourseCommunityUrl");
+                log.setDeviceId("");
+                AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+                BackupDatabase.backup(ApplicationController.getInstance());
+
+                e.printStackTrace();
+            }
+            dismissShownDialog();
+        } else if (header.equals("PullCourses")) {
+            String json = response.toString();
+            try {
+                Gson gson = new Gson();
+                Type listType = new TypeToken<ArrayList<Course>>() {
+                }.getType();
+                ArrayList<Course> modalCoursesList = gson.fromJson(json, listType);
+                CourseList.addAll(modalCoursesList);
+            } catch (JsonSyntaxException e) {
+                Modal_Log log = new Modal_Log();
+                log.setCurrentDateTime(new Utility().GetCurrentDate());
+                log.setErrorType("ERROR");
+                log.setExceptionMessage(e.getMessage());
+                log.setExceptionStackTrace(e.getStackTrace().toString());
+                log.setMethodName("SelectProgram" + "_" + "PullCourses");
+                log.setDeviceId("");
+                AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+                BackupDatabase.backup(ApplicationController.getInstance());
+
+                e.printStackTrace();
+            }
+            dismissShownDialog();
+        } else if (header.equals("PullHLCourseCompletionUrl")) {
+            String json = response.toString();
+            try {
+                Gson gson = new Gson();
+                Type listType = new TypeToken<ArrayList<Completion>>() {
+                }.getType();
+                ArrayList<Completion> modalCompletionList = gson.fromJson(json, listType);
+                CompletionList.addAll(modalCompletionList);
+            } catch (JsonSyntaxException e) {
+                Modal_Log log = new Modal_Log();
+                log.setCurrentDateTime(new Utility().GetCurrentDate());
+                log.setErrorType("ERROR");
+                log.setExceptionMessage(e.getMessage());
+                log.setExceptionStackTrace(e.getStackTrace().toString());
+                log.setMethodName("SelectProgram" + "_" + "HLCourseCompletion");
+                log.setDeviceId("");
+                AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+                BackupDatabase.backup(ApplicationController.getInstance());
+
+                e.printStackTrace();
+            }
+            dismissShownDialog();
+        }
+    }
+
+    @Override
+    public void onError(ANError anError, String header) {
+        if (header.equals("downloadAserData")) {
+            // handle error
+            Toast.makeText(SelectProgram.this, "Failed to load store person", Toast.LENGTH_SHORT).show();
+            dismissShownDialog();
+            pullStorePersons();
+            // mayur cha code
+            formsAPI();
+        } else if (header.equals("storeperson")) {
+            // handle error
+            Toast.makeText(SelectProgram.this, "Failed to load store person", Toast.LENGTH_SHORT).show();
+        } else if (header.equals("couchUrl")) {
+            errorDetected = true;
+            if (!internetIsAvailable) {
+                Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(SelectProgram.this, "Pull Coaches Failed.", Toast.LENGTH_LONG).show();
+            }
+            dismissShownDialog();
+            apiLoadFlag = false;
+        } else if (header.equals("pullHLCourseCommunityUrl")) {
+            errorDetected = true;
+//                spinner_state.setSelection(0);
+            if (!internetIsAvailable) {
+                Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(SelectProgram.this, "PullCourseCommunity Failed.", Toast.LENGTH_LONG).show();
+            }
+            dismissShownDialog();
+            apiLoadFlag = false;
+        } else if (header.equals("PullCourses")) {
+            errorDetected = true;
+            if (!internetIsAvailable) {
+                Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(SelectProgram.this, "PullCourses Failed.", Toast.LENGTH_LONG).show();
+            }
+            dismissShownDialog();
+            apiLoadFlag = false;
+        } else if (header.equals("PullHLCourseCompletionUrl")) {
+            errorDetected = true;
+            if (!internetIsAvailable) {
+                Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(SelectProgram.this, "PullCourseCompletion Failed.", Toast.LENGTH_LONG).show();
+            }
+            dismissShownDialog();
+            apiLoadFlag = false;
+        }
     }
 }

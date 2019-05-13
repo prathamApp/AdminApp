@@ -29,18 +29,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONArrayRequestListener;
-import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.zxing.Result;
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
+import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
+import com.pratham.admin.interfaces.NetworkCallListner;
 import com.pratham.admin.interfaces.QRScanListener;
 import com.pratham.admin.modalclasses.CRL;
 import com.pratham.admin.modalclasses.Modal_Log;
@@ -51,8 +49,6 @@ import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.Utility;
 
-import org.json.JSONArray;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +57,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener {
+public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener, NetworkCallListner {
     final String ASSIGN = "Assign";
     final String RETURN = "Return";
     final String REPLACE = "Replace";
@@ -187,7 +183,7 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
                 btn_assignTablet.setElevation(30);
                 btn_returnTablet.setElevation(0);
             }
-            msg.setText("scan the tablet which want to Assign ");
+            msg.setText("Scan the tablet which you want to assign");
             isDamaged.setVisibility(View.GONE);
             damageType.setVisibility(View.GONE);
             comments.setVisibility(View.GONE);
@@ -213,7 +209,7 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
                 btn_returnTablet.setElevation(0);
             }
             setPrathamIdAndQrIF(oldPratahmId, oldQrId);
-            msg.setText("fill details then scan the tablet which want to Collect then press save");
+            msg.setText("Fill details and then scan the tablet to be collected and press Save");
             isDamaged.setVisibility(View.VISIBLE);
             damageType.setVisibility(View.VISIBLE);
             comments.setVisibility(View.VISIBLE);
@@ -427,7 +423,7 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
 
     }
 
-    private void loadDevises(String url) {
+   /* private void loadDevises(String url) {
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("loading Devices");
         progressDialog.setCancelable(false);
@@ -453,7 +449,7 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
                 Toast.makeText(context, "Check internet connection", Toast.LENGTH_SHORT).show();
             }
         });
-    }
+    }*/
 
     @Override
     public void onDestroy() {
@@ -490,36 +486,46 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
             if ((oldPratahmId != null && oldQrId != null && !oldPratahmId.equals("") && !oldQrId.equals("")) || (oldSerialId != null && !oldSerialId.equals(""))) {
                 if ((isDamagedText.equals("Yes") && !damageTypeText.equals("")) || isDamagedText.equals("No")) {
                     Log.d("crlFound", "crlFound");
-                    TabletManageDevice tabletManageDevice = new TabletManageDevice();
-                    tabletManageDevice.setStatus(REPLACE);
-                    tabletManageDevice.setLogged_CRL_ID(LoggedcrlId);
-                    tabletManageDevice.setAssigned_CRL_Name(LoggedcrlName);
-                    tabletManageDevice.setAssigned_CRL_ID(LoggedcrlId);
-                    tabletManageDevice.setAssigned_CRL_Name(LoggedcrlName);
-                    if (oldPratahmId != null && oldQrId != null && !oldPratahmId.equals("") && !oldQrId.equals("")) {
-                        tabletManageDevice.setCollectedTabPrathamID(oldPratahmId);
-                        tabletManageDevice.setCollectedTabQrID(oldQrId);
-                    } else {
-                        tabletManageDevice.setCollectedTabPrathamID(oldSerialId);
-                    }
-                    tabletManageDevice.setIs_Damaged(isDamagedText);
-                    tabletManageDevice.setDamageType(damageTypeText);
-                    tabletManageDevice.setComment(comment);
-                    tabletManageDevice.setOldFlag(false);
-                    if (newPratahmId != null && newQrId != null && !newPratahmId.equals("") && !newQrId.equals("")) {
-                        tabletManageDevice.setPratham_ID(newPratahmId);
-                        tabletManageDevice.setQR_ID(newQrId);
-                    } else {
-                        tabletManageDevice.setPratham_ID(newSerialId);
-                    }
-                    tabletManageDevice.setDate(new Utility().GetCurrentDateTime(false));
-                    AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().insertTabletManageDevice(tabletManageDevice);
-                    Toast.makeText(ReplaceTablet_MD.this, "Inserted Successfully ", Toast.LENGTH_LONG).show();
-                    BackupDatabase.backup(this);
 
-                    setCount();
-                    cleaFields();
-                    resetCamera();
+                    //check whether entered prathamId(Assign) is not same as Scanned of entered prathamID(Collect) or entered prathamId(Collect)
+                    if ((newSerialId == null || newSerialId.equals("")) || (!newSerialId.equalsIgnoreCase(oldPratahmId) && !newSerialId.equalsIgnoreCase(oldSerialId))) {
+                        if ((oldSerialId == null || oldSerialId.equals("")) || (!oldSerialId.equalsIgnoreCase(newPratahmId) && !oldSerialId.equalsIgnoreCase(newSerialId))) {
+                            TabletManageDevice tabletManageDevice = new TabletManageDevice();
+                            tabletManageDevice.setStatus(REPLACE);
+                            tabletManageDevice.setLogged_CRL_ID(LoggedcrlId);
+                            tabletManageDevice.setAssigned_CRL_Name(LoggedcrlName);
+                            tabletManageDevice.setAssigned_CRL_ID(LoggedcrlId);
+                            tabletManageDevice.setAssigned_CRL_Name(LoggedcrlName);
+                            if (oldPratahmId != null && oldQrId != null && !oldPratahmId.equals("") && !oldQrId.equals("")) {
+                                tabletManageDevice.setCollectedTabPrathamID(oldPratahmId);
+                                tabletManageDevice.setCollectedTabQrID(oldQrId);
+                            } else {
+                                tabletManageDevice.setCollectedTabPrathamID(oldSerialId);
+                            }
+                            tabletManageDevice.setIs_Damaged(isDamagedText);
+                            tabletManageDevice.setDamageType(damageTypeText);
+                            tabletManageDevice.setComment(comment);
+                            tabletManageDevice.setOldFlag(false);
+                            if (newPratahmId != null && newQrId != null && !newPratahmId.equals("") && !newQrId.equals("")) {
+                                tabletManageDevice.setPratham_ID(newPratahmId);
+                                tabletManageDevice.setQR_ID(newQrId);
+                            } else {
+                                tabletManageDevice.setPratham_ID(newSerialId);
+                            }
+                            tabletManageDevice.setDate(new Utility().GetCurrentDateTime(false));
+                            AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().insertTabletManageDevice(tabletManageDevice);
+                            Toast.makeText(ReplaceTablet_MD.this, "Inserted Successfully ", Toast.LENGTH_LONG).show();
+                            BackupDatabase.backup(this);
+
+                            setCount();
+                            cleaFields();
+                            resetCamera();
+                        } else {
+                            Toast.makeText(context, "You can not enter or scan same pratham id", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(context, "You can not enter or scan same pratham id", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(context, "select damage type in collect process", Toast.LENGTH_SHORT).show();
                 }
@@ -529,7 +535,6 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
         } else {
             Toast.makeText(context, "Scan qr for Assign ", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public void setCount() {
@@ -564,7 +569,8 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
     }
 
     private void uploadAPI(String url, String json) {
-        final ProgressDialog dialog = new ProgressDialog(this);
+        NetworkCalls.getNetworkCallsInstance(this).postRequest(this, url, "UPLOADING ... ", json, "Replace_tablet");
+        /*final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setTitle("UPLOADING ... ");
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
@@ -585,7 +591,7 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
                 Toast.makeText(ReplaceTablet_MD.this, "NO Internet Connection", Toast.LENGTH_LONG).show();
                 dialog.dismiss();
             }
-        });
+        });*/
     }
 
     @Override
@@ -664,4 +670,22 @@ public class ReplaceTablet_MD extends BaseActivity implements ZXingScannerView.R
         }
     }
 
+    @Override
+    public void onResponce(String response, String header) {
+        if (header.equals("Replace_tablet")) {
+            // dialog.dismiss();
+            customDialogQRScan_md.dismiss();
+            //todo user Based delete
+            AppDatabase.getDatabaseInstance(ReplaceTablet_MD.this).getTabletManageDeviceDoa().deleteAllTabletManageDevice();
+            finish();
+        }
+    }
+
+    @Override
+    public void onError(ANError anError, String header) {
+        if (header.equals("Replace_tablet")) {
+            Toast.makeText(ReplaceTablet_MD.this, "NO Internet Connection", Toast.LENGTH_LONG).show();
+            // dialog.dismiss();
+        }
+    }
 }

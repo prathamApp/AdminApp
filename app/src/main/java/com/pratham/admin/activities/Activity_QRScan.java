@@ -3,7 +3,6 @@ package com.pratham.admin.activities;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -24,15 +23,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
 import com.google.zxing.Result;
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
+import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
+import com.pratham.admin.interfaces.NetworkCallListner;
 import com.pratham.admin.interfaces.QRScanListener;
 import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.TabTrack;
@@ -50,7 +49,7 @@ import butterknife.OnClick;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 
-public class Activity_QRScan extends BaseActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener {
+public class Activity_QRScan extends BaseActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener, NetworkCallListner {
 
     public ZXingScannerView mScannerView;
     @BindView(R.id.qr_frame)
@@ -94,7 +93,7 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
 
         LoggedcrlId = getIntent().getStringExtra("CRLid");
         LoggedcrlName = getIntent().getStringExtra("CRLname");
-        //todo
+
         if (ContextCompat.checkSelfPermission(Activity_QRScan.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
@@ -193,8 +192,6 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
             if (QrId != null && prathamId != null && splitted.length == 2 && (!prathamId.equalsIgnoreCase("None"))) {
                 List l = AppDatabase.getDatabaseInstance(this).getTabTrackDao().checkExistance(QrId);
                 if (l.isEmpty()) {
-
-
                     Log.d(":::", QrId + "  " + prathamId);
                     qr_pratham_id.setText(prathamId);
                     successMessage.setVisibility(View.VISIBLE);
@@ -324,7 +321,9 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
     }
 
     private void uploadAPI(String url, String json) {
-        final ProgressDialog dialog = new ProgressDialog(this);
+
+        NetworkCalls.getNetworkCallsInstance(this).postRequest(this, url, "UPLOADING..", json, "uploadDevises");
+        /*final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setTitle("UPLOADING ... ");
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
@@ -334,7 +333,7 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
             public void onResponse(String response) {
                 dialog.dismiss();
                 customDialogQRScan.dismiss();
-                //todo
+
                 AppDatabase.getDatabaseInstance(Activity_QRScan.this).getTabTrackDao().deleteAllTabTracks();
                 finish();
             }
@@ -345,12 +344,28 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
                 //Log.d("anError", "" + anError);
                 dialog.dismiss();
             }
-        });
+        });*/
+    }
+
+    @Override
+    public void onResponce(String response, String header) {
+        if (header.equals("uploadDevises")) {
+            customDialogQRScan.dismiss();
+            AppDatabase.getDatabaseInstance(Activity_QRScan.this).getTabTrackDao().deleteAllTabTracks();
+            finish();
+        }
+    }
+
+    @Override
+    public void onError(ANError anError, String header) {
+        if (header.equals("uploadDevises")) {
+            Toast.makeText(Activity_QRScan.this, "NO Internet Connection", Toast.LENGTH_LONG).show();
+            //Log.d("anError", "" + anError);
+        }
     }
 
     @Override
     public void update() {
-
         if (internetIsAvailable) {
             Gson gson = new Gson();
             String json = gson.toJson(tabTracks);
@@ -384,4 +399,6 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
         AppDatabase.getDatabaseInstance(Activity_QRScan.this).getTabTrackDao().deleteAllTabTracks();
         customDialogQRScan.dismiss();
     }
+
+
 }

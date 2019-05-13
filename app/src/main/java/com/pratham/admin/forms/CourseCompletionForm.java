@@ -2,13 +2,10 @@ package com.pratham.admin.forms;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,34 +17,24 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
-import com.google.gson.Gson;
-import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.adapters.CourseTopicRVDataAdapter;
 import com.pratham.admin.database.AppDatabase;
-import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.DashRVClickListener;
 import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Completion;
 import com.pratham.admin.modalclasses.CourseTopicItem;
 import com.pratham.admin.modalclasses.Groups;
-import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.BaseActivity;
-import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.CustomGroup;
 import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.DatePickerFragmentTwo;
 import com.pratham.admin.util.Utility;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,9 +42,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.pratham.admin.util.APIs.PushForms;
-
-public class CourseCompletionForm extends BaseActivity implements DashRVClickListener/*, ConnectionReceiverListener */{
+public class CourseCompletionForm extends BaseActivity implements DashRVClickListener/*, ConnectionReceiverListener */ {
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;

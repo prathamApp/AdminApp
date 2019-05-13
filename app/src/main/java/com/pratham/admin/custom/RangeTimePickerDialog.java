@@ -123,7 +123,7 @@ public class RangeTimePickerDialog extends DialogFragment {
             }
 
             if (w > 1500)
-                dialog.getWindow().setLayout(1200, height);
+                dialog.getWindow().setLayout(1300, height);
             else
                 dialog.getWindow().setLayout(800, height);
 

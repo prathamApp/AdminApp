@@ -1,7 +1,6 @@
 package com.pratham.admin.activities;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,20 +8,21 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
+import com.kyleduo.blurpopupwindow.library.BlurPopupWindow;
 import com.pratham.admin.R;
 import com.pratham.admin.adapters.tempAdapter;
+import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
-import com.pratham.admin.interfaces.DialogInterface;
+import com.pratham.admin.interfaces.NetworkCallListner;
 import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.TempStudent;
@@ -37,7 +37,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CustomDialog extends Dialog implements ConnectionReceiverListener {
+public class CustomDialog extends Dialog implements ConnectionReceiverListener, NetworkCallListner {
     @BindView(R.id.btn_pushData)
     Button btn_pushData;
     @BindView(R.id.clear_changes)
@@ -58,14 +58,14 @@ public class CustomDialog extends Dialog implements ConnectionReceiverListener {
     String crlName;
     String lastOfflineSavedDate, program;
     boolean internetIsAvailable = false;
-    DialogInterface dialogInterface;
+    // DialogInterface dialogInterface;
 
     public CustomDialog(@NonNull Context context, List tempList, String crlName, String lastOfflineSavedDate) {
         super(context, android.R.style.Theme_Holo_Dialog_NoActionBar);
         this.tempList = tempList;
         this.context = context;
         this.crlName = crlName;
-        this.dialogInterface = (DialogInterface) context;
+        //  this.dialogInterface = (DialogInterface) context;
         this.lastOfflineSavedDate = lastOfflineSavedDate;
     }
 
@@ -91,7 +91,7 @@ public class CustomDialog extends Dialog implements ConnectionReceiverListener {
     @OnClick(R.id.txt_cancel)
     public void skip() {
         dismiss();
-        dialogInterface.openNextActivity();
+        //  dialogInterface.openNextActivity();
     }
 
     @OnClick(R.id.btn_close_village)
@@ -165,7 +165,8 @@ public class CustomDialog extends Dialog implements ConnectionReceiverListener {
     }
 
     private void uploadAPI(String url, String json) {
-        final ProgressDialog dialog = new ProgressDialog(context);
+        NetworkCalls.getNetworkCallsInstance(context).postRequest(this, url, "UPLOADING ... ", json, "custum_Dilaog");
+        /*final ProgressDialog dialog = new ProgressDialog(context);
         dialog.setTitle("UPLOADING ... ");
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
@@ -176,7 +177,19 @@ public class CustomDialog extends Dialog implements ConnectionReceiverListener {
                 Log.d("responce", response);
                 updateLocalDB();
                 dialog.dismiss();
-                dialogInterface.openNextActivity();
+                Toast.makeText(context, "pushed SuccessFully", Toast.LENGTH_LONG).show();
+                BlurPopupWindow.Builder blurPopupWindow = new BlurPopupWindow.Builder(context);
+                blurPopupWindow.setContentView(R.layout.app_success_dialog)
+                        .setGravity(Gravity.CENTER)
+                        .setScaleRatio(0.2f)
+                        .setDismissOnClickBack(true)
+                        .setDismissOnTouchBackground(true)
+                        .setBlurRadius(10)
+                        .setTintColor(0x30000000)
+                        .setAnimationDuration(2)
+                        .build()
+                        .show();
+                //dialogInterface.openNextActivity();
             }
 
             @Override
@@ -184,8 +197,7 @@ public class CustomDialog extends Dialog implements ConnectionReceiverListener {
                 Toast.makeText(context, "NO Internet Connection", Toast.LENGTH_LONG).show();
                 dialog.dismiss();
             }
-        });
-
+        });*/
     }
 
     private void updateLocalDB() {
@@ -220,6 +232,33 @@ public class CustomDialog extends Dialog implements ConnectionReceiverListener {
             internetIsAvailable = false;
         } else {
             internetIsAvailable = true;
+        }
+    }
+
+    @Override
+    public void onResponce(String response, String header) {
+        if (header.equals("custum_Dilaog")) {
+            Log.d("responce", response);
+            updateLocalDB();
+            Toast.makeText(context, "pushed SuccessFully", Toast.LENGTH_LONG).show();
+            BlurPopupWindow.Builder blurPopupWindow = new BlurPopupWindow.Builder(context);
+            blurPopupWindow.setContentView(R.layout.app_success_dialog)
+                    .setGravity(Gravity.CENTER)
+                    .setScaleRatio(0.2f)
+                    .setDismissOnClickBack(true)
+                    .setDismissOnTouchBackground(true)
+                    .setBlurRadius(10)
+                    .setTintColor(0x30000000)
+                    .setAnimationDuration(2)
+                    .build()
+                    .show();
+        }
+    }
+
+    @Override
+    public void onError(ANError anError, String header) {
+        if (header.equals("custum_Dilaog")) {
+            Toast.makeText(context, "NO Internet Connection", Toast.LENGTH_LONG).show();
         }
     }
 }

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pratham.admin.R;
 import com.pratham.admin.adapters.OnlineChangesListAdapter;
@@ -62,6 +63,7 @@ public class CustomDialogShowOnlineChanges extends Dialog {
     @OnClick(R.id.txt_Ok)
     public void update() {
         onlineChanges.update();
+        this.dismiss();
     }
 
     @OnClick(R.id.txt_clear_changes_village)
