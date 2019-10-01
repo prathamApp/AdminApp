@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 import com.pratham.admin.R;
+import com.pratham.admin.activities.replaceTab.ReplaceTablet;
 import com.pratham.admin.adapters.QRScanAdapter_MD;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.QRRecyclerListener;
@@ -33,20 +34,21 @@ public class CustomDialogQRScan_MD extends Dialog implements QRRecyclerListener 
     @BindView(R.id.recycler)
     RecyclerView recycler;
 
-    List<TabletManageDevice> changesList;
+    private List<TabletManageDevice> changesList;
     Context context;
-    Context assignTabletMD;
-    QRScanListener qrScanListener;
-    QRScanAdapter_MD qrScanAdapter_md;
+    private Context assignTabletMD;
+    private QRScanListener qrScanListener;
+    private QRScanAdapter_MD qrScanAdapter_md;
 
     public CustomDialogQRScan_MD(@NonNull Context context, List changesList) {
         super(context, android.R.style.Theme_DeviceDefault_NoActionBar_Fullscreen);
         this.changesList = changesList;
         this.context = context;
-        assignTabletMD = (AssignTabletMD) context;
+        assignTabletMD = context;
         qrScanListener = (QRScanListener) context;
     }
 
+/*
     public CustomDialogQRScan_MD(@NonNull Context context, List changesList, int temp) {
         super(context, android.R.style.Theme_DeviceDefault_NoActionBar_Fullscreen);
         this.changesList = changesList;
@@ -54,14 +56,7 @@ public class CustomDialogQRScan_MD extends Dialog implements QRRecyclerListener 
         assignTabletMD = (ReplaceTablet_MD) context;
         qrScanListener = (ReplaceTablet_MD) context;
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().deleteAllTabletManageDevice();
-        AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().insertTabletAllManageDevice(changesList);
-        ((Activity) assignTabletMD).finish();
-    }
+*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,5 +113,17 @@ public class CustomDialogQRScan_MD extends Dialog implements QRRecyclerListener 
             }
         }).show();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (context instanceof AssignTabletMD) {
+            AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().deleteAssignAndReturnDevice();
+        } else if (context instanceof ReplaceTablet) {
+            AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().deleteReplaceDevice();
+        }
+        AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().insertTabletAllManageDevice(changesList);
+        ((Activity) assignTabletMD).finish();
     }
 }

@@ -62,7 +62,6 @@ public class Utility {
             log.setDeviceId("");
             AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
             BackupDatabase.backup(ApplicationController.getInstance());
-
             e1.printStackTrace();
         }
         String currentVersion = pInfo.versionName;
@@ -86,7 +85,6 @@ public class Utility {
     public String GetDeviceID() {
         String deviceID = "";
         return deviceID = Settings.Secure.getString(ApplicationController.getInstance().getContentResolver(), Settings.Secure.ANDROID_ID);
-
     }
 
 
@@ -97,7 +95,7 @@ public class Utility {
 //        return MyApplication.getAccurateDate();
     }
 
-    public UUID GetUniqueID() {
+    public static UUID GetUniqueID() {
         return UUID.randomUUID();
     }
 

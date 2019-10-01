@@ -330,7 +330,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:digits="0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$_-~"
                 android:hint="User name"
                 android:maxLines="1"
                 android:singleLine="true" />
@@ -352,7 +351,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:digits="0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$_-~:=,.;'!"
                 android:hint="Password"
                 android:inputType="textWebPassword"
                 android:maxLines="1"
@@ -393,3 +391,4 @@
             android:textColor="#ffffff" />
     </LinearLayout>
 </LinearLayout>
+    <!--android:digits="0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$_-~:=,.;'!"-->

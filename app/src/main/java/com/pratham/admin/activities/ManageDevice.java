@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.androidnetworking.error.ANError;
 import com.pratham.admin.R;
+import com.pratham.admin.activities.replaceTab.ReplaceTablet;
 import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
@@ -120,7 +121,8 @@ public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner,
     }
 
     public void replaceTablet(View view) {
-        Intent intent = new Intent(this, ReplaceTablet_MD.class);
+       // Intent intent = new Intent(this, ReplaceTablet_MD.class);
+        Intent intent = new Intent(this, ReplaceTablet.class);
         intent.putExtra("CRLid", LoggedcrlId);
         intent.putExtra("CRLname", LoggedcrlName);
         intent.putExtra("tabStatus", "Replace");

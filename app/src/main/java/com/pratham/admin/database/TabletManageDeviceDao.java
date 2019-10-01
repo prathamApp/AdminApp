@@ -9,6 +9,7 @@ import com.pratham.admin.modalclasses.TabTrack;
 import com.pratham.admin.modalclasses.TabletManageDevice;
 
 import java.util.List;
+
 @Dao
 public interface TabletManageDeviceDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -17,15 +18,47 @@ public interface TabletManageDeviceDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insertTabletAllManageDevice(List<TabletManageDevice> tabletManageDevices);
 
-    @Query("SELECT * FROM TabletManageDevice WHERE QR_ID=:id")
-    public List<TabletManageDevice> checkExistanceTabletManageDevice(String id);
 
-    @Query("SELECT * FROM TabletManageDevice")
+    @Query("DELETE FROM TabletManageDevice WHERE QR_ID=:qrId")
+    public void deleteTabletManageDevice(String qrId);
+
+    @Query("SELECT * FROM TabletManageDevice WHERE isPushed=0")
     public List<TabletManageDevice> getAllTabletManageDevice();
 
     @Query("DELETE FROM TabletManageDevice")
     public void deleteAllTabletManageDevice();
 
-    @Query("DELETE FROM TabletManageDevice WHERE QR_ID=:qrId")
-    public void deleteTabletManageDevice(String qrId);
+    @Query("Update TabletManageDevice set isPushed=1")
+    public void updateIsPushedFlag();
+
+
+
+    /*Assign Return*/
+
+    @Query("SELECT * FROM TabletManageDevice WHERE isPushed=0 AND (status='Assign' OR status='Return')")
+    public List<TabletManageDevice> getAllAssignAndReturnDevice();
+
+    @Query("Update TabletManageDevice set isPushed=1 WHERE (status='Assign' OR status='Return')")
+    public void updateAssignAndReturnIsPushedFlag();
+
+    @Query("DELETE FROM TabletManageDevice  WHERE (status='Assign' OR status='Return')")
+    public void deleteAssignAndReturnDevice();
+
+
+    /*Replace*/
+
+    @Query("SELECT * FROM TabletManageDevice WHERE isPushed=0 AND (status='Replace_assign' OR status='Replace_collect')")
+    public List<TabletManageDevice> getAllReplaceDevice();
+
+    @Query("DELETE FROM TabletManageDevice WHERE isPushed=0 AND (status='Replace_assign' OR status='Replace_collect')")
+    public void deleteReplaceDevice();
+
+    @Query("Update TabletManageDevice set isPushed=1 WHERE (status='Replace_assign' OR status='Replace_collect')")
+    public void updateReplaceIsPushedFlag();
+
+    @Query("SELECT * FROM TabletManageDevice WHERE id=:id")
+    public List<TabletManageDevice> checkExistanceTabletManageDevice(String id);
+
+    @Query("SELECT * FROM TabletManageDevice WHERE logged_CRL_ID=:crlID AND Pratham_ID='' AND tabSerial_ID=''")
+    public List<TabletManageDevice> getCollectedTablist(String crlID);
 }

@@ -16,10 +16,10 @@ public class BaseActivity extends AppCompatActivity implements ConnectionReceive
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Catcho.Builder(this)
+      /*  Catcho.Builder(this)
                 .activity(CatchoTransparentActivity.class)
                 .recipients("abhishek.mittal@pratham.org")
-                .build();
+                .build();*/
 
     }
 
@@ -40,9 +40,9 @@ public class BaseActivity extends AppCompatActivity implements ConnectionReceive
 
         // Create a network change broadcast receiver.
         connectivityReceiver = new ConnectionReceiver();
-
         // Register the broadcast receiver with the intent filter object.
         registerReceiver(connectivityReceiver, intentFilter);
+        BackupDatabase.backup(this);
     }
 
 

@@ -170,15 +170,15 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
     protected void onResume() {
         super.onResume();
 
-        userName.setText("");
-        password.setText("");
+       /* userName.setText("ganeshtupe54");
+        password.setText("pratham");*/
 
         // check connection & then upgrade latest version if available
         ApplicationController.getInstance().setConnectionListener(this);
         checkConnection();
 
-//        userName.setText("");
-//        password.setText("");
+        userName.setText("");
+        password.setText("");
         userName.requestFocus();
         SharedPreferences preferences = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
         String program = preferences.getString("program", "null");

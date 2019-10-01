@@ -7,8 +7,8 @@ android {
         vectorDrawables.useSupportLibrary = true
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 12
-        versionName "1.2"
+        versionCode 14
+        versionName "1.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         renderscriptTargetApi 27
         renderscriptSupportModeEnabled true
@@ -65,6 +65,11 @@ dependencies {
     implementation 'net.alhazmy13.catcho:library:1.1.0'
     // Time Range Picker
     implementation 'org.greenrobot:eventbus:3.1.1'
+
+//    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+
+   // implementation 'com.facebook.stetho:stetho:1.5.1'
+
 
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.kyleduo.blurpopupwindow:blurpopupwindow:1.0.9'

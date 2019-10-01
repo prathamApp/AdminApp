@@ -199,6 +199,7 @@
                         android:layout_marginRight="10dp"
                         android:digits="0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$_-~:=,.;'!"
                         android:editable="false"
+                        android:enabled="false"
                         android:hint="Pratham ID"
                         android:textColor="@android:color/black"
                         android:textSize="15dp" />

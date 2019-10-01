@@ -48,6 +48,11 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
+            android:name=".activities.replaceTab.ReplaceTablet"
+            android:screenOrientation="sensorLandscape" />
+
+
+        <activity
             android:name=".activities.MainActivity"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden">
@@ -145,11 +150,11 @@
             android:name=".activities.Status_Action"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".activities.ReplaceTablet_MD"
-            android:screenOrientation="sensorLandscape"
-            android:theme="@style/NoActionBr"
-            android:windowSoftInputMode="stateHidden" />
+        <!-- <activity
+             android:name=".activities.ReplaceTablet_MD"
+             android:screenOrientation="sensorLandscape"
+             android:theme="@style/NoActionBr"
+             android:windowSoftInputMode="stateHidden" />-->
         <activity
             android:name=".activities.CatchoTransparentActivity"
             android:screenOrientation="sensorLandscape" />

@@ -35,7 +35,7 @@
         <HorizontalScrollView
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="1.7">
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/ad_assignedTo"
@@ -53,7 +53,7 @@
         <HorizontalScrollView
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="0.5">
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/ad_AssignedBy"
@@ -81,7 +81,7 @@
         <HorizontalScrollView
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="1">
+            android:layout_weight=".7">
 
             <TextView
                 android:id="@+id/pratham_id"
@@ -143,9 +143,8 @@
             android:layout_width="0dp"
             android:layout_height="55dp"
             android:layout_weight="1">
-
             <TextView
-                android:id="@+id/newPrathamID"
+                android:id="@+id/village"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingBottom="16dp"
@@ -153,10 +152,43 @@
                 android:paddingRight="4dp"
                 android:paddingTop="16dp"
                 android:textColor="#000000"
+                 />
+        </ScrollView>
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/collected_PrathamID"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="4dp"
+                android:paddingTop="16dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="16dp"
+                android:textColor="#000000"
                 android:textStyle="bold" />
         </ScrollView>
 
         <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/collected_QrID"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="4dp"
+                android:paddingTop="16dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="16dp"
+                android:text="c pratham ID"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+        </ScrollView>
+     <!--   <ScrollView
             android:layout_width="0dp"
             android:layout_height="55dp"
             android:layout_weight="1">
@@ -171,7 +203,7 @@
                 android:paddingTop="16dp"
                 android:textColor="#000000"
                 android:textStyle="bold" />
-        </ScrollView>
+        </ScrollView>-->
 
         <LinearLayout
             android:layout_width="0dp"

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.AssignTabletMD">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat"
+        app:layout_constraintVertical_bias="0.418">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".7">
+
+            <FrameLayout
+                android:id="@+id/qr_frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:id="@+id/successMessage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffff"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="4"
+                    app:srcCompat="@drawable/succeed" />
+
+                <android.support.v4.widget.Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/qr_btn_reset"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/btn_style"
+                android:text="Reset"
+                android:textColor="#ffffff" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".3"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/bottomControl"
+                android:layout_alignParentTop="true"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp" />
+
+                    <Spinner
+                        android:id="@+id/village"
+                        style="@style/spinner_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/gradient_spinner_selectprogram" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/assignedCrlName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/assignedCrlId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp" />
+
+                    <EditText
+                        android:id="@+id/qr_pratham_id"
+                        style="@style/CustomText"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:digits="0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$_-~:=,.;'!"
+                        android:enabled="false"
+                        android:hint="Pratham ID"
+                        android:textColor="@android:color/black"
+                        android:textSize="15dp" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp" />
+
+                    <EditText
+                        android:id="@+id/qr_serialNo"
+                        style="@style/CustomText"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:hint="Serial NO"
+                        android:inputType="none"
+                        android:maxLength="8"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="15dp"
+                        android:visibility="visible" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp" />
+
+                    <Spinner
+                        android:id="@+id/isDamaged"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:entries="@array/array_isDamged" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp" />
+
+                    <Spinner
+                        android:id="@+id/damageType"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:entries="@array/array_damgeType" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp" />
+
+                    <EditText
+                        android:id="@+id/comments"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:digits="0123456789abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$_-~:=,.;'!"
+                        android:hint="Comments?" />
+                    <!-- <EditText
+                         android:id="@+id/qr_serialNo"
+                         style="@style/CustomText"
+                         android:layout_width="match_parent"
+                         android:layout_height="50dp"
+                         android:layout_marginLeft="10dp"
+                         android:layout_marginRight="10dp"
+                         android:hint="Serial NO"
+                         android:maxLength="8"
+                         android:maxLines="1"
+                         android:singleLine="true"
+                         android:textColor="@android:color/black"
+                         android:textSize="15dp" />-->
+                </LinearLayout>
+            </ScrollView>
+
+            <LinearLayout
+                android:id="@+id/bottomControl"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/txt_count_village"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".4"
+                    android:gravity="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="20dp" />
+
+                <Button
+                    android:id="@+id/qr_btn_save"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight=".6"
+                    android:background="@drawable/btn_style"
+                    android:text="Save"
+                    android:textColor="#ffffff" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

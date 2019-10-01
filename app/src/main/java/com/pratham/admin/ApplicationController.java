@@ -4,6 +4,7 @@ import android.app.Application;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.androidnetworking.AndroidNetworking;
+//import com.facebook.stetho.Stetho;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.util.ConnectionReceiver;
 
@@ -23,6 +24,9 @@ public class ApplicationController extends Application {
         super.onCreate();
         AndroidNetworking.initialize(getApplicationContext());
         INSTANCE = this;
+       /* if (BuildConfig.DEBUG) {
+            Stetho.initializeWithDefaults(this);
+        }*/
     }
 
     public static synchronized ApplicationController getInstance() {

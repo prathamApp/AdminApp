@@ -704,6 +704,8 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 public void onClick(DialogInterface dialog, int whichButton) {
                     try {
                         new SaveDataTask(SelectProgram.this, SelectProgram.this, CRLList, studentList, groupsList, villageId, CourseList, CoachList, CommunityList, CompletionList, aserList).execute();
+                        //save all villages if want only selected then uncomment above line
+                        // new SaveDataTask(SelectProgram.this, SelectProgram.this, CRLList, studentList, groupsList, villageList, CourseList, CoachList, CommunityList, CompletionList, aserList).execute();
                     } catch (Exception e) {
                         Modal_Log log = new Modal_Log();
                         log.setCurrentDateTime(new Utility().GetCurrentDate());

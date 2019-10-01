@@ -159,7 +159,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
 
         } else {
             setRules();
-            List<TabletManageDevice> oldList = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().getAllTabletManageDevice();
+            List<TabletManageDevice> oldList = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().getAllAssignAndReturnDevice();
             if (!oldList.isEmpty()) {
                 for (int i = 0; i < oldList.size(); i++) {
                     oldList.get(i).setOldFlag(true);
@@ -535,6 +535,9 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
 
     @OnClick(R.id.qr_btn_save)
     public void saveTabTrack() {
+
+        //In case of assign/return  tab serial no is not required prathamId is editable because in case of blank Qr insert manually
+
         String serialNO = qr_serialNo.getText().toString();
         prathamId = qr_pratham_id.getText().toString();
         if (!assignedCRL.equals("")) {
@@ -542,10 +545,11 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                 if (tabStatus.equals(RETURN)) {
                     if ((isDamagedText.equals("Yes") && !damageTypeText.equals("")) || isDamagedText.equals("No")) {
                         TabletManageDevice tabletManageDevice = new TabletManageDevice();
+                        tabletManageDevice.setId(Utility.GetUniqueID().toString());
                         tabletManageDevice.setQR_ID(QrId);
                         tabletManageDevice.setStatus(tabStatus);
                         tabletManageDevice.setLogged_CRL_ID(LoggedcrlId);
-                        tabletManageDevice.setAssigned_CRL_Name(LoggedcrlName);
+                        tabletManageDevice.setLogged_CRL_NAME(LoggedcrlName);
                         tabletManageDevice.setAssigned_CRL_ID(assignedCRL);
                         tabletManageDevice.setAssigned_CRL_Name(assignedCrlName.getText().toString());
                         tabletManageDevice.setPratham_ID(prathamId);
@@ -555,7 +559,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                         tabletManageDevice.setComment(comments.getText().toString());
                         tabletManageDevice.setOldFlag(false);
                         tabletManageDevice.setDate(new Utility().GetCurrentDateTime(false));
-
+                        tabletManageDevice.setIsPushed(0);
                         AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().insertTabletManageDevice(tabletManageDevice);
                         Toast.makeText(AssignTabletMD.this, "Inserted Successfully ", Toast.LENGTH_LONG).show();
                         setCount();
@@ -568,6 +572,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                 } else {
                     //Assigned Tab
                     TabletManageDevice tabletManageDevice = new TabletManageDevice();
+                    tabletManageDevice.setId(Utility.GetUniqueID().toString());
                     tabletManageDevice.setQR_ID(QrId);
                     tabletManageDevice.setPratham_ID(prathamId);
                     tabletManageDevice.setTabSerial_ID(serialNO);
@@ -578,7 +583,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                     tabletManageDevice.setAssigned_CRL_Name(assignedCrlName.getText().toString());
                     tabletManageDevice.setOldFlag(false);
                     tabletManageDevice.setDate(new Utility().GetCurrentDateTime(false));
-
+                    tabletManageDevice.setIsPushed(0);
                     AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().insertTabletManageDevice(tabletManageDevice);
                     Toast.makeText(AssignTabletMD.this, "Inserted Successfully ", Toast.LENGTH_LONG).show();
                     setCount();
@@ -594,7 +599,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
     }
 
     public void setCount() {
-        int count = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().getAllTabletManageDevice().size();
+        int count = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().getAllAssignAndReturnDevice().size();
         txt_count.setText("Count " + count);
     }
 
@@ -609,7 +614,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
     @Override
     public void onBackPressed() {
         //todo
-        tabletMD = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().getAllTabletManageDevice();
+        tabletMD = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().getAllAssignAndReturnDevice();
         if (!tabletMD.isEmpty()) {
             customDialogQRScan_md = new CustomDialogQRScan_MD(this, tabletMD);
             customDialogQRScan_md.show();
@@ -680,7 +685,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
     @Override
     public void clearChanges() {
         //todo
-        AppDatabase.getDatabaseInstance(AssignTabletMD.this).getTabletManageDeviceDoa().deleteAllTabletManageDevice();
+        AppDatabase.getDatabaseInstance(AssignTabletMD.this).getTabletManageDeviceDoa().deleteAssignAndReturnDevice();
         customDialogQRScan_md.dismiss();
     }
 
@@ -712,7 +717,8 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
         if (header.equals("AssignTab")) {
             customDialogQRScan_md.dismiss();
             //todo user Based delete
-            AppDatabase.getDatabaseInstance(AssignTabletMD.this).getTabletManageDeviceDoa().deleteAllTabletManageDevice();
+            AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().updateAssignAndReturnIsPushedFlag();
+           // AppDatabase.getDatabaseInstance(AssignTabletMD.this).getTabletManageDeviceDoa().deleteAllTabletManageDevice();
             finish();
         } else if (header.equals("loading_device")) {
             try {

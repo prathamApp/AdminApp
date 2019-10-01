@@ -11,9 +11,10 @@ import com.google.gson.annotations.SerializedName;
 public class TabletManageDevice {
 
     @NonNull
-    @PrimaryKey(autoGenerate = true)
-    @Expose(serialize = false)
-    private Integer id;
+    @Expose
+    @PrimaryKey()
+    @SerializedName("id")
+    private String id;
 
     @Expose
     @SerializedName("QR_ID")
@@ -24,6 +25,14 @@ public class TabletManageDevice {
     String Pratham_ID;
 
     @Expose
+    @SerializedName("Tab_serial_ID")
+    String tabSerial_ID;
+
+    @Expose
+    @SerializedName("date")
+    String date;
+
+    @Expose
     @SerializedName("CRL_ID")
     String assigned_CRL_ID;
 
@@ -31,13 +40,6 @@ public class TabletManageDevice {
     @SerializedName("CRL_Name")
     String assigned_CRL_Name;
 
-    @Expose
-    @SerializedName("Tab_serial_ID")
-    String tabSerial_ID;
-
-    @Expose
-    @SerializedName("Date")
-    String date;
 
     @Expose
     @SerializedName("CRL_ID_LoggedIN")
@@ -48,21 +50,6 @@ public class TabletManageDevice {
     @SerializedName("CRL_NAME_LoggedIN")
     String logged_CRL_NAME;
 
-    @Expose
-    @SerializedName("is_Damaged")
-    String is_Damaged;
-
-    @Expose
-    @SerializedName("damageType")
-    String damageType;
-
-    @Expose
-    @SerializedName("operation_Type")
-    String status;
-
-    @Expose
-    @SerializedName("comment")
-    String comment;
 
     @Expose
     @SerializedName("collectedTabPrathamID")
@@ -76,15 +63,69 @@ public class TabletManageDevice {
     @SerializedName("collectedTab_serial_ID")
     String collectedTab_serial_ID;
 
-
     @Expose
     @SerializedName("collectedTabs_seniorsID")
     String collectedTabs_senior;
 
+    @Expose
+    @SerializedName("collectedTab_date")
+    String collected_date;
+    @Expose
+    @SerializedName("is_Damaged")
+    String is_Damaged;
+
+    @Expose
+    @SerializedName("damageType")
+    String damageType;
+
+    @Expose
+    @SerializedName("operation_Type")
+    String status;
+
+
+    @Expose
+    @SerializedName("comment")
+    String comment;
 
     @Expose(serialize = false)
     boolean oldFlag = false;
 
+    @Expose
+    @SerializedName("villageName")
+    String villageName;
+
+    @Expose
+    @SerializedName("villageID")
+    String villageID;
+
+    @Expose(serialize = false)
+    @SerializedName("isPushed")
+    int isPushed;
+
+
+
+
+    public TabletManageDevice() {
+    }
+
+    public TabletManageDevice(String villageID, String villageName) {
+        this.villageName = villageName;
+        this.villageID = villageID;
+    }
+
+    @Override
+    public String toString() {
+        if (collectedTabPrathamID != null && !collectedTabPrathamID.equalsIgnoreCase(""))
+            return villageName + " (P ID : " + collectedTabPrathamID + ")";
+        else if (collectedTab_serial_ID != null && !collectedTab_serial_ID.equalsIgnoreCase("")) {
+            return villageName + "(S ID : " + collectedTab_serial_ID + ")";
+        } else {
+            if (villageID != null && villageID.equals("-1")) {
+                return villageName;
+            } else
+                return null;
+        }
+    }
 
     public String getCollectedTabs_senior() {
         return collectedTabs_senior;
@@ -95,11 +136,11 @@ public class TabletManageDevice {
     }
 
     @NonNull
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(@NonNull Integer id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 
@@ -136,7 +177,6 @@ public class TabletManageDevice {
         this.assigned_CRL_Name = assigned_CRL_Name;
     }
 
-
     public String getPratham_ID() {
         return Pratham_ID;
     }
@@ -145,12 +185,12 @@ public class TabletManageDevice {
         Pratham_ID = pratham_ID;
     }
 
-    public String getDate() {
-        return date;
+    public String getCollected_date() {
+        return collected_date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setCollected_date(String collected_date) {
+        this.collected_date = collected_date;
     }
 
     public String getLogged_CRL_ID() {
@@ -209,6 +249,22 @@ public class TabletManageDevice {
         this.comment = comment;
     }
 
+    public String getVillageName() {
+        return villageName;
+    }
+
+    public void setVillageName(String villageName) {
+        this.villageName = villageName;
+    }
+
+    public String getVillageID() {
+        return villageID;
+    }
+
+    public void setVillageID(String villageID) {
+        this.villageID = villageID;
+    }
+
     public String getCollectedTabPrathamID() {
         return collectedTabPrathamID;
     }
@@ -231,5 +287,21 @@ public class TabletManageDevice {
 
     public void setCollectedTab_serial_ID(String collectedTab_serial_ID) {
         this.collectedTab_serial_ID = collectedTab_serial_ID;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public int getIsPushed() {
+        return isPushed;
+    }
+
+    public void setIsPushed(int isPushed) {
+        this.isPushed = isPushed;
     }
 }
