@@ -22,7 +22,7 @@ import com.pratham.admin.adapters.tempAdapter;
 import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
-import com.pratham.admin.interfaces.NetworkCallListner;
+import com.pratham.admin.interfaces.NetworkCallListener;
 import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.TempStudent;
@@ -37,7 +37,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CustomDialog extends Dialog implements ConnectionReceiverListener, NetworkCallListner {
+public class CustomDialog extends Dialog implements ConnectionReceiverListener, NetworkCallListener {
     @BindView(R.id.btn_pushData)
     Button btn_pushData;
     @BindView(R.id.clear_changes)
@@ -125,21 +125,24 @@ public class CustomDialog extends Dialog implements ConnectionReceiverListener, 
                 dismiss();
                 switch (program) {
                     //todo urban programd new program push link
-                    case APIs.HL:
+                    default:
                         uploadAPI(APIs.HLpushToServerURL, json);
                         break;
-                    case APIs.UP:
+                  /*  case APIs.UP:
                         uploadAPI(APIs.HLpushToServerURL, json);
-                        break;
+                        break;*/
                     case APIs.RI:
                         uploadAPI(APIs.RIpushToServerURL, json);
                         break;
-                    case APIs.SC:
+                   /* case APIs.SC:
                         uploadAPI(APIs.SCpushToServerURL, json);
                         break;
                     case APIs.PI:
                         uploadAPI(APIs.PIpushToServerURL, json);
                         break;
+                    case APIs.DSP:
+                        uploadAPI(APIs.PIpushToServerURL, json);
+                        break;*/
 
                 }
             }
@@ -236,7 +239,7 @@ public class CustomDialog extends Dialog implements ConnectionReceiverListener, 
     }
 
     @Override
-    public void onResponce(String response, String header) {
+    public void onResponse(String response, String header) {
         if (header.equals("custum_Dilaog")) {
             Log.d("responce", response);
             updateLocalDB();

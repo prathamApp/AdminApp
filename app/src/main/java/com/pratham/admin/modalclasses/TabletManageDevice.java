@@ -2,13 +2,15 @@ package com.pratham.admin.modalclasses;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Entity
-public class TabletManageDevice {
+public class TabletManageDevice implements Parcelable {
 
     @NonNull
     @Expose
@@ -112,6 +114,43 @@ public class TabletManageDevice {
         this.villageName = villageName;
         this.villageID = villageID;
     }
+
+    protected TabletManageDevice(Parcel in) {
+        id = in.readString();
+        QR_ID = in.readString();
+        Pratham_ID = in.readString();
+        tabSerial_ID = in.readString();
+        date = in.readString();
+        assigned_CRL_ID = in.readString();
+        assigned_CRL_Name = in.readString();
+        logged_CRL_ID = in.readString();
+        logged_CRL_NAME = in.readString();
+        collectedTabPrathamID = in.readString();
+        collectedTabQrID = in.readString();
+        collectedTab_serial_ID = in.readString();
+        collectedTabs_senior = in.readString();
+        collected_date = in.readString();
+        is_Damaged = in.readString();
+        damageType = in.readString();
+        status = in.readString();
+        comment = in.readString();
+        oldFlag = in.readByte() != 0;
+        villageName = in.readString();
+        villageID = in.readString();
+        isPushed = in.readInt();
+    }
+
+    public static final Creator<TabletManageDevice> CREATOR = new Creator<TabletManageDevice>() {
+        @Override
+        public TabletManageDevice createFromParcel(Parcel in) {
+            return new TabletManageDevice(in);
+        }
+
+        @Override
+        public TabletManageDevice[] newArray(int size) {
+            return new TabletManageDevice[size];
+        }
+    };
 
     @Override
     public String toString() {
@@ -303,5 +342,36 @@ public class TabletManageDevice {
 
     public void setIsPushed(int isPushed) {
         this.isPushed = isPushed;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(QR_ID);
+        dest.writeString(Pratham_ID);
+        dest.writeString(tabSerial_ID);
+        dest.writeString(date);
+        dest.writeString(assigned_CRL_ID);
+        dest.writeString(assigned_CRL_Name);
+        dest.writeString(logged_CRL_ID);
+        dest.writeString(logged_CRL_NAME);
+        dest.writeString(collectedTabPrathamID);
+        dest.writeString(collectedTabQrID);
+        dest.writeString(collectedTab_serial_ID);
+        dest.writeString(collectedTabs_senior);
+        dest.writeString(collected_date);
+        dest.writeString(is_Damaged);
+        dest.writeString(damageType);
+        dest.writeString(status);
+        dest.writeString(comment);
+        dest.writeByte((byte) (oldFlag ? 1 : 0));
+        dest.writeString(villageName);
+        dest.writeString(villageID);
+        dest.writeInt(isPushed);
     }
 }

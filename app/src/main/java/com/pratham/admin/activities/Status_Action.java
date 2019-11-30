@@ -33,7 +33,7 @@ import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.DevicePrathamIdLisner;
-import com.pratham.admin.interfaces.NetworkCallListner;
+import com.pratham.admin.interfaces.NetworkCallListener;
 import com.pratham.admin.interfaces.QRScanListener;
 import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.TabletStatus;
@@ -54,7 +54,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class Status_Action extends BaseActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener, DevicePrathamIdLisner, NetworkCallListner {
+public class Status_Action extends BaseActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener, DevicePrathamIdLisner, NetworkCallListener {
 
     public ZXingScannerView mScannerView;
     @BindView(R.id.qr_frame)
@@ -397,8 +397,10 @@ public class Status_Action extends BaseActivity implements ZXingScannerView.Resu
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (!isConnected) {
+            Utility.showNoInternetDialog(this);
             internetIsAvailable = false;
         } else {
+            Utility.dismissNoInternetDialog();
             internetIsAvailable = true;
         }
     }
@@ -467,7 +469,7 @@ public class Status_Action extends BaseActivity implements ZXingScannerView.Resu
     }
 
     @Override
-    public void onResponce(String response, String header) {
+    public void onResponse(String response, String header) {
         if (header.equals("loading_devices")) {
             try {
                 myDeviceList = new MyDeviceList(context, new JSONArray(response));

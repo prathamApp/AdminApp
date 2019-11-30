@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class CustomDialogQRScan extends Dialog implements QRRecyclerListener {
+public class CustomDialogQRActivity extends Dialog implements QRRecyclerListener {
     @BindView(R.id.count)
     TextView txt_count;
     @BindView(R.id.message)
@@ -35,7 +35,7 @@ public class CustomDialogQRScan extends Dialog implements QRRecyclerListener {
     QRScanListener qrScanListener;
     QRScanAdapter qrScanAdapter;
 
-    public CustomDialogQRScan(@NonNull Context context, List changesList) {
+    public CustomDialogQRActivity(@NonNull Context context, List changesList) {
         super(context, android.R.style.Theme_DeviceDefault_NoActionBar_Fullscreen);
         this.changesList = changesList;
         this.context = context;
@@ -54,13 +54,13 @@ public class CustomDialogQRScan extends Dialog implements QRRecyclerListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.online_list_qr_activity_dialog);
+        setContentView(R.layout.online_list_dialog);
         ButterKnife.bind(this);
         setCanceledOnTouchOutside(false);
         setCancelable(false);
         message.setText("Do You Want To Upload Following Changes?");
         setCount();
-        qrScanAdapter = new QRScanAdapter(this, changesList);
+    //    qrScanAdapter = new QRScanAdapter(this, changesList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recycler.setLayoutManager(layoutManager);
         recycler.setAdapter(qrScanAdapter);

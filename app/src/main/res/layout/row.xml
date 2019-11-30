@@ -10,7 +10,7 @@
     android:visibility="visible">
 
     <CheckBox
-        android:id="@+id/checkBox_student"
+        android:id="@+id/crl_name"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginEnd="32dp"
@@ -29,7 +29,7 @@
         android:layout_height="10dp"
         android:background="#8c0818"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox_student"
+        app:layout_constraintBottom_toTopOf="@+id/crl_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

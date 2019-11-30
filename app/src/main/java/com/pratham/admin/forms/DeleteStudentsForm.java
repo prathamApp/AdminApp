@@ -20,7 +20,7 @@ import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.custom.MultiSpinner;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
-import com.pratham.admin.interfaces.NetworkCallListner;
+import com.pratham.admin.interfaces.NetworkCallListener;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Modal_Log;
@@ -43,7 +43,7 @@ import butterknife.OnClick;
 
 import static com.pratham.admin.util.APIs.PushForms;
 
-public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiverListener, NetworkCallListner {
+public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiverListener, NetworkCallListener {
 
     @BindView(R.id.sp_Village)
     Spinner sp_Village;
@@ -398,14 +398,14 @@ public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiv
     }
 
     @Override
-    public void onResponce(String response, String header) {
+    public void onResponse(String response, String header) {
         if (header.equals("delete_Student")) {
             Log.d("responce", response);
             // delete if pushed
             for (int i = 0; i < selectedStdList.size(); i++) {
                 AppDatabase.getDatabaseInstance(DeleteStudentsForm.this).getStudentDao().deleteStudentByID(selectedStdList.get(i).toString());
             }
-            Toast.makeText(DeleteStudentsForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(DeleteStudentsForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
             Toast.makeText(DeleteStudentsForm.this, "Selected Students have been Deleted !!!", Toast.LENGTH_SHORT).show();
             //dialog.dismiss();
             resetForm();

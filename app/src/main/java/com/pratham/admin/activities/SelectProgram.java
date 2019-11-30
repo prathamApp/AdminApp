@@ -30,7 +30,7 @@ import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.async.SaveDataTask;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
-import com.pratham.admin.interfaces.NetworkCallListner;
+import com.pratham.admin.interfaces.NetworkCallListener;
 import com.pratham.admin.interfaces.NetworkCallListnerSelectProgram;
 import com.pratham.admin.interfaces.OnSavedData;
 import com.pratham.admin.interfaces.VillageListLisner;
@@ -59,6 +59,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.pratham.admin.util.APIs.DSP;
+import static com.pratham.admin.util.APIs.DSPpullAserURL;
 import static com.pratham.admin.util.APIs.ECE;
 import static com.pratham.admin.util.APIs.ECEpullAserURL;
 import static com.pratham.admin.util.APIs.GP;
@@ -81,7 +83,7 @@ import static com.pratham.admin.util.APIs.SCpullAserURL;
 import static com.pratham.admin.util.APIs.UPpullAserURL;
 import static com.pratham.admin.util.APIs.village;
 
-public class SelectProgram extends BaseActivity implements ConnectionReceiverListener, OnSavedData, VillageListLisner, NetworkCallListnerSelectProgram, NetworkCallListner {
+public class SelectProgram extends BaseActivity implements ConnectionReceiverListener, OnSavedData, VillageListLisner, NetworkCallListnerSelectProgram, NetworkCallListener {
 
     @BindView(R.id.spinner_state)
     Spinner spinner_state;
@@ -232,6 +234,10 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                             url = APIs.GPpullVillagesURL + stateCode[selectedState];
                             loadAPI(url, village, GP);
                             break;
+                        case DSP:
+                            url = APIs.DSPpullVillagesURL + stateCode[selectedState];
+                            loadAPI(url, village, DSP);
+                            break;
                     }
                 } else {
                     Toast.makeText(this, "Please Select State", Toast.LENGTH_SHORT).show();
@@ -301,6 +307,10 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                             case APIs.GP:
                                 String url14 = APIs.GPpullCrlsURL + stateCode[selectedState]; /*+ "&programid=1";*/
                                 loadAPI(url14, APIs.CRL, APIs.GP);
+                                break;
+                            case APIs.DSP:
+                                String url15 = APIs.DSPpullCrlsURL + stateCode[selectedState]; /*+ "&programid=1";*/
+                                loadAPI(url15, APIs.CRL, APIs.DSP);
                                 break;
 
                         }
@@ -446,6 +456,9 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 case APIs.GP:
                     loadAPI(APIs.GPpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, APIs.GP);
                     break;
+                case APIs.DSP:
+                    loadAPI(APIs.DSPpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, APIs.DSP);
+                    break;
 
             }
         }
@@ -488,6 +501,9 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                     break;
                 case APIs.GP:
                     loadAserData(GPpullAserURL);
+                    break;
+                case APIs.DSP:
+                    loadAserData(DSPpullAserURL);
                     break;
                 default:
                     dismissShownDialog();
@@ -616,6 +632,9 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                         break;
                     case APIs.GP:
                         loadAPI(APIs.GPpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.GP);
+                        break;
+                    case APIs.DSP:
+                        loadAPI(APIs.DSPpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.DSP);
                         break;
                 }
             }
@@ -915,6 +934,10 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 showDialoginApiCalling(HG, "Pulling Coaches !!!");
                 couchUrl = couchUrl + "villageid=" + vID + "&programid=13";
                 break;
+            case DSP:
+                showDialoginApiCalling(DSP, "Pulling Coaches !!!");
+                couchUrl = couchUrl + "villageid=" + vID + "&programid=22";
+                break;
         }
         NetworkCalls.getNetworkCallsInstance(this).getRequestWithautLoader(this, couchUrl, "couchUrl");
        /* AndroidNetworking.get(couchUrl).build().getAsJSONArray(new JSONArrayRequestListener() {
@@ -998,6 +1021,10 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 showDialoginApiCalling(HG, "Pulling Course Community !!!");
                 pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 13;
                 break;
+         case DSP:
+                showDialoginApiCalling(DSP, "Pulling Course Community !!!");
+                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 22;
+                break;
         }
 
         NetworkCalls.getNetworkCallsInstance(this).getRequestWithautLoader(this, pullHLCourseCommunityUrl, "pullHLCourseCommunityUrl");
@@ -1067,6 +1094,9 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 break;
             case HG:
                 showDialoginApiCalling(HG, "Pulling Courses !!!");
+                break;
+       case DSP:
+                showDialoginApiCalling(DSP, "Pulling Courses !!!");
                 break;
         }
         NetworkCalls.getNetworkCallsInstance(this).getRequestWithautLoader(this, PullCourses, "PullCourses");
@@ -1151,6 +1181,10 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 showDialoginApiCalling(HG, "Pulling Course Completion !!!");
                 PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 13;
                 break;
+         case DSP:
+                showDialoginApiCalling(DSP, "Pulling Course Completion !!!");
+                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 22;
+                break;
         }
         NetworkCalls.getNetworkCallsInstance(this).getRequestWithautLoader(this, PullHLCourseCompletionUrl, "PullHLCourseCompletionUrl");
      /*   AndroidNetworking.get(PullHLCourseCompletionUrl).build().getAsJSONArray(new JSONArrayRequestListener() {
@@ -1225,7 +1259,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
     }
 
     @Override
-    public void onResponce(String response, String header) {
+    public void onResponse(String response, String header) {
         if (header.equals("downloadAserData")) {
             countAser++;
             Gson gson = new Gson();

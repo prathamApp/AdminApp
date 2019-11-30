@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
@@ -30,16 +31,15 @@ import android.widget.Toast;
 import com.google.zxing.Result;
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
-import com.pratham.admin.activities.AssignTabletMD;
-import com.pratham.admin.activities.CustomDialogQRScan;
 import com.pratham.admin.database.AppDatabase;
+import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.modalclasses.Modal_Log;
-import com.pratham.admin.modalclasses.TabTrack;
 import com.pratham.admin.modalclasses.TabletManageDevice;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.Utility;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -47,13 +47,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class CollectFragment extends Fragment implements ZXingScannerView.ResultHandler {
+public class CollectFragment extends Fragment implements ZXingScannerView.ResultHandler, ConnectionReceiverListener {
 
     public ZXingScannerView mScannerView;
 
     @BindView(R.id.qr_frame)
     FrameLayout qr_frame;
 
+    private boolean internetIsAvailable = false;
 
     @BindView(R.id.village)
     Spinner village;
@@ -76,27 +77,31 @@ public class CollectFragment extends Fragment implements ZXingScannerView.Result
     private String LoggedcrlId;
     private String LoggedcrlName;
     private String prathamId;
-    private String QrId="";
+    private String QrId = "";
     private String villageName, villageID;
-   // private String state;
-   // private TabTrack tabTrack;
-  //  private boolean permission = false;
+    // private String state;
+    // private TabTrack tabTrack;
+    //  private boolean permission = false;
 
-  //  private boolean internetIsAvailable = false;
-  //  private List<TabTrack> tabTracks;
-   // private CustomDialogQRScan customDialogQRScan;
+    //  private boolean internetIsAvailable = false;
+    //  private List<TabTrack> tabTracks;
+    // private CustomDialogQRScan customDialogQRScan;
 
     private Context context;
+
+    private List<TabletManageDevice> mainList;
+
 
     public CollectFragment() {
         // Required empty public constructor
     }
 
-    public static CollectFragment newInstance(String crlId, String crlName) {
+    public static CollectFragment newInstance(String crlId, String crlName, List<TabletManageDevice> mainList) {
         CollectFragment fragment = new CollectFragment();
         Bundle args = new Bundle();
         args.putString("CRLid", crlId);
         args.putString("CRLname", crlName);
+        args.putParcelableArrayList("mainList", (ArrayList<? extends Parcelable>) mainList);
         fragment.setArguments(args);
         return fragment;
     }
@@ -106,6 +111,8 @@ public class CollectFragment extends Fragment implements ZXingScannerView.Result
         super.onActivityCreated(savedInstanceState);
         LoggedcrlId = getArguments().getString("CRLid");
         LoggedcrlName = getArguments().getString("CRLname");
+        mainList = getArguments().getParcelableArrayList("mainList");
+        Utility.clearCheckInternetInstance();
 
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.CAMERA)) {
@@ -125,7 +132,7 @@ public class CollectFragment extends Fragment implements ZXingScannerView.Result
             }
         } else {
             initCamera();
-           // permission = true;
+            // permission = true;
         }
     }
 
@@ -139,7 +146,7 @@ public class CollectFragment extends Fragment implements ZXingScannerView.Result
                 //todo close fragment
             } else {
                 initCamera();
-             //   permission = true;
+                //   permission = true;
             }
         }
 
@@ -149,14 +156,14 @@ public class CollectFragment extends Fragment implements ZXingScannerView.Result
     @Override
     public void onResume() {
         super.onResume();
-        List<TabletManageDevice> oldList = AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().getAllReplaceDevice();
+      /*  List<TabletManageDevice> oldList = AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDao().getAllReplaceDevice();
         if (!oldList.isEmpty()) {
             for (int i = 0; i < oldList.size(); i++) {
                 oldList.get(i).setOldFlag(true);
             }
-            AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().insertTabletAllManageDevice(oldList);
+            AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDao().insertTabletAllManageDevice(oldList);
             oldList.clear();
-        }
+        }*/
 
         tabStatus = "Replace_collect";
         setCount();
@@ -260,8 +267,9 @@ public class CollectFragment extends Fragment implements ZXingScannerView.Result
             prathamId = splitted[1];
             //  Log.d("::::Tag", QrId + "  " + prathamId);
             if (QrId != null && prathamId != null && splitted.length == 2 && (!prathamId.equalsIgnoreCase("None"))) {
-                List l = AppDatabase.getDatabaseInstance(context).getTabTrackDao().checkExistance(QrId);
-                if (l.isEmpty()) {
+//                List l = AppDatabase.getDatabaseInstance(context).getTabTrackDao().checkExistance(QrId);
+//                if (l.isEmpty()) {
+                if (!checkExistence(QrId)) {
                     Log.d(":::", QrId + "  " + prathamId);
                     qr_pratham_id.setText(prathamId);
                     successMessage.setVisibility(View.VISIBLE);
@@ -382,7 +390,8 @@ public class CollectFragment extends Fragment implements ZXingScannerView.Result
                         tabletManageDevice.setVillageName(villageName);
                         tabletManageDevice.setOldFlag(false);
                         tabletManageDevice.setIsPushed(0);
-                        AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().insertTabletManageDevice(tabletManageDevice);
+//                        AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDao().insertTabletManageDevice(tabletManageDevice);
+                        mainList.add(tabletManageDevice);
                         BackupDatabase.backup(context);
                         Toast.makeText(context, "Inserted Successfully ", Toast.LENGTH_LONG).show();
                         setCount();
@@ -415,7 +424,30 @@ public class CollectFragment extends Fragment implements ZXingScannerView.Result
 
     public void setCount() {
         //todo
-        int count = AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().getAllReplaceDevice().size();
+//        int count = AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDao().getAllReplaceDevice().size();
+        int count = mainList.size();
         txt_count.setText("Count " + count);
     }
+
+
+    private boolean checkExistence(String qrId) {
+        for (int i = 0; i < mainList.size(); i++) {
+            if (mainList.get(i).getQR_ID().equalsIgnoreCase(qrId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            Utility.showNoInternetDialog(context);
+            internetIsAvailable = false;
+        } else {
+            Utility.dismissNoInternetDialog();
+            internetIsAvailable = true;
+        }
+    }
+
 }

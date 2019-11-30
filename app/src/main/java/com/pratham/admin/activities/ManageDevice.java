@@ -16,7 +16,7 @@ import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.DevicePrathamIdLisner;
-import com.pratham.admin.interfaces.NetworkCallListner;
+import com.pratham.admin.interfaces.NetworkCallListener;
 import com.pratham.admin.util.APIs;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
@@ -28,7 +28,7 @@ import org.json.JSONException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner, ConnectionReceiverListener, NetworkCallListner {
+public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner, ConnectionReceiverListener, NetworkCallListener {
     @BindView(R.id.btn_assignTablet)
     CardView btn_assignTablet;
 
@@ -105,35 +105,55 @@ public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner,
     }
 
     public void assignTablet(View view) {
-        Intent intent = new Intent(this, AssignTabletMD.class);
-        intent.putExtra("CRLid", LoggedcrlId);
-        intent.putExtra("CRLname", LoggedcrlName);
-        intent.putExtra("tabStatus", "Assign");
-        startActivity(intent);
+        checkConnection();
+        if (internetIsAvailable) {
+            Intent intent = new Intent(this, AssignTabletMD.class);
+            intent.putExtra("CRLid", LoggedcrlId);
+            intent.putExtra("CRLname", LoggedcrlName);
+            intent.putExtra("tabStatus", "Assign");
+            startActivity(intent);
+        } else {
+            Toast.makeText(context, "Connect to internet", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void returnTablet(View view) {
-        Intent intent = new Intent(this, AssignTabletMD.class);
-        intent.putExtra("CRLid", LoggedcrlId);
-        intent.putExtra("CRLname", LoggedcrlName);
-        intent.putExtra("tabStatus", "Return");
-        startActivity(intent);
+        checkConnection();
+        if (internetIsAvailable) {
+            Intent intent = new Intent(this, AssignTabletMD.class);
+            intent.putExtra("CRLid", LoggedcrlId);
+            intent.putExtra("CRLname", LoggedcrlName);
+            intent.putExtra("tabStatus", "Return");
+            startActivity(intent);
+        } else {
+            Toast.makeText(context, "Connect to internet", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void replaceTablet(View view) {
-       // Intent intent = new Intent(this, ReplaceTablet_MD.class);
-        Intent intent = new Intent(this, ReplaceTablet.class);
-        intent.putExtra("CRLid", LoggedcrlId);
-        intent.putExtra("CRLname", LoggedcrlName);
-        intent.putExtra("tabStatus", "Replace");
-        startActivity(intent);
+        // Intent intent = new Intent(this, ReplaceTablet_MD.class);
+        checkConnection();
+        if (internetIsAvailable) {
+            Intent intent = new Intent(this, ReplaceTablet.class);
+            intent.putExtra("CRLid", LoggedcrlId);
+            intent.putExtra("CRLname", LoggedcrlName);
+            intent.putExtra("tabStatus", "Replace");
+            startActivity(intent);
+        } else {
+            Toast.makeText(context, "Connect to internet", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void action_status(View view) {
-        Intent intent = new Intent(this, Status_Action.class);
-        intent.putExtra("CRLid", LoggedcrlId);
-        intent.putExtra("CRLname", LoggedcrlName);
-        startActivity(intent);
+        checkConnection();
+        if (internetIsAvailable) {
+            Intent intent = new Intent(this, Status_Action.class);
+            intent.putExtra("CRLid", LoggedcrlId);
+            intent.putExtra("CRLname", LoggedcrlName);
+            startActivity(intent);
+        } else {
+            Toast.makeText(context, "Connect to internet", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void myDeviceList(View view) {
@@ -143,7 +163,7 @@ public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner,
             loadDevises(url);
         } else {
             checkConnection();
-            new AlertDialog.Builder(ManageDevice.this).setTitle("Warning").setMessage("No Intenet Found").setPositiveButton("Close", new DialogInterface.OnClickListener() {
+            new AlertDialog.Builder(ManageDevice.this).setTitle("Warning").setMessage("No internet connection").setPositiveButton("Close", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -211,14 +231,20 @@ public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner,
     }
 
     public void scanQR(View view) {
-        Intent intent = new Intent(ManageDevice.this, Activity_QRScan.class);
-        intent.putExtra("CRLid", LoggedcrlId);
-        intent.putExtra("CRLname", LoggedcrlName);
-        startActivity(intent);
+        checkConnection();
+        if (internetIsAvailable) {
+
+            Intent intent = new Intent(ManageDevice.this, Activity_QRScan.class);
+            intent.putExtra("CRLid", LoggedcrlId);
+            intent.putExtra("CRLname", LoggedcrlName);
+            startActivity(intent);
+        } else {
+            Toast.makeText(context, "Connect to internet", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
-    public void onResponce(String response1, String header) {
+    public void onResponse(String response1, String header) {
         if (header.equals("loading_devises")) {
             JSONArray response = null;
             try {

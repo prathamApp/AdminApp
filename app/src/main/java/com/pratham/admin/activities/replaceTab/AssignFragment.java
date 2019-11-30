@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
@@ -32,12 +33,14 @@ import com.google.zxing.Result;
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
+import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.TabTrack;
 import com.pratham.admin.modalclasses.TabletManageDevice;
 import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.Utility;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -45,12 +48,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class AssignFragment extends Fragment implements ZXingScannerView.ResultHandler {
+public class AssignFragment extends Fragment implements ConnectionReceiverListener, ZXingScannerView.ResultHandler {
 
     public ZXingScannerView mScannerView;
 
     @BindView(R.id.qr_frame)
     FrameLayout qr_frame;
+    private boolean internetIsAvailable = false;
 
 
     @BindView(R.id.village)
@@ -87,15 +91,19 @@ public class AssignFragment extends Fragment implements ZXingScannerView.ResultH
     // private OnFragmentInteractionListener mListener;
     private Context context;
 
+    private List<TabletManageDevice> mainList;
+
+
     public AssignFragment() {
         // Required empty public constructor
     }
 
-    public static AssignFragment newInstance(String crlId, String crlName) {
+    public static AssignFragment newInstance(String crlId, String crlName, List<TabletManageDevice> mainList) {
         AssignFragment fragment = new AssignFragment();
         Bundle args = new Bundle();
         args.putString("CRLid", crlId);
         args.putString("CRLname", crlName);
+        args.putParcelableArrayList("mainList", (ArrayList<? extends Parcelable>) mainList);
         fragment.setArguments(args);
         return fragment;
     }
@@ -106,6 +114,8 @@ public class AssignFragment extends Fragment implements ZXingScannerView.ResultH
         super.onActivityCreated(savedInstanceState);
         LoggedcrlId = getArguments().getString("CRLid");
         LoggedcrlName = getArguments().getString("CRLname");
+        mainList = getArguments().getParcelableArrayList("mainList");
+        Utility.clearCheckInternetInstance();
 
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.CAMERA)) {
@@ -149,14 +159,14 @@ public class AssignFragment extends Fragment implements ZXingScannerView.ResultH
     @Override
     public void onResume() {
         super.onResume();
-        List<TabletManageDevice> oldList = AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().getAllReplaceDevice();
+       /* List<TabletManageDevice> oldList = AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDao().getAllReplaceDevice();
         if (!oldList.isEmpty()) {
             for (int i = 0; i < oldList.size(); i++) {
                 oldList.get(i).setOldFlag(true);
             }
-            AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().insertTabletAllManageDevice(oldList);
+            AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDao().insertTabletAllManageDevice(oldList);
             oldList.clear();
-        }
+        }*/
 
         tabStatus = "Replace_assign";
         setCount();
@@ -165,7 +175,15 @@ public class AssignFragment extends Fragment implements ZXingScannerView.ResultH
     }
 
     private void setVillagesToSpinner() {
-        final List<TabletManageDevice> villages = AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().getCollectedTablist(LoggedcrlId);
+        final List<TabletManageDevice> villages = new ArrayList<>();/*AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDao().getCollectedTablist(LoggedcrlId);*/
+//        final List<TabletManageDevice> village = new ArrayList<>();
+        for (int i = 0; i < mainList.size(); i++) {
+            if (mainList.get(i).getPratham_ID().equalsIgnoreCase("") && mainList.get(i).getCollectedTab_serial_ID().equalsIgnoreCase("")) {
+                villages.add(mainList.get(i));
+            }
+        }
+
+
         //final List<Village> villages = new ArrayList();
 
       /*  for (TabletManageDevice tabletManageDevice : collectedTabVillagelist) {
@@ -266,8 +284,10 @@ public class AssignFragment extends Fragment implements ZXingScannerView.ResultH
             prathamId = splitted[1];
             //  Log.d("::::Tag", QrId + "  " + prathamId);
             if (QrId != null && prathamId != null && splitted.length == 2 && (!prathamId.equalsIgnoreCase("None"))) {
-                List l = AppDatabase.getDatabaseInstance(context).getTabTrackDao().checkExistance(QrId);
-                if (l.isEmpty()) {
+//                List l = AppDatabase.getDatabaseInstance(context).getTabTrackDao().checkExistance(QrId);
+
+//                if (l.isEmpty()) {
+                if (!checkExistence(QrId)) {
                     Log.d(":::", QrId + "  " + prathamId);
                     qr_pratham_id.setText(prathamId);
                     successMessage.setVisibility(View.VISIBLE);
@@ -374,7 +394,9 @@ public class AssignFragment extends Fragment implements ZXingScannerView.ResultH
                                 tabletManageDevice.setDate(new Utility().GetCurrentDateTime(false));
                                 tabletManageDevice.setStatus(tabStatus);
                                 tabletManageDevice.setIsPushed(0);
-                                AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().insertTabletManageDevice(tabletManageDevice);
+//                                AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDao().insertTabletManageDevice(tabletManageDevice);
+                             addTabTrack(tabletManageDevice);
+//                                mainList.add(tabletManageDevice);
                             } else {
                                 Toast.makeText(context, "select village", Toast.LENGTH_SHORT).show();
                             }
@@ -432,8 +454,20 @@ public class AssignFragment extends Fragment implements ZXingScannerView.ResultH
 
     public void setCount() {
         //todo
-        int count = AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().getAllReplaceDevice().size();
+//        int count = AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDao().getAllReplaceDevice().size();
+        int count = mainList.size();
         txt_count.setText("Count " + count);
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            Utility.showNoInternetDialog(context);
+            internetIsAvailable = false;
+        } else {
+            Utility.dismissNoInternetDialog();
+            internetIsAvailable = true;
+        }
     }
 
 
@@ -441,4 +475,24 @@ public class AssignFragment extends Fragment implements ZXingScannerView.ResultH
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    private boolean checkExistence(String qrId) {
+        for (int i = 0; i < mainList.size(); i++) {
+            if (mainList.get(i).getQR_ID().equalsIgnoreCase(qrId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void addTabTrack(TabletManageDevice tabletManageDevice) {
+
+        for (int i = 0; i < mainList.size(); i++) {
+            if (mainList.get(i).getId().equalsIgnoreCase(tabletManageDevice.getId())) {
+                mainList.remove(i);
+            }
+        }
+        mainList.add(tabletManageDevice);
+    }
+
 }

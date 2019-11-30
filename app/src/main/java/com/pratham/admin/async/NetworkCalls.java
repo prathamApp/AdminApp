@@ -8,7 +8,7 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
-import com.pratham.admin.interfaces.NetworkCallListner;
+import com.pratham.admin.interfaces.NetworkCallListener;
 import com.pratham.admin.interfaces.NetworkCallListnerSelectProgram;
 
 import org.json.JSONArray;
@@ -16,7 +16,7 @@ import org.json.JSONArray;
 public class NetworkCalls {
     private static NetworkCalls networkCalls;
     private ProgressDialog dialog;
-    //  private NetworkCallListner networkCallListner;
+    //  private NetworkCallListener networkCallListner;
     static Context mContext;
 
     private NetworkCalls() {
@@ -32,7 +32,7 @@ public class NetworkCalls {
 
 
     //push data(json) to url      used in Activity_QRScan,AssignTabletMD
-    public void postRequest(final NetworkCallListner networkCallListner, String url, String msg, String json, final String header) {
+    public void postRequest(final NetworkCallListener networkCallListener, String url, String msg, String json, final String header) {
         dialog = new ProgressDialog(mContext);
         dialog.setTitle(msg);
         dialog.setCancelable(false);
@@ -41,19 +41,19 @@ public class NetworkCalls {
         AndroidNetworking.post(url).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
             @Override
             public void onResponse(String response) {
-                networkCallListner.onResponce(response, header);
+                networkCallListener.onResponse(response, header);
                 dialog.dismiss();
             }
 
             @Override
             public void onError(ANError anError) {
-                networkCallListner.onError(anError, header);
+                networkCallListener.onError(anError, header);
                 dialog.dismiss();
             }
         });
     }
 
-    public void getRequest(final NetworkCallListner networkCallListner, String url, String msg, final String header) {
+    public void getRequest(final NetworkCallListener networkCallListener, String url, String msg, final String header) {
         dialog = new ProgressDialog(mContext);
         dialog.setTitle(msg);
         dialog.setCancelable(false);
@@ -62,13 +62,13 @@ public class NetworkCalls {
         AndroidNetworking.get(url).setPriority(Priority.MEDIUM).build().getAsJSONArray(new JSONArrayRequestListener() {
             @Override
             public void onResponse(JSONArray response) {
-                networkCallListner.onResponce(response.toString(), header);
+                networkCallListener.onResponse(response.toString(), header);
                 dialog.dismiss();
             }
 
             @Override
             public void onError(ANError anError) {
-                networkCallListner.onError(anError, header);
+                networkCallListener.onError(anError, header);
                 dialog.dismiss();
             }
         });
@@ -89,17 +89,17 @@ public class NetworkCalls {
             }
         });
     }
-    public void getRequestWithautLoader(final NetworkCallListner networkCallListner, String url, final String header) {
+    public void getRequestWithautLoader(final NetworkCallListener networkCallListener, String url, final String header) {
         AndroidNetworking.get(url).setPriority(Priority.MEDIUM).build().getAsJSONArray(new JSONArrayRequestListener() {
             @Override
             public void onResponse(JSONArray response) {
-                networkCallListner.onResponce(response.toString(), header);
+                networkCallListener.onResponse(response.toString(), header);
 
             }
 
             @Override
             public void onError(ANError anError) {
-                networkCallListner.onError(anError, header);
+                networkCallListener.onError(anError, header);
             }
         });
     }

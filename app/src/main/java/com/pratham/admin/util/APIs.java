@@ -96,6 +96,15 @@ public class APIs {
     public static final String GPpullCrlsURL = "http://www.swap.prathamcms.org/api/UserList?programId=14&statecode=";
     public static final String GPpullAserURL = "http://devtab.openiscool.org/api/AserVillage?programid=14&villageid=";
 
+
+    //DigitalSchoolProgram
+    public static final String DSP = "Digital School Program";
+    public static final String DSPpullVillagesURL = "http://www.hlearning.openiscool.org/api/village/get?programId=22&state=";
+    public static final String DSPpullGroupsURL = "http://www.devtab.openiscool.org/api/Group?programid=22&villageId=";
+    public static final String DSPpullStudentsURL = "http://www.devtab.openiscool.org/api/studentinfov2?programid=22&villageId=";
+    public static final String DSPpullCrlsURL = "http://www.swap.prathamcms.org/api/UserList?programId=22&statecode=";
+    public static final String DSPpullAserURL = "http://devtab.openiscool.org/api/AserVillage?programid=22&villageid=";
+
     //NewPushURL
     /*  public static final String HLpushToServerURL = "http://www.hlearning.openiscool.org/api/datapush/pushusage";*/
     public static final String HLpushToServerURL = "http://www.swap.prathamcms.org/api/QRSwap/SwapData";
@@ -124,11 +133,15 @@ public class APIs {
     // Push API of Forms
     public static final String PushForms = "http://www.swap.prathamcms.org/api/crlvisit/crlvisitpushdata";
 
+
     // Assign/ Return Admin App API
-    public static final String AssignReturn = "http://swap.prathamcms.org/api/AssignReturn/pushdata";
+//    public static final String AssignReturn = "http://swap.prathamcms.org/api/AssignReturn/pushdata";
+    public static final String AssignReturn = "http://www.swap.prathamcms.org/api/AssignReturnV2/PushData";
 
     // Replace Admin App API
-    public static final String ReplaceTab = "http://swap.prathamcms.org/api/ReplaceCollect/PushReplaceCollect";
+//    public static final String ReplaceTab = "http://swap.prathamcms.org/api/ReplaceCollect/PushReplaceCollect";
+    public static final String ReplaceTab = "http://www.swap.prathamcms.org/api/CollectReplaceV2/PushData";
+
 
     // Replace Admin App API
     public static final String GetCollectedTabList = "http://swap.prathamcms.org/api/ReplaceCollect/get?userid=";

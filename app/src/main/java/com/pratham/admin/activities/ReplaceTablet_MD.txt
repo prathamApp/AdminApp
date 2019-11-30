@@ -38,7 +38,7 @@ import com.pratham.admin.R;
 import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
-import com.pratham.admin.interfaces.NetworkCallListner;
+import com.pratham.admin.interfaces.NetworkCallListener;
 import com.pratham.admin.interfaces.QRScanListener;
 import com.pratham.admin.modalclasses.CRL;
 import com.pratham.admin.modalclasses.Modal_Log;

@@ -9,6 +9,7 @@ import android.provider.Settings;
 
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.activities.CatchoTransparentActivity;
+import com.pratham.admin.activities.CheckInternetDialog;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.modalclasses.Modal_Log;
 
@@ -31,6 +32,7 @@ public class Utility {
     public static String targetPath = "";
     public static String recievedFilePath = "";
     static ProgressDialog dialog;
+    static CheckInternetDialog checkInternetDialog;
 
     public static void showDialog(Context context) {
         dialog = new ProgressDialog(context);
@@ -175,5 +177,24 @@ public class Utility {
                 .activity(CatchoTransparentActivity.class)
                 .recipients("your-email@domain.com")
                 .build();
+    }
+
+    public static void clearCheckInternetInstance() {
+        checkInternetDialog = null;
+    }
+
+    public static void showNoInternetDialog(Context context) {
+        if (checkInternetDialog == null) {
+            checkInternetDialog = new CheckInternetDialog(context);
+        }
+        if (!checkInternetDialog.isShowing()) {
+            checkInternetDialog.show();
+        }
+    }
+
+    public static void dismissNoInternetDialog() {
+        if (checkInternetDialog != null) {
+            checkInternetDialog.dismiss();
+        }
     }
 }

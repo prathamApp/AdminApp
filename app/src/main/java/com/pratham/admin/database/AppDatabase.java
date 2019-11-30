@@ -65,7 +65,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract TabTrackDao getTabTrackDao();
 
-    public abstract TabletManageDeviceDao getTabletManageDeviceDoa();
+    public abstract TabletManageDeviceDao getTabletManageDeviceDao();
 
     public abstract GroupDao getGroupDao();
 

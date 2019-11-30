@@ -30,7 +30,7 @@ import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.DialogInterface;
-import com.pratham.admin.interfaces.NetworkCallListner;
+import com.pratham.admin.interfaces.NetworkCallListener;
 import com.pratham.admin.modalclasses.Aser;
 import com.pratham.admin.modalclasses.Attendance;
 import com.pratham.admin.modalclasses.CRL;
@@ -44,6 +44,7 @@ import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.Student;
+import com.pratham.admin.util.APIs;
 import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
@@ -64,7 +65,7 @@ import butterknife.OnClick;
 import static com.pratham.admin.util.APIs.PushForms;
 import static com.pratham.admin.util.ActivityManagePermission.isPermissionsGranted;
 
-public class MainActivity extends BaseActivity implements DialogInterface, ConnectionReceiverListener, PermissionResult, NetworkCallListner {
+public class MainActivity extends BaseActivity implements DialogInterface, ConnectionReceiverListener, PermissionResult, NetworkCallListener {
 
     @BindView(R.id.userName)
     EditText userName;
@@ -88,6 +89,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
     private String permissionsAsk[];
     private final int KEY_PERMISSION = 200;
 
+    boolean isUpdateClicked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,8 +172,10 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
     protected void onResume() {
         super.onResume();
 
-       /* userName.setText("ganeshtupe54");
-        password.setText("pratham");*/
+        /*userName.setText("ganeshtupe54");
+        password.setText("pratham");
+        userName.setText("pravinthorat");
+        password.setText("pratham123");*/
 
         // check connection & then upgrade latest version if available
         ApplicationController.getInstance().setConnectionListener(this);
@@ -261,9 +265,9 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
     }
 
     @Override
-    public void onResponce(String response, String header) {
-
-        updateApp();
+    public void onResponse(String response, String header) {
+        if (isUpdateClicked)
+            updateApp();
     }
 
     private void updateApp() {
@@ -358,7 +362,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
                 public void onClick(android.content.DialogInterface dialog, int whichButton) {
                     pushNewData();
                     dialog.dismiss();
-
+                    isUpdateClicked = true;
                 }
             });
 
@@ -669,7 +673,10 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
     }
 
     private void showDialog(String crlName) {
-        openNextActivity();
+        //todo push data when crl logs in
+        pushDataOnLogin();
+
+//        openNextActivity();
         //todo
         /*List tempList = AppDatabase.getDatabaseInstance(this).getTempStudentDao().getAllempStudent();
         CustomDialog customDialog;
@@ -680,6 +687,243 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
             openNextActivity();
         }*/
 
+    }
+
+    private void pushDataOnLogin() {
+       /* final List<Attendance> aObj;
+        final List<Coach> coachesObj;
+        final List<Community> communitiesObj;
+        final List<Completion> completionsObj;
+        final List<GroupSession> GroupSessionObj;
+        final List<GroupVisit> GroupVisitObj;
+        final List<Student> stdObj;
+        final List<Aser> aserObj;
+        final List<Groups> grpObj;
+        final List<ECEAsmt> ECEAsmtObj;
+        final List<Modal_Log> LogObj;*/
+        List<MetaData> metaDataList;
+        checkConnection();
+
+       /* aObj = AppDatabase.getDatabaseInstance(this).getAttendanceDao().getNewAttendances(0);
+        coachesObj = AppDatabase.getDatabaseInstance(this).getCoachDao().getNewCoaches(0);
+        communitiesObj = AppDatabase.getDatabaseInstance(this).getCommunityDao().getNewCommunities(0);
+        completionsObj = AppDatabase.getDatabaseInstance(this).getCompletionDao().getNewCompletions(0);
+        GroupSessionObj = AppDatabase.getDatabaseInstance(this).getGroupSessionDao().getNewGroupSessions(0);
+        GroupVisitObj = AppDatabase.getDatabaseInstance(this).getGroupVisitDao().getNewGroupVisits(0);
+        stdObj = AppDatabase.getDatabaseInstance(this).getStudentDao().getNewStudents(0);
+        aserObj = AppDatabase.getDatabaseInstance(this).getAserDao().getNewAser(0);
+        grpObj = AppDatabase.getDatabaseInstance(this).getGroupDao().getNewGroups(0);
+        ECEAsmtObj = AppDatabase.getDatabaseInstance(this).getECEAsmtDao().getNewECEAsmt(0);
+        LogObj = AppDatabase.getDatabaseInstance(this).getLogDao().getAllLogs(0);*/
+
+        // Push To Server
+        try {
+            if (internetIsAvailable) {
+
+                // Preview
+               /* AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Material_Light_Dialog);
+                dialogBuilder.setCancelable(false);
+                dialogBuilder.setTitle("Data Preview");*/
+
+                // Prepare Data
+
+                String metaData = addMetaDataToJson();
+//            String json = gson.toJson(mainList);
+                String json = "{ \"ManageDevicesJSON\":" + "" + "[]"
+                        + ",\"MetaData\":" + "" + metaData + "}";
+                Log.d("@@@@@", json);
+
+
+                /*Gson gson = new Gson();
+                MetaData metaData = new MetaData();
+                metaData.setKeys("pushDataTime");
+                metaData.setValue(new Utility().GetCurrentDateTime(false));
+                metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
+                String metaDataJSON = customParse(metaDataList);
+
+                final String json = "{ \"AttendanceJSON\":" + "" + gson.toJson(aObj).toString()
+                        + ",\"CoachesJSON\":" + "" + gson.toJson(coachesObj).toString()
+                        + ",\"CommunitiesJSON\":" + "" + gson.toJson(communitiesObj).toString()
+                        + ",\"CompletionsJSON\":" + "" + gson.toJson(completionsObj).toString()
+                        + ",\"StudentJSON\":" + "" + gson.toJson(stdObj).toString()
+                        + ",\"AserJSON\":" + "" + gson.toJson(aserObj).toString()
+                        + ",\"GroupsJSON\":" + "" + gson.toJson(grpObj).toString()
+                        + ",\"GroupVisitsJSON\":" + "" + gson.toJson(GroupVisitObj).toString()
+                        + ",\"GroupSessionJSON\":" + "" + gson.toJson(GroupSessionObj).toString()
+                        + ",\"ECEAsmtJSON\":" + "" + gson.toJson(ECEAsmtObj).toString()
+                        + ",\"LogJSON\":" + "" + gson.toJson(LogObj).toString()
+                        + ",\"metadata\":" + "" + metaDataJSON + "}";
+*/
+                //     Log.d("json all push :::", json);
+
+                // Preview Message
+               /* dialogBuilder.setTitle("Push Data Preview");
+                dialogBuilder.setMessage("Attendance : " + aObj.size()
+                        + "\nCoaches : " + coachesObj.size()
+                        + "\nCommunities : " + communitiesObj.size()
+                        + "\nCompletions : " + completionsObj.size()
+                        + "\nStudents : " + stdObj.size()
+                        + "\nAsers : " + aserObj.size()
+                        + "\nGroups : " + grpObj.size()
+                        + "\nGroupVisits : " + GroupVisitObj.size()
+                        + "\nGroupSessions : " + GroupSessionObj.size()
+                        + "\nECE Assessments : " + ECEAsmtObj.size()
+                        + "\nLogs : " + LogObj.size()
+                );*/
+
+
+             /*   dialogBuilder.setPositiveButton("Confirm", new android.content.DialogInterface.OnClickListener() {
+                    public void onClick(android.content.DialogInterface dialog, int whichButton) {
+*/
+                try {
+                    // Push Process
+                    ProgressDialog pd = new ProgressDialog(MainActivity.this);
+                    pd.setTitle("UPLOADING ... ");
+                    pd.setCancelable(false);
+                    pd.setCanceledOnTouchOutside(false);
+                    pd.show();
+
+                            /*if ((aObj.size() == 0) && (coachesObj.size() == 0) && (communitiesObj.size() == 0) && (completionsObj.size() == 0)
+                                    && (GroupVisitObj.size() == 0) && (GroupSessionObj.size() == 0)
+                                    && (stdObj.size() == 0) && (aserObj.size() == 0) && (grpObj.size() == 0) && (ECEAsmtObj.size() == 0) && (LogObj.size() == 0)
+                                *//*&& (CRLVisitObj.size() == 0)*//*) {
+                                // No Data Available
+//                                updateApp();
+                                Toast.makeText(MainActivity.this, "No New Data found for Pushing !", Toast.LENGTH_LONG).show();
+                                Log.d("json not pushed:::", json);
+                                if (pd.isShowing())
+                                    pd.dismiss();
+                            } else {*/
+                    pd.dismiss();
+                    NetworkCalls.getNetworkCallsInstance(MainActivity.this).postRequest(MainActivity.this, APIs.ReplaceTab, "uploading...", json, "push_forms");
+                               /* AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Log.d("responce", response);
+                                        AppDatabase.getDatabaseInstance(Dashboard.this).getMetaDataDao().insertMetadata(metaData);
+                                        showDialog(true);
+                                        // update flag
+                                        AppDatabase.getDatabaseInstance(Dashboard.this).getAttendanceDao().updateAllSentFlag(1);
+                                        AppDatabase.getDatabaseInstance(Dashboard.this).getCoachDao().updateAllSentFlag(1);
+                                        AppDatabase.getDatabaseInstance(Dashboard.this).getCommunityDao().updateAllSentFlag(1);
+                                        AppDatabase.getDatabaseInstance(Dashboard.this).getCompletionDao().updateAllSentFlag(1);
+                                        AppDatabase.getDatabaseInstance(Dashboard.this).getGroupSessionDao().updateAllSentFlag(1);
+                                        AppDatabase.getDatabaseInstance(Dashboard.this).getGroupVisitDao().updateAllSentFlag(1);
+                                        AppDatabase.getDatabaseInstance(Dashboard.this).getStudentDao().updateAllSentFlag(1);
+                                        AppDatabase.getDatabaseInstance(Dashboard.this).getAserDao().updateAllSentFlag(1);
+                                        AppDatabase.getDatabaseInstance(Dashboard.this).getGroupDao().updateAllSentFlag(1);
+                                        AppDatabase.getDatabaseInstance(Dashboard.this).getECEAsmtDao().updateAllSentFlag(1);
+                                        AppDatabase.getDatabaseInstance(Dashboard.this).getLogDao().updateAllSentFlag(1);
+
+
+                                        if (pd.isShowing())
+                                            pd.dismiss();
+                                    }
+
+                                    @Override
+                                    public void onError(ANError anError) {
+                                        new BlurPopupWindow.Builder(Dashboard.this)
+                                                .setContentView(R.layout.app_failure_dialog)
+                                                .setGravity(Gravity.CENTER)
+                                                .setScaleRatio(0.2f)
+                                                .setDismissOnClickBack(true)
+                                                .setDismissOnTouchBackground(true)
+                                                .setBlurRadius(10)
+                                                .setTintColor(0x30000000)
+                                                .build()
+                                                .show();
+//                                        No need to reset flag as All the Data will be either sent or not at all
+//                                        AppDatabase.getDatabaseInstance(Dashboard.this).getAttendanceDao().updateAllSentFlag(0);
+//                                        AppDatabase.getDatabaseInstance(Dashboard.this).getCoachDao().updateAllSentFlag(0);
+//                                        AppDatabase.getDatabaseInstance(Dashboard.this).getCommunityDao().updateAllSentFlag(0);
+//                                        AppDatabase.getDatabaseInstance(Dashboard.this).getCompletionDao().updateAllSentFlag(0);
+//                                        AppDatabase.getDatabaseInstance(Dashboard.this).getGroupVisitDao().updateAllSentFlag(0);
+//                                        AppDatabase.getDatabaseInstance(Dashboard.this).getGroupSessionDao().updateAllSentFlag(0);
+//                                        AppDatabase.getDatabaseInstance(Dashboard.this).getStudentDao().updateAllSentFlag(0);
+//                                        AppDatabase.getDatabaseInstance(Dashboard.this).getAserDao().updateAllSentFlag(0);
+//                                        AppDatabase.getDatabaseInstance(Dashboard.this).getGroupDao().updateAllSentFlag(0);
+//                                        AppDatabase.getDatabaseInstance(Dashboard.this).getECEAsmtDao().updateAllSentFlag(0);
+//                                        AppDatabase.getDatabaseInstance(Dashboard.this).getLogDao().updateAllSentFlag(0);
+
+                                        Toast.makeText(Dashboard.this, "Error in Data Pushing !", Toast.LENGTH_LONG).show();
+                                        if (pd.isShowing())
+                                            pd.dismiss();
+                                    }
+                                });*/
+//                            }
+                } catch (Exception e) {
+                    Modal_Log log = new Modal_Log();
+                    log.setCurrentDateTime(new Utility().GetCurrentDate());
+                    log.setErrorType("ERROR");
+                    log.setExceptionMessage(e.getMessage());
+                    log.setExceptionStackTrace(e.getStackTrace().toString());
+                    log.setMethodName("Dashboard" + "_" + "PushNewData");
+                    log.setDeviceId("");
+                    AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+                    BackupDatabase.backup(ApplicationController.getInstance());
+
+                    e.printStackTrace();
+                }
+
+//                    }
+                /* });*/
+
+               /* dialogBuilder.setNegativeButton("Cancel", new android.content.DialogInterface.OnClickListener() {
+                    public void onClick(android.content.DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog b = dialogBuilder.create();
+                b.show();*/
+            } else {
+                //No Internet
+                Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+
+               /* try {
+                    new BlurPopupWindow.Builder(MainActivity.this)
+                            .setContentView(R.layout.app_failure_dialog)
+                            .setGravity(Gravity.CENTER)
+                            .setScaleRatio(0.2f)
+                            .setDismissOnClickBack(true)
+                            .setDismissOnTouchBackground(true)
+                            .setBlurRadius(10)
+                            .setTintColor(0x30000000)
+                            .build()
+                            .show();
+                } catch (Exception e) {
+
+                    Toast.makeText(this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }*/
+
+            }
+
+            openNextActivity();
+
+        } catch (Exception e) {
+            Modal_Log log = new Modal_Log();
+            log.setCurrentDateTime(new Utility().GetCurrentDate());
+            log.setErrorType("ERROR");
+            log.setExceptionMessage(e.getMessage());
+            log.setExceptionStackTrace(e.getStackTrace().toString());
+            log.setMethodName("Dashboard" + "_" + "PushNewData");
+            log.setDeviceId("");
+            AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+            BackupDatabase.backup(ApplicationController.getInstance());
+
+            e.printStackTrace();
+        }
+    }
+    private String addMetaDataToJson() {
+
+        MetaData metaData = new MetaData();
+        metaData.setKeys("pushDataTime");
+        metaData.setValue(new Utility().GetCurrentDateTime(false));
+        List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
+        String metaDataJSON = customParse(metaDataList);
+        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
+        return metaDataJSON;
     }
 
     @OnClick(R.id.btn_clearData)

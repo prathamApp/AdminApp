@@ -98,7 +98,7 @@ public class CustomDialogQRScan_MD extends Dialog implements QRRecyclerListener 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String qrId = changesList.get(position).getQR_ID();
-                        AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().deleteTabletManageDevice(qrId);
+                        AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDao().deleteTabletManageDevice(qrId);
                         changesList.remove(position);
                         setCount();
                         qrScanAdapter_md.notifyDataSetChanged();
@@ -119,11 +119,11 @@ public class CustomDialogQRScan_MD extends Dialog implements QRRecyclerListener 
     public void onBackPressed() {
         super.onBackPressed();
         if (context instanceof AssignTabletMD) {
-            AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().deleteAssignAndReturnDevice();
+            AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDao().deleteAssignAndReturnDevice();
         } else if (context instanceof ReplaceTablet) {
-            AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().deleteReplaceDevice();
+            AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDao().deleteReplaceDevice();
         }
-        AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().insertTabletAllManageDevice(changesList);
+        AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDao().insertTabletAllManageDevice(changesList);
         ((Activity) assignTabletMD).finish();
     }
 }

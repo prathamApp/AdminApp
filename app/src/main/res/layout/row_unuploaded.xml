@@ -10,7 +10,7 @@
 
 
     <TextView
-        android:id="@+id/checkBox_student"
+        android:id="@+id/crl_name"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:drawableLeft="@drawable/ic_person_black_24dp"
@@ -28,7 +28,7 @@
         android:layout_height="10dp"
         android:background="#c6d880"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox_student"
+        app:layout_constraintBottom_toTopOf="@+id/crl_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

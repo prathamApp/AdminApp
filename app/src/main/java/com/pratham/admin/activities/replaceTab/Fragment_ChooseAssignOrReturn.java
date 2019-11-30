@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pratham.admin.R;
+import com.pratham.admin.modalclasses.TabletManageDevice;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -18,6 +21,7 @@ public class Fragment_ChooseAssignOrReturn extends Fragment {
     private OperationListener operationListener;
     private String LoggedcrlId;
     private String LoggedcrlName;
+    private List<TabletManageDevice> mainList;
 
     @Override
     public void onAttach(Context context) {
@@ -30,6 +34,7 @@ public class Fragment_ChooseAssignOrReturn extends Fragment {
         super.onCreate(savedInstanceState);
         LoggedcrlId = getArguments().getString("CRLid");
         LoggedcrlName = getArguments().getString("CRLname");
+        mainList = getArguments().getParcelableArrayList("mainList");
     }
 
     @Nullable
@@ -42,12 +47,12 @@ public class Fragment_ChooseAssignOrReturn extends Fragment {
 
     @OnClick(R.id.collect)
     public void onCollectClick() {
-        operationListener.onOperationSelect(CollectFragment.newInstance(LoggedcrlId, LoggedcrlName));
+        operationListener.onOperationSelect(CollectFragment.newInstance(LoggedcrlId, LoggedcrlName,mainList));
     }
 
     @OnClick({R.id.assign})
     public void onAssignClick() {
-        operationListener.onOperationSelect(AssignFragment.newInstance(LoggedcrlId, LoggedcrlName));
+        operationListener.onOperationSelect(AssignFragment.newInstance(LoggedcrlId, LoggedcrlName,mainList));
     }
 
     @Override

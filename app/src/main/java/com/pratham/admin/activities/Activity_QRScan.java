@@ -31,7 +31,7 @@ import com.pratham.admin.R;
 import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
-import com.pratham.admin.interfaces.NetworkCallListner;
+import com.pratham.admin.interfaces.NetworkCallListener;
 import com.pratham.admin.interfaces.QRScanListener;
 import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.TabTrack;
@@ -41,6 +41,7 @@ import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.Utility;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -49,7 +50,7 @@ import butterknife.OnClick;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 
-public class Activity_QRScan extends BaseActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener, NetworkCallListner {
+public class Activity_QRScan extends BaseActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener, NetworkCallListener {
 
     public ZXingScannerView mScannerView;
     @BindView(R.id.qr_frame)
@@ -81,19 +82,20 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
     boolean permission = false;
 
     boolean internetIsAvailable = false;
-    List<TabTrack> tabTracks;
+    //    List<TabTrack> tabTracks;
     CustomDialogQRScan customDialogQRScan;
 
+    List<TabTrack> mainList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrscan);
         ButterKnife.bind(this);
-
+        Utility.clearCheckInternetInstance();
         LoggedcrlId = getIntent().getStringExtra("CRLid");
         LoggedcrlName = getIntent().getStringExtra("CRLname");
-
+        mainList = new ArrayList<>();
         if (ContextCompat.checkSelfPermission(Activity_QRScan.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
@@ -150,14 +152,14 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
             programInfoLayout.setVisibility(View.INVISIBLE);
         }
         qr_spinner_crl.setText(LoggedcrlName);
-        List<TabTrack> oldList = AppDatabase.getDatabaseInstance(this).getTabTrackDao().getAllTabTrack();
+        /*List<TabTrack> oldList = AppDatabase.getDatabaseInstance(this).getTabTrackDao().getAllTabTrack();
         if (!oldList.isEmpty()) {
             for (int i = 0; i < oldList.size(); i++) {
                 oldList.get(i).setOldFlag(true);
             }
             AppDatabase.getDatabaseInstance(this).getTabTrackDao().insertAllTabTrack(oldList);
             oldList.clear();
-        }
+        }*/
 
         //  qr_spinner_crl.setEnabled(true);
         setCount();
@@ -190,8 +192,10 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
             prathamId = splitted[1];
             Log.d("::::Tag", QrId + "  " + prathamId);
             if (QrId != null && prathamId != null && splitted.length == 2 && (!prathamId.equalsIgnoreCase("None"))) {
-                List l = AppDatabase.getDatabaseInstance(this).getTabTrackDao().checkExistance(QrId);
-                if (l.isEmpty()) {
+//                List l = AppDatabase.getDatabaseInstance(this).getTabTrackDao().checkExistance(QrId);
+
+//                if (l.isEmpty()) {
+                if (!checkExistence(QrId)) {
                     Log.d(":::", QrId + "  " + prathamId);
                     qr_pratham_id.setText(prathamId);
                     successMessage.setVisibility(View.VISIBLE);
@@ -240,6 +244,16 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
 
     }
 
+    private boolean checkExistence(String qrId) {
+        for (int i = 0; i < mainList.size(); i++) {
+            if (mainList.get(i).getQR_ID().equalsIgnoreCase(qrId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     @Override
     public void onDestroy() {
         if (mScannerView != null) mScannerView.stopCamera();
@@ -282,7 +296,9 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
 //            tabTrack.setDate(DateFormat.getDateTimeInstance().format(new Date()));
             tabTrack.setDate(new Utility().GetCurrentDateTime(false));
 
-            AppDatabase.getDatabaseInstance(this).getTabTrackDao().insertTabTrack(tabTrack);
+//            AppDatabase.getDatabaseInstance(this).getTabTrackDao().insertTabTrack(tabTrack);
+            addTabTrack(tabTrack);
+//            mainList.add(tabTrack);
             Toast.makeText(Activity_QRScan.this, "Inserted Successfully ", Toast.LENGTH_LONG).show();
             setCount();
             cleaFields();
@@ -290,6 +306,16 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
         } else {
             Toast.makeText(this, "Fill In All The Details", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void addTabTrack(TabTrack tabTrack) {
+
+        for (int i = 0; i < mainList.size(); i++) {
+            if (mainList.get(i).getQR_ID().equalsIgnoreCase(tabTrack.getQR_ID())) {
+                mainList.remove(i);
+            }
+        }
+        mainList.add(tabTrack);
     }
 
     private void cleaFields() {
@@ -302,16 +328,17 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
 
     public void setCount() {
         //todo
-        int count = AppDatabase.getDatabaseInstance(this).getTabTrackDao().getAllTabTrack().size();
+        int count = mainList.size();
+//        int count = AppDatabase.getDatabaseInstance(this).getTabTrackDao().getAllTabTrack().size();
         txt_count.setText("Count " + count);
     }
 
     @Override
     public void onBackPressed() {
         //todo
-        tabTracks = AppDatabase.getDatabaseInstance(this).getTabTrackDao().getAllTabTrack();
-        if (!tabTracks.isEmpty()) {
-            customDialogQRScan = new CustomDialogQRScan(this, tabTracks);
+//        tabTracks = AppDatabase.getDatabaseInstance(this).getTabTrackDao().getAllTabTrack();
+        if (!mainList.isEmpty()) {
+            customDialogQRScan = new CustomDialogQRScan(this, mainList);
             customDialogQRScan.show();
             txt_count.setText("Count " + 0);
         } else {
@@ -348,10 +375,11 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
     }
 
     @Override
-    public void onResponce(String response, String header) {
+    public void onResponse(String response, String header) {
         if (header.equals("uploadDevises")) {
             customDialogQRScan.dismiss();
-            AppDatabase.getDatabaseInstance(Activity_QRScan.this).getTabTrackDao().deleteAllTabTracks();
+//            AppDatabase.getDatabaseInstance(Activity_QRScan.this).getTabTrackDao().deleteAllTabTracks();
+            mainList.clear();
             finish();
         }
     }
@@ -368,7 +396,7 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
     public void update() {
         if (internetIsAvailable) {
             Gson gson = new Gson();
-            String json = gson.toJson(tabTracks);
+            String json = gson.toJson(mainList);
             uploadAPI(APIs.TabTrackPushAPI, json);
         } else {
             Toast.makeText(this, "No Internet Connection...", Toast.LENGTH_SHORT).show();
@@ -378,8 +406,10 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (!isConnected) {
+            Utility.showNoInternetDialog(this);
             internetIsAvailable = false;
         } else {
+            Utility.dismissNoInternetDialog();
             internetIsAvailable = true;
         }
     }
@@ -396,7 +426,8 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
     @Override
     public void clearChanges() {
         //todo
-        AppDatabase.getDatabaseInstance(Activity_QRScan.this).getTabTrackDao().deleteAllTabTracks();
+//        AppDatabase.getDatabaseInstance(Activity_QRScan.this).getTabTrackDao().deleteAllTabTracks();
+        mainList.clear();
         customDialogQRScan.dismiss();
     }
 

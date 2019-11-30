@@ -30,7 +30,7 @@ import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.DashRVClickListener;
-import com.pratham.admin.interfaces.NetworkCallListner;
+import com.pratham.admin.interfaces.NetworkCallListener;
 import com.pratham.admin.modalclasses.Aser;
 import com.pratham.admin.modalclasses.Attendance;
 import com.pratham.admin.modalclasses.Coach;
@@ -59,7 +59,7 @@ import butterknife.ButterKnife;
 import static com.pratham.admin.util.APIs.PushForms;
 
 
-public class Dashboard extends BaseActivity implements DashRVClickListener, ConnectionReceiverListener, NetworkCallListner {
+public class Dashboard extends BaseActivity implements DashRVClickListener, ConnectionReceiverListener, NetworkCallListener {
 
     // Ref : https://www.dev2qa.com/android-cardview-with-image-and-text-example/
     String LoggedcrlId = "", LoggedcrlName = "", LoggedCRLnameSwapStd = "";
@@ -530,7 +530,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
     }
 
     @Override
-    public void onResponce(String response, String header) {
+    public void onResponse(String response, String header) {
         if (header.equals("push_forms")) {
             Log.d("responce", response);
             AppDatabase.getDatabaseInstance(Dashboard.this).getMetaDataDao().insertMetadata(metaData);

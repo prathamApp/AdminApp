@@ -32,9 +32,6 @@
                 android:text="CheckBox"
                 android:textColor="#000000" />
         </HorizontalScrollView>
-
-
-
         <HorizontalScrollView
             android:layout_width="0dp"
             android:layout_height="50dp"

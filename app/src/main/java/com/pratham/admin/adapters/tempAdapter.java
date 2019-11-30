@@ -46,7 +46,7 @@ public class tempAdapter extends RecyclerView.Adapter<tempAdapter.ViewHolder>{
         public ViewHolder(View itemView) {
             super(itemView);
             // ButterKnife.bind(this,itemView);
-            checkBox_student = itemView.findViewById(R.id.checkBox_student);
+            checkBox_student = itemView.findViewById(R.id.crl_name);
         }
     }
 }

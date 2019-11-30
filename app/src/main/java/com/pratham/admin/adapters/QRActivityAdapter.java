@@ -18,12 +18,12 @@ import com.pratham.admin.modalclasses.TabTrack;
 
 import java.util.List;
 
-public class QRScanAdapter extends RecyclerView.Adapter<QRScanAdapter.ViewHolder> {
+public class QRActivityAdapter extends RecyclerView.Adapter<QRActivityAdapter.ViewHolder> {
     private List<TabTrack> tabTracks;
     QRRecyclerListener qrRecyclerListener;
     Context context;
 
-    public QRScanAdapter(CustomDialogQRScan context, List<TabTrack> tabTracks) {
+    public QRActivityAdapter(CustomDialogQRScan context, List<TabTrack> tabTracks) {
         this.tabTracks = tabTracks;
         this.qrRecyclerListener = (QRRecyclerListener) context;
     }
@@ -32,19 +32,19 @@ public class QRScanAdapter extends RecyclerView.Adapter<QRScanAdapter.ViewHolder
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.qr_scan_row, parent, false);
-        return new QRScanAdapter.ViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.qr_activity_row, parent, false);
+        return new QRActivityAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        String fname = tabTracks.get(holder.getAdapterPosition()).getCRL_Name();
+        String crl_name = tabTracks.get(holder.getAdapterPosition()).getCRL_Name();
         if (tabTracks.get(holder.getAdapterPosition()).getOldFlag() == true) {
             holder.parent_recycler_row.setBackgroundColor(Color.parseColor("#fdeddf"));
         } else {
             holder.parent_recycler_row.setBackgroundColor(Color.parseColor("#ffffff"));
         }
-        holder.checkBox_student.setText(fname);
+        holder.crl_name.setText(crl_name);
         holder.txt_crl_id.setText(tabTracks.get(holder.getAdapterPosition()).getCRL_ID());
         holder.txt_qr_id.setText(tabTracks.get(holder.getAdapterPosition()).getQR_ID());
         holder.txt_date.setText(tabTracks.get(holder.getAdapterPosition()).getDate());
@@ -68,14 +68,14 @@ public class QRScanAdapter extends RecyclerView.Adapter<QRScanAdapter.ViewHolder
 
     class ViewHolder extends RecyclerView.ViewHolder {
         // @BindView(R.id.checkBox_student)
-        TextView checkBox_student, txt_qr_id, txt_crl_id, txt_state, txt_pratham_id, txt_date, txt_sr_no;
+        TextView crl_name, txt_qr_id, txt_crl_id, txt_state, txt_pratham_id, txt_date, txt_sr_no;
         ImageView iv_delete;
         ConstraintLayout parent_recycler_row;
 
         public ViewHolder(View itemView) {
             super(itemView);
             //ButterKnife.bind(this,itemView);
-            checkBox_student = itemView.findViewById(R.id.crl_name);
+            crl_name = itemView.findViewById(R.id.crl_name);
             txt_qr_id = itemView.findViewById(R.id.txt_qr_id);
             txt_crl_id = itemView.findViewById(R.id.txt_crl_id);
             txt_state = itemView.findViewById(R.id.txt_state);

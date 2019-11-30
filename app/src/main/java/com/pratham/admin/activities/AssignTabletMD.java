@@ -34,10 +34,11 @@ import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.interfaces.DevicePrathamIdLisner;
-import com.pratham.admin.interfaces.NetworkCallListner;
+import com.pratham.admin.interfaces.NetworkCallListener;
 import com.pratham.admin.interfaces.QRScanListener;
 import com.pratham.admin.modalclasses.CRL;
 import com.pratham.admin.modalclasses.CrlInfoRecycler;
+import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.TabletManageDevice;
 import com.pratham.admin.util.APIs;
@@ -60,7 +61,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class AssignTabletMD extends BaseActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener, DevicePrathamIdLisner, NetworkCallListner {
+public class AssignTabletMD extends BaseActivity implements ZXingScannerView.ResultHandler, ConnectionReceiverListener, QRScanListener, DevicePrathamIdLisner, NetworkCallListener {
     final String ASSIGN = "Assign";
     final String RETURN = "Return";
     public ZXingScannerView mScannerView;
@@ -100,7 +101,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
     String LoggedcrlId;
     String assignedCRL = "";
     CustomDialogQRScan_MD customDialogQRScan_md;
-    List<TabletManageDevice> tabletMD;
+    //    List<TabletManageDevice> tabletMD;
     boolean internetIsAvailable = false;
     String tabStatus, isDamagedText, damageTypeText;
     List<CrlInfoRecycler> crlList_md = new ArrayList<>();
@@ -109,6 +110,9 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
     String[] options;
     private Context context;
 
+
+    List<TabletManageDevice> mainList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,6 +120,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
         ButterKnife.bind(this);
         context = AssignTabletMD.this;
         allCRLlist = new ArrayList<>();
+        mainList = new ArrayList<>();
         LoggedcrlId = getIntent().getStringExtra("CRLid");
         LoggedcrlName = getIntent().getStringExtra("CRLname");
         tabStatus = getIntent().getStringExtra("tabStatus");
@@ -132,7 +137,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
             isDamaged.setVisibility(View.VISIBLE);
             damageType.setVisibility(View.VISIBLE);
             comments.setVisibility(View.VISIBLE);
-            setLisnerToRuturnTabletSpinner();
+            setListenerToReturnTabletSpinner();
         }
         loadCamera();
     }
@@ -141,12 +146,13 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
     protected void onResume() {
         super.onResume();
         checkConnection();
+        Utility.clearCheckInternetInstance();
         //  int crlCount = AppDatabase.getDatabaseInstance(context).getCRLmd_dao().getCRLs_mdCount();
         int crlCount = AppDatabase.getDatabaseInstance(context).getCRLdao().getCRLsCount();
         if (crlCount <= 0) {
             Toast.makeText(context, "Please pull Data ", Toast.LENGTH_SHORT).show();
             AlertDialog builder = new AlertDialog.Builder(this).create();
-            builder.setTitle("No CRL's are available");
+            builder.setTitle("No CRLs are available");
             builder.setIcon(R.drawable.ic_error_outline_black_24dp);
             builder.setCancelable(false);
             builder.setButton("OK", new DialogInterface.OnClickListener() {
@@ -159,14 +165,14 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
 
         } else {
             setRules();
-            List<TabletManageDevice> oldList = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().getAllAssignAndReturnDevice();
+           /* List<TabletManageDevice> oldList = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDao().getAllAssignAndReturnDevice();
             if (!oldList.isEmpty()) {
                 for (int i = 0; i < oldList.size(); i++) {
                     oldList.get(i).setOldFlag(true);
                 }
-                AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().insertTabletAllManageDevice(oldList);
+                AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDao().insertTabletAllManageDevice(oldList);
                 oldList.clear();
-            }
+            }*/
 
             loadSpinner();
             setCount();
@@ -228,7 +234,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
         }
     }
 
-    private void setLisnerToRuturnTabletSpinner() {
+    private void setListenerToReturnTabletSpinner() {
         isDamaged.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
@@ -560,10 +566,11 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                         tabletManageDevice.setOldFlag(false);
                         tabletManageDevice.setDate(new Utility().GetCurrentDateTime(false));
                         tabletManageDevice.setIsPushed(0);
-                        AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().insertTabletManageDevice(tabletManageDevice);
+//                        AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDao().insertTabletManageDevice(tabletManageDevice);
+                        mainList.add(tabletManageDevice);
                         Toast.makeText(AssignTabletMD.this, "Inserted Successfully ", Toast.LENGTH_LONG).show();
                         setCount();
-                        cleaFields();
+                        clearFields();
                         resetCamera();
                     } else {
                         Toast.makeText(context, "select damage type", Toast.LENGTH_SHORT).show();
@@ -584,10 +591,11 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                     tabletManageDevice.setOldFlag(false);
                     tabletManageDevice.setDate(new Utility().GetCurrentDateTime(false));
                     tabletManageDevice.setIsPushed(0);
-                    AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().insertTabletManageDevice(tabletManageDevice);
+//                    AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDao().insertTabletManageDevice(tabletManageDevice);
+                    mainList.add(tabletManageDevice);
                     Toast.makeText(AssignTabletMD.this, "Inserted Successfully ", Toast.LENGTH_LONG).show();
                     setCount();
-                    cleaFields();
+                    clearFields();
                     resetCamera();
                 }
             } else {
@@ -599,11 +607,12 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
     }
 
     public void setCount() {
-        int count = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().getAllAssignAndReturnDevice().size();
+//        int count = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDao().getAllAssignAndReturnDevice().size();
+        int count = mainList.size();
         txt_count.setText("Count " + count);
     }
 
-    private void cleaFields() {
+    private void clearFields() {
         crlNameSpinner.setSelection(0);
         isDamaged.setSelection(0);
         comments.setText("");
@@ -614,12 +623,14 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
     @Override
     public void onBackPressed() {
         //todo
-        tabletMD = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().getAllAssignAndReturnDevice();
-        if (!tabletMD.isEmpty()) {
-            customDialogQRScan_md = new CustomDialogQRScan_MD(this, tabletMD);
+//        tabletMD = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDao().getAllAssignAndReturnDevice();
+//        tabletMD = mainList;
+        if (!mainList.isEmpty()) {
+            customDialogQRScan_md = new CustomDialogQRScan_MD(this, mainList);
             customDialogQRScan_md.show();
             txt_count.setText("Count " + 0);
         } else {
+            Log.d("finished", "\"finished\",: ");
             finish();
         }
     }
@@ -639,7 +650,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                 dialog.dismiss();
                 customDialogQRScan_md.dismiss();
                 //todo user Based delete
-                AppDatabase.getDatabaseInstance(AssignTabletMD.this).getTabletManageDeviceDoa().deleteAllTabletManageDevice();
+                AppDatabase.getDatabaseInstance(AssignTabletMD.this).getTabletManageDeviceDao().deleteAllTabletManageDevice();
                 finish();
             }
 
@@ -656,7 +667,11 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
     public void update() {
         if (internetIsAvailable) {
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-            String json = gson.toJson(tabletMD);
+//            String json = gson.toJson(tabletMD);
+            String metadata = addMetaDataToJson();
+            String json = "{ \"ManageDevicesJSON\":" + "" + gson.toJson(mainList)
+                    + ",\"MetaData\":" + "" + metadata + "}";
+            Log.d("@@@@@", json);
             uploadAPI(APIs.AssignReturn, json);
         } else {
             checkConnection();
@@ -664,11 +679,38 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
         }
     }
 
+    private String addMetaDataToJson() {
+
+        MetaData metaData = new MetaData();
+        metaData.setKeys("pushDataTime");
+        metaData.setValue(new Utility().GetCurrentDateTime(false));
+        List<MetaData> metaDataList = AppDatabase.getDatabaseInstance(this).getMetaDataDao().getAllMetaData();
+        String metaDataJSON = customParse(metaDataList);
+        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
+        return metaDataJSON;
+    }
+
+    private String customParse(List<MetaData> metaDataList) {
+        String json = "{";
+
+        for (int i = 0; i < metaDataList.size(); i++) {
+            json = json + "\"" + metaDataList.get(i).getKeys() + "\":\"" + metaDataList.get(i).getValue() + "\"";
+            if (i < metaDataList.size() - 1) {
+                json = json + ",";
+            }
+        }
+        json = json + "}";
+
+        return json;
+    }
+
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (!isConnected) {
+            Utility.showNoInternetDialog(this);
             internetIsAvailable = false;
         } else {
+            Utility.dismissNoInternetDialog();
             internetIsAvailable = true;
         }
     }
@@ -685,7 +727,8 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
     @Override
     public void clearChanges() {
         //todo
-        AppDatabase.getDatabaseInstance(AssignTabletMD.this).getTabletManageDeviceDoa().deleteAssignAndReturnDevice();
+//        AppDatabase.getDatabaseInstance(AssignTabletMD.this).getTabletManageDeviceDao().deleteAssignAndReturnDevice();
+        mainList.clear();
         customDialogQRScan_md.dismiss();
     }
 
@@ -695,7 +738,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
             myDeviceList.dismiss();
             /* check prathamID is not none ie for Not blank QR code*/
             if ((!prathamIdNew.equalsIgnoreCase("None"))) {
-              /*  List l = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDoa().checkExistanceTabletManageDevice(QrId);
+              /*  List l = AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDao().checkExistanceTabletManageDevice(QrId);
                 if (l.isEmpty()) {*/
                 // QrId = QrIdNEW;
                 prathamId = prathamIdNew;
@@ -713,12 +756,13 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
     }
 
     @Override
-    public void onResponce(String response, String header) {
+    public void onResponse(String response, String header) {
         if (header.equals("AssignTab")) {
             customDialogQRScan_md.dismiss();
             //todo user Based delete
-            AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDoa().updateAssignAndReturnIsPushedFlag();
-           // AppDatabase.getDatabaseInstance(AssignTabletMD.this).getTabletManageDeviceDoa().deleteAllTabletManageDevice();
+            mainList.clear();
+//            AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDao().updateAssignAndReturnIsPushedFlag();
+            // AppDatabase.getDatabaseInstance(AssignTabletMD.this).getTabletManageDeviceDao().deleteAllTabletManageDevice();
             finish();
         } else if (header.equals("loading_device")) {
             try {

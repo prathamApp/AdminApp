@@ -61,7 +61,7 @@ public class RightSideAdapter extends RecyclerView.Adapter<RightSideAdapter.Left
         public LeftViewHolder(View itemView) {
             super(itemView);
             // ButterKnife.bind(this,itemView);
-            checkBox_student = itemView.findViewById(R.id.checkBox_student);
+            checkBox_student = itemView.findViewById(R.id.crl_name);
         }
     }
 }
