@@ -21,7 +21,7 @@ public class BackupDatabase {
 
     public static void backup(Context mContext) {
         try {
-            File sd = new File(Environment.getExternalStorageDirectory() + "/.PrathamAdmin");
+            File sd = new File(Environment.getExternalStorageDirectory() + "/PrathamBackups" + "/.PrathamAdmin");
             if (!sd.exists())
                 sd.mkdir();
 
