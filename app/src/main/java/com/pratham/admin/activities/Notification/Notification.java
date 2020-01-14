@@ -187,9 +187,10 @@ public class Notification extends AppCompatActivity implements NetworkCallListen
                     nf_recyclerView.setItemAnimator(new DefaultItemAnimator());
                     nf_recyclerView.setAdapter(nfAdapter);
 
-                    //notificationData();
                     Collections.sort(notificationList, new StringDateComparator());
                     nfAdapter.notifyDataSetChanged();
+                    //notificationData();
+
                 } else {
                     AlertDialog alertDialog = new AlertDialog.Builder(Notification.this).create();
                     alertDialog.setTitle("No Notification Found");
