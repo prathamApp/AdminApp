@@ -206,7 +206,7 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
         } else {
             Toast.makeText(this, "Please Fill All the Fields !!!", Toast.LENGTH_SHORT).show();
         }
-
+        BackupDatabase.backup(this);
     }
 
     private void resetForm() {
@@ -240,6 +240,7 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
             }
         });
         populateVillages();
+        populateStudents(selectedGroupsArray, selectedGroupsNamesArray);
 
         rg_Present.clearCheck();
         rb_Yes.setChecked(true);
@@ -372,7 +373,8 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
         registeredStd = new ArrayList();
         selectedStudents = "";
         selectedStudentNames = "";
-
+        Stds.clear();
+        StdNames.clear();
         for (int i = 0; i < AllStudentsInDB.size(); i++) {
             for (int j = 0; j < selectedgrpID.size(); j++) {
                 if (AllStudentsInDB.get(i).getGroupId().equalsIgnoreCase(selectedgrpID.get(j))) {

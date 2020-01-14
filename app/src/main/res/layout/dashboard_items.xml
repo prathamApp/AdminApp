@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_8sdp"
+    android:layout_margin="@dimen/_5sdp"
     app:cardCornerRadius="@dimen/_8sdp"
     app:cardElevation="@dimen/_10sdp">
 
@@ -28,10 +28,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="@dimen/_16sdp"
+            android:layout_margin="@dimen/_12sdp"
             android:gravity="center_horizontal"
             android:textColor="#000000"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_10sdp"
             android:textStyle="normal" />
 
     </LinearLayout>

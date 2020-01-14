@@ -103,6 +103,10 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
                 askCompactPermissions(permissionArray, this);
         }
 
+        // check connection & then upgrade latest version if available
+        ApplicationController.getInstance().setConnectionListener(this);
+        checkConnection();
+
         PackageInfo pinfo = null;
         try {
             pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -173,13 +177,11 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
         super.onResume();
 
         /*userName.setText("ganeshtupe54");
-        password.setText("pratham");
-        userName.setText("pravinthorat");
+        password.setText("pratham");*/
+        /*userName.setText("pravinthorat");
         password.setText("pratham123");*/
 
-        // check connection & then upgrade latest version if available
-        ApplicationController.getInstance().setConnectionListener(this);
-        checkConnection();
+
 
         userName.setText("");
         password.setText("");
@@ -258,7 +260,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
             public void onClick(android.content.DialogInterface dialog, int which) {
                 /*UPLOAD TO SERVER*/
                 dialog.dismiss();
-                checkVersion();
+
             }
         });
         alertDialogBuilder.show();
@@ -563,12 +565,15 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
                             e.printStackTrace();
                         }
 
+                        dialog.dismiss();
+
                     }
                 });
 
                 dialogBuilder.setNegativeButton("Cancel", new android.content.DialogInterface.OnClickListener() {
                     public void onClick(android.content.DialogInterface dialog, int whichButton) {
                         dialog.dismiss();
+                        isUpdateClicked=false;
                     }
                 });
 
@@ -973,6 +978,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
         intent.putExtra("CRLname", crlName);
         intent.putExtra("CRLnameSwapStd", crlName + "(" + crlID + ")");
         startActivity(intent);
+        finish();
     }
 
 }

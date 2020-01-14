@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.kyleduo.blurpopupwindow.library.BlurPopupWindow;
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
+import com.pratham.admin.activities.Notification.Notification;
 import com.pratham.admin.adapters.DashRVDataAdapter;
 import com.pratham.admin.async.NetworkCalls;
 import com.pratham.admin.database.AppDatabase;
@@ -111,7 +112,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
         // Create the recyclerview.
         RecyclerView dashRecyclerView = (RecyclerView) findViewById(R.id.card_view_recycler_list);
         // Create the grid layout manager with 2 columns.
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 5);
         // Set layout manager.
         dashRecyclerView.setLayoutManager(gridLayoutManager);
 
@@ -484,6 +485,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
             DashboardItemList.add(new DashboardItem("Student Management", R.drawable.ic_pos));
             DashboardItemList.add(new DashboardItem("Push Data", R.drawable.ic_push));
             DashboardItemList.add(new DashboardItem("Manage Device", R.drawable.tablet));
+            DashboardItemList.add(new DashboardItem("Notifications", R.drawable.ic_notifications_none_black_24dp));
         }
     }
 
@@ -518,6 +520,12 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
 
         } else if (name.contains("Manage Device")) {
             Intent intent = new Intent(Dashboard.this, ManageDevice.class);
+            intent.putExtra("CRLid", LoggedcrlId);
+            intent.putExtra("CRLname", LoggedcrlName);
+            startActivity(intent);
+
+        } else if (name.contains("Notifications")) {
+            Intent intent = new Intent(Dashboard.this, Notification.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
             startActivity(intent);
@@ -580,5 +588,12 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
 //           AppDatabase.getDatabaseInstance(Dashboard.this).getLogDao().updateAllSentFlag(0);
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

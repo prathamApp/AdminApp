@@ -151,4 +151,7 @@ public class APIs {
 
     //Store person AOI
     public static final String storePersonAPI = "http://www.swap.prathamcms.org/api/Vendor?programId=17&statecode=";
+
+    //Notification API
+    public static final String notificationAPI = " http://swap.prathamcms.org/api/tabletnotification/get?userid=2648";
 }

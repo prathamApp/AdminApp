@@ -97,13 +97,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_8sdp"
             android:orientation="horizontal"
-            android:weightSum="3">
+            android:weightSum="5">
 
             <EditText
                 android:id="@+id/edt_FirstName"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:hint="Enter First Name"
                 android:imeOptions="actionNext"
@@ -117,10 +117,10 @@
 
             <EditText
                 android:id="@+id/edt_MiddleName"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_8sdp"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:hint="Enter Middle Name"
                 android:imeOptions="actionNext"
@@ -134,10 +134,10 @@
 
             <EditText
                 android:id="@+id/edt_LastName"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_8sdp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:hint="Enter Last Name"
                 android:imeOptions="actionNext"

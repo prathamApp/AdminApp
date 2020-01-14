@@ -46,12 +46,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        android:hardwareAccelerated="true">
+        <activity
+            android:name=".activities.Notification.Notification"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateHidden" >
+<!--            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
         <activity
             android:name=".activities.replaceTab.ReplaceTablet"
             android:screenOrientation="sensorLandscape" />
-
-
         <activity
             android:name=".activities.MainActivity"
             android:screenOrientation="sensorLandscape"
@@ -150,11 +159,13 @@
             android:name=".activities.Status_Action"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden" />
-        <!-- <activity
+        <!--
+ <activity
              android:name=".activities.ReplaceTablet_MD"
              android:screenOrientation="sensorLandscape"
              android:theme="@style/NoActionBr"
-             android:windowSoftInputMode="stateHidden" />-->
+             android:windowSoftInputMode="stateHidden" />
+        -->
         <activity
             android:name=".activities.CatchoTransparentActivity"
             android:screenOrientation="sensorLandscape" />
@@ -166,6 +177,11 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
+
+        <service
+            android:name=".Service.MyService"
+            android:enabled="true" />
+
     </application>
 
 </manifest>
