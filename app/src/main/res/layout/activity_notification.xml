@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        tools:context=".activities.Dashboard">
+
+        <TextView
+            android:id="@+id/label_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginLeft="@dimen/_8sdp"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:background="@drawable/custom_border"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:padding="@dimen/_8sdp"
+            android:text="Notifications"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/_20sdp"
+            android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginLeft="@dimen/_8sdp"
+        android:layout_marginRight="@dimen/_8sdp"
+        android:padding="5dp"
+        android:drawableLeft="@drawable/ic_search_grey_24dp"
+        android:hint="Search by Name, Id and DamageType"
+        android:background="@drawable/rectangular_bg"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_8sdp"/>
+
+    </LinearLayout>
