@@ -129,44 +129,6 @@ public class Notification extends AppCompatActivity implements NetworkCallListen
         NetworkCalls.getNetworkCallsInstance(this).getRequest(this, url, "Loading Notifications..", "loading_devises");
     }
 
-        /*private void notificationData(){
-        NotificationData notificationData = new NotificationData();
-                    notificationData.setReceiveDate("01/01/2020 12:00");
-                    notificationData.setFromName("Sujit");
-                    notificationData.setFromId("1234");
-                    notificationData.setDamageType("Test Entry");
-                    notificationList.add(notificationData);
-
-                    notificationData = new NotificationData();
-                    notificationData.setReceiveDate("09/01/2020 23:00");
-                    notificationData.setFromName("Jay lonkar");
-                    notificationData.setFromId("4321");
-                    notificationData.setDamageType("Test Entry");
-                    notificationList.add(notificationData);
-
-                    notificationData = new NotificationData();
-                    notificationData.setReceiveDate("09/01/2020 20:40");
-                    notificationData.setFromName("Jay lonkar");
-                    notificationData.setFromId("4321");
-                    notificationData.setDamageType("Test Entry");
-                    notificationList.add(notificationData);
-
-                    notificationData = new NotificationData();
-                    notificationData.setReceiveDate("09/01/2020 22:50");
-                    notificationData.setFromName("Jay lonkar");
-                    notificationData.setFromId("4321");
-                    notificationData.setDamageType("Test Entry");
-                    notificationList.add(notificationData);
-
-                    notificationData = new NotificationData();
-                    notificationData.setReceiveDate("01/12/2019 00:50");
-                    notificationData.setFromName("Ketan");
-                    notificationData.setFromId("1431");
-                    notificationData.setDamageType("Test Entry");
-                    notificationList.add(notificationData);
-
-    }*/
-
     @Override
     public void onResponse(String response1, String header) {
         if (header.equals("loading_devises")) {
@@ -185,11 +147,11 @@ public class Notification extends AppCompatActivity implements NetworkCallListen
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                     nf_recyclerView.setLayoutManager(layoutManager);
                     nf_recyclerView.setItemAnimator(new DefaultItemAnimator());
+                    //for stable view of recyclerview.
+                    nf_recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 0);
                     nf_recyclerView.setAdapter(nfAdapter);
-
                     Collections.sort(notificationList, new StringDateComparator());
                     nfAdapter.notifyDataSetChanged();
-                    //notificationData();
 
                 } else {
                     AlertDialog alertDialog = new AlertDialog.Builder(Notification.this).create();
