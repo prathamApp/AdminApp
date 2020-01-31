@@ -45,6 +45,7 @@ import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.Student;
+import com.pratham.admin.util.APIs;
 import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
@@ -57,7 +58,15 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.pratham.admin.util.APIs.DSP;
+import static com.pratham.admin.util.APIs.GP;
+import static com.pratham.admin.util.APIs.HG;
+import static com.pratham.admin.util.APIs.PI;
 import static com.pratham.admin.util.APIs.PushForms;
+import static com.pratham.admin.util.APIs.RI;
+import static com.pratham.admin.util.APIs.RIM;
+import static com.pratham.admin.util.APIs.SC;
+import static com.pratham.admin.util.APIs.village;
 
 
 public class Dashboard extends BaseActivity implements DashRVClickListener, ConnectionReceiverListener, NetworkCallListener {
@@ -148,7 +157,43 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
         SharedPreferences preferences = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
         String program = preferences.getString("program", "null");
         int pid = 0;
-        if (program.contains("Learning"))
+        switch (program){
+            case APIs.HL:
+                pid = 1;
+                break;
+            case APIs.UP:
+                //todo urban
+                pid = 6;
+                break;
+            case APIs.KGBV:
+                pid = 5;
+                break;
+            case APIs.ECE:
+                pid = 8;
+                break;
+            case RI:
+                pid = 2;
+                break;
+            case SC:
+                pid = 3;
+                break;
+            case PI:
+                pid = 10;
+                break;
+            case HG:
+                pid = 13;
+                break;
+            case GP:
+                pid = 14;
+                break;
+            case DSP:
+                pid = 22;
+                break;
+            case RIM:
+                pid = 11;
+                break;
+        }
+        /*if (program.contains("Learning"))
             pid = 1;
         else if (program.contains("India"))
             pid = 2;
@@ -165,7 +210,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
         else if (program.contains("ECE"))
             pid = 8;
         else if (program.contains("KGBV"))
-            pid = 5;
+            pid = 5;*/
 
         metaData = new MetaData();
         metaData.setKeys("ProgramID");
@@ -485,7 +530,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
             DashboardItemList.add(new DashboardItem("Student Management", R.drawable.ic_pos));
             DashboardItemList.add(new DashboardItem("Push Data", R.drawable.ic_push));
             DashboardItemList.add(new DashboardItem("Manage Device", R.drawable.tablet));
-            DashboardItemList.add(new DashboardItem("Notifications", R.drawable.ic_notifications_none_black_24dp));
+            //DashboardItemList.add(new DashboardItem("Notifications", R.drawable.ic_notifications_none_black_24dp));
         }
     }
 

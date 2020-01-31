@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -77,6 +78,8 @@ import static com.pratham.admin.util.APIs.PullCourses;
 import static com.pratham.admin.util.APIs.PullHLCourseCommunity;
 import static com.pratham.admin.util.APIs.PullHLCourseCompletion;
 import static com.pratham.admin.util.APIs.RI;
+import static com.pratham.admin.util.APIs.RIM;
+import static com.pratham.admin.util.APIs.RIMpullAserURL;
 import static com.pratham.admin.util.APIs.RIpullAserURL;
 import static com.pratham.admin.util.APIs.SC;
 import static com.pratham.admin.util.APIs.SCpullAserURL;
@@ -238,6 +241,11 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                             url = APIs.DSPpullVillagesURL + stateCode[selectedState];
                             loadAPI(url, village, DSP);
                             break;
+                        case RIM:
+                            url = APIs.RIMpullVillagesURL + stateCode[selectedState];
+                            Log.e("RIM",url);
+                            loadAPI(url, village, RIM);
+                            break;
                     }
                 } else {
                     Toast.makeText(this, "Please Select State", Toast.LENGTH_SHORT).show();
@@ -311,6 +319,10 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                             case APIs.DSP:
                                 String url15 = APIs.DSPpullCrlsURL + stateCode[selectedState]; /*+ "&programid=1";*/
                                 loadAPI(url15, APIs.CRL, APIs.DSP);
+                                break;
+                            case RIM:
+                                String url16 = APIs.RIMpullCrlsURL + stateCode[selectedState] + "&programid=11";
+                                loadAPI(url16, APIs.CRL, RIM);
                                 break;
 
                         }
@@ -459,7 +471,9 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 case APIs.DSP:
                     loadAPI(APIs.DSPpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, APIs.DSP);
                     break;
-
+                case RIM:
+                    loadAPI(APIs.RIMpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, RIM);
+                    break;
             }
         }
     }
@@ -504,6 +518,9 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                     break;
                 case APIs.DSP:
                     loadAserData(DSPpullAserURL);
+                    break;
+                case RIM:
+                    loadAserData(RIMpullAserURL);
                     break;
                 default:
                     dismissShownDialog();
@@ -635,6 +652,9 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                         break;
                     case APIs.DSP:
                         loadAPI(APIs.DSPpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.DSP);
+                        break;
+                    case RIM:
+                        loadAPI(APIs.RIMpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, RIM);
                         break;
                 }
             }
@@ -938,6 +958,10 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 showDialoginApiCalling(DSP, "Pulling Coaches !!!");
                 couchUrl = couchUrl + "villageid=" + vID + "&programid=22";
                 break;
+            case RIM:
+                showDialoginApiCalling(RIM, "Pulling Coaches !!!");
+                couchUrl = couchUrl + "villageid=" + vID + "&programid=11";
+                break;
         }
         NetworkCalls.getNetworkCallsInstance(this).getRequestWithautLoader(this, couchUrl, "couchUrl");
        /* AndroidNetworking.get(couchUrl).build().getAsJSONArray(new JSONArrayRequestListener() {
@@ -1021,9 +1045,13 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 showDialoginApiCalling(HG, "Pulling Course Community !!!");
                 pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 13;
                 break;
-         case DSP:
+            case DSP:
                 showDialoginApiCalling(DSP, "Pulling Course Community !!!");
                 pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 22;
+                break;
+            case RIM:
+                showDialoginApiCalling(RIM, "Pulling Course Community !!!");
+                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 11;
                 break;
         }
 
@@ -1095,8 +1123,11 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
             case HG:
                 showDialoginApiCalling(HG, "Pulling Courses !!!");
                 break;
-       case DSP:
+            case DSP:
                 showDialoginApiCalling(DSP, "Pulling Courses !!!");
+                break;
+            case RIM:
+                showDialoginApiCalling(RIM, "Pulling Courses !!!");
                 break;
         }
         NetworkCalls.getNetworkCallsInstance(this).getRequestWithautLoader(this, PullCourses, "PullCourses");
@@ -1181,9 +1212,13 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 showDialoginApiCalling(HG, "Pulling Course Completion !!!");
                 PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 13;
                 break;
-         case DSP:
+            case DSP:
                 showDialoginApiCalling(DSP, "Pulling Course Completion !!!");
                 PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 22;
+                break;
+            case RIM:
+                showDialoginApiCalling(RIM, "Pulling Course Completion !!!");
+                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 11;
                 break;
         }
         NetworkCalls.getNetworkCallsInstance(this).getRequestWithautLoader(this, PullHLCourseCompletionUrl, "PullHLCourseCompletionUrl");

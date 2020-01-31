@@ -84,10 +84,16 @@
                         android:id="@+id/KGBV"
                         style="@style/CustomRadioButton"
                         android:text="@string/KGBV" />
+
                     <RadioButton
                         android:id="@+id/Digital_School_Program"
                         style="@style/CustomRadioButton"
                         android:text="@string/DigitalSchoolProgram" />
+
+                    <RadioButton
+                        android:id="@+id/Read_India_Michelin"
+                        style="@style/CustomRadioButton"
+                        android:text="@string/ReadIndiaMichelin" />
                 </RadioGroup>
             </HorizontalScrollView>
 

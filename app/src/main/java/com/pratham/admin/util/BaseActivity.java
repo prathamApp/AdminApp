@@ -16,10 +16,10 @@ public class BaseActivity extends AppCompatActivity implements ConnectionReceive
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      /*  Catcho.Builder(this)
-                .activity(CatchoTransparentActivity.class)
-                .recipients("abhishek.mittal@pratham.org")
-                .build();*/
+        Catcho.Builder(this)
+//                .activity(CatchoTransparentActivity.class) //on field
+                .recipients("amarkargal199447@gmail.com") // on testing
+                .build();
 
     }
 

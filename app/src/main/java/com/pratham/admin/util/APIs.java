@@ -105,6 +105,14 @@ public class APIs {
     public static final String DSPpullCrlsURL = "http://www.swap.prathamcms.org/api/UserList?programId=22&statecode=";
     public static final String DSPpullAserURL = "http://devtab.openiscool.org/api/AserVillage?programid=22&villageid=";
 
+    //Read India- Michelin
+    public static final String RIM = "Read India- Michelin";
+    public static final String RIMpullVillagesURL = "http://www.hlearning.openiscool.org/api/village/get?programId=11&state=";
+    public static final String RIMpullGroupsURL = "http://www.devtab.openiscool.org/api/Group?programid=11&villageId=";
+    public static final String RIMpullStudentsURL = "http://www.devtab.openiscool.org/api/studentinfov2?programid=11&villageId=";
+    public static final String RIMpullCrlsURL = "http://www.swap.prathamcms.org/api/UserList?programId=11&statecode=";
+    public static final String RIMpullAserURL = "http://devtab.openiscool.org/api/AserVillage?programid=11&villageid=";
+
     //NewPushURL
     /*  public static final String HLpushToServerURL = "http://www.hlearning.openiscool.org/api/datapush/pushusage";*/
     public static final String HLpushToServerURL = "http://www.swap.prathamcms.org/api/QRSwap/SwapData";
@@ -153,5 +161,5 @@ public class APIs {
     public static final String storePersonAPI = "http://www.swap.prathamcms.org/api/Vendor?programId=17&statecode=";
 
     //Notification API
-    public static final String notificationAPI = " http://swap.prathamcms.org/api/tabletnotification/get?userid=2648";
+    public static final String notificationAPI = " http://swap.prathamcms.org/api/tabletnotification/get?userid=";
 }

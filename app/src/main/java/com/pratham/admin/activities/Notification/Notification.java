@@ -45,6 +45,7 @@ import butterknife.OnItemSelected;
 
 public class Notification extends AppCompatActivity implements NetworkCallListener {
 
+    //region Variables
     private List<NotificationData> notificationList = new ArrayList<>();
     private RecyclerView nf_recyclerView;
     private NotificationAdapter nfAdapter;
@@ -55,6 +56,7 @@ public class Notification extends AppCompatActivity implements NetworkCallListen
 
     @BindView(R.id.search)
     EditText search;
+    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +73,7 @@ public class Notification extends AppCompatActivity implements NetworkCallListen
         //Toast.makeText(context, LoggedcrlId+" | "+LoggedcrlName, Toast.LENGTH_SHORT).show();
 
         String url = APIs.notificationAPI;
-        loadNotifications(url);
+        loadNotifications(url + LoggedcrlId);
 
         nf_recyclerView = findViewById(R.id.recycler_list);
 
@@ -92,7 +94,7 @@ public class Notification extends AppCompatActivity implements NetworkCallListen
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    nf_recyclerView.setVisibility(View.VISIBLE);
+                nf_recyclerView.setVisibility(View.VISIBLE);
 
             }
 
@@ -115,8 +117,8 @@ public class Notification extends AppCompatActivity implements NetworkCallListen
             final String fromId = notificationList.get(i).getFromId();
             //if the existing elements contains the search input
             if (damageType.toLowerCase().contains(text.toLowerCase())
-                    ||fromName.toLowerCase().contains(text.toLowerCase())
-                    ||fromId.toLowerCase().contains(text.toLowerCase())) {
+                    || fromName.toLowerCase().contains(text.toLowerCase())
+                    || fromId.toLowerCase().contains(text.toLowerCase())) {
                 //adding the element to filtered list
                 filterdNames.add(notificationList.get(i));
             }
@@ -141,7 +143,7 @@ public class Notification extends AppCompatActivity implements NetworkCallListen
                     Gson gson = new Gson();
                     Type notificationsList = new TypeToken<ArrayList<NotificationData>>() {
                     }.getType();
-                    this.context=context;
+                    this.context = context;
                     notificationList = gson.fromJson(response.toString(), notificationsList);
                     nfAdapter = new NotificationAdapter(context, notificationList);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -177,11 +179,10 @@ public class Notification extends AppCompatActivity implements NetworkCallListen
     }
 
     //class for sorting date in descending order
-    class StringDateComparator implements Comparator<NotificationData>
-    {
+    class StringDateComparator implements Comparator<NotificationData> {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-        public int compare(NotificationData lhs, NotificationData rhs)
-        {
+
+        public int compare(NotificationData lhs, NotificationData rhs) {
             try {
                 return dateFormat.parse(rhs.getReceiveDate()).compareTo(dateFormat.parse(lhs.getReceiveDate()));
             } catch (ParseException e) {
