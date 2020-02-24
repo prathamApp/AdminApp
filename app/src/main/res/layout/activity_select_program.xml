@@ -5,146 +5,149 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ScrollView
-        android:id="@+id/scrollView"
+    <!--
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:padding="8dp"
+            tools:context=".activities.SelectProgram">
+
+            <RelativeLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <HorizontalScrollView
+                    android:id="@+id/radioscroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true">
+
+                    <RadioGroup
+                        android:id="@+id/rg_programs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="16dp"
+                        android:background="#f2dddc"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbtn_hybrid_learning"
+                            style="@style/CustomRadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:text="@string/hybrid_learning" />
+
+                        <RadioButton
+                            android:id="@+id/rbtn_readindia"
+                            style="@style/CustomRadioButton"
+                            android:text="@string/read_india" />
+
+                        <RadioButton
+                            android:id="@+id/rbtn_second_chance"
+                            style="@style/CustomRadioButton"
+                            android:enabled="true"
+                            android:text="@string/second_chance" />
+
+                        <RadioButton
+                            android:id="@+id/rbtn_ece"
+                            style="@style/CustomRadioButton"
+                            android:enabled="true"
+                            android:text="@string/ECE" />
+
+                        <RadioButton
+                            android:id="@+id/rbtn_pratham_institute"
+                            style="@style/CustomRadioButton"
+                            android:text="@string/pratham_institute" />
+
+                        <RadioButton
+                            android:id="@+id/rbtn_urbanProgram"
+                            style="@style/CustomRadioButton"
+                            android:text="@string/urbon_program" />
+
+                        <RadioButton
+                            android:id="@+id/rbtn_hamaraGao"
+                            style="@style/CustomRadioButton"
+                            android:text="@string/hamara_gaon" />
+
+                        <RadioButton
+                            android:id="@+id/rbtn_govPartnership"
+                            style="@style/CustomRadioButton"
+                            android:text="@string/government_Partnership" />
+
+                        <RadioButton
+                            android:id="@+id/KGBV"
+                            style="@style/CustomRadioButton"
+                            android:text="@string/KGBV" />
+
+                        <RadioButton
+                            android:id="@+id/Digital_School_Program"
+                            style="@style/CustomRadioButton"
+                            android:text="@string/DigitalSchoolProgram" />
+
+                        <RadioButton
+                            android:id="@+id/Read_India_Michelin"
+                            style="@style/CustomRadioButton"
+                            android:text="@string/ReadIndiaMichelin" />
+                    </RadioGroup>
+                </HorizontalScrollView>
+    -->
+
+    <LinearLayout
+        android:id="@+id/spinner_LL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="4"
-        android:padding="8dp"
-        tools:context=".activities.SelectProgram">
+        android:layout_marginLeft="@dimen/_50sdp"
+        android:layout_marginRight="@dimen/_50sdp"
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/constraintLayout"
+        <Spinner
+            android:id="@+id/spinner_program"
+            style="@style/spinner_style"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="@dimen/_35sdp"
+            android:background="@drawable/gradient_spinner_selectprogram"
+            android:layout_marginTop="@dimen/_10sdp"/>
 
-            <HorizontalScrollView
-                android:id="@+id/radioscroll"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true">
+        <Spinner
+            android:id="@+id/spinner_state"
+            style="@style/spinner_style"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:background="@drawable/gradient_spinner_selectprogram"
+            android:layout_marginTop="@dimen/_10sdp"/>
 
-                <RadioGroup
-                    android:id="@+id/rg_programs"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginTop="16dp"
-                    android:background="#f2dddc"
-                    android:orientation="horizontal">
+        <Spinner
+            android:id="@+id/spinner_block"
+            style="@style/spinner_style"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:background="@drawable/gradient_spinner_selectprogram"
+            android:entries="@array/block"
+            android:layout_marginTop="@dimen/_10sdp"/>
+    </LinearLayout>
 
-                    <RadioButton
-                        android:id="@+id/rbtn_hybrid_learning"
-                        style="@style/CustomRadioButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="true"
-                        android:text="@string/hybrid_learning" />
+    <!-- <Spinner
+         android:id="@+id/spinner_village"
+         style="@style/spinner_style"
+         android:background="@drawable/gradient_spinner_selectprogram"
+         android:layout_width="350dp"
+         android:layout_height="50dp"
+         android:layout_below="@id/spinner_LL"
+         android:entries="@array/village"
+         android:layout_centerHorizontal="true"
+         android:layout_marginTop="30dp" />
 
-                    <RadioButton
-                        android:id="@+id/rbtn_readindia"
-                        style="@style/CustomRadioButton"
-                        android:text="@string/read_india" />
-
-                    <RadioButton
-                        android:id="@+id/rbtn_second_chance"
-                        style="@style/CustomRadioButton"
-                        android:enabled="true"
-                        android:text="@string/second_chance" />
-
-                    <RadioButton
-                        android:id="@+id/rbtn_ece"
-                        style="@style/CustomRadioButton"
-                        android:enabled="true"
-                        android:text="@string/ECE" />
-
-                    <RadioButton
-                        android:id="@+id/rbtn_pratham_institute"
-                        style="@style/CustomRadioButton"
-                        android:text="@string/pratham_institute" />
-
-                    <RadioButton
-                        android:id="@+id/rbtn_urbanProgram"
-                        style="@style/CustomRadioButton"
-                        android:text="@string/urbon_program" />
-
-                    <RadioButton
-                        android:id="@+id/rbtn_hamaraGao"
-                        style="@style/CustomRadioButton"
-                        android:text="@string/hamara_gaon" />
-
-                    <RadioButton
-                        android:id="@+id/rbtn_govPartnership"
-                        style="@style/CustomRadioButton"
-                        android:text="@string/government_Partnership" />
-
-                    <RadioButton
-                        android:id="@+id/KGBV"
-                        style="@style/CustomRadioButton"
-                        android:text="@string/KGBV" />
-
-                    <RadioButton
-                        android:id="@+id/Digital_School_Program"
-                        style="@style/CustomRadioButton"
-                        android:text="@string/DigitalSchoolProgram" />
-
-                    <RadioButton
-                        android:id="@+id/Read_India_Michelin"
-                        style="@style/CustomRadioButton"
-                        android:text="@string/ReadIndiaMichelin" />
-                </RadioGroup>
-            </HorizontalScrollView>
-
-            <LinearLayout
-                android:id="@+id/spinner_LL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/radioscroll"
-                android:layout_marginTop="30dp"
-                android:orientation="horizontal">
-
-                <Spinner
-                    android:id="@+id/spinner_state"
-                    style="@style/spinner_style"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/gradient_spinner_selectprogram" />
-
-                <Spinner
-                    android:id="@+id/spinner_block"
-                    style="@style/spinner_style"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/gradient_spinner_selectprogram"
-                    android:entries="@array/block" />
-            </LinearLayout>
-
-            <!-- <Spinner
-                 android:id="@+id/spinner_village"
-                 style="@style/spinner_style"
-                 android:background="@drawable/gradient_spinner_selectprogram"
-                 android:layout_width="350dp"
-                 android:layout_height="50dp"
-                 android:layout_below="@id/spinner_LL"
-                 android:entries="@array/village"
-                 android:layout_centerHorizontal="true"
-                 android:layout_marginTop="30dp" />
-
-             <Space
-                 android:layout_width="match_parent"
-                 android:layout_height="10dp"
-                 android:layout_below="@id/spinner_village" />-->
-
-        </RelativeLayout>
-    </ScrollView>
+     <Space
+         android:layout_width="match_parent"
+         android:layout_height="10dp"
+         android:layout_below="@id/spinner_village" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -152,13 +155,14 @@
         android:layout_weight="1"
         android:elevation="8dp"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:layout_marginTop="@dimen/_15sdp">
 
 
         <Button
             android:id="@+id/btn_pullData"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/_50sdp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
@@ -171,7 +175,7 @@
         <Button
             android:id="@+id/btn_saveData"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/_50sdp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"

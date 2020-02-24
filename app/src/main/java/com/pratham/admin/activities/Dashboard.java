@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.kyleduo.blurpopupwindow.library.BlurPopupWindow;
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
+import com.pratham.admin.Service.MyService;
 import com.pratham.admin.activities.Notification.Notification;
 import com.pratham.admin.adapters.DashRVDataAdapter;
 import com.pratham.admin.async.NetworkCalls;
@@ -58,15 +59,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.pratham.admin.util.APIs.DSP;
-import static com.pratham.admin.util.APIs.GP;
-import static com.pratham.admin.util.APIs.HG;
-import static com.pratham.admin.util.APIs.PI;
 import static com.pratham.admin.util.APIs.PushForms;
-import static com.pratham.admin.util.APIs.RI;
-import static com.pratham.admin.util.APIs.RIM;
-import static com.pratham.admin.util.APIs.SC;
-import static com.pratham.admin.util.APIs.village;
 
 
 public class Dashboard extends BaseActivity implements DashRVClickListener, ConnectionReceiverListener, NetworkCallListener {
@@ -155,8 +148,10 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
 
     private void populateProgramID() {
         SharedPreferences preferences = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
-        String program = preferences.getString("program", "null");
-        int pid = 0;
+        //String program = preferences.getString("program", "null");
+        String programID = preferences.getString("programId", "null");
+        //Toast.makeText(this, programID, Toast.LENGTH_SHORT).show();
+        /*int pid = 0;
         switch (program){
             case APIs.HL:
                 pid = 1;
@@ -192,7 +187,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
             case RIM:
                 pid = 11;
                 break;
-        }
+        }*/
         /*if (program.contains("Learning"))
             pid = 1;
         else if (program.contains("India"))
@@ -214,7 +209,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
 
         metaData = new MetaData();
         metaData.setKeys("ProgramID");
-        metaData.setValue(String.valueOf(pid));
+        metaData.setValue(programID);
         AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
     }
 
@@ -256,6 +251,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (!isConnected) {
             internetIsAvailable = false;
+            Toast.makeText(this, "No Internet Access", Toast.LENGTH_SHORT).show();
         } else {
             internetIsAvailable = true;
         }
@@ -530,7 +526,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
             DashboardItemList.add(new DashboardItem("Student Management", R.drawable.ic_pos));
             DashboardItemList.add(new DashboardItem("Push Data", R.drawable.ic_push));
             DashboardItemList.add(new DashboardItem("Manage Device", R.drawable.tablet));
-            //DashboardItemList.add(new DashboardItem("Notifications", R.drawable.ic_notifications_none_black_24dp));
+            DashboardItemList.add(new DashboardItem("Notifications", R.drawable.ic_notifications_none_black_24dp));
         }
     }
 

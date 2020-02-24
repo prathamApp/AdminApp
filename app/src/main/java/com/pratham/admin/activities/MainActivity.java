@@ -230,6 +230,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (!isConnected) {
             internetIsAvailable = false;
+            Toast.makeText(this, "No Internet Access", Toast.LENGTH_SHORT).show();
         } else {
             internetIsAvailable = true;
         }

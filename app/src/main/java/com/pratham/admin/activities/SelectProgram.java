@@ -16,12 +16,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -43,6 +43,7 @@ import com.pratham.admin.modalclasses.Completion;
 import com.pratham.admin.modalclasses.Course;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.Modal_Log;
+import com.pratham.admin.modalclasses.ProgramsModal;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.APIs;
@@ -50,6 +51,8 @@ import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
 import com.pratham.admin.util.Utility;
+
+import org.json.JSONArray;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -60,33 +63,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.pratham.admin.util.APIs.DSP;
-import static com.pratham.admin.util.APIs.DSPpullAserURL;
-import static com.pratham.admin.util.APIs.ECE;
-import static com.pratham.admin.util.APIs.ECEpullAserURL;
-import static com.pratham.admin.util.APIs.GP;
-import static com.pratham.admin.util.APIs.GPpullAserURL;
-import static com.pratham.admin.util.APIs.HG;
-import static com.pratham.admin.util.APIs.HGpullAserURL;
-import static com.pratham.admin.util.APIs.HL;
-import static com.pratham.admin.util.APIs.HLpullAserURL;
-import static com.pratham.admin.util.APIs.KGBpullAserURL;
-import static com.pratham.admin.util.APIs.PI;
-import static com.pratham.admin.util.APIs.PIpullAserURL;
 import static com.pratham.admin.util.APIs.PullCoaches;
 import static com.pratham.admin.util.APIs.PullCourses;
 import static com.pratham.admin.util.APIs.PullHLCourseCommunity;
 import static com.pratham.admin.util.APIs.PullHLCourseCompletion;
-import static com.pratham.admin.util.APIs.RI;
-import static com.pratham.admin.util.APIs.RIM;
-import static com.pratham.admin.util.APIs.RIMpullAserURL;
-import static com.pratham.admin.util.APIs.RIpullAserURL;
-import static com.pratham.admin.util.APIs.SC;
-import static com.pratham.admin.util.APIs.SCpullAserURL;
-import static com.pratham.admin.util.APIs.UPpullAserURL;
+import static com.pratham.admin.util.APIs.SERVER_PROGRAMID;
+import static com.pratham.admin.util.APIs.SERVER_STATECODE;
+import static com.pratham.admin.util.APIs.SERVER_VILLAGE;
+import static com.pratham.admin.util.APIs.pullAserURL;
 import static com.pratham.admin.util.APIs.village;
 
 public class SelectProgram extends BaseActivity implements ConnectionReceiverListener, OnSavedData, VillageListLisner, NetworkCallListnerSelectProgram, NetworkCallListener {
+
+    @BindView(R.id.spinner_program)
+    Spinner spinner_program;
 
     @BindView(R.id.spinner_state)
     Spinner spinner_state;
@@ -94,8 +84,8 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
     @BindView(R.id.spinner_block)
     Spinner spinner_block;
 
-    @BindView(R.id.rg_programs)
-    RadioGroup radioGroupPrograms;
+//    @BindView(R.id.rg_programs)
+//    RadioGroup radioGroupPrograms;
 
     @BindView(R.id.btn_pullData)
     Button btn_pullData;
@@ -107,7 +97,8 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
     String[] stateCode;
     List<String> selectedVillage = new ArrayList();
     String selectedBlock = "NO BLOCKS";
-    String selectedProgram = null;
+    public static String selectedProgramID= null;
+    public static String selectedProgramName = null;
     Animation animation;
     boolean apiLoadFlag = false;
     boolean internetIsAvailable = false;
@@ -128,6 +119,8 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
     private List<Community> CommunityList = new ArrayList();
     private List<Completion> CompletionList = new ArrayList();
     private List<Coach> CoachList = new ArrayList();
+    private ArrayList<ProgramsModal> programsList = new ArrayList<>();
+    List<String> prgrms = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -138,11 +131,88 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
         ButterKnife.bind(this);
         //   spinner_village.setEnabled(false);
         spinner_block.setEnabled(false);
+        spinner_state.setEnabled(false);
         animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
         states = getResources().getStringArray(R.array.india_states);
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, states);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_state.setAdapter(adapter);
+        loadprogams();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ApplicationController.getInstance().setConnectionListener(this);
+    }
+
+    private void loadprogams() {
+        //NetworkCalls.getNetworkCallsInstance(this).getRequest(this, url, "Loading Programs..", "loading_devises");
+
+        AndroidNetworking.get(APIs.programsAPI)
+                .addHeaders("Content-Type", "application/json").build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        programsList.clear();
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<List<ProgramsModal>>() {
+                        }.getType();
+                        programsList = gson.fromJson(response.toString(), listType);
+                        if (programsList != null) {
+                            ProgramsModal modalProgram = new ProgramsModal();
+                            modalProgram.setProgramId(-1);
+                            modalProgram.setProgramName("SELECT PROGRAM");
+                            LinkedHashSet hs = new LinkedHashSet(programsList);//to remove redundant values
+                            programsList.clear();
+                            programsList.addAll(hs);
+                            programsList.add(0, modalProgram);
+                            //pullDataView.showProgram(prgrmList);
+                            showPrograms(programsList);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                    }
+                });
+    }
+
+    private void showPrograms(final List<ProgramsModal> programsModalList){
+        for (ProgramsModal mp : programsList) {
+            prgrms.add(mp.getProgramName());
+        }
+        Toast.makeText(this, "Please Select Program", Toast.LENGTH_SHORT).show();
+        ArrayAdapter programAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, prgrms);
+        spinner_program.setAdapter(programAdapter);
+        spinner_program.setVisibility(View.VISIBLE);
+
+        spinner_program.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                btn_saveData.setEnabled(false);
+                selectedProgramID = String.valueOf(programsModalList.get(position).getProgramId());
+                selectedProgramName = programsModalList.get(position).getProgramName();
+
+                if(spinner_program.getSelectedItemPosition() > 0)
+                loadStates();
+                else {
+                    spinner_state.setEnabled(false);
+                    spinner_state.setSelection(0);
+                    spinner_block.setEnabled(false);
+                    spinner_block.setSelection(0);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    private void loadStates(){
+        spinner_state.setEnabled(true);
         spinner_state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -152,7 +222,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 btn_pullData.clearAnimation();
                 btn_saveData.setEnabled(false);
                 btn_saveData.clearAnimation();
-                getVillageStatewise();
+                getVillageStatewise(selectedProgramID, selectedProgramName);
             }
 
             @Override
@@ -162,101 +232,25 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        radioGroupPrograms.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                spinner_state.setSelection(0);
-                //  spinner_village.setVisibility(View.INVISIBLE);
-                btn_pullData.setEnabled(false);
-                btn_saveData.setEnabled(false);
-                btn_saveData.clearAnimation();
-                btn_pullData.clearAnimation();
-                if (studentList != null) studentList.clear();
-                if (CRLList != null) CRLList.clear();
-                if (groupsList != null) groupsList.clear();
-                if (villageList != null) villageList.clear();
-            }
-        });
-        ApplicationController.getInstance().setConnectionListener(this);
-    }
-
-    private void getVillageStatewise() {
+    private void getVillageStatewise(String spID, String spName) {
         //  if (ConnectionManager.getConnectionManager().checkConnection(this)) {
         if (internetIsAvailable) {
-            int selectedRadioButtonId = radioGroupPrograms.getCheckedRadioButtonId();
-            if (selectedRadioButtonId == -1) {
-                Toast.makeText(this, "Please Select Program", Toast.LENGTH_SHORT).show();
+            selectedState = spinner_state.getSelectedItemPosition();
+            selectedStateName = states[selectedState];
+            if (!states[selectedState].equals("SELECT STATE")) {
+                String url;
+                stateCode = getResources().getStringArray(R.array.india_states_shortcode);
+                url = APIs.pullVillagesServerURL + spID + APIs.SERVER_STATE + stateCode[selectedState];
+                loadAPI(url,village,spName);
             } else {
-                RadioButton radioButton = findViewById(selectedRadioButtonId);
-                selectedProgram = radioButton.getText().toString();
-                // Log.d("prathamLog", selectedProgram);
-                selectedState = spinner_state.getSelectedItemPosition();
-                selectedStateName = states[selectedState];
-                if (!states[selectedState].equals("SELECT STATE")) {
-                    String url = "";
-                    stateCode = getResources().getStringArray(R.array.india_states_shortcode);
-                    switch (selectedProgram) {
-                        case APIs.HL:
-                            url = APIs.HLpullVillagesURL + stateCode[selectedState];
-                            loadAPI(url, village, APIs.HL);
-                            break;
-                        case APIs.UP:
-                            //todo urban
-                            url = APIs.UPpullVillagesURL + stateCode[selectedState];
-                            loadAPI(url, village, APIs.UP);
-                            break;
-                        case APIs.KGBV:
-                            url = APIs.KGBVpullVillagesURL + stateCode[selectedState];
-                            loadAPI(url, village, APIs.KGBV);
-                            break;
-                        case APIs.ECE:
-                            url = APIs.ECEpullVillagesURL + stateCode[selectedState];
-                            loadAPI(url, village, APIs.ECE);
-                            break;
-                        case RI:
-                            url = APIs.RIpullVillagesURL + stateCode[selectedState];
-                            loadAPI(url, village, RI);
-                            break;
-                        case SC:
-                            url = APIs.SCpullVillagesURL + stateCode[selectedState];
-                            loadAPI(url, village, SC);
-                            break;
-                        case PI:
-                            url = APIs.PIpullVillagesURL + stateCode[selectedState];
-                            loadAPI(url, village, PI);
-                            break;
-                        case HG:
-                            url = APIs.HGpullVillagesURL + stateCode[selectedState];
-                            loadAPI(url, village, HG);
-                            break;
-                        case GP:
-                            url = APIs.GPpullVillagesURL + stateCode[selectedState];
-                            loadAPI(url, village, GP);
-                            break;
-                        case DSP:
-                            url = APIs.DSPpullVillagesURL + stateCode[selectedState];
-                            loadAPI(url, village, DSP);
-                            break;
-                        case RIM:
-                            url = APIs.RIMpullVillagesURL + stateCode[selectedState];
-                            Log.e("RIM",url);
-                            loadAPI(url, village, RIM);
-                            break;
-                    }
-                } else {
-                    Toast.makeText(this, "Please Select State", Toast.LENGTH_SHORT).show();
-                    spinner_block.setSelection(0);
-                    //    spinner_village.setSelection(0);
-                    spinner_block.setEnabled(false);
-                    //    spinner_village.setEnabled(false);
-                }
+                //Toast.makeText(this, "Please Select State", Toast.LENGTH_SHORT).show();
+                spinner_block.setSelection(0);
+                //    spinner_village.setSelection(0);
+                spinner_block.setEnabled(false);
+                //    spinner_village.setEnabled(false);
             }
-        } else {
-
+        }
+        else {
             spinner_state.setSelection(0);
             Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
         }
@@ -278,65 +272,19 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 if (!villageId.isEmpty()) {
                     if (apiLoadFlag) {
                         apiLoadFlag = false;
-                        switch (selectedProgram) {
-                            case APIs.HL:
-                                String url = APIs.HLpullCrlsURL + stateCode[selectedState]; /*+ "&programid=1";*/
-                                loadAPI(url, APIs.CRL, APIs.HL);
-                                break;
-                            case APIs.UP:
-                                //todo urban
-                                String url11 = APIs.UPpullCrlsURL + stateCode[selectedState]; /*+ "&programid=1";*/
-                                loadAPI(url11, APIs.CRL, APIs.UP);
-                                break;
-                            case APIs.KGBV:
-                                String murl5 = APIs.KGBVpullCrlsURL + stateCode[selectedState]; /*+ "&programid=1";*/
-                                loadAPI(murl5, APIs.CRL, APIs.KGBV);
-                                break;
-                            case APIs.ECE:
-                                String url5 = APIs.ECEpullCrlsURL + stateCode[selectedState];/* + "&programid=8";*/
-                                loadAPI(url5, APIs.CRL, APIs.ECE);
-                                break;
-                            case RI:
-                                String url2 = APIs.RIpullCrlsURL + stateCode[selectedState] + "&programid=2";
-                                loadAPI(url2, APIs.CRL, RI);
-                                break;
-                            case SC:
-                                String url3 = APIs.SCpullCrlsURL + stateCode[selectedState]; /*+ "&programid=3";*/
-                                loadAPI(url3, APIs.CRL, SC);
-                                break;
-                            case PI:
-                                String url4 = APIs.PIpullCrlsURL + stateCode[selectedState] + "&programid=4";
-                                loadAPI(url4, APIs.CRL, PI);
-                                break;
-                            case APIs.HG:
-                                String url13 = APIs.HGpullCrlsURL + stateCode[selectedState]; /*+ "&programid=1";*/
-                                loadAPI(url13, APIs.CRL, APIs.HG);
-                                break;
-                            case APIs.GP:
-                                String url14 = APIs.GPpullCrlsURL + stateCode[selectedState]; /*+ "&programid=1";*/
-                                loadAPI(url14, APIs.CRL, APIs.GP);
-                                break;
-                            case APIs.DSP:
-                                String url15 = APIs.DSPpullCrlsURL + stateCode[selectedState]; /*+ "&programid=1";*/
-                                loadAPI(url15, APIs.CRL, APIs.DSP);
-                                break;
-                            case RIM:
-                                String url16 = APIs.RIMpullCrlsURL + stateCode[selectedState] + "&programid=11";
-                                loadAPI(url16, APIs.CRL, RIM);
-                                break;
-
-                        }
-                        btn_saveData.setEnabled(true);
-                        btn_pullData.clearAnimation();
-
-
-                    } else {
-                        btn_saveData.setEnabled(false);
-                        btn_saveData.clearAnimation();
-                        btn_pullData.setEnabled(true);
-                        // btn_pullData.startAnimation(animation);
-                        Toast.makeText(this, "API LOADING FAILED", Toast.LENGTH_SHORT).show();
+                        String crlURL;
+                        crlURL = APIs.pullCrlsServerURL + selectedProgramID + APIs.SERVER_STATECODE + stateCode[selectedState];
+                        Log.e("pullData",crlURL);
+                        loadAPI(crlURL, APIs.CRL, selectedProgramName);
                     }
+                    btn_saveData.setEnabled(true);
+                    btn_pullData.clearAnimation();
+                } else {
+                    btn_saveData.setEnabled(false);
+                    btn_saveData.clearAnimation();
+                    btn_pullData.setEnabled(true);
+                    // btn_pullData.startAnimation(animation);
+                    Toast.makeText(this, "API LOADING FAILED", Toast.LENGTH_SHORT).show();
                 }
 
             } else {
@@ -363,38 +311,9 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
     }
 
 
-    public void loadAPI(final String url, final String type, final String program) {
-        showDialoginApiCalling(program, type);
-        NetworkCalls.getNetworkCallsInstance(this).getRequestWithProgram(this, url, "loadAPI", type, program);
-      /*  AndroidNetworking.get(url).build().getAsJSONArray(new JSONArrayRequestListener() {
-            @Override
-            public void onResponse(JSONArray response) {
-                String json = response.toString();
-                // Toast.makeText(SelectProgram.this, json, Toast.LENGTH_LONG).show();
-                apiLoadFlag = true;
-                parseJSON(json, type, program);
-            }
-
-            @Override
-            public void onError(ANError error) {
-                errorDetected = true;
-                if (type.equals("village")) {
-                    spinner_state.setSelection(0);
-                    dismissShownDialog();
-                }
-                *//*  dismissShownDialog();*//*
-                parseJSON("[]", type, program);
-                if (!internetIsAvailable) {
-                    Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(SelectProgram.this, "Load API Failed." + type, Toast.LENGTH_LONG).show();
-                }
-                // Log.d("error", "" + error);
-
-                apiLoadFlag = false;
-            }
-        });*/
-        //return json;
+    public void loadAPI(final String url, final String type, final String programname) {
+        showDialoginApiCalling(programname, type);
+        NetworkCalls.getNetworkCallsInstance(this).getRequestWithProgram(this, url, "loadAPI", type, programname);
     }
 
     private void showDialoginApiCalling(String program, String type) {
@@ -421,7 +340,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 loadCRL(json, program);
                 break;
             case APIs.Group:
-                loadGroup(json, program);
+                loadGroup(json, program, selectedProgramName);
                 break;
             case APIs.Student:
                 loadStudent(json, program);
@@ -430,7 +349,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
         }
     }
 
-    private void loadCRL(String json, String program) {
+    private void loadCRL(String json, String spID) {
         CRLList.clear();
 
         Gson gson = new Gson();
@@ -439,42 +358,11 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
         ArrayList<CRL> CrlMoadal = gson.fromJson(json, listType);
         CRLList.addAll(CrlMoadal);
         // Log.d("prathamC", CRLList.toString());
+
         for (int j = 0; j < villageId.size(); j++) {
-            switch (program) {
-                case APIs.HL:
-                    loadAPI(APIs.HLpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, APIs.HL);
-                    break;
-                case APIs.UP:
-                    loadAPI(APIs.UPpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, APIs.UP);
-                    break;
-                case APIs.KGBV:
-                    loadAPI(APIs.KGBVpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, APIs.KGBV);
-                    break;
-                case APIs.ECE:
-                    loadAPI(APIs.ECEpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, APIs.ECE);
-                    break;
-                case RI:
-                    loadAPI(APIs.RIpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, RI);
-                    break;
-                case SC:
-                    loadAPI(APIs.SCpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, SC);
-                    break;
-                case PI:
-                    loadAPI(APIs.PIpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, PI);
-                    break;
-                case HG:
-                    loadAPI(APIs.HGpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, HG);
-                    break;
-                case APIs.GP:
-                    loadAPI(APIs.GPpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, APIs.GP);
-                    break;
-                case APIs.DSP:
-                    loadAPI(APIs.DSPpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, APIs.DSP);
-                    break;
-                case RIM:
-                    loadAPI(APIs.RIMpullGroupsURL + villageId.get(j).getVillageId(), APIs.Group, RIM);
-                    break;
-            }
+            String crlURL;
+            crlURL = APIs.pullGroupsServerURL + spID + SERVER_VILLAGE + villageId.get(j).getVillageId();
+            loadAPI(crlURL, APIs.Group, selectedProgramName);
         }
     }
 
@@ -488,48 +376,11 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
 
         studentList.addAll(studentMoadal);
         if (studLoadCount == villageId.size()) {
-            switch (program) {
-                case APIs.HL:
-                    loadAserData(HLpullAserURL);
-                    break;
-                case APIs.UP:
-                    loadAserData(UPpullAserURL);
-                    break;
-                case APIs.KGBV:
-                    loadAserData(KGBpullAserURL);
-                    break;
-                case APIs.ECE:
-                    loadAserData(ECEpullAserURL);
-                    break;
-                case RI:
-                    loadAserData(RIpullAserURL);
-                    break;
-                case SC:
-                    loadAserData(SCpullAserURL);
-                    break;
-                case PI:
-                    loadAserData(PIpullAserURL);
-                    break;
-                case HG:
-                    loadAserData(HGpullAserURL);
-                    break;
-                case APIs.GP:
-                    loadAserData(GPpullAserURL);
-                    break;
-                case APIs.DSP:
-                    loadAserData(DSPpullAserURL);
-                    break;
-                case RIM:
-                    loadAserData(RIMpullAserURL);
-                    break;
-                default:
-                    dismissShownDialog();
-                    pullStorePersons();
-                    // mayur cha code
-                    formsAPI();
-                    break;
-            }
-
+            loadAserData(pullAserURL+program);
+            dismissShownDialog();
+            //pullStorePersons();
+            // mayur cha code
+            //formsAPI();
         }
     }
 
@@ -537,77 +388,24 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
         aserList.clear();
         countAser = 0;
         for (String id : selectedVillage) {
-            downloadAserData(/*APIs.HGpullAserURL */url + id);
+            String loadAserURL = url+ SERVER_VILLAGE +id;
+            downloadAserData(loadAserURL);
         }
     }
 
     private void downloadAserData(String url) {
         NetworkCalls.getNetworkCallsInstance(this).getRequestWithautLoader(this, url, "downloadAserData");
-       /* AndroidNetworking.get(url).setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
-            @Override
-            public void onResponse(JSONArray response) {
-                // do anything with response
-                countAser++;
-                Gson gson = new Gson();
-                Type listType = new TypeToken<ArrayList<Aser>>() {
-                }.getType();
-                ArrayList<Aser> AserMoadal = gson.fromJson(response.toString(), listType);
-                aserList.addAll(AserMoadal);
-                if (countAser == villageId.size()) {
-                    dismissShownDialog();
-                    pullStorePersons();
-                    // mayur cha code
-                    formsAPI();
-                }
-
-            }
-
-            @Override
-            public void onError(ANError error) {
-                // handle error
-                Toast.makeText(SelectProgram.this, "Failed to load store person", Toast.LENGTH_SHORT).show();
-                dismissShownDialog();
-                pullStorePersons();
-                // mayur cha code
-                formsAPI();
-            }
-        });*/
     }
 
     private void pullStorePersons() {
-        String url = APIs.storePersonAPI + stateCode[selectedState];
+        String url = APIs.storePersonAPI + selectedProgramID + SERVER_STATECODE + stateCode[selectedState];
         NetworkCalls.getNetworkCallsInstance(this).getRequest(this, url, "loading store person", "storeperson");
-
-       /* final ProgressDialog progressDialog = new ProgressDialog(SelectProgram.this);
-        progressDialog.setMessage("loading store person");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-        AndroidNetworking.get(url).setPriority(Priority.LOW).build().getAsJSONArray(new JSONArrayRequestListener() {
-            @Override
-            public void onResponse(JSONArray response) {
-                // do anything with response
-                Gson gson = new Gson();
-                Type listType = new TypeToken<ArrayList<CRL>>() {
-                }.getType();
-                ArrayList<CRL> CrlMoadal = gson.fromJson(response.toString(), listType);
-                CRLList.addAll(CrlMoadal);
-                progressDialog.dismiss();
-
-            }
-
-            @Override
-            public void onError(ANError error) {
-                // handle error
-                Toast.makeText(SelectProgram.this, "Failed to load store person", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-            }
-        });
-*/
     }
 
 
-    private void loadGroup(String json, String program) {
+    private void loadGroup(String json, String spID, String spName) {
         //  groupsList.clear();
+        String loadgrpURL;
         groupLoadCount++;
         if (!json.isEmpty()) {
             Gson gson = new Gson();
@@ -618,45 +416,9 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
             groupsList.addAll(groupsMoadal);
         }
         if (groupLoadCount == villageId.size()) {
-
             for (int j = 0; j < villageId.size(); j++) {
-                switch (program) {
-                    case APIs.HL:
-                        loadAPI(APIs.HLpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.HL);
-                        break;
-                    case APIs.UP:
-                        loadAPI(APIs.UPpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.UP);
-                        break;
-                    case APIs.KGBV:
-                        loadAPI(APIs.KGBVpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.KGBV);
-                        break;
-                    case APIs.ECE:
-                        loadAPI(APIs.ECEpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.ECE);
-                        break;
-                    case RI:
-                        loadAPI(APIs.RIpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, RI);
-                        break;
-
-                    case SC:
-                        loadAPI(APIs.SCpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, SC);
-                        break;
-                    case PI:
-                        loadAPI(APIs.PIpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, PI);
-                        break;
-
-                    case HG:
-                        loadAPI(APIs.HGpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, HG);
-                        break;
-                    case APIs.GP:
-                        loadAPI(APIs.GPpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.GP);
-                        break;
-                    case APIs.DSP:
-                        loadAPI(APIs.DSPpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, APIs.DSP);
-                        break;
-                    case RIM:
-                        loadAPI(APIs.RIMpullStudentsURL + villageId.get(j).getVillageId(), APIs.Student, RIM);
-                        break;
-                }
+                loadgrpURL = APIs.pullStudentsServerURL + spID + SERVER_VILLAGE + villageId.get(j).getVillageId();
+                loadAPI(loadgrpURL, APIs.Student, spName);
             }
         }
     }
@@ -785,9 +547,10 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
     private void saveDataToSharedPreference() {
         SharedPreferences sharedPref = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("program", selectedProgram);
+        editor.putString("program", selectedProgramName);
         editor.putString("state", selectedStateName);
         editor.putString("village", selectedVillage.get(0).toString());
+        editor.putString("programId",selectedProgramID);
         editor.commit();
     }
 
@@ -795,6 +558,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (!isConnected) {
             internetIsAvailable = false;
+            Toast.makeText(this, "No Internet Access", Toast.LENGTH_SHORT).show();
         } else {
             internetIsAvailable = true;
         }
@@ -835,6 +599,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
         CompletionList.clear();
         CommunityList.clear();
         CoachList.clear();
+        CourseList.clear();
 
         try {
             // Pull Courses
@@ -916,350 +681,27 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
 
     private void pullCoaches(String vID) {
         String couchUrl = PullCoaches;
-        switch (selectedProgram) {
-            case HL:
-                showDialoginApiCalling(HL, "Pulling Coaches !!!");
-                couchUrl = couchUrl + "villageid=" + vID + "&programid=1";
-                break;
-            case APIs.UP:
-                //todo urban
-                showDialoginApiCalling(APIs.UP, "Pulling Coaches !!!");
-                couchUrl = couchUrl + "villageid=" + vID + "&programid=1";
-                break;
-            case APIs.KGBV:
-                showDialoginApiCalling(APIs.KGBV, "Pulling Coaches !!!");
-                couchUrl = couchUrl + "villageid=" + vID + "&programid=5";
-                break;
-            case RI:
-                showDialoginApiCalling(RI, "Pulling Coaches !!!");
-                couchUrl = couchUrl + "villageid=" + vID + "&programid=2";
-                break;
-            case ECE:
-                showDialoginApiCalling(RI, "Pulling Coaches !!!");
-                couchUrl = couchUrl + "villageid=" + vID + "&programid=8";
-                break;
-            case SC:
-                showDialoginApiCalling(SC, "Pulling Coaches !!!");
-                couchUrl = couchUrl + "villageid=" + vID + "&programid=3";
-                break;
-            case PI:
-                showDialoginApiCalling(PI, "Pulling Coaches !!!");
-                couchUrl = couchUrl + "villageid=" + vID + "&programid=4";
-                break;
-            case GP:
-                showDialoginApiCalling(GP, "Pulling Coaches !!!");
-                couchUrl = couchUrl + "villageid=" + vID + "&programid=14";
-                break;
-            case HG:
-                showDialoginApiCalling(HG, "Pulling Coaches !!!");
-                couchUrl = couchUrl + "villageid=" + vID + "&programid=13";
-                break;
-            case DSP:
-                showDialoginApiCalling(DSP, "Pulling Coaches !!!");
-                couchUrl = couchUrl + "villageid=" + vID + "&programid=22";
-                break;
-            case RIM:
-                showDialoginApiCalling(RIM, "Pulling Coaches !!!");
-                couchUrl = couchUrl + "villageid=" + vID + "&programid=11";
-                break;
-        }
+        showDialoginApiCalling(selectedProgramName, "Pulling Coaches !!!");
+        couchUrl = couchUrl + SERVER_VILLAGE + vID + SERVER_PROGRAMID + selectedProgramID;
+
         NetworkCalls.getNetworkCallsInstance(this).getRequestWithautLoader(this, couchUrl, "couchUrl");
-       /* AndroidNetworking.get(couchUrl).build().getAsJSONArray(new JSONArrayRequestListener() {
-            @Override
-            public void onResponse(JSONArray response) {
-                String json = response.toString();
-                Gson gson = new Gson();
-                try {
-                    Type listType = new TypeToken<ArrayList<Coach>>() {
-                    }.getType();
-                    ArrayList<Coach> modalCoachList = gson.fromJson(json, listType);
-                    CoachList.addAll(modalCoachList);
-                } catch (JsonSyntaxException e) {
-
-                    Modal_Log log = new Modal_Log();
-                    log.setCurrentDateTime(new Utility().GetCurrentDate());
-                    log.setErrorType("ERROR");
-                    log.setExceptionMessage(e.getMessage());
-                    log.setExceptionStackTrace(e.getStackTrace().toString());
-                    log.setMethodName("SelectProgram" + "_" + "coachUrl");
-                    log.setDeviceId("");
-                    AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
-                    BackupDatabase.backup(ApplicationController.getInstance());
-
-                    e.printStackTrace();
-                }
-                dismissShownDialog();
-            }
-
-            @Override
-            public void onError(ANError error) {
-                errorDetected = true;
-                if (!internetIsAvailable) {
-                    Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(SelectProgram.this, "Pull Coaches Failed.", Toast.LENGTH_LONG).show();
-                }
-                dismissShownDialog();
-                apiLoadFlag = false;
-            }
-        });*/
     }
 
 
     private void pullHLCourseCommunity(String vID) {
-        String pullHLCourseCommunityUrl = PullHLCourseCommunity + "villageid=" + vID + "&programid=";
-        switch (selectedProgram) {
-            case HL:
-                showDialoginApiCalling(HL, "Pulling Course Community !!!");
-                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 1;
-                break;
-            case APIs.UP:
-                showDialoginApiCalling(APIs.UP, "Pulling Course Community !!!");
-                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 1;
-                break;
-            case APIs.KGBV:
-                showDialoginApiCalling(APIs.KGBV, "Pulling Course Community !!!");
-                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 5;
-                break;
-            case RI:
-                showDialoginApiCalling(RI, "Pulling Course Community !!!");
-                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 2;
-                break;
-            case SC:
-                showDialoginApiCalling(SC, "Pulling Course Community !!!");
-                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 3;
-                break;
-            case PI:
-                showDialoginApiCalling(PI, "Pulling Course Community !!!");
-                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 4;
-                break;
-            case ECE:
-                showDialoginApiCalling(PI, "Pulling Course Community !!!");
-                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 8;
-                break;
-            case GP:
-                showDialoginApiCalling(GP, "Pulling Course Community !!!");
-                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 14;
-                break;
-            case HG:
-                showDialoginApiCalling(HG, "Pulling Course Community !!!");
-                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 13;
-                break;
-            case DSP:
-                showDialoginApiCalling(DSP, "Pulling Course Community !!!");
-                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 22;
-                break;
-            case RIM:
-                showDialoginApiCalling(RIM, "Pulling Course Community !!!");
-                pullHLCourseCommunityUrl = pullHLCourseCommunityUrl + 11;
-                break;
-        }
-
+        String pullHLCourseCommunityUrl = PullHLCourseCommunity + SERVER_VILLAGE + vID + SERVER_PROGRAMID + selectedProgramID;
         NetworkCalls.getNetworkCallsInstance(this).getRequestWithautLoader(this, pullHLCourseCommunityUrl, "pullHLCourseCommunityUrl");
-      /*  AndroidNetworking.get(pullHLCourseCommunityUrl).build().getAsJSONArray(new JSONArrayRequestListener() {
-            @Override
-            public void onResponse(JSONArray response) {
-                String json = response.toString();
-                Gson gson = new Gson();
-                try {
-                    Type listType = new TypeToken<ArrayList<Community>>() {
-                    }.getType();
-                    ArrayList<Community> modalCommunityList = gson.fromJson(json, listType);
-                    CommunityList.addAll(modalCommunityList);
-                } catch (JsonSyntaxException e) {
-                    Modal_Log log = new Modal_Log();
-                    log.setCurrentDateTime(new Utility().GetCurrentDate());
-                    log.setErrorType("ERROR");
-                    log.setExceptionMessage(e.getMessage());
-                    log.setExceptionStackTrace(e.getStackTrace().toString());
-                    log.setMethodName("SelectProgram" + "_" + "HLCourseCommunityUrl");
-                    log.setDeviceId("");
-                    AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
-                    BackupDatabase.backup(ApplicationController.getInstance());
-
-                    e.printStackTrace();
-                }
-                dismissShownDialog();
-            }
-
-            @Override
-            public void onError(ANError error) {
-                errorDetected = true;
-//                spinner_state.setSelection(0);
-                if (!internetIsAvailable) {
-                    Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(SelectProgram.this, "PullCourseCommunity Failed.", Toast.LENGTH_LONG).show();
-                }
-                dismissShownDialog();
-                apiLoadFlag = false;
-            }
-        });*/
     }
 
     private void pullCourses() {
-        switch (selectedProgram) {
-            case HL:
-                showDialoginApiCalling(HL, "Pulling Courses !!!");
-                break;
-            case APIs.UP:
-                showDialoginApiCalling(APIs.UP, "Pulling Courses !!!");
-                break;
-            case APIs.KGBV:
-                showDialoginApiCalling(APIs.KGBV, "Pulling Courses !!!");
-                break;
-            case RI:
-                showDialoginApiCalling(RI, "Pulling Courses !!!");
-                break;
-            case SC:
-                showDialoginApiCalling(SC, "Pulling Courses !!!");
-                break;
-            case PI:
-                showDialoginApiCalling(PI, "Pulling Courses !!!");
-                break;
-            case GP:
-                showDialoginApiCalling(GP, "Pulling Courses !!!");
-                break;
-            case HG:
-                showDialoginApiCalling(HG, "Pulling Courses !!!");
-                break;
-            case DSP:
-                showDialoginApiCalling(DSP, "Pulling Courses !!!");
-                break;
-            case RIM:
-                showDialoginApiCalling(RIM, "Pulling Courses !!!");
-                break;
-        }
+        showDialoginApiCalling(selectedProgramName, "Pulling Courses !!!");
         NetworkCalls.getNetworkCallsInstance(this).getRequestWithautLoader(this, PullCourses, "PullCourses");
-      /*  AndroidNetworking.get(PullCourses).build().getAsJSONArray(new JSONArrayRequestListener() {
-            @Override
-            public void onResponse(JSONArray response) {
-                String json = response.toString();
-                try {
-                    Gson gson = new Gson();
-                    Type listType = new TypeToken<ArrayList<Course>>() {
-                    }.getType();
-                    ArrayList<Course> modalCoursesList = gson.fromJson(json, listType);
-                    CourseList.addAll(modalCoursesList);
-                } catch (JsonSyntaxException e) {
-                    Modal_Log log = new Modal_Log();
-                    log.setCurrentDateTime(new Utility().GetCurrentDate());
-                    log.setErrorType("ERROR");
-                    log.setExceptionMessage(e.getMessage());
-                    log.setExceptionStackTrace(e.getStackTrace().toString());
-                    log.setMethodName("SelectProgram" + "_" + "PullCourses");
-                    log.setDeviceId("");
-                    AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
-                    BackupDatabase.backup(ApplicationController.getInstance());
-
-                    e.printStackTrace();
-                }
-                dismissShownDialog();
-            }
-
-            @Override
-            public void onError(ANError error) {
-                errorDetected = true;
-                if (!internetIsAvailable) {
-                    Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(SelectProgram.this, "PullCourses Failed.", Toast.LENGTH_LONG).show();
-                }
-                dismissShownDialog();
-                apiLoadFlag = false;
-            }
-        });*/
     }
 
     private void pullHLCourseCompletion(String vID) {
-        String PullHLCourseCompletionUrl = PullHLCourseCompletion + "villageid=" + vID + "&programid=";
-        switch (selectedProgram) {
-            case HL:
-                showDialoginApiCalling(HL, "Pulling Course Completion !!!");
-                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 1;
-                break;
-            case APIs.UP:
-                //todo Urban
-                showDialoginApiCalling(APIs.UP, "Pulling Course Completion !!!");
-                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 1;
-                break;
-            case APIs.KGBV:
-                showDialoginApiCalling(APIs.KGBV, "Pulling Course Completion !!!");
-                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 5;
-                break;
-            case RI:
-                showDialoginApiCalling(RI, "Pulling Course Completion !!!");
-                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 2;
-                break;
-            case SC:
-                showDialoginApiCalling(SC, "Pulling Course Completion !!!");
-                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 3;
-
-                break;
-            case PI:
-                showDialoginApiCalling(PI, "Pulling Course Completion !!!");
-                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 4;
-                break;
-            case ECE:
-                showDialoginApiCalling(PI, "Pulling Course Completion !!!");
-                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 8;
-                break;
-            case GP:
-                showDialoginApiCalling(GP, "Pulling Course Completion !!!");
-                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 14;
-                break;
-            case HG:
-                showDialoginApiCalling(HG, "Pulling Course Completion !!!");
-                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 13;
-                break;
-            case DSP:
-                showDialoginApiCalling(DSP, "Pulling Course Completion !!!");
-                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 22;
-                break;
-            case RIM:
-                showDialoginApiCalling(RIM, "Pulling Course Completion !!!");
-                PullHLCourseCompletionUrl = PullHLCourseCompletionUrl + 11;
-                break;
-        }
+        showDialoginApiCalling(selectedProgramName, "Pulling Course Completion !!!");
+        String PullHLCourseCompletionUrl = PullHLCourseCompletion + SERVER_VILLAGE + vID + SERVER_PROGRAMID + selectedProgramID;
         NetworkCalls.getNetworkCallsInstance(this).getRequestWithautLoader(this, PullHLCourseCompletionUrl, "PullHLCourseCompletionUrl");
-     /*   AndroidNetworking.get(PullHLCourseCompletionUrl).build().getAsJSONArray(new JSONArrayRequestListener() {
-            @Override
-            public void onResponse(JSONArray response) {
-                String json = response.toString();
-                try {
-                    Gson gson = new Gson();
-                    Type listType = new TypeToken<ArrayList<Completion>>() {
-                    }.getType();
-                    ArrayList<Completion> modalCompletionList = gson.fromJson(json, listType);
-                    CompletionList.addAll(modalCompletionList);
-                } catch (JsonSyntaxException e) {
-                    Modal_Log log = new Modal_Log();
-                    log.setCurrentDateTime(new Utility().GetCurrentDate());
-                    log.setErrorType("ERROR");
-                    log.setExceptionMessage(e.getMessage());
-                    log.setExceptionStackTrace(e.getStackTrace().toString());
-                    log.setMethodName("SelectProgram" + "_" + "HLCourseCompletion");
-                    log.setDeviceId("");
-                    AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
-                    BackupDatabase.backup(ApplicationController.getInstance());
-
-                    e.printStackTrace();
-                }
-                dismissShownDialog();
-            }
-
-            @Override
-            public void onError(ANError error) {
-                errorDetected = true;
-                if (!internetIsAvailable) {
-                    Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(SelectProgram.this, "PullCourseCompletion Failed.", Toast.LENGTH_LONG).show();
-                }
-                dismissShownDialog();
-                apiLoadFlag = false;
-            }
-        });*/
     }
 
     @Override
@@ -1268,7 +710,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
             String json = response;
             // Toast.makeText(SelectProgram.this, json, Toast.LENGTH_LONG).show();
             apiLoadFlag = true;
-            parseJSON(json, type, program);
+            parseJSON(json, type, selectedProgramID);
         }
     }
 
@@ -1308,7 +750,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 // mayur cha code
                 formsAPI();
             }
-        } else if (header.equals("storeperson")) {
+        }else if (header.equals("storeperson")) {
             Gson gson = new Gson();
             Type listType = new TypeToken<ArrayList<CRL>>() {
             }.getType();

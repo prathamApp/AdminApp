@@ -8,6 +8,16 @@ public class APIs {
     public static final String CRL = "CRL";
     public static final String Group = "Groups";
     public static final String Student = "Student";
+    public static final String SERVER_STATE = "&state=";
+    public static final String SERVER_VILLAGE = "&villageid=";
+    public static final String SERVER_STATECODE = "&statecode=";
+    public static final String SERVER_PROGRAMID = "&programid=";
+
+    public static final String pullVillagesServerURL = "http://www.hlearning.openiscool.org/api/village/get?programId=";
+    public static final String pullGroupsServerURL = "http://www.devtab.openiscool.org/api/Group?programid=";
+    public static final String pullStudentsServerURL = "http://www.devtab.openiscool.org/api/studentinfov2?programid=";
+    public static final String pullCrlsServerURL = "http://www.swap.prathamcms.org/api/UserList?programId=";
+    public static final String pullAserURL = "http://devtab.openiscool.org/api/AserVillage?programid=";
 
     public static final String HL = "Hybrid Learning";
     public static final String HLpullVillagesURL = "http://www.hlearning.openiscool.org/api/village/get?programId=1&state=";
@@ -158,8 +168,11 @@ public class APIs {
     public static final String DeviceList = "http://swap.prathamcms.org/api/tablist?userid=";
 
     //Store person AOI
-    public static final String storePersonAPI = "http://www.swap.prathamcms.org/api/Vendor?programId=17&statecode=";
+    public static final String storePersonAPI = "http://www.swap.prathamcms.org/api/Vendor?programId=";
 
     //Notification API
     public static final String notificationAPI = " http://swap.prathamcms.org/api/tabletnotification/get?userid=";
+
+    //ProgramsList API
+    public static final String programsAPI = "http://swap.prathamcms.org/api/program";
 }
