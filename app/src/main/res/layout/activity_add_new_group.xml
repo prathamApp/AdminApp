@@ -21,7 +21,7 @@
             android:fontFamily="monospace"
             android:gravity="center"
             android:padding="@dimen/_8sdp"
-            android:text="Add New Group"
+            android:text="@string/addnewgroup"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/_18sdp"
             android:textStyle="bold" />
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/album_title"
-                android:text="Submit"
+                android:text="@string/submit"
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />
@@ -103,7 +103,7 @@
                 android:layout_marginLeft="@dimen/_16sdp"
                 android:layout_weight="2"
                 android:background="@color/album_title"
-                android:text="Clear"
+                android:text="@string/clear"
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />

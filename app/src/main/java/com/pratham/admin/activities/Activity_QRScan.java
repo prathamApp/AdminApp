@@ -100,7 +100,7 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("App requires camera permission to scan QR code");
+                builder.setMessage(R.string.appReqCamPermsn);
                 builder.setCancelable(false);
                 builder.setPositiveButton("Enable", new DialogInterface.OnClickListener() {
                     @Override
@@ -202,7 +202,7 @@ public class Activity_QRScan extends BaseActivity implements ZXingScannerView.Re
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setCancelable(false);
-                    builder.setMessage("This QR Is Already Scanned. Do You Want To Replace Data?");
+                    builder.setMessage(R.string.qrAlreadyScand);
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

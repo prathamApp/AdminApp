@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -14,6 +16,8 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -48,6 +52,7 @@ import com.pratham.admin.util.APIs;
 import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.ConnectionReceiver;
+import com.pratham.admin.util.LocaleManager;
 import com.pratham.admin.util.PermissionResult;
 import com.pratham.admin.util.PermissionUtils;
 import com.pratham.admin.util.Utility;
@@ -56,6 +61,7 @@ import org.jsoup.Jsoup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
@@ -81,6 +87,11 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
     @BindView(R.id.tv_selVillage)
     TextView selVillage;
 
+    @BindView(R.id.tv_english)
+    TextView engLang;
+    @BindView(R.id.tv_hindi)
+    TextView hinLang;
+
     String lastOfflineSavedDate;
     String crlName;
     String crlID;
@@ -90,6 +101,12 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
     private final int KEY_PERMISSION = 200;
 
     boolean isUpdateClicked = false;
+
+    Locale myLocale;
+    String currentLanguage = "en", currentLang;
+    String hindiLang="hi";
+    String englishLang="en";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,7 +188,6 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
         }
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -230,7 +246,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (!isConnected) {
             internetIsAvailable = false;
-            Toast.makeText(this, "No Internet Access", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.noInterntCon, Toast.LENGTH_SHORT).show();
         } else {
             internetIsAvailable = true;
         }
@@ -253,8 +269,8 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
 
     private void showPermissionWarningDilog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Alert");
-        alertDialogBuilder.setMessage("Denying the permissions may cause in application failure." + "\nPermissions can also be given through app settings.");
+        alertDialogBuilder.setTitle(getString(R.string.alert));
+        alertDialogBuilder.setMessage("" + "\n"+R.string.denyPermission);
 
         alertDialogBuilder.setPositiveButton("Ok", new android.content.DialogInterface.OnClickListener() {
             @Override
@@ -293,7 +309,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
 
     @Override
     public void onError(ANError anError, String header) {
-        Toast.makeText(this, "data push failed try again", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.datapushfailed, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -359,9 +375,9 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Material_Light_Dialog);
             dialogBuilder.setCancelable(false);
             dialogBuilder.setIcon(R.drawable.ic_warning);
-            dialogBuilder.setTitle("Upgrade your app !");
-            dialogBuilder.setMessage("Please upgrade your app in order to use latest features.");
-            dialogBuilder.setPositiveButton("Upgrade", new android.content.DialogInterface.OnClickListener() {
+            dialogBuilder.setTitle(R.string.upgradeApp);
+            dialogBuilder.setMessage(R.string.plzUpgradeApp);
+            dialogBuilder.setPositiveButton(R.string.upgrade, new android.content.DialogInterface.OnClickListener() {
                 public void onClick(android.content.DialogInterface dialog, int whichButton) {
                     pushNewData();
                     dialog.dismiss();
@@ -369,7 +385,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
                 }
             });
 
-            dialogBuilder.setNegativeButton("Cancel", new android.content.DialogInterface.OnClickListener() {
+            dialogBuilder.setNegativeButton(R.string.Cancel, new android.content.DialogInterface.OnClickListener() {
                 public void onClick(android.content.DialogInterface dialog, int whichButton) {
                     try {
                         dialog.dismiss();
@@ -432,7 +448,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
                 // Preview
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Material_Light_Dialog);
                 dialogBuilder.setCancelable(false);
-                dialogBuilder.setTitle("Data Preview");
+                dialogBuilder.setTitle(R.string.dataPreview);
 
                 // Prepare Data
                 Gson gson = new Gson();
@@ -458,7 +474,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
                 //     Log.d("json all push :::", json);
 
                 // Preview Message
-                dialogBuilder.setTitle("Push Data Preview");
+                dialogBuilder.setTitle(R.string.pushDataPreview);
                 dialogBuilder.setMessage("Attendance : " + aObj.size()
                         + "\nCoaches : " + coachesObj.size()
                         + "\nCommunities : " + communitiesObj.size()
@@ -473,13 +489,13 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
                 );
 
 
-                dialogBuilder.setPositiveButton("Confirm", new android.content.DialogInterface.OnClickListener() {
+                dialogBuilder.setPositiveButton(R.string.confirm, new android.content.DialogInterface.OnClickListener() {
                     public void onClick(android.content.DialogInterface dialog, int whichButton) {
 
                         try {
                             // Push Process
                             ProgressDialog pd = new ProgressDialog(MainActivity.this);
-                            pd.setTitle("UPLOADING ... ");
+                            pd.setTitle(R.string.uploading);
                             pd.setCancelable(false);
                             pd.setCanceledOnTouchOutside(false);
                             pd.show();
@@ -490,7 +506,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
                                 /*&& (CRLVisitObj.size() == 0)*/) {
                                 // No Data Available
                                 updateApp();
-                                Toast.makeText(MainActivity.this, "No New Data found for Pushing !", Toast.LENGTH_LONG).show();
+                                Toast.makeText(MainActivity.this, R.string.noNewDataPush, Toast.LENGTH_LONG).show();
                                 Log.d("json not pushed:::", json);
                                 if (pd.isShowing())
                                     pd.dismiss();
@@ -657,7 +673,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
             }
             if (!userPass) {
                 AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                alertDialog.setTitle("Invalid Credentials");
+                alertDialog.setTitle(R.string.invalidCredential);
                 alertDialog.setIcon(R.drawable.ic_error_outline_black_24dp);
                 alertDialog.setButton("OK", new android.content.DialogInterface.OnClickListener() {
                     @Override
@@ -884,7 +900,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
                 b.show();*/
             } else {
                 //No Internet
-                Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.noInterntCon, Toast.LENGTH_SHORT).show();
 
                /* try {
                     new BlurPopupWindow.Builder(MainActivity.this)
@@ -972,12 +988,46 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
         programInfoLayout.setVisibility(View.INVISIBLE);
     }
 
+    @OnClick(R.id.tv_english)
+    public void setEngLang(){
+        setNewLocale(this,LocaleManager.ENGLISH);
+    }
+
+    @OnClick(R.id.tv_hindi)
+    public void setHinLang(){
+        setNewLocale(this, LocaleManager.HINDI);
+    }
+
+    private void setNewLocale(AppCompatActivity mContext, @LocaleManager.LocaleDef String language) {
+        LocaleManager.setNewLocale(this, language);
+        Intent intent = mContext.getIntent();
+        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+    }
+
+
+    /*public void setLocale(String localeName) {
+        if (!localeName.equals(currentLanguage)) {
+            myLocale = new Locale(localeName);
+            Resources res = getResources();
+            DisplayMetrics dm = res.getDisplayMetrics();
+            Configuration conf = res.getConfiguration();
+            conf.locale = myLocale;
+            res.updateConfiguration(conf, dm);
+            Intent refresh = new Intent(this, MainActivity.class);
+            refresh.putExtra(currentLang, localeName);
+            startActivity(refresh);
+        } else {
+            Toast.makeText(MainActivity.this, "Language already selected!", Toast.LENGTH_SHORT).show();
+        }
+    }*/
+
     @Override
     public void openNextActivity() {
         Intent intent = new Intent(MainActivity.this, Dashboard.class);
         intent.putExtra("CRLid", crlID);
         intent.putExtra("CRLname", crlName);
         intent.putExtra("CRLnameSwapStd", crlName + "(" + crlID + ")");
+        intent.putExtra("localeName", hindiLang);
         startActivity(intent);
         finish();
     }

@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/card_view_image"
-            android:layout_width="@dimen/_64sdp"
-            android:layout_height="@dimen/_64sdp"
+            android:layout_width="@dimen/_34sdp"
+            android:layout_height="@dimen/_34sdp"
             android:layout_marginLeft="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginRight="@dimen/_8sdp"

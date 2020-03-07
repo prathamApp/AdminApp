@@ -20,7 +20,7 @@
             android:fontFamily="monospace"
             android:gravity="center"
             android:padding="@dimen/_8sdp"
-            android:text="Notifications"
+            android:text="@string/title_notification"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/_20sdp"
             android:textStyle="bold" />

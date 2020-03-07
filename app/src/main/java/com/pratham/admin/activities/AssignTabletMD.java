@@ -150,9 +150,9 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
         //  int crlCount = AppDatabase.getDatabaseInstance(context).getCRLmd_dao().getCRLs_mdCount();
         int crlCount = AppDatabase.getDatabaseInstance(context).getCRLdao().getCRLsCount();
         if (crlCount <= 0) {
-            Toast.makeText(context, "Please pull Data ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.pleasepulldata, Toast.LENGTH_SHORT).show();
             AlertDialog builder = new AlertDialog.Builder(this).create();
-            builder.setTitle("No CRLs are available");
+            builder.setTitle(R.string.noCrlAvailable);
             builder.setIcon(R.drawable.ic_error_outline_black_24dp);
             builder.setCancelable(false);
             builder.setButton("OK", new DialogInterface.OnClickListener() {
@@ -382,7 +382,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("App requires camera permission to scan QR code");
+                builder.setMessage(R.string.appReqCamPermsn);
                 builder.setCancelable(false);
                 builder.setPositiveButton("Enable", new DialogInterface.OnClickListener() {
                     @Override
@@ -407,7 +407,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                Toast.makeText(this, "You Need Camera permission", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.youNeedCamPermsn, Toast.LENGTH_SHORT).show();
                 finish();
             } else {
                 initCamera();
@@ -453,7 +453,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                         loadDevises(url);
                     } else {
                         checkConnection();
-                        new AlertDialog.Builder(this).setTitle("Warning").setMessage("Internet not available").setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                        new AlertDialog.Builder(this).setTitle(R.string.warning).setMessage(R.string.noInterntCon).setPositiveButton("Close", new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -464,7 +464,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                     }
                 }
             } else {
-                Toast.makeText(this, "Invalid QR ", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.invalidQR, Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
             Modal_Log log = new Modal_Log();
@@ -478,7 +478,7 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
             BackupDatabase.backup(ApplicationController.getInstance());
 
             e.printStackTrace();
-            Toast.makeText(this, "Invalid QR ", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.invalidQR, Toast.LENGTH_LONG).show();
         }
 
     }
@@ -568,12 +568,12 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                         tabletManageDevice.setIsPushed(0);
 //                        AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDao().insertTabletManageDevice(tabletManageDevice);
                         mainList.add(tabletManageDevice);
-                        Toast.makeText(AssignTabletMD.this, "Inserted Successfully ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(AssignTabletMD.this, R.string.insertedSuccessfuly, Toast.LENGTH_LONG).show();
                         setCount();
                         clearFields();
                         resetCamera();
                     } else {
-                        Toast.makeText(context, "select damage type", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.selectDamageType, Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
@@ -593,16 +593,16 @@ public class AssignTabletMD extends BaseActivity implements ZXingScannerView.Res
                     tabletManageDevice.setIsPushed(0);
 //                    AppDatabase.getDatabaseInstance(this).getTabletManageDeviceDao().insertTabletManageDevice(tabletManageDevice);
                     mainList.add(tabletManageDevice);
-                    Toast.makeText(AssignTabletMD.this, "Inserted Successfully ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AssignTabletMD.this, R.string.insertedSuccessfuly, Toast.LENGTH_LONG).show();
                     setCount();
                     clearFields();
                     resetCamera();
                 }
             } else {
-                Toast.makeText(context, "Scan QR Or Enter Serial Id", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.scanQrorEnterSid, Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(this, "Fill In All The Details", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.fillAllDetails, Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -17,7 +17,7 @@
         android:fontFamily="monospace"
         android:gravity="center"
         android:padding="16dp"
-        android:text="Forms"
+        android:text="@string/title_forms"
         android:textColor="@color/colorAccent"
         android:textSize="32sp"
         android:textStyle="bold" />

@@ -98,7 +98,7 @@ public class Status_Action extends BaseActivity implements ZXingScannerView.Resu
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("App requires camera permission to scan QR code");
+                builder.setMessage(R.string.appReqCamPermsn);
                 builder.setCancelable(false);
                 builder.setPositiveButton("Enable", new DialogInterface.OnClickListener() {
                     @Override
@@ -190,7 +190,7 @@ public class Status_Action extends BaseActivity implements ZXingScannerView.Resu
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setCancelable(false);
-                        builder.setMessage("This QR Is Already Scanned. Do You Want To Replace Data?");
+                        builder.setMessage(R.string.qrAlreadyScand);
                         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -218,7 +218,7 @@ public class Status_Action extends BaseActivity implements ZXingScannerView.Resu
                         loadDevises(url);
                     } else {
                         checkConnection();
-                        new AlertDialog.Builder(this).setTitle("Warning").setMessage("Please fill out the entire form").setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                        new AlertDialog.Builder(this).setTitle(R.string.warning).setMessage(R.string.plzfillallform).setPositiveButton("Close", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 resetCamera();
@@ -437,7 +437,7 @@ public class Status_Action extends BaseActivity implements ZXingScannerView.Resu
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setCancelable(false);
-                    builder.setMessage("This QR Is Already Scanned. Do You Want To Replace Data?");
+                    builder.setMessage(R.string.qrAlreadyScand);
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -464,7 +464,7 @@ public class Status_Action extends BaseActivity implements ZXingScannerView.Resu
 
             }
         } else {
-            Toast.makeText(this, "Invalid QR ", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.invalidQR, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -495,9 +495,9 @@ public class Status_Action extends BaseActivity implements ZXingScannerView.Resu
     public void onError(ANError anError, String header) {
         if (header.equals("loading_devices")) {
             resetCamera();
-            Toast.makeText(context, "Check internet conection", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.chkInternet, Toast.LENGTH_SHORT).show();
         } else if (header.equals("upload_changes")) {
-            Toast.makeText(Status_Action.this, "NO Internet Connection", Toast.LENGTH_LONG).show();
+            Toast.makeText(Status_Action.this, R.string.noInterntCon, Toast.LENGTH_LONG).show();
             // dialog.dismiss();
         }
     }

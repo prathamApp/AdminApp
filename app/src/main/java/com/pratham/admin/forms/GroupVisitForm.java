@@ -140,7 +140,7 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
     private void populateVillages() {
         final List VillageName = new ArrayList();
         if (!villageList.isEmpty()) {
-            VillageName.add(new CustomGroup("Select Village"));
+            VillageName.add(new CustomGroup(getString(R.string.selectvillage)));
             for (int j = 0; j < villageList.size(); j++) {
                 CustomGroup customGroup = new CustomGroup(villageList.get(j).getVillageName(), villageList.get(j).getVillageId());
                 VillageName.add(customGroup);
@@ -152,7 +152,7 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
         sp_Village.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                btn_Submit.setText("Preview");
+                btn_Submit.setText(R.string.preview);
 
                 CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
                 vid = customGroup.getId();
@@ -202,7 +202,7 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
         sp_VisitedGroups_multiselect.setAdapter(grpAdapter, false, onVGSelectedListener);
         // set initial selection
         selectedVGItems = new boolean[grpAdapter.getCount()];
-        sp_VisitedGroups_multiselect.setHint("Select Visited Groups");
+        sp_VisitedGroups_multiselect.setHint(getString(R.string.selectvisitedgrp));
         sp_VisitedGroups_multiselect.setHintTextColor(Color.BLACK);
     }
 
@@ -210,7 +210,7 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
     private MultiSpinner.MultiSpinnerListener onVGSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
-            btn_Submit.setText("Preview");
+            btn_Submit.setText(R.string.preview);
             List<String> grp_sel = new ArrayList<>();
             selectedVGArray = new ArrayList<>();
             selectedVGArrayName = new ArrayList<>();
@@ -254,7 +254,7 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
         sp_GrpWithTheirGrp_multiselect.setAdapter(grpAdapter, false, new MultiSpinner.MultiSpinnerListener() {
             @Override
             public void onItemsSelected(boolean[] selected) {
-                btn_Submit.setText("Preview");
+                btn_Submit.setText(R.string.preview);
                 selectedGWTGArray = new ArrayList<>();
                 selectedGWTG = "";
                 selectedGWTGNames = "";
@@ -271,7 +271,7 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
         });
         // set initial selection
         selectedGWTGItems = new boolean[grpAdapter.getCount()];
-        sp_GrpWithTheirGrp_multiselect.setHint("Groups which were studying at their allotted time");
+        sp_GrpWithTheirGrp_multiselect.setHint(getString(R.string.studyinggrp));
         sp_GrpWithTheirGrp_multiselect.setHintTextColor(Color.BLACK);
 
     }
@@ -295,7 +295,7 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
         sp_WorkCrosscheckedGrps_multiselect.setAdapter(grpAdapter, false, new MultiSpinner.MultiSpinnerListener() {
             @Override
             public void onItemsSelected(boolean[] selected) {
-                btn_Submit.setText("Preview");
+                btn_Submit.setText(R.string.preview);
 
                 selectedWCCGArray = new ArrayList<>();
                 selectedWCCG = "";
@@ -313,7 +313,7 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
         });
         // set initial selection
         selectedWCCGItems = new boolean[grpAdapter.getCount()];
-        sp_WorkCrosscheckedGrps_multiselect.setHint("Groups whose work was crosschecked by Coach");
+        sp_WorkCrosscheckedGrps_multiselect.setHint(getString(R.string.workcrosschk));
         sp_WorkCrosscheckedGrps_multiselect.setHintTextColor(Color.BLACK);
     }
 
@@ -335,7 +335,7 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
         sp_PresentCoaches_multiselect.setAdapter(coachAdapter, false, onPCSelectedListener);
         // set initial selection
         selectedPCItems = new boolean[coachAdapter.getCount()];
-        sp_PresentCoaches_multiselect.setHint("Select the coaches who were helping their group at their allotted time");
+        sp_PresentCoaches_multiselect.setHint(getString(R.string.helpingcoaches));
         sp_PresentCoaches_multiselect.setHintTextColor(Color.BLACK);
 
     }
@@ -343,7 +343,7 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
     // PC Listener
     private MultiSpinner.MultiSpinnerListener onPCSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
-            btn_Submit.setText("Preview");
+            btn_Submit.setText(R.string.preview);
             // Do something here with the selected items
             List<String> selectedPCArray = new ArrayList<>();
             List<String> selectedPCArrayNames = new ArrayList<>();
@@ -364,8 +364,8 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
 
 
     private void resetForm() {
-        btn_TimeRangePicker.setText("Select Time");
-        btn_Submit.setText("Preview");
+        btn_TimeRangePicker.setText(R.string.selecttime);
+        btn_Submit.setText(R.string.preview);
         edt_PresentStdCount.getText().clear();
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
         btn_DatePicker.setPadding(8, 8, 8, 8);
@@ -395,23 +395,23 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
 
     @OnClick(R.id.btn_DatePicker)
     public void visitDatePicker(View view) {
-        btn_Submit.setText("Preview");
+        btn_Submit.setText(R.string.preview);
         DialogFragment newFragment = new DatePickerFragmentOne();
         newFragment.show(getFragmentManager(), "DatePicker");
     }
 
     @OnClick(R.id.btn_TimeRangePicker)
     public void TimeRangePicker(View view) {
-        btn_Submit.setText("Preview");
+        btn_Submit.setText(R.string.preview);
         // Create an instance of the dialog fragment and show it
         RangeTimePickerDialog dialog = new RangeTimePickerDialog();
         dialog.newInstance();
         dialog.setIs24HourView(false);
         dialog.setRadiusDialog(16);
-        dialog.setTextTabStart("Start");
-        dialog.setTextTabEnd("End");
-        dialog.setTextBtnPositive("Accept");
-        dialog.setTextBtnNegative("Close");
+        dialog.setTextTabStart(getString(R.string.start));
+        dialog.setTextTabEnd(getString(R.string.end));
+        dialog.setTextBtnPositive(getString(R.string.accept));
+        dialog.setTextBtnNegative(getString(R.string.end));
         dialog.setValidateRange(true);
         dialog.setColorBackgroundHeader(R.color.colorPrimary); // top header background
         dialog.setColorBackgroundTimePickerHeader(R.color.colorPrimary); // Digital Time Backgrounds
@@ -460,7 +460,7 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
         if ((sp_Village.getSelectedItemPosition() > 0) && (selectedVG.trim().length() > 0)
                 && (selectedGWTG.trim().length() > 0)
                 && (selectedWCCG.trim().length() > 0) && (selectedPC.trim().length() > 0)
-                && (!btn_TimeRangePicker.getText().toString().equalsIgnoreCase("Select Time"))
+                && (!btn_TimeRangePicker.getText().toString().equalsIgnoreCase(getString(R.string.selecttime)))
                 && (edt_PresentStdCount.getText().toString().trim().length() > 0)) {
             try {
 
@@ -482,33 +482,33 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
                 grpVisitObj.EndTime = endTime;
                 grpVisitObj.sentFlag = 0;
 
-                if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
+                if (btn_Submit.getText().toString().equalsIgnoreCase(getString(R.string.submit))) {
 
                     AppDatabase.getDatabaseInstance(this).getGroupVisitDao().insertAllCRLVisit(Collections.singletonList(grpVisitObj));
-                    Toast.makeText(this, "Form Saved to Database !!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.formSavedtoDB, Toast.LENGTH_SHORT).show();
                     resetForm();
 
                 } else {
                     // Preview Dialog
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(GroupVisitForm.this, android.R.style.Theme_Material_Light_Dialog);
                     dialogBuilder.setCancelable(false);
-                    dialogBuilder.setTitle("Form Data Preview");
-                    dialogBuilder.setMessage("Village Name : " + vName
-                            + "\nDate Visited : " + date
-                            + "\nNo of Students Present : " + edt_PresentStdCount.getText().toString().trim()
-                            + "\nObserved Groups : " + selectedVGNames
-                            + "\nGroups which were studying at their Allotted time : " + selectedGWTGNames
-                            + "\nGroups whose work was crosschecked by Coach : " + selectedWCCGNames
-                            + "\nCoaches who were helping their Groups : " + selectedPCNames);
+                    dialogBuilder.setTitle(getString(R.string.formdatapreview));
+                    dialogBuilder.setMessage(getString(R.string.villagename) + vName
+                            + "\n"+getString(R.string.datevisited) + date
+                            + "\n"+getString(R.string.studentspresent)+" : " + edt_PresentStdCount.getText().toString().trim()
+                            + "\n"+getString(R.string.observedgrp) + selectedVGNames
+                            + "\n"+getString(R.string.studyinggrp)+" : " + selectedGWTGNames
+                            + "\n"+getString(R.string.workcrosschk)+" : " + selectedWCCGNames
+                            + "\n"+getString(R.string.helpingcoaches)+" : " + selectedPCNames);
 
-                    dialogBuilder.setPositiveButton("Correct", new DialogInterface.OnClickListener() {
+                    dialogBuilder.setPositiveButton(R.string.correct, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            btn_Submit.setText("Submit");
+                            btn_Submit.setText(R.string.submit);
                         }
                     });
-                    dialogBuilder.setNegativeButton("Wrong", new DialogInterface.OnClickListener() {
+                    dialogBuilder.setNegativeButton(R.string.wrong, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            btn_Submit.setText("Preview");
+                            btn_Submit.setText(R.string.preview);
                         }
                     });
                     AlertDialog b = dialogBuilder.create();
@@ -529,7 +529,7 @@ public class GroupVisitForm extends BaseActivity implements /*ConnectionReceiver
             }
 
         } else {
-            Toast.makeText(this, "Please fill all the fields !!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.fillAllFields, Toast.LENGTH_SHORT).show();
         }
     }
 }

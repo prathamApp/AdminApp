@@ -17,7 +17,7 @@
         android:fontFamily="monospace"
         android:gravity="center"
         android:padding="@dimen/_8sdp"
-        android:text="Student Management"
+        android:text="@string/title_StudentMngmnt"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/_20sdp"
         android:textStyle="bold" />
@@ -79,7 +79,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_margin="@dimen/_4sdp"
                                 android:gravity="center_horizontal"
-                                android:text="Add New Group"
+                                android:text="@string/addnewgroup"
                                 android:textColor="#000000"
                                 android:textSize="@dimen/_12sdp"
                                 android:textStyle="normal" />
@@ -120,7 +120,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_margin="@dimen/_4sdp"
                                 android:gravity="center_horizontal"
-                                android:text="Add New Student"
+                                android:text="@string/addnewstudent"
                                 android:textColor="#000000"
                                 android:textSize="@dimen/_12sdp"
                                 android:textStyle="normal" />
@@ -161,7 +161,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_margin="@dimen/_4sdp"
                                 android:gravity="center_horizontal"
-                                android:text="Edit Student"
+                                android:text="@string/editstudent"
                                 android:textColor="#000000"
                                 android:textSize="@dimen/_12sdp"
                                 android:textStyle="normal" />
@@ -208,7 +208,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_margin="@dimen/_4sdp"
                                 android:gravity="center_horizontal"
-                                android:text="Delete Student"
+                                android:text="@string/deletestudent"
                                 android:textColor="#000000"
                                 android:textSize="@dimen/_12sdp"
                                 android:textStyle="normal" />
@@ -249,7 +249,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_margin="@dimen/_4sdp"
                                 android:gravity="center_horizontal"
-                                android:text="Swap Students"
+                                android:text="@string/swapstudents"
                                 android:textColor="#000000"
                                 android:textSize="@dimen/_12sdp"
                                 android:textStyle="normal" />
@@ -290,7 +290,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_margin="@dimen/_4sdp"
                                 android:gravity="center_horizontal"
-                                android:text="ECE Assessment"
+                                android:text="@string/eceassessment"
                                 android:textColor="#000000"
                                 android:textSize="@dimen/_12sdp"
                                 android:textStyle="normal" />

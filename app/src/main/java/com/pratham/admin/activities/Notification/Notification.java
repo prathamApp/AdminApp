@@ -27,6 +27,7 @@ import com.pratham.admin.interfaces.NetworkCallListener;
 import com.pratham.admin.modalclasses.DeviseList;
 import com.pratham.admin.modalclasses.NotificationData;
 import com.pratham.admin.util.APIs;
+import com.pratham.admin.util.BaseActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,7 +44,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemSelected;
 
-public class Notification extends AppCompatActivity implements NetworkCallListener {
+public class Notification extends BaseActivity implements NetworkCallListener {
 
     //region Variables
     private List<NotificationData> notificationList = new ArrayList<>();
@@ -70,19 +71,11 @@ public class Notification extends AppCompatActivity implements NetworkCallListen
         LoggedcrlId = getIntent().getStringExtra("CRLid");
         LoggedcrlName = getIntent().getStringExtra("CRLname");
         context = Notification.this;
-        //Toast.makeText(context, LoggedcrlId+" | "+LoggedcrlName, Toast.LENGTH_SHORT).show();
 
         String url = APIs.notificationAPI;
         loadNotifications(url + LoggedcrlId);
 
         nf_recyclerView = findViewById(R.id.recycler_list);
-
-        /*nfAdapter = new NotificationAdapter(context, notificationList);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        nf_recyclerView.setLayoutManager(layoutManager);
-        nf_recyclerView.setItemAnimator(new DefaultItemAnimator());
-        nf_recyclerView.setAdapter(nfAdapter);
-        nfAdapter.notifyDataSetChanged();*/
 
         //notificationData();
 
@@ -128,7 +121,7 @@ public class Notification extends AppCompatActivity implements NetworkCallListen
     }
 
     private void loadNotifications(String url) {
-        NetworkCalls.getNetworkCallsInstance(this).getRequest(this, url, "Loading Notifications..", "loading_devises");
+        NetworkCalls.getNetworkCallsInstance(this).getRequest(this, url, getString(R.string.loadingNotification), "loading_devises");
     }
 
     @Override
@@ -157,7 +150,7 @@ public class Notification extends AppCompatActivity implements NetworkCallListen
 
                 } else {
                     AlertDialog alertDialog = new AlertDialog.Builder(Notification.this).create();
-                    alertDialog.setTitle("No Notification Found");
+                    alertDialog.setTitle(R.string.noNotificationFound);
                     alertDialog.setIcon(R.drawable.ic_error_outline_black_24dp);
                     alertDialog.setButton("OK", new android.content.DialogInterface.OnClickListener() {
                         @Override

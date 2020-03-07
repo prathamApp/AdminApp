@@ -22,7 +22,7 @@
             android:fontFamily="monospace"
             android:gravity="center"
             android:padding="@dimen/_8sdp"
-            android:text="Add New Student"
+            android:text="@string/addnewstudent"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/_18sdp"
             android:textStyle="bold" />
@@ -105,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.5"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                android:hint="Enter First Name"
+                android:hint="@string/enterfirstname"
                 android:imeOptions="actionNext"
                 android:inputType="textCapWords"
                 android:nextFocusDown="@+id/edt_MiddleName"
@@ -122,7 +122,7 @@
                 android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="1.5"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                android:hint="Enter Middle Name"
+                android:hint="@string/entermiddlename"
                 android:imeOptions="actionNext"
                 android:inputType="textCapWords"
                 android:nextFocusDown="@+id/edt_LastName"
@@ -139,7 +139,7 @@
                 android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="2"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                android:hint="Enter Last Name"
+                android:hint="@string/enterlastname"
                 android:imeOptions="actionNext"
                 android:inputType="textCapWords"
                 android:nextFocusDown="@+id/edt_GuardianName"
@@ -187,7 +187,7 @@
                 android:background="@color/button"
                 android:drawableLeft="@android:drawable/ic_menu_my_calendar"
                 android:drawablePadding="@dimen/_4sdp"
-                android:text="Birth Date"
+                android:text="@string/birthdate"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/_12sdp" />
@@ -235,7 +235,7 @@
                     android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Gender"
+                    android:text="@string/gender"
                     android:textColor="@color/button"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
@@ -247,7 +247,7 @@
                     android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:checked="true"
-                    android:text="Male"
+                    android:text="@string/male"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
 
@@ -257,7 +257,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
-                    android:text="Female"
+                    android:text="@string/female"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
 
@@ -280,7 +280,7 @@
                 android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="2"
                 android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                android:hint="Enter Guardian's Name"
+                android:hint="@string/enterguardianname"
                 android:inputType="textCapWords"
                 android:maxLength="30"
                 android:singleLine="true"
@@ -303,7 +303,7 @@
                     android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="School Type"
+                    android:text="@string/schooltype"
                     android:textColor="@color/button"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
@@ -315,7 +315,7 @@
                     android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:checked="true"
-                    android:text="Government"
+                    android:text="@string/government"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
 
@@ -325,7 +325,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
-                    android:text="Private"
+                    android:text="@string/privat"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
 
@@ -355,7 +355,7 @@
                     android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:text="Baseline Information -->"
+                    android:text="@string/baselineinfo"
                     android:textColor="@color/button"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
@@ -417,7 +417,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/button"
-                    android:text="  Endline 1  "
+                    android:text="@string/endline1"
                     android:textColor="#FFFFFF"
                     android:textSize="@dimen/_12sdp" />
 
@@ -428,7 +428,7 @@
                     android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:background="@color/button"
-                    android:text="  Endline 2  "
+                    android:text="@string/endline2"
                     android:textColor="#FFFFFF"
                     android:textSize="@dimen/_12sdp" />
 
@@ -439,7 +439,7 @@
                     android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:background="@color/button"
-                    android:text="  Endline 3  "
+                    android:text="@string/endline3"
                     android:textColor="#FFFFFF"
                     android:textSize="@dimen/_12sdp" />
 
@@ -450,7 +450,7 @@
                     android:layout_marginLeft="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:background="@color/button"
-                    android:text="  Endline 4  "
+                    android:text="@string/endline4"
                     android:textColor="#FFFFFF"
                     android:textSize="@dimen/_12sdp" />
 
@@ -503,7 +503,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/album_title"
-                android:text="Submit"
+                android:text="@string/submit"
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />
@@ -515,7 +515,7 @@
                 android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="2"
                 android:background="@color/album_title"
-                android:text="Clear"
+                android:text="@string/clear"
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />

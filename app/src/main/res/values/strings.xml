@@ -15,6 +15,292 @@
     <string name="DigitalSchoolProgram">Digital School Program</string>
     <string name="ReadIndiaMichelin">Read India- Michelin</string>
 
+    <!--Activity_Main-->
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_forms">Forms</string>
+    <string name="title_StudentMngmnt">Student Management</string>
+    <string name="title_MngDevice">Manage Device</string>
+    <string name="title_notification">Notifications</string>
+
+    <!--Activity_Main-->
+    <string name="program">Program :</string>
+    <string name="state">State :</string>
+    <string name="village">Village :</string>
+    <string name="hnt_username">User Name</string>
+    <string name="hnt_password">Password</string>
+    <string name="btn_login">LOGIN</string>
+    <string name="btn_cleardata">Clear Data</string>
+
+    <!--Dashboard-->
+    <string name="forms">Forms</string>
+    <string name="studentManagement">Student Management</string>
+    <string name="pushdata">Push Data</string>
+    <string name="managedevice">Manage Device</string>
+    <string name="notifications">Notifications</string>
+    <string name="deviceinfo">Device Info</string>
+
+    <!--Forms-->
+    <string name="coachinformation">Coach Information</string>
+    <string name="coursecompletion">Course Completion</string>
+    <string name="coachretention">Coach Retention</string>
+    <string name="groupsession">Group Session</string>
+    <string name="groupvisit">Group Visit</string>
+    <string name="courseenrollment">Course Enrollment</string>
+    <string name="studentsattendance">Students Attendance</string>
+
+    <!--Student Management-->
+    <string name="addnewgroup">Add New Group</string>
+    <string name="addnewstudent">Add New Student</string>
+    <string name="editstudent">Edit Student</string>
+    <string name="deletestudent">Delete Student</string>
+    <string name="swapstudents">Swap Students</string>
+    <string name="eceassessment">ECE Assessment</string>
+
+    <!--Manage Device-->
+    <string name="assigntablet">Assign Tablet</string>
+    <string name="returntablet">Return Tablet</string>
+    <string name="actionstatus">Action Status</string>
+    <string name="mydevices">My Devices</string>
+    <string name="scanprathamid">Scan Pratham ID</string>
+    <string name="replacetab">Replace Tablet</string>
+    <string name="collecttab">Collect Tablet</string>
+
+    <!--Add New Group-->
+    <string name="newgroupname">enter new group name</string>
+
+    <!--Add New Student and Edit Student-->
+    <string name="enterfirstname">Enter First Name</string>
+    <string name="entermiddlename">Enter Middle Name</string>
+    <string name="enterlastname">Enter Last Name</string>
+    <string name="birthdate">BirthDate</string>
+    <string name="clas">Class</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="enterguardianname">Enter Guardian\'s Name</string>
+    <string name="schooltype">School Type</string>
+    <string name="government">Government</string>
+    <string name="privat">Private</string>
+    <string name="baselineinfo">Baseline Information &#8212;&#8212;></string>
+    <string name="endline1">ENDLINE 1</string>
+    <string name="endline2">ENDLINE 2</string>
+    <string name="endline3">ENDLINE 3</string>
+    <string name="endline4">ENDLINE 4</string>
+
+    <string name="selectstudent">Select Student</string>
+    <string name="studentdetail">STUDENT DETAILS</string>
+    <string name="firstname">First Name</string>
+    <string name="middlename">Middle Name</string>
+    <string name="lastname">Last Name</string>
+    <string name="age">Age</string>
+
+    <!--ECE Sample Assessment-->
+    <string name="selectassesssmenttype">Select Assessment Type</string>
+    <string name="basicdetails">BASIC DETAILS</string>
+    <string name="selectdate">Select Date</string>
+    <string name="selecttime">Select Time</string>
+    <string name="activities">ACTIVITIES</string>
+    <string name="worksheet">WORKSHEET</string>
+    <string name="oralquestions">ORAL QUESTIONS</string>
+
+    <!--Attendance-->
+    <string name="title_attendance">Attendance</string>
+    <string name="selectall">Select All</string>
+    <string name="deselectall">Deselect All</string>
+    <string name="present">Present</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="selectgroupssmall">Select Groups</string>
+    <string name="selectstudents">Select Students</string>
+    <string name="selectedstudents">Selected Student :&#160;</string>
+    <string name="prsnt">Present :&#160;</string>
+
+    <!--Coach Information-->
+    <string name="title_coachInfo">Coach Information</string>
+    <string name="nameofcoach">Name of the coach</string>
+    <string name="selectoccupation">Select Occupation</string>
+    <string name="selecteducation">Select Education</string>
+    <string name="selectspeciality">Select Speciality</string>
+    <string name="selectsubjectexpert">Select Subject Expert</string>
+    <string name="coachname">Coach Name :&#160;</string>
+    <string name="coachage">Coach Age :&#160;</string>
+    <string name="coachgender">Coach Gender :&#160;</string>
+    <string name="coachoccupation">Coach Occupation :&#160;</string>
+    <string name="coacheducation">Coach Education :&#160;</string>
+    <string name="coachspeciality">Coach Speciality :&#160;</string>
+    <string name="subjectexpert">Subject Expert :&#160;</string>
+    <string name="selectedgroup">Selected Groups :&#160;</string>
+    <string name="date">Date :&#160;</string>
+    <string name="select">Select</string>
+    <string name="plzmentionOther">Please Mention Others</string>
+    <string name="Okay">OK</string>
+    <string name="Skip">SKIP</string>
+    <string name="lodingPleaseWait">Loading Please Wait&#8230;</string>
+    <string name="Exit">Exit</string>
+    <string name="Cancel">Cancel</string>
+    <string name="sp_clas5">Class 5</string>
+    <string name="sp_clas8">Class 8</string>
+    <string name="sp_highSec">Higher Secondary</string>
+    <string name="sp_intmd">Intermediate</string>
+    <string name="sp_grad">Graduate</string>
+    <string name="sp_postgrad">Post Graduate</string>
+
+    <!--Course Completion-->
+    <string name="title_coachcmpltn">Coach Completion</string>
+    <string name="nocoursesavailable">No Courses/Topics Available !!!</string>
+    <string name="startdate">Start Date</string>
+    <string name="enddate">End Date</string>
+    <string name="wasitevent">Was it an Event ?</string>
+    <string name="noofparents">No. of parents present</string>
+    <string name="villagename">Village Name :&#160;</string>
+    <string name="groupname">Group Name :&#160;</string>
+    <string name="courses">Courses :&#160;</string>
+    <string name="topics">Topics :&#160;</string>
+    <string name="stdate">Start Date :&#160;</string>
+    <string name="eddate">End Date :&#160;</string>
+    <string name="event">Event :&#160;</string>
+    <string name="parentpresent">No of Parents Present :&#160;</string>
+
+    <!--Coach Retention-->
+    <string name="title_coachRetentn">Coach Retention</string>
+    <string name="dropout">Drop Out</string>
+    <string name="selectcoach">Select Coach</string>
+    <string name="drpout">Drop Out :&#160;</string>
+
+
+    <!--Group Session and Group Visit-->
+    <string name="title_groupVisit">Group Visit</string>
+    <string name="title_groupSession">Group Session</string>
+    <string name="selectvisitedgrp">Select Visited Groups</string>
+    <string name="helpingcoaches">Select the coaches who were helping their group at their allotted time</string>
+    <string name="workcrosschk">Groups whose work was crosschecked by Coach</string>
+    <string name="studentspresent">No. of students present </string>
+    <string name="datevisited">Date Visited :&#160;</string>
+    <string name="observedgrp">Observed Group :&#160;</string>
+    <string name="studyinggrp">Groups which were studying at their allotted time</string>
+
+    <!--Course Enrollment-->
+    <string name="title_courseEnrlmnt">Coach Enrollment</string>
+    <string name="selecttopics">Select Topics</string>
+    <string name="communityorschool">Community or School</string>
+    <string name="community">Community</string>
+    <string name="school">School</string>
+    <string name="selectedcourses">Selected Courses :&#160;</string>
+    <string name="selectedtopics">Selected Topics :&#160;</string>
+    <string name="groupType">Group Type :&#160;</string>
+
+    <!--Universal Tags-->
+    <string name="selectstate">Select State</string>
+    <string name="selectprogram">Select Program</string>
+    <string name="selectblock">Select Block</string>
+    <string name="selectvillage">Select Village</string>
+    <string name="selectgroup">Select Group</string>
+    <string name="selectgroups">SELECT GROUPS</string>
+    <string name="submit">SUBMIT</string>
+    <string name="clear">CLEAR</string>
+    <string name="preview">PREVIEW</string>
+    <string name="savechanges">SAVE CHANGES</string>
+    <string name="formdatapreview">Form Data Preview</string>
+    <string name="pulling">Pulling...</string>
+    <string name="pullingCoaches">Pulling Coaches !!!</string>
+    <string name="pullingCourses">Pulling Courses !!!</string>
+    <string name="pullingCoursesCmpl">Pulling Course Completion !!!</string>
+    <string name="loadApiFail">Load API Failed.</string>
+    <string name="pulldata">Pull Data</string>
+    <string name="savedata">Save Data</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="accept">Accept</string>
+    <string name="close">Close</string>
+    <string name="plzselectprogram">Please Select Program</string>
+    <string name="plzselectvlg">Please Select Village</string>
+
+    <!--Push Data Preview-->
+    <string name="attendance">Attendance :&#160;</string>
+    <string name="coaches">Coaches :&#160;</string>
+    <string name="communities">Communities :&#160;</string>
+    <string name="completions">Completions :&#160;</string>
+    <string name="students">Students :&#160;</string>
+    <string name="asers">Asers :&#160;</string>
+    <string name="groups">Groups :&#160;</string>
+    <string name="groupvst">GroupVisits :&#160;</string>
+    <string name="groupsesn">GroupSessions :&#160;</string>
+    <string name="eceasmnt">ECE Assessments :&#160;</string>
+    <string name="logs">Logs :&#160;</string>
+
+    <!--Custom Dialog-->
+    <string name="uploadChange">Do You Want To Upload Following Changes?</string>
+    <string name="totalStudents">Total Students :&#160;</string>
+    <string name="totalchanges">Total Changes :&#160;</string>
+    <string name="totalchangedCrl">Total Changed CRL\'s :&#160;</string>
+    <string name="clearChanges">CLEAR CHANGES</string>
+    <string name="pushToServer">Push To Server</string>
+
+    <!--App Failure Dialog-->
+    <string name="unabletopush">Unable to Push Data !</string>
+    <string name="somethingwrong">Something went Wrong !\nPlease Check your network !</string>
+
+
+    <!--Toasts-->
+    <string name="connectinternet">Connect to internet</string>
+    <string name="noInterntCon">No Internet Connection</string>
+    <string name="pushSuccess">pushed SuccessFully</string>
+    <string name="chkInternet">check internet connection</string>
+    <string name="formSubmittedtoDB">Form Submitted to DB !!!</string>
+    <string name="fillAllFields">Please fill all the fields !!!</string>
+    <string name="selectAllFields">Please Select All Fields !!!</string>
+    <string name="selectStudtoSwap">select a student for shifting</string>
+    <string name="noChngAvailable">No Changes Available</string>
+    <string name="savedOffline">saved offline</string>
+    <string name="formSavedtoDB">Form Saved to Database !!!</string>
+    <string name="formNotPushed">Form Data NOT Pushed to Server as Internet isn\'t connected !!!</string>
+    <string name="selectedStudDelete">Selected Students have been Deleted !!!</string>
+    <string name="selectedStudNotDelete">Selected Students not Deleted as due to Network Issues !</string>
+    <string name="datapushfailed">data push failed try again</string>
+    <string name="noNewDataPush">No New Data found for Pushing !</string>
+    <string name="invalidQR">Invalid QR</string>
+    <string name="youNeedCamPermsn">You Need Camera permission</string>
+    <string name="insertedSuccessfuly">Inserted Successfully</string>
+    <string name="scanQrorEnterSid">Scan QR Or Enter Serial Id</string>
+    <string name="fillAllDetails">Fill In All The Details</string>
+    <string name="selectDamageType">select damage type</string>
+    <string name="pleasepulldata">Please pull Data</string>
+    <string name="recInsertFailed">Record Insertion Failed !!!</string>
+    <string name="enterValidInput">Please Enter Valid Input !!!</string>
+    <string name="fillAllBaselineFld">Please fill all Baseline fields !</string>
+    <string name="baselineUpdated">Baseline Updated !</string>
+    <string name="baselineInsertFailed">Baseline Insertion Failed !</string>
+    <string name="recInsertSuccess">Record Inserted Successfully !!!</string>
+    <string name="sorrynodatafound">Sorry. No Data Found !!!</string>
+    <string name="recordsavedtodb">Record saved to Database !</string>
+    <string name="recordupdatetodb">Record updated successfully !</string>
+
+
+    <!--Alert Dialog-->
+    <string name="alert">Alert</string>
+    <string name="denyPermission">Denying the permissions may cause in application failure.</string>
+    <string name="upgradeApp">Upgrade your app !</string>
+    <string name="plzUpgradeApp">Please upgrade your app in order to use latest features.</string>
+    <string name="upgrade">Upgrade</string>
+    <string name="dataPreview">Data Preview</string>
+    <string name="pushDataPreview">Push Data Preview</string>
+    <string name="confirm">Confirm</string>
+    <string name="uploading">UPLOADING...</string>
+    <string name="invalidCredential">Invalid Credentials</string>
+    <string name="noCrlAvailable">No CRLs are available</string>
+    <string name="appReqCamPermsn">App requires camera permission to scan QR code</string>
+    <string name="warning">Warning</string>
+    <string name="correct">Correct</string>
+    <string name="wrong">Wrong</string>
+    <string name="qrAlreadyScand">This QR Is Already Scanned. Do You Want To Replace Data?</string>
+    <string name="grpAlreadySelected">Group is Already selected !!!</string>
+    <string name="plzfillallform">Please fill out the entire form</string>
+    <string name="collectedserialid">collected or assigned serial id must be different</string>
+    <string name="collectedprathamid">collected or assigned pratham id must be different</string>
+    <string name="noNotificationFound">No Notification Found</string>
+    <string name="loadingNotification">Loading Notifications..</string>
+
+
     <string-array name="india_states">
         <item>SELECT STATE</item>
         <item>Andhra Pradesh(AP)</item>
@@ -222,7 +508,80 @@
         <item>Need Help</item> <!--value = 3-->
     </string-array>
 
+    <string-array name="array_numRecoSSpinner">
+    <item>Baseline (Number Recognition)</item>
+    <item>Beg</item>
+    <item>0&#8211;9</item>
+    <item>10&#8211;99</item>
+    <item>Sub</item>
+    <item>Div</item>
+    </string-array>
+
+    <string-array name="array_el_numRecoSSpinner">
+        <item>Number Recognition</item>
+        <item>Beg</item>
+        <item>0&#8211;9</item>
+        <item>10&#8211;99</item>
+        <item>Sub</item>
+        <item>Div</item>
+    </string-array>
+
+    <string-array name="array_englishAdapter">
+        <item>Baseline (English)</item>
+        <item>Beg</item>
+        <item>Capital Letter</item>
+        <item>Small Letter</item>
+        <item>Word</item>
+        <item>Sentence</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="change_log">&lt;b>&lt;i>&lt;font color=#FF0000>v1.8&lt;/font>&lt;/i>&lt;/b>&lt;br>
+&#160; &#160; &#8226; &#160;New Program added : Read India - Michelin.&lt;br>
+&#160; &#160; &#8226; &#160;UI bug-fixes.&lt;br>&lt;br>
+
+&lt;b>&lt;i>&lt;font color=#FF0000>v1.7.1&lt;/font>&lt;/i>&lt;/b>&lt;br>
+&#160; &#160; &#8226; &#160;LastName field issue from AddStudent section is resolved.&lt;br>&lt;br>
+
+&lt;b>&lt;i>&lt;font color=#FF0000>v1.6&lt;/font>&lt;/i>&lt;/b>&lt;br>
+&#160; &#160; &#8226; &#160;Swap student issue fixed and stability improvements.&lt;br>&lt;br>
+
+&lt;b>&lt;i>&lt;font color=#FF0000>v1.5&lt;/font>&lt;/i>&lt;/b>&lt;br>
+&#160; &#160; &#8226; &#160;New program added : Digital School Program.&lt;br>&lt;br>
+
+&lt;b>&lt;i>&lt;font color=#FF0000>v1.4&lt;/font>&lt;/i>&lt;/b>&lt;br>
+&#160; &#160; &#8226; &#160;Updated UI and overall usability of the app.&lt;br>
+&#160; &#160; &#8226; &#160;Manage devices module will now work only when the device is online.&lt;br>
+&#160; &#160; &#8226; &#160;Metadata is added in replace and assign while pushing data.&lt;br>
+&#160; &#160; &#8226; &#160;Auto data push on login.&lt;br>&lt;br>
+
+&lt;b>&lt;i>&lt;font color=#FF0000>v1.1&lt;/font>&lt;/i>&lt;/b>&lt;br>
+&#160; &#160; &#8226; &#160;Implemented Standard Time Format.&lt;br>
+&#160; &#160; &#8226; &#160;Input and date time fixes.&lt;br>
+&#160; &#160; &#8226; &#160;New ECE Assessment Form in Student Management.&lt;br>
+&#160; &#160; &#8226; &#160;Edit Student UI Update.&lt;br>
+&#160; &#160; &#8226; &#160;New Class options for Adding/ Editing Student.&lt;br>
+&#160; &#160; &#8226; &#160;Responsive Time Range Picker&lt;br>&lt;br>
+
+&lt;b>&lt;i>&lt;font color=#FF0000>v1.0.9&lt;/font>&lt;/i>&lt;/b>&lt;br>
+&#160; &#160; &#8226; &#160;Add class options (Dropout= -4,Pre-School= -2,Not Enrolled= -5)&lt;br>&lt;br>
+
+&lt;b>&lt;i>&lt;font color=#FF0000>v1.0.8&lt;/font>&lt;/i>&lt;/b>&lt;br>
+&#160; &#160; &#8226; &#160;Improvements in Student Forms.</string>
+
+    <!--Device Information-->
+    <string name="apkVersion">&lt;b>&lt;i>&lt;font color=#FF0000>Apk Version :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+    <string name="wifiMac">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Wifi-MAC :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+    <string name="deviceId">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Device ID :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+    <string name="serialId">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Serial ID :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+    <string name="versionId">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Version Name :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+    <string name="versionNumber">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Version Number :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+    <string name="apiLevel">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Api Level :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+    <string name="screenResolution">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Screen Resolution :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+    <string name="manufactureName">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Manufacture Name :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+    <string name="model">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Model :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+    <string name="availableStorage">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Available Storage :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
 
 </resources>

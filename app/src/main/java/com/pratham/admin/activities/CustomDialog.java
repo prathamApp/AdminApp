@@ -131,9 +131,9 @@ public class CustomDialog extends Dialog implements ConnectionReceiverListener, 
                   /*  case APIs.UP:
                         uploadAPI(APIs.HLpushToServerURL, json);
                         break;*/
-                    case APIs.RI:
+                   /* case APIs.RI:
                         uploadAPI(APIs.RIpushToServerURL, json);
-                        break;
+                        break;*/
                    /* case APIs.SC:
                         uploadAPI(APIs.SCpushToServerURL, json);
                         break;
@@ -148,7 +148,7 @@ public class CustomDialog extends Dialog implements ConnectionReceiverListener, 
             }
         } else {
             checkConnection();
-            Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.noInterntCon, Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -243,7 +243,7 @@ public class CustomDialog extends Dialog implements ConnectionReceiverListener, 
         if (header.equals("custum_Dilaog")) {
             Log.d("responce", response);
             updateLocalDB();
-            Toast.makeText(context, "pushed SuccessFully", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, R.string.pushSuccess, Toast.LENGTH_LONG).show();
             BlurPopupWindow.Builder blurPopupWindow = new BlurPopupWindow.Builder(context);
             blurPopupWindow.setContentView(R.layout.app_success_dialog)
                     .setGravity(Gravity.CENTER)
@@ -261,7 +261,7 @@ public class CustomDialog extends Dialog implements ConnectionReceiverListener, 
     @Override
     public void onError(ANError anError, String header) {
         if (header.equals("custum_Dilaog")) {
-            Toast.makeText(context, "NO Internet Connection", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, R.string.noInterntCon, Toast.LENGTH_LONG).show();
         }
     }
 }

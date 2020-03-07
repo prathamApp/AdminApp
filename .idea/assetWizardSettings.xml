@@ -151,7 +151,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_notifications_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_info_outline_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -162,7 +162,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="c21086" />
-                            <entry key="outputName" value="ic_notifications_pink_24dp" />
+                            <entry key="outputName" value="ic_info_outline_pink_24dp" />
                             <entry key="sourceFile" value="C:\Users\PEF\Desktop\New folder (2)\replace.svg" />
                           </map>
                         </option>

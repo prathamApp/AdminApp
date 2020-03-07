@@ -23,7 +23,7 @@
             android:fontFamily="monospace"
             android:gravity="center"
             android:padding="@dimen/_8sdp"
-            android:text="Delete Students"
+            android:text="@string/deletestudent"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/_20sdp"
             android:textStyle="bold" />
@@ -73,7 +73,7 @@
             android:layout_marginRight="@dimen/_8sdp"
             android:layout_marginBottom="@dimen/_8sdp"
             android:background="@color/colorPrimaryDark"
-            android:text="Preview"
+            android:text="@string/preview"
             android:textAllCaps="true"
             android:textColor="#FFFFFF"
             android:textSize="@dimen/_12sdp"

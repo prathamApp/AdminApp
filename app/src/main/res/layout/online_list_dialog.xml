@@ -240,7 +240,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:padding="10dp"
-            android:text="Clear changes"
+            android:text="@string/clearChanges"
             android:textColor="#8c0818" />
 
         <TextView
@@ -252,7 +252,7 @@
             android:background="@drawable/btn_style"
             android:gravity="center"
             android:padding="10dp"
-            android:text="push to server"
+            android:text="@string/pushToServer"
             android:textColor="#ffffff" />
     </LinearLayout>
 </RelativeLayout>

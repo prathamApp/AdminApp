@@ -1,5 +1,6 @@
 package com.pratham.admin.util;
 
+import android.content.Context;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -55,4 +56,10 @@ public class BaseActivity extends AppCompatActivity implements ConnectionReceive
         super.onStop();
         unregisterReceiver(connectivityReceiver);
     }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
+    }
+
 }

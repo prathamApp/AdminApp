@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,7 +23,7 @@
             android:fontFamily="monospace"
             android:gravity="center"
             android:padding="@dimen/_8sdp"
-            android:text="Dashboard"
+            android:text="@string/title_dashboard"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/_20sdp"
             android:textStyle="bold" />
@@ -36,11 +37,12 @@
             tools:listitem="@android:layout/two_line_list_item" />
 
 
-        <HorizontalScrollView
+        <!--<HorizontalScrollView
             android:id="@+id/linearLayout9"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_8sdp"
+            android:layout_marginLeft="@dimen/_8sdp"
+            android:layout_marginRight="@dimen/_8sdp"
             android:orientation="horizontal">
 
             <TextView
@@ -54,7 +56,15 @@
                 android:textColor="@color/button"
                 android:textSize="@dimen/_10sdp" />
 
-        </HorizontalScrollView>
+        </HorizontalScrollView>-->
+
+        <ImageView
+            android:id="@+id/changeLog"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_gravity="end"
+            app:srcCompat="@drawable/ic_info_outline_pink_24dp"/>
 
     </LinearLayout>
 </ScrollView>

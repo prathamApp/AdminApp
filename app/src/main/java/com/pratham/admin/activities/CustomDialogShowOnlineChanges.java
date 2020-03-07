@@ -50,7 +50,7 @@ public class CustomDialogShowOnlineChanges extends Dialog {
         setCanceledOnTouchOutside(false);
         setCancelable(false);
         title.setVisibility(View.GONE);
-        message.setText("Do You Want To Upload Following Changes?");
+        message.setText(R.string.uploadChange);
         txt_count.setText("Total Students:" + changesList.size());
 
         OnlineChangesListAdapter tempAdapter = new OnlineChangesListAdapter(changesList);

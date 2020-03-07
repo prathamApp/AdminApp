@@ -169,7 +169,7 @@ public class ReplaceTablet extends BaseActivity implements OperationListener, As
             uploadAPI(APIs.ReplaceTab, json);
         } else {
             checkConnection();
-            Toast.makeText(this, "No Internet Connection...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.noInterntCon, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -254,7 +254,7 @@ public class ReplaceTablet extends BaseActivity implements OperationListener, As
     @Override
     public void onError(ANError anError, String header) {
         if (header.equals("ReplaceTab")) {
-            Toast.makeText(context, "NO Internet Connection", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, R.string.noInterntCon, Toast.LENGTH_LONG).show();
         } else if (header.equals("GetCollectedTabList")) {
             addFragment(selectedFragment);
         }

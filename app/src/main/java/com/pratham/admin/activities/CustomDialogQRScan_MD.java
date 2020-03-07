@@ -65,7 +65,7 @@ public class CustomDialogQRScan_MD extends Dialog implements QRRecyclerListener 
         ButterKnife.bind(this);
         setCanceledOnTouchOutside(false);
         setCancelable(false);
-        message.setText("Do You Want To Upload Following Changes?");
+        message.setText(R.string.uploadChange);
         setCount();
         qrScanAdapter_md = new QRScanAdapter_MD(this, changesList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
@@ -75,7 +75,7 @@ public class CustomDialogQRScan_MD extends Dialog implements QRRecyclerListener 
     }
 
     public void setCount() {
-        txt_count.setText("Total Changes:" + changesList.size());
+        txt_count.setText(R.string.totalchanges + changesList.size());
     }
 
     @OnClick(R.id.txt_Ok)

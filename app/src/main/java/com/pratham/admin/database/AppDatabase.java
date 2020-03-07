@@ -7,6 +7,8 @@ import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 
+import com.pratham.admin.Service.MyService;
+import com.pratham.admin.activities.Notification.Notification;
 import com.pratham.admin.modalclasses.Aser;
 import com.pratham.admin.modalclasses.Attendance;
 import com.pratham.admin.modalclasses.CRL;
@@ -21,6 +23,7 @@ import com.pratham.admin.modalclasses.GroupVisit;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Modal_Log;
+import com.pratham.admin.modalclasses.NotificationData;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.TabTrack;
 import com.pratham.admin.modalclasses.TabletManageDevice;
@@ -79,6 +82,8 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract TempStudentdao getTempStudentDao();
 
+    //public abstract NotificationDao getNotificationDao();
+
     public static AppDatabase getDatabaseInstance(Context context) {
         if (DATABASEINSTANCE == null)
             DATABASEINSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DB_NAME)
@@ -136,6 +141,18 @@ public abstract class AppDatabase extends RoomDatabase {
                     + ", WS11a INTEGER, WS11b INTEGER, WS12a INTEGER, WS12b INTEGER"
                     + ", OQ11 INTEGER, OQ12 INTEGER, OQ13 INTEGER, OQ14 INTEGER"
                     + ", sentFlag INTEGER DEFAULT 0)");
+        }
+    };
+
+    static final Migration MIGRATION_7_8 = new Migration(7, 8) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            // Alter Queries for new columns as we don't want to lose existing data
+            database.execSQL("CREATE TABLE NotificationData(autoIdID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, transId TEXT, fromId TEXT"
+                    + ", fromName TEXT, toId TEXT, toName TEXT"
+                    + ", prathamId TEXT, qrId TEXT, serialId TEXT, receiveDate TEXT"
+                    + ", comment TEXT, damageType TEXT, isDamaged TEXT, textDesc TEXT"
+                    + ", dateAdded TEXT, pushStatus TEXT, lastPushDate TEXT)");
         }
     };
 

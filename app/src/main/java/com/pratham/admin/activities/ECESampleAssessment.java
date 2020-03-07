@@ -22,6 +22,7 @@ import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.Village;
 import com.pratham.admin.util.BackupDatabase;
+import com.pratham.admin.util.BaseActivity;
 import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.Utility;
 
@@ -35,7 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ECESampleAssessment extends AppCompatActivity implements RangeTimePickerDialog.ISelectedTime {
+public class ECESampleAssessment extends BaseActivity implements RangeTimePickerDialog.ISelectedTime {
     // Spinners
     @BindView(R.id.sp_State)
     Spinner sp_State;
@@ -129,7 +130,7 @@ public class ECESampleAssessment extends AppCompatActivity implements RangeTimeP
         List<String> States = new ArrayList<>();
         States.clear();
         States = AppDatabase.getDatabaseInstance(ECESampleAssessment.this).getVillageDao().getState();
-        States.add(0, "Select State");
+        States.add(0, getString(R.string.selectstate));
         ArrayAdapter<String> StateAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, States);
         sp_State.setAdapter(StateAdapter);
 
@@ -153,7 +154,7 @@ public class ECESampleAssessment extends AppCompatActivity implements RangeTimeP
         List<String> Blocks = new ArrayList<>();
         Blocks.clear();
         Blocks = AppDatabase.getDatabaseInstance(ECESampleAssessment.this).getVillageDao().GetStatewiseBlock(selectedState);
-        Blocks.add(0, "Select Block");
+        Blocks.add(0, getString(R.string.selectblock));
         ArrayAdapter<String> BlockAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, Blocks);
         sp_Block.setAdapter(BlockAdapter);
 
@@ -180,7 +181,7 @@ public class ECESampleAssessment extends AppCompatActivity implements RangeTimeP
         BlocksVillages.clear();
         Village v = new Village();
         v.VillageId = "0";
-        v.VillageName = "Select Village";
+        v.VillageName = getString(R.string.selectvillage);
         BlocksVillages = AppDatabase.getDatabaseInstance(ECESampleAssessment.this).getVillageDao().GetVillages(selectedBlock);
         BlocksVillages.add(0, v);
 
@@ -214,7 +215,7 @@ public class ECESampleAssessment extends AppCompatActivity implements RangeTimeP
         GroupsVillages.clear();
         Groups grp = new Groups();
         grp.GroupId = "0";
-        grp.GroupName = "Select Group";
+        grp.GroupName = getString(R.string.selectgroup);
         GroupsVillages = AppDatabase.getDatabaseInstance(ECESampleAssessment.this).getGroupDao().GetGroups(villageID);
         GroupsVillages.add(0, grp);
 
@@ -232,8 +233,8 @@ public class ECESampleAssessment extends AppCompatActivity implements RangeTimeP
                 tv_FirstName.setText("");
                 tv_MiddleName.setText("");
                 tv_MiddleName.setText("");
-                btn_DatePicker.setText("Select Date");
-                btn_TimeRangePicker.setText("Select Time");
+                btn_DatePicker.setText(R.string.selectdate);
+                btn_TimeRangePicker.setText(R.string.selecttime);
 
                 String GroupName = sp_Groups.getSelectedItem().toString();
                 Groups SelectedGroupData = GroupsAdapter.getItem(sp_Groups.getSelectedItemPosition());
@@ -257,7 +258,7 @@ public class ECESampleAssessment extends AppCompatActivity implements RangeTimeP
         ExistingStudents.clear();
         Student std = new Student();
         std.StudentId = "0";
-        std.FirstName = "Select Student";
+        std.FirstName = getString(R.string.selectstudent);
         ExistingStudents = AppDatabase.getDatabaseInstance(ECESampleAssessment.this).getStudentDao().GetAllStudentsByGroupID(GroupID);
         ExistingStudents.add(0, std);
 
@@ -300,7 +301,7 @@ public class ECESampleAssessment extends AppCompatActivity implements RangeTimeP
 
         if (SelectedStudent == null && sp_existingStudent.getSelectedItemPosition() == 0) {
         } else if (SelectedStudent == null && sp_existingStudent.getSelectedItemPosition() > 0) {
-            Toast.makeText(ECESampleAssessment.this, "Sorry !!! No Data Found !!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ECESampleAssessment.this, R.string.sorrynodatafound, Toast.LENGTH_SHORT).show();
         } else {
             // Name Process
             if (SelectedStudent.FirstName == null) {
@@ -372,8 +373,8 @@ public class ECESampleAssessment extends AppCompatActivity implements RangeTimeP
                 } else {
                     // reset spinners
                     populateAsmtSpinnerValues();
-                    btn_DatePicker.setText("Select Date");
-                    btn_TimeRangePicker.setText("Select Time");
+                    btn_DatePicker.setText(R.string.selectdate);
+                    btn_TimeRangePicker.setText(R.string.selecttime);
                 }
             }
 
@@ -411,8 +412,8 @@ public class ECESampleAssessment extends AppCompatActivity implements RangeTimeP
         tv_FirstName.setText("");
         tv_MiddleName.setText("");
         tv_LastName.setText("");
-        btn_DatePicker.setText("Select Date");
-        btn_TimeRangePicker.setText("Select Time");
+        btn_DatePicker.setText(R.string.selectdate);
+        btn_TimeRangePicker.setText(R.string.selecttime);
         sp_MatchingCards.setSelection(0);
         sp_SequencingCards.setSelection(0);
         sp_NumberRecognition.setSelection(0);
@@ -429,8 +430,8 @@ public class ECESampleAssessment extends AppCompatActivity implements RangeTimeP
 
     private void resetFormPartially() {
         sp_AsmtType.setSelection(0);
-        btn_DatePicker.setText("Select Date");
-        btn_TimeRangePicker.setText("Select Time");
+        btn_DatePicker.setText(R.string.selectdate);
+        btn_TimeRangePicker.setText(R.string.selecttime);
         sp_MatchingCards.setSelection(0);
         sp_SequencingCards.setSelection(0);
         sp_NumberRecognition.setSelection(0);
@@ -458,10 +459,10 @@ public class ECESampleAssessment extends AppCompatActivity implements RangeTimeP
         dialog.newInstance();
         dialog.setIs24HourView(false);
         dialog.setRadiusDialog(16);
-        dialog.setTextTabStart("Start");
-        dialog.setTextTabEnd("End");
-        dialog.setTextBtnPositive("Accept");
-        dialog.setTextBtnNegative("Close");
+        dialog.setTextTabStart(getString(R.string.start));
+        dialog.setTextTabEnd(getString(R.string.end));
+        dialog.setTextBtnPositive(getString(R.string.accept));
+        dialog.setTextBtnNegative(getString(R.string.close));
         dialog.setValidateRange(true);
         dialog.setColorBackgroundHeader(R.color.colorPrimary); // top header background
         dialog.setColorBackgroundTimePickerHeader(R.color.colorPrimary); // Digital Time Backgrounds
@@ -535,7 +536,7 @@ public class ECESampleAssessment extends AppCompatActivity implements RangeTimeP
                     eceAsmtObj.sentFlag = 0;
 
                     AppDatabase.getDatabaseInstance(this).getECEAsmtDao().insertECEAsmt(eceAsmtObj);
-                    Toast.makeText(this, "Record saved to Database !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.recordsavedtodb, Toast.LENGTH_SHORT).show();
 
                 } else {
                     AppDatabase.getDatabaseInstance(this).getECEAsmtDao().UpdateECEAsmtData(btn_DatePicker.getText().toString(), startTime, endTime,
@@ -543,7 +544,7 @@ public class ECESampleAssessment extends AppCompatActivity implements RangeTimeP
                             sp_W11a.getSelectedItemPosition(), sp_W11b.getSelectedItemPosition(), sp_W12a.getSelectedItemPosition(), sp_W12b.getSelectedItemPosition(),
                             sp_OQ11.getSelectedItemPosition(), sp_OQ12.getSelectedItemPosition(), sp_OQ13.getSelectedItemPosition(), sp_OQ14.getSelectedItemPosition(), 0,
                             StudentUniqID, sp_AsmtType.getSelectedItemPosition());
-                    Toast.makeText(this, "Record updated successfully !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.recordupdatetodb, Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
                 Modal_Log log = new Modal_Log();
@@ -560,7 +561,7 @@ public class ECESampleAssessment extends AppCompatActivity implements RangeTimeP
             }
             resetFormPartially();
         } else {
-            Toast.makeText(this, "Please fill the form completely !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.fillAllDetails, Toast.LENGTH_SHORT).show();
         }
     }
 }

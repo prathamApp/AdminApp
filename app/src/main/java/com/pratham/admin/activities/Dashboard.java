@@ -14,9 +14,13 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,8 +72,11 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
     String LoggedcrlId = "", LoggedcrlName = "", LoggedCRLnameSwapStd = "";
     DashRVDataAdapter DataAdapter;
     boolean internetIsAvailable = false;
-    @BindView(R.id.tv_appInfo)
-    TextView tv_appInfo;
+    //@BindView(R.id.tv_appInfo)
+    //TextView tv_appInfo;
+    @BindView(R.id.changeLog)
+    ImageView iv_changeLog;
+
     MetaData metaData;
     private String deviceID, apkVersion, serialID, WiFiMac, gpsFixDuration;
     private List<DashboardItem> DashboardItemList = null;
@@ -114,7 +121,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
         // Create the recyclerview.
         RecyclerView dashRecyclerView = (RecyclerView) findViewById(R.id.card_view_recycler_list);
         // Create the grid layout manager with 2 columns.
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 5);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         // Set layout manager.
         dashRecyclerView.setLayoutManager(gridLayoutManager);
 
@@ -128,6 +135,20 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
         populateProgramID();
 
         populateApkVersion();
+
+        iv_changeLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(Dashboard.this);
+                ViewGroup viewGroup = findViewById(android.R.id.content);
+                View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.dialog_changelog, viewGroup, false);
+                builder.setView(dialogView);
+                AlertDialog alertDialog = builder.create();
+                alertDialog.setTitle("Change Log");
+                alertDialog.setMessage(Html.fromHtml(getString(R.string.change_log)));
+                alertDialog.show();
+            }
+        });
 
     }
 
@@ -213,7 +234,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
         AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
     }
 
-    private void initializeAppInfo() {
+/*    private void initializeAppInfo() {
         deviceID = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         metaData = new MetaData();
         metaData.setKeys("DeviceID");
@@ -245,13 +266,13 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
 
         tv_appInfo.setText("Apk Version : " + apkVersion + "\t\t\tWiFi-MAC : " + WiFiMac +
                 "\nDevice ID : " + deviceID + "\t\t\tSerial ID : " + serialID);
-    }
+    }*/
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (!isConnected) {
             internetIsAvailable = false;
-            Toast.makeText(this, "No Internet Access", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.noInterntCon, Toast.LENGTH_SHORT).show();
         } else {
             internetIsAvailable = true;
         }
@@ -262,7 +283,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
         super.onResume();
         checkConnection();
         ApplicationController.getInstance().setConnectionListener(this);
-        initializeAppInfo();
+        //initializeAppInfo();
     }
 
     private void checkConnection() {
@@ -312,7 +333,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
                 // Preview
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(Dashboard.this, android.R.style.Theme_Material_Light_Dialog);
                 dialogBuilder.setCancelable(false);
-                dialogBuilder.setTitle("Data Preview");
+                dialogBuilder.setTitle(R.string.dataPreview);
 
                 // Prepare Data
                 Gson gson = new Gson();
@@ -339,27 +360,27 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
 
                 // Preview Message
                 dialogBuilder.setTitle("Push Data Preview");
-                dialogBuilder.setMessage("Attendance : " + aObj.size()
-                        + "\nCoaches : " + coachesObj.size()
-                        + "\nCommunities : " + communitiesObj.size()
-                        + "\nCompletions : " + completionsObj.size()
-                        + "\nStudents : " + stdObj.size()
-                        + "\nAsers : " + aserObj.size()
-                        + "\nGroups : " + grpObj.size()
-                        + "\nGroupVisits : " + GroupVisitObj.size()
-                        + "\nGroupSessions : " + GroupSessionObj.size()
-                        + "\nECE Assessments : " + ECEAsmtObj.size()
-                        + "\nLogs : " + LogObj.size()
+                dialogBuilder.setMessage(getString(R.string.attendance) + aObj.size()
+                        + "\n"+getString(R.string.coaches) + coachesObj.size()
+                        + "\n"+getString(R.string.communities) + communitiesObj.size()
+                        + "\n"+getString(R.string.completions) + completionsObj.size()
+                        + "\n"+getString(R.string.students) + stdObj.size()
+                        + "\n"+getString(R.string.asers) + aserObj.size()
+                        + "\n"+getString(R.string.groups) + grpObj.size()
+                        + "\n"+getString(R.string.groupvst) + GroupVisitObj.size()
+                        + "\n"+getString(R.string.groupsesn) + GroupSessionObj.size()
+                        + "\n"+getString(R.string.eceasmnt) + ECEAsmtObj.size()
+                        + "\n"+getString(R.string.logs) + LogObj.size()
                 );
 
 
-                dialogBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                dialogBuilder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
 
                         try {
                             // Push Process
                             pd = new ProgressDialog(Dashboard.this);
-                            pd.setTitle("UPLOADING ... ");
+                            pd.setTitle(R.string.uploading);
                             pd.setCancelable(false);
                             pd.setCanceledOnTouchOutside(false);
                             pd.show();
@@ -449,7 +470,7 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
                     }
                 });
 
-                dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                dialogBuilder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         dialog.dismiss();
                     }
@@ -522,11 +543,12 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
     private void initializeItemList() {
         if (DashboardItemList == null) {
             DashboardItemList = new ArrayList<DashboardItem>();
-            DashboardItemList.add(new DashboardItem("Forms", R.drawable.ic_form));
-            DashboardItemList.add(new DashboardItem("Student Management", R.drawable.ic_pos));
-            DashboardItemList.add(new DashboardItem("Push Data", R.drawable.ic_push));
-            DashboardItemList.add(new DashboardItem("Manage Device", R.drawable.tablet));
-            DashboardItemList.add(new DashboardItem("Notifications", R.drawable.ic_notifications_none_black_24dp));
+            DashboardItemList.add(new DashboardItem(getString(R.string.forms), R.drawable.ic_form));
+            DashboardItemList.add(new DashboardItem(getString(R.string.studentManagement), R.drawable.ic_pos));
+            DashboardItemList.add(new DashboardItem(getString(R.string.pushdata), R.drawable.ic_push));
+            DashboardItemList.add(new DashboardItem(getString(R.string.managedevice), R.drawable.tablet));
+            DashboardItemList.add(new DashboardItem(getString(R.string.notifications), R.drawable.ic_notifications_none_black_24dp));
+            DashboardItemList.add(new DashboardItem(getString(R.string.deviceinfo), R.drawable.deviceinfo));
         }
     }
 
@@ -544,29 +566,34 @@ public class Dashboard extends BaseActivity implements DashRVClickListener, Conn
             Intent intent = new Intent(Dashboard.this, SwapStudentsActivity.class);
             intent.putExtra("CRLname", LoggedCRLnameSwapStd);
             startActivity(intent);
-        } else if (name.contains("Forms")) {
+        } else if (name.contains(getString(R.string.forms))) {
             Intent intent = new Intent(Dashboard.this, FormsActivity.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
-        } else if (name.contains("Management")) {
+        } else if (name.contains(getString(R.string.studentManagement))) {
             Intent intent = new Intent(Dashboard.this, Student_Management.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
-        } else if (name.contains("Push")) {
+        } else if (name.contains(getString(R.string.pushdata))) {
             pushNewData();
 
-        } else if (name.contains("Manage Device")) {
+        } else if (name.contains(getString(R.string.managedevice))) {
             Intent intent = new Intent(Dashboard.this, ManageDevice.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
             startActivity(intent);
 
-        } else if (name.contains("Notifications")) {
+        } else if (name.contains(getString(R.string.notifications))) {
             Intent intent = new Intent(Dashboard.this, Notification.class);
+            intent.putExtra("CRLid", LoggedcrlId);
+            intent.putExtra("CRLname", LoggedcrlName);
+            startActivity(intent);
+        } else if (name.contains(getString(R.string.deviceinfo))) {
+            Intent intent = new Intent(Dashboard.this, DeviceInformation.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
             startActivity(intent);

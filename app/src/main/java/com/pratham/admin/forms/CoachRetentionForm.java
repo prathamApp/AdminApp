@@ -85,7 +85,7 @@ public class CoachRetentionForm extends BaseActivity/* implements ConnectionRece
             RadioButton selectedOption = (RadioButton) findViewById(selectedId);
             String DropOut = selectedOption.getText().toString();
             int status;
-            if (DropOut.equalsIgnoreCase("Yes")) {
+            if (DropOut.equalsIgnoreCase(getString(R.string.yes))) {
                 status = 0; // Inactive
             } else {
                 status = 1; // Active
@@ -114,33 +114,33 @@ public class CoachRetentionForm extends BaseActivity/* implements ConnectionRece
             cObj.CoachVillageID = vid;
             cObj.sentFlag = 0;
 
-            if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
+            if (btn_Submit.getText().toString().equalsIgnoreCase(getString(R.string.submit))) {
 
                 AppDatabase.getDatabaseInstance(this).getCoachDao().updateCoachStatus(status, endDate, coachID);
-                Toast.makeText(this, "Form Submitted to DB !!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.formSubmittedtoDB, Toast.LENGTH_SHORT).show();
                 resetForm();
 
             } else {
                 // Preview Dialog
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CoachRetentionForm.this, android.R.style.Theme_Material_Light_Dialog);
                 dialogBuilder.setCancelable(false);
-                dialogBuilder.setTitle("Form Data Preview");
+                dialogBuilder.setTitle(R.string.formdatapreview);
 
-                dialogBuilder.setMessage("Village Name : " + villageName
-                        + "\nCoach Name : " + updatedCoachList.get(0).CoachName
-                        + "\nCoach Age : " + updatedCoachList.get(0).CoachAge
-                        + "\nCoach Gender : " + updatedCoachList.get(0).CoachGender
-                        + "\nDrop Out : " + DropOut
-                        + "\nEnd Date : " + endDate);
+                dialogBuilder.setMessage(getString(R.string.villagename) + villageName
+                        + "\n"+getString(R.string.coachname) + updatedCoachList.get(0).CoachName
+                        + "\n"+getString(R.string.coachage) + updatedCoachList.get(0).CoachAge
+                        + "\n"+getString(R.string.coachgender) + updatedCoachList.get(0).CoachGender
+                        + "\n"+getString(R.string.drpout) + DropOut
+                        + "\n"+getString(R.string.eddate) + endDate);
 
-                dialogBuilder.setPositiveButton("Correct", new DialogInterface.OnClickListener() {
+                dialogBuilder.setPositiveButton(R.string.correct, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        btn_Submit.setText("Submit");
+                        btn_Submit.setText(R.string.submit);
                     }
                 });
-                dialogBuilder.setNegativeButton("Wrong", new DialogInterface.OnClickListener() {
+                dialogBuilder.setNegativeButton(R.string.wrong, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        btn_Submit.setText("Preview");
+                        btn_Submit.setText(R.string.preview);
                     }
                 });
                 AlertDialog b = dialogBuilder.create();
@@ -149,13 +149,13 @@ public class CoachRetentionForm extends BaseActivity/* implements ConnectionRece
 
 
         } else {
-            Toast.makeText(this, "Please Select All Fields !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,R.string.selectAllFields , Toast.LENGTH_SHORT).show();
         }
 
     }
 
     private void resetForm() {
-        btn_Submit.setText("Preview");
+        btn_Submit.setText(R.string.preview);
         // Populate Village Spinner
         villageList.clear();
         villageList = AppDatabase.getDatabaseInstance(this).getVillageDao().getAllVillages();
@@ -182,7 +182,7 @@ public class CoachRetentionForm extends BaseActivity/* implements ConnectionRece
         vid = "";
         villageName = "";
         if (!villageList.isEmpty()) {
-            VillageName.add(new CustomGroup("Select Village"));
+            VillageName.add(new CustomGroup(getString(R.string.selectvillage)));
             for (int j = 0; j < villageList.size(); j++) {
                 CustomGroup customGroup = new CustomGroup(villageList.get(j).getVillageName(), villageList.get(j).getVillageId());
                 VillageName.add(customGroup);
@@ -194,7 +194,7 @@ public class CoachRetentionForm extends BaseActivity/* implements ConnectionRece
         sp_Village.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                btn_Submit.setText("Preview");
+                btn_Submit.setText(R.string.preview);
                 CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
                 vid = "";
                 vid = customGroup.getId();
@@ -222,7 +222,7 @@ public class CoachRetentionForm extends BaseActivity/* implements ConnectionRece
     private void populateCoaches() {
         final List CoachName = new ArrayList();
         if (!coachList.isEmpty()) {
-            CoachName.add(new CustomGroup("Select Coach"));
+            CoachName.add(new CustomGroup(getString(R.string.selectcoach)));
             for (int j = 0; j < coachList.size(); j++) {
                 CustomGroup customGroup = new CustomGroup(coachList.get(j).getCoachName(), coachList.get(j).getCoachID());
                 CoachName.add(customGroup);
@@ -235,7 +235,7 @@ public class CoachRetentionForm extends BaseActivity/* implements ConnectionRece
         sp_SelectCoach.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                btn_Submit.setText("Preview");
+                btn_Submit.setText(R.string.preview);
                 CustomGroup customGroup = (CustomGroup) CoachName.get(pos);
                 selectedCoachID = customGroup.getId();
             }
@@ -250,7 +250,7 @@ public class CoachRetentionForm extends BaseActivity/* implements ConnectionRece
 
     @OnClick(R.id.btn_DatePicker)
     public void endDatePicker(View view) {
-        btn_Submit.setText("Preview");
+        btn_Submit.setText(R.string.preview);
         DialogFragment newFragment = new DatePickerFragmentOne();
         newFragment.show(getFragmentManager(), "DatePicker");
     }

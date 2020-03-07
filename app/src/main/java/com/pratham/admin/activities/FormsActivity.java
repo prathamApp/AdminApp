@@ -69,13 +69,13 @@ public class FormsActivity extends BaseActivity implements DashRVClickListener {
     private void initializeItemList() {
         if (DashboardItemList == null) {
             DashboardItemList = new ArrayList<DashboardItem>();
-            DashboardItemList.add(new DashboardItem("Coach Information", R.drawable.ic_form));
-            DashboardItemList.add(new DashboardItem("Course Completion", R.drawable.ic_form));
-            DashboardItemList.add(new DashboardItem("Coach Retention", R.drawable.ic_form));
-            DashboardItemList.add(new DashboardItem("Group Session", R.drawable.ic_form));
-            DashboardItemList.add(new DashboardItem("Group Visit", R.drawable.ic_form));
-            DashboardItemList.add(new DashboardItem("Course Enrollment", R.drawable.ic_form));
-            DashboardItemList.add(new DashboardItem("Students Attendance", R.drawable.ic_form));
+            DashboardItemList.add(new DashboardItem(getString(R.string.coachinformation), R.drawable.ic_form));
+            DashboardItemList.add(new DashboardItem(getString(R.string.coursecompletion), R.drawable.ic_form));
+            DashboardItemList.add(new DashboardItem(getString(R.string.coachretention), R.drawable.ic_form));
+            DashboardItemList.add(new DashboardItem(getString(R.string.groupsession), R.drawable.ic_form));
+            DashboardItemList.add(new DashboardItem(getString(R.string.groupvisit), R.drawable.ic_form));
+            DashboardItemList.add(new DashboardItem(getString(R.string.courseenrollment), R.drawable.ic_form));
+            DashboardItemList.add(new DashboardItem(getString(R.string.studentsattendance), R.drawable.ic_form));
         }
     }
 
@@ -84,25 +84,25 @@ public class FormsActivity extends BaseActivity implements DashRVClickListener {
         DashboardItem Dash = DashboardItemList.get(position);
         String name = Dash.getName();
 
-        if (name.contains("Coach Information")) {
+        if (name.contains(getString(R.string.coachinformation))) {
             Intent intent = new Intent(FormsActivity.this, CoachInformationForm.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
-        } else if (name.contains("Completion")) {
+        } else if (name.contains(getString(R.string.coursecompletion))) {
             Intent intent = new Intent(FormsActivity.this, CourseCompletionForm.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
-        } else if (name.contains("Retention")) {
+        } else if (name.contains(getString(R.string.coachretention))) {
             Intent intent = new Intent(FormsActivity.this, CoachRetentionForm.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
-        } else if (name.contains("Session")) {
+        } else if (name.contains(getString(R.string.groupsession))) {
             Intent intent = new Intent(FormsActivity.this, GroupSessionForm.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
@@ -120,19 +120,19 @@ public class FormsActivity extends BaseActivity implements DashRVClickListener {
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
-        } else if (name.contains("Student")) {
+        } else if (name.contains(getString(R.string.studentsattendance))) {
             Intent intent = new Intent(FormsActivity.this, AttendanceForm.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
-        } else if (name.contains("Enrollment")) {
+        } else if (name.contains(getString(R.string.courseenrollment))) {
             Intent intent = new Intent(FormsActivity.this, CourseEnrollmentForm.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
-        } else if (name.contains("Visit")) {
+        } else if (name.contains(getString(R.string.groupvisit))) {
             Intent intent = new Intent(FormsActivity.this, GroupVisitForm.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);

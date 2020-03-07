@@ -137,13 +137,13 @@ public class AddNewStudent extends BaseActivity{
                             }
                         }
                     });
-                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    builder.setPositiveButton(R.string.Okay, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                         }
                     });
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             sp_English.setSelection(0);
@@ -211,18 +211,18 @@ public class AddNewStudent extends BaseActivity{
                 });
 
                 // set values of endline
-                title.setText("Endline 1");
+                title.setText(R.string.endline1);
 
                 String[] baselineLangAdapter = {"Language", "Beg", "Letter", "Word", "Para", "Story"};
                 ArrayAdapter<String> baselineAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, baselineLangAdapter);
                 spinner_BaselineLang.setAdapter(baselineAdapter);
 
-                String[] NumberRecoAdapter = {"Number Recognition", "Beg", "0-9", "10-99", "Sub", "Div"};
-                ArrayAdapter<String> recoAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, NumberRecoAdapter);
+                //String[] NumberRecoAdapter = {"Number Recognition", "Beg", "0-9", "10-99", "Sub", "Div"};
+                ArrayAdapter<String> recoAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, getResources().getStringArray(R.array.array_el_numRecoSSpinner));
                 spinner_NumberReco.setAdapter(recoAdapter);
 
-                String[] engAdapter = {"Baseline (English)", "Beg", "Capital Letter", "Small Letter", "Word", "Sentence"};
-                ArrayAdapter<String> EnglishAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, engAdapter);
+                //String[] engAdapter = {"Baseline (English)", "Beg", "Capital Letter", "Small Letter", "Word", "Sentence"};
+                ArrayAdapter<String> EnglishAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, getResources().getStringArray(R.array.array_englishAdapter));
                 spinner_English.setAdapter(EnglishAdapter);
 
                 spinner_English.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -376,18 +376,18 @@ public class AddNewStudent extends BaseActivity{
                 });
 
                 // set values of endline
-                title.setText("Endline 2");
+                title.setText(R.string.endline2);
 
                 String[] baselineLangAdapter = {"Language", "Beg", "Letter", "Word", "Para", "Story"};
                 ArrayAdapter<String> baselineAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, baselineLangAdapter);
                 spinner_BaselineLang.setAdapter(baselineAdapter);
 
-                String[] NumberRecoAdapter = {"Number Recognition", "Beg", "0-9", "10-99", "Sub", "Div"};
-                ArrayAdapter<String> recoAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, NumberRecoAdapter);
+                //String[] NumberRecoAdapter = {"Number Recognition", "Beg", "0-9", "10-99", "Sub", "Div"};
+                ArrayAdapter<String> recoAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, getResources().getStringArray(R.array.array_el_numRecoSSpinner));
                 spinner_NumberReco.setAdapter(recoAdapter);
 
-                String[] engAdapter = {"Baseline (English)", "Beg", "Capital Letter", "Small Letter", "Word", "Sentence"};
-                ArrayAdapter<String> EnglishAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, engAdapter);
+                //String[] engAdapter = {"Baseline (English)", "Beg", "Capital Letter", "Small Letter", "Word", "Sentence"};
+                ArrayAdapter<String> EnglishAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, getResources().getStringArray(R.array.array_englishAdapter));
                 spinner_English.setAdapter(EnglishAdapter);
 
                 spinner_English.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -543,18 +543,18 @@ public class AddNewStudent extends BaseActivity{
                 });
 
                 // set values of endline
-                title.setText("Endline 3");
+                title.setText(R.string.endline3);
 
                 String[] baselineLangAdapter = {"Language", "Beg", "Letter", "Word", "Para", "Story"};
                 ArrayAdapter<String> baselineAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, baselineLangAdapter);
                 spinner_BaselineLang.setAdapter(baselineAdapter);
 
-                String[] NumberRecoAdapter = {"Number Recognition", "Beg", "0-9", "10-99", "Sub", "Div"};
-                ArrayAdapter<String> recoAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, NumberRecoAdapter);
+                //String[] NumberRecoAdapter = {"Number Recognition", "Beg", "0-9", "10-99", "Sub", "Div"};
+                ArrayAdapter<String> recoAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, getResources().getStringArray(R.array.array_el_numRecoSSpinner));
                 spinner_NumberReco.setAdapter(recoAdapter);
 
-                String[] engAdapter = {"Baseline (English)", "Beg", "Capital Letter", "Small Letter", "Word", "Sentence"};
-                ArrayAdapter<String> EnglishAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, engAdapter);
+                //String[] engAdapter = {"Baseline (English)", "Beg", "Capital Letter", "Small Letter", "Word", "Sentence"};
+                ArrayAdapter<String> EnglishAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, getResources().getStringArray(R.array.array_englishAdapter));
                 spinner_English.setAdapter(EnglishAdapter);
 
                 spinner_English.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -665,7 +665,7 @@ public class AddNewStudent extends BaseActivity{
                             if (endlineDialog.isShowing())
                                 endlineDialog.dismiss();
                         } else {
-                            Toast.makeText(AddNewStudent.this, "Please fill all the fields !!!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddNewStudent.this, R.string.fillAllFields, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -709,18 +709,18 @@ public class AddNewStudent extends BaseActivity{
                 });
 
                 // set values of endline
-                title.setText("Endline 4");
+                title.setText(R.string.end);
 
                 String[] baselineLangAdapter = {"Language", "Beg", "Letter", "Word", "Para", "Story"};
                 ArrayAdapter<String> baselineAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, baselineLangAdapter);
                 spinner_BaselineLang.setAdapter(baselineAdapter);
 
-                String[] NumberRecoAdapter = {"Number Recognition", "Beg", "0-9", "10-99", "Sub", "Div"};
-                ArrayAdapter<String> recoAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, NumberRecoAdapter);
+                //String[] NumberRecoAdapter = {"Number Recognition", "Beg", "0-9", "10-99", "Sub", "Div"};
+                ArrayAdapter<String> recoAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, getResources().getStringArray(R.array.array_el_numRecoSSpinner));
                 spinner_NumberReco.setAdapter(recoAdapter);
 
-                String[] engAdapter = {"Baseline (English)", "Beg", "Capital Letter", "Small Letter", "Word", "Sentence"};
-                ArrayAdapter<String> EnglishAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, engAdapter);
+                //String[] engAdapter = {"Baseline (English)", "Beg", "Capital Letter", "Small Letter", "Word", "Sentence"};
+                ArrayAdapter<String> EnglishAdapter = new ArrayAdapter<String>(AddNewStudent.this, R.layout.custom_spinner, getResources().getStringArray(R.array.array_englishAdapter));
                 spinner_English.setAdapter(EnglishAdapter);
 
                 spinner_English.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -831,7 +831,7 @@ public class AddNewStudent extends BaseActivity{
                             if (endlineDialog.isShowing())
                                 endlineDialog.dismiss();
                         } else {
-                            Toast.makeText(AddNewStudent.this, "Please fill all the fields !!!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddNewStudent.this, R.string.fillAllFields, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -853,9 +853,9 @@ public class AddNewStudent extends BaseActivity{
                 selectedSchoolType = (RadioButton) findViewById(selId);
                 String schoolType = selectedSchoolType.getText().toString();
                 int stdSchoolType = 0;
-                if (schoolType.equalsIgnoreCase("Government"))
+                if (schoolType.equalsIgnoreCase(getString(R.string.government)))
                     stdSchoolType = 1;
-                else if (schoolType.equalsIgnoreCase("Private"))
+                else if (schoolType.equalsIgnoreCase(getString(R.string.privat)))
                     stdSchoolType = 2;
 
                 // Check AllSpinners Emptyness
@@ -983,17 +983,17 @@ public class AddNewStudent extends BaseActivity{
                                 BackupDatabase.backup(ApplicationController.getInstance());
 
                                 e.printStackTrace();
-                                Toast.makeText(AddNewStudent.this, "Record Insertion Failed !!!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AddNewStudent.this, R.string.recInsertFailed, Toast.LENGTH_SHORT).show();
                             }
 
                         } else {
-                            Toast.makeText(AddNewStudent.this, "Please Enter Valid Input !!!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddNewStudent.this, R.string.enterValidInput, Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(AddNewStudent.this, "Please Fill all fields !!!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddNewStudent.this, R.string.fillAllFields, Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(AddNewStudent.this, "Please Fill all fields !!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddNewStudent.this, R.string.fillAllFields, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -1118,15 +1118,15 @@ public class AddNewStudent extends BaseActivity{
     }
 
     private void initializeNumberRecoSpinner() {
-        String[] NumberRecoAdapter = {"Baseline (Number Recognition)", "Beg", "0-9", "10-99", "Sub", "Div"};
-        ArrayAdapter<String> recoAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, NumberRecoAdapter);
+//        String[] NumberRecoAdapter = {"Baseline (Number Recognition)", "Beg", "0-9", "10-99", "Sub", "Div"};
+        ArrayAdapter<String> recoAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, getResources().getStringArray(R.array.array_numRecoSSpinner));
         //sp_NumberReco.setPrompt("Number Reco Level");
         sp_NumberReco.setAdapter(recoAdapter);
     }
 
     private void initializeEnglishSpinner() {
-        String[] engAdapter = {"Baseline (English)", "Beg", "Capital Letter", "Small Letter", "Word", "Sentence"};
-        ArrayAdapter<String> EnglishAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, engAdapter);
+        //String[] engAdapter = {"Baseline (English)", "Beg", "Capital Letter", "Small Letter", "Word", "Sentence"};
+        ArrayAdapter<String> EnglishAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, getResources().getStringArray(R.array.array_englishAdapter));
         sp_English.setAdapter(EnglishAdapter);
     }
 
@@ -1142,11 +1142,11 @@ public class AddNewStudent extends BaseActivity{
         List<String> States = new ArrayList<>();
         States.clear();
         States = AppDatabase.getDatabaseInstance(AddNewStudent.this).getVillageDao().getState();
-        States.add(0, "Select State");
+        States.add(0, getString(R.string.selectstate));
         //Creating the ArrayAdapter instance having the Villages list
         ArrayAdapter<String> StateAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, States);
         // Hint for AllSpinners
-        states_spinner.setPrompt("Select State");
+        states_spinner.setPrompt(getString(R.string.selectstate));
         states_spinner.setAdapter(StateAdapter);
 
         states_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -1168,11 +1168,11 @@ public class AddNewStudent extends BaseActivity{
         //Get Villages Data for Blocks AllSpinners
         Blocks.clear();
         Blocks = AppDatabase.getDatabaseInstance(AddNewStudent.this).getVillageDao().GetStatewiseBlock(selectedState);
-        Blocks.add(0, "Select Block");
+        Blocks.add(0, getString(R.string.selectblock));
         //Creating the ArrayAdapter instance having the Villages list
         ArrayAdapter<String> BlockAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, Blocks);
         // Hint for AllSpinners
-        blocks_spinner.setPrompt("Select Block");
+        blocks_spinner.setPrompt(getString(R.string.selectblock));
         blocks_spinner.setAdapter(BlockAdapter);
 
         blocks_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -1197,7 +1197,7 @@ public class AddNewStudent extends BaseActivity{
         BlocksVillages.clear();
         Village v = new Village();
         v.VillageId = "0";
-        v.VillageName = "Select Village";
+        v.VillageName = getString(R.string.selectvillage);
         BlocksVillages = AppDatabase.getDatabaseInstance(AddNewStudent.this).getVillageDao().GetVillages(selectedBlock);
         BlocksVillages.add(0, v);
 
@@ -1208,7 +1208,7 @@ public class AddNewStudent extends BaseActivity{
         //Creating the ArrayAdapter instance having the Villages list
         ArrayAdapter<Village> VillagesAdapter = new ArrayAdapter<Village>(this, R.layout.custom_spinner, SpinnerBlocksVillages);
         // Hint for AllSpinners
-        villages_spinner.setPrompt("Select Village");
+        villages_spinner.setPrompt(getString(R.string.selectvillage));
         villages_spinner.setAdapter(VillagesAdapter);
         villages_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -1231,7 +1231,7 @@ public class AddNewStudent extends BaseActivity{
         GroupsVillages.clear();
         Groups grp = new Groups();
         grp.GroupId = "0";
-        grp.GroupName = "Select Group";
+        grp.GroupName = getString(R.string.selectgroup);
         GroupsVillages = AppDatabase.getDatabaseInstance(AddNewStudent.this).getGroupDao().GetGroups(villageID);
         GroupsVillages.add(0, grp);
         //GroupsVillages.get(0).getGroupId();
@@ -1242,7 +1242,7 @@ public class AddNewStudent extends BaseActivity{
 
         ArrayAdapter<Groups> GroupsAdapter = new ArrayAdapter<Groups>(this, R.layout.custom_spinner, SpinnerGroups);
         // Hint for AllSpinners
-        groups_spinner.setPrompt("Select Group");
+        groups_spinner.setPrompt(getString(R.string.selectgroup));
         groups_spinner.setAdapter(GroupsAdapter);
         groups_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

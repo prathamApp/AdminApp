@@ -117,7 +117,7 @@ public class CollectFragment extends Fragment implements ZXingScannerView.Result
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.CAMERA)) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("App requires camera permission to scan QR code");
+                builder.setMessage(R.string.appReqCamPermsn);
                 builder.setCancelable(false);
                 builder.setPositiveButton("Enable", new DialogInterface.OnClickListener() {
                     @Override
@@ -142,7 +142,7 @@ public class CollectFragment extends Fragment implements ZXingScannerView.Result
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                Toast.makeText(context, "You Need Camera permission", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.youNeedCamPermsn, Toast.LENGTH_SHORT).show();
                 //todo close fragment
             } else {
                 initCamera();
@@ -276,7 +276,7 @@ public class CollectFragment extends Fragment implements ZXingScannerView.Result
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setCancelable(false);
-                    builder.setMessage("This QR Is Already Scanned. Do You Want To Replace Data?");
+                    builder.setMessage(R.string.qrAlreadyScand);
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -297,7 +297,7 @@ public class CollectFragment extends Fragment implements ZXingScannerView.Result
 
                 }
             } else {
-                Toast.makeText(context, "Invalid QR ", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, R.string.invalidQR, Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
             Modal_Log log = new Modal_Log();
@@ -311,7 +311,7 @@ public class CollectFragment extends Fragment implements ZXingScannerView.Result
             BackupDatabase.backup(ApplicationController.getInstance());
 
             e.printStackTrace();
-            Toast.makeText(context, "Invalid QR ", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, R.string.invalidQR, Toast.LENGTH_LONG).show();
         }
 
     }
@@ -393,21 +393,21 @@ public class CollectFragment extends Fragment implements ZXingScannerView.Result
 //                        AppDatabase.getDatabaseInstance(context).getTabletManageDeviceDao().insertTabletManageDevice(tabletManageDevice);
                         mainList.add(tabletManageDevice);
                         BackupDatabase.backup(context);
-                        Toast.makeText(context, "Inserted Successfully ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, R.string.insertedSuccessfuly, Toast.LENGTH_LONG).show();
                         setCount();
                         cleaFields();
                         resetCamera();
                     } else {
-                        Toast.makeText(context, "select damage type", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.selectDamageType, Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(context, "select village", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.selectvillage, Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(context, "Scan QR Or Enter Serial Id", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.scanQrorEnterSid, Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(context, "Fill In All The Details", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.fillAllDetails, Toast.LENGTH_SHORT).show();
         }
     }
 

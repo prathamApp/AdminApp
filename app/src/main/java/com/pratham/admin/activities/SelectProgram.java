@@ -162,7 +162,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                         if (programsList != null) {
                             ProgramsModal modalProgram = new ProgramsModal();
                             modalProgram.setProgramId(-1);
-                            modalProgram.setProgramName("SELECT PROGRAM");
+                            modalProgram.setProgramName("Select Program");
                             LinkedHashSet hs = new LinkedHashSet(programsList);//to remove redundant values
                             programsList.clear();
                             programsList.addAll(hs);
@@ -237,7 +237,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
         if (internetIsAvailable) {
             selectedState = spinner_state.getSelectedItemPosition();
             selectedStateName = states[selectedState];
-            if (!states[selectedState].equals("SELECT STATE")) {
+            if (!states[selectedState].equals("Select State")) {
                 String url;
                 stateCode = getResources().getStringArray(R.array.india_states_shortcode);
                 url = APIs.pullVillagesServerURL + spID + APIs.SERVER_STATE + stateCode[selectedState];
@@ -252,7 +252,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
         }
         else {
             spinner_state.setSelection(0);
-            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.noInterntCon, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -320,7 +320,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
         if (dialog == null) {
             dialog = new ProgressDialog(this);
         }
-        dialog.setTitle("Pulling... " + program + " " + type);
+        dialog.setTitle(getString(R.string.pulling) + program + " " + type);
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
@@ -437,7 +437,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
         if (villageList.size() == 0) {
             blockNames.add("NO BLOCK");
         } else {
-            blockNames.add("SELECT BLOCK");
+            blockNames.add("Select Block");
             for (int i = 0; i < villageList.size(); i++) {
                 blockNames.add(villageList.get(i).getBlock());
             }
@@ -453,7 +453,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedBlock = parent.getItemAtPosition(position).toString();
-                if ((!selectedBlock.equals("NO BLOCK")) && (!selectedBlock.equals("SELECT BLOCK"))) {
+                if ((!selectedBlock.equals("NO BLOCK")) && (!selectedBlock.equals("Select Block"))) {
                     if (apiLoadFlag) {
 
                         btn_pullData.setEnabled(false);
@@ -498,10 +498,10 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SelectProgram.this, android.R.style.Theme_Material_Light_Dialog);
         dialogBuilder.setCancelable(false);
-        dialogBuilder.setTitle("Data Preview");
+        dialogBuilder.setTitle(R.string.dataPreview);
         dialogBuilder.setMessage("CRLList : " + CRLList.size() + "\nstudentList : " + studentList.size() + "\ngroupsList : " + groupsList.size() + "\nCourseList : " + CourseList.size() + "\nCoachList : " + CoachList.size() + "\nCommunityList : " + CommunityList.size() + "\nCompletionList : " + CompletionList.size() + "\nAserList : " + aserList.size());
         if (CRLList.size() > 0) {
-            dialogBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            dialogBuilder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     try {
                         new SaveDataTask(SelectProgram.this, SelectProgram.this, CRLList, studentList, groupsList, villageId, CourseList, CoachList, CommunityList, CompletionList, aserList).execute();
@@ -523,7 +523,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
                 }
             });
         }
-        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        dialogBuilder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 btn_pullData.startAnimation(animation);
                 btn_saveData.setEnabled(true);
@@ -558,7 +558,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
     public void onNetworkConnectionChanged(boolean isConnected) {
         if (!isConnected) {
             internetIsAvailable = false;
-            Toast.makeText(this, "No Internet Access", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.noInterntCon, Toast.LENGTH_SHORT).show();
         } else {
             internetIsAvailable = true;
         }
@@ -863,7 +863,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
         } else if (header.equals("couchUrl")) {
             errorDetected = true;
             if (!internetIsAvailable) {
-                Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                Toast.makeText(SelectProgram.this, R.string.noInterntCon, Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(SelectProgram.this, "Pull Coaches Failed.", Toast.LENGTH_LONG).show();
             }
@@ -873,7 +873,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
             errorDetected = true;
 //                spinner_state.setSelection(0);
             if (!internetIsAvailable) {
-                Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                Toast.makeText(SelectProgram.this, R.string.noInterntCon, Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(SelectProgram.this, "PullCourseCommunity Failed.", Toast.LENGTH_LONG).show();
             }
@@ -882,7 +882,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
         } else if (header.equals("PullCourses")) {
             errorDetected = true;
             if (!internetIsAvailable) {
-                Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                Toast.makeText(SelectProgram.this, R.string.noInterntCon, Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(SelectProgram.this, "PullCourses Failed.", Toast.LENGTH_LONG).show();
             }
@@ -891,7 +891,7 @@ public class SelectProgram extends BaseActivity implements ConnectionReceiverLis
         } else if (header.equals("PullHLCourseCompletionUrl")) {
             errorDetected = true;
             if (!internetIsAvailable) {
-                Toast.makeText(SelectProgram.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                Toast.makeText(SelectProgram.this, R.string.noInterntCon, Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(SelectProgram.this, "PullCourseCompletion Failed.", Toast.LENGTH_LONG).show();
             }

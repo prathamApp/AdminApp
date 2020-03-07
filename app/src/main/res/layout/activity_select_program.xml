@@ -169,7 +169,7 @@
             android:background="@drawable/btn_style"
             android:elevation="15dp"
             android:enabled="false"
-            android:text="Pull data"
+            android:text="@string/pulldata"
             android:textColor="#ffffff" />
 
         <Button
@@ -182,7 +182,7 @@
             android:background="@drawable/btn_style"
             android:elevation="15dp"
             android:enabled="false"
-            android:text="save data"
+            android:text="@string/savedata"
             android:textColor="#ffffff" />
     </LinearLayout>
 </LinearLayout>

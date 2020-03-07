@@ -5,8 +5,10 @@ package com.pratham.admin.forms;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -154,9 +156,9 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
         sp_Speciality.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                btn_Submit.setText("Preview");
+                btn_Submit.setText(R.string.preview);
                 String selectedSpeciality = sp_Speciality.getSelectedItem().toString();
-                if (selectedSpeciality.contains("Select")) {
+                if (selectedSpeciality.contains(getString(R.string.select))) {
                 } else if (selectedSpeciality.equalsIgnoreCase("Others")) {
                     // Dialog
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CoachInformationForm.this);
@@ -166,8 +168,8 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
                     final EditText edt = (EditText) dialogView.findViewById(R.id.edt_Others);
                     dialogBuilder.setCancelable(false);
                     edt.setHint("e.g. Programming");
-                    dialogBuilder.setTitle("Please Mention Others ");
-                    dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    dialogBuilder.setTitle(R.string.plzmentionOther);
+                    dialogBuilder.setPositiveButton(R.string.Okay, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             speciality = edt.getText().toString().trim();
                             if (edt.getText().toString().trim().equalsIgnoreCase("")) {
@@ -177,7 +179,7 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
                             }
                         }
                     });
-                    dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    dialogBuilder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             //pass
                             populateSpeciality();
@@ -200,28 +202,29 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
 
 
     private void populateEducation() {
+        TypedArray clas = getResources().obtainTypedArray(R.array.array_Education);
         ArrayAdapter specialityAdapter = new ArrayAdapter(CoachInformationForm.this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.array_Education));
         sp_Education.setAdapter(specialityAdapter);
         sp_Education.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                btn_Submit.setText("Preview");
+                btn_Submit.setText(R.string.preview);
                 selectedEdu = sp_Education.getSelectedItem().toString();
-                if (selectedEdu.contains("Select")) {
+                if (selectedEdu.contains(getString(R.string.select))) {
                 } else {
                     if (selectedEdu.equalsIgnoreCase("No"))
                         education = String.valueOf(0);
-                    else if (selectedEdu.equalsIgnoreCase("Class 5"))
+                    else if (selectedEdu.equalsIgnoreCase(getString(R.string.sp_clas5)))
                         education = String.valueOf(5);
-                    else if (selectedEdu.equalsIgnoreCase("Class 8"))
+                    else if (selectedEdu.equalsIgnoreCase(getString(R.string.sp_clas8)))
                         education = String.valueOf(8);
-                    else if (selectedEdu.equalsIgnoreCase("Higher Secondary"))
+                    else if (selectedEdu.equalsIgnoreCase(getString(R.string.sp_highSec)))
                         education = String.valueOf(10);
-                    else if (selectedEdu.equalsIgnoreCase("Intermediate"))
+                    else if (selectedEdu.equalsIgnoreCase(getString(R.string.sp_intmd)))
                         education = String.valueOf(12);
-                    else if (selectedEdu.equalsIgnoreCase("Graduate"))
+                    else if (selectedEdu.equalsIgnoreCase(getString(R.string.sp_grad)))
                         education = String.valueOf(15);
-                    else if (selectedEdu.equalsIgnoreCase("Post Graduate"))
+                    else if (selectedEdu.equalsIgnoreCase(getString(R.string.sp_postgrad)))
                         education = String.valueOf(17);
                     else if (selectedEdu.equalsIgnoreCase("Others"))
                         education = String.valueOf(18);
@@ -258,7 +261,7 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
         sp_Groups.setAdapter(grpAdapter, false, onVGSelectedListener);
         // set initial selection
         selectedGroupItems = new boolean[grpAdapter.getCount()];
-        sp_Groups.setHint("Select Groups");
+        sp_Groups.setHint(getString(R.string.selectgroupssmall));
         sp_Groups.setHintTextColor(Color.BLACK);
     }
 
@@ -286,7 +289,7 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
         ArrayAdapter subAdapter = new ArrayAdapter(CoachInformationForm.this, android.R.layout.simple_spinner_dropdown_item, ExpertSubj);
         sp_SubjectExpert.setAdapter(subAdapter, false, onSelectedListener);
         selectedItems = new boolean[subAdapter.getCount()];
-        sp_SubjectExpert.setHint("Select Subject Expert");
+        sp_SubjectExpert.setHint(getString(R.string.selectsubjectexpert));
         sp_SubjectExpert.setHintTextColor(Color.BLACK);
 
     }
@@ -295,7 +298,7 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
     private MultiSpinner.MultiSpinnerListener onSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
-            btn_Submit.setText("Preview");
+            btn_Submit.setText(R.string.preview);
             selectedExpertSubjects = "";
             selectedESArray = new String[selected.length];
             for (int i = 0; i < selected.length; i++) {
@@ -315,9 +318,9 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
         sp_Occupation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                btn_Submit.setText("Preview");
+                btn_Submit.setText(R.string.preview);
                 String selectedOccupation = sp_Occupation.getSelectedItem().toString();
-                if (selectedOccupation.contains("Select")) {
+                if (selectedOccupation.contains(getString(R.string.select))) {
                 } else if (selectedOccupation.equalsIgnoreCase("Others")) {
                     // Dialog
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CoachInformationForm.this);
@@ -327,8 +330,8 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
                     final EditText edt = (EditText) dialogView.findViewById(R.id.edt_Others);
                     dialogBuilder.setCancelable(false);
                     edt.setHint("e.g. Service");
-                    dialogBuilder.setTitle("Please Mention Others ");
-                    dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    dialogBuilder.setTitle(R.string.plzmentionOther);
+                    dialogBuilder.setPositiveButton(R.string.Okay, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             occupation = edt.getText().toString().trim();
                             if (edt.getText().toString().trim().equalsIgnoreCase("")) {
@@ -338,7 +341,7 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
                             }
                         }
                     });
-                    dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    dialogBuilder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             //pass
                             populateOccupation();
@@ -361,7 +364,7 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
     private void populateVillages() {
         final List VillageName = new ArrayList();
         if (!villageList.isEmpty()) {
-            VillageName.add(new CustomGroup("Select Village"));
+            VillageName.add(new CustomGroup(getString(R.string.selectvillage)));
             for (int j = 0; j < villageList.size(); j++) {
                 CustomGroup customGroup = new CustomGroup(villageList.get(j).getVillageName(), villageList.get(j).getVillageId());
                 VillageName.add(customGroup);
@@ -376,7 +379,7 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
                 CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
                 vid = "";
                 vid = customGroup.getId();
-                btn_Submit.setText("Preview");
+                btn_Submit.setText(R.string.preview);
                 // Populate Registered Groups Spinner
                 populateRegisteredGroups(vid);
             }
@@ -390,7 +393,7 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
 
     @OnClick(R.id.btn_DatePicker)
     public void startDatePicker(View view) {
-        btn_Submit.setText("Preview");
+        btn_Submit.setText(R.string.preview);
         DialogFragment newFragment = new DatePickerFragmentOne();
         newFragment.show(getFragmentManager(), "DatePicker");
     }
@@ -431,33 +434,33 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
                 cObj.sentFlag = 0;
                 cObj.CoachVillageID = vid;
 
-                if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
+                if (btn_Submit.getText().toString().equalsIgnoreCase(getString(R.string.submit))) {
 
                     AppDatabase.getDatabaseInstance(this).getCoachDao().insertCoach(Collections.singletonList(cObj));
-                    Toast.makeText(this, "Form Submitted to DB !!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.formSubmittedtoDB, Toast.LENGTH_SHORT).show();
                     resetForm();
 
                 } else {
                     // Preview Dialog
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CoachInformationForm.this, android.R.style.Theme_Material_Light_Dialog);
                     dialogBuilder.setCancelable(false);
-                    dialogBuilder.setTitle("Form Data Preview");
-                    dialogBuilder.setMessage("Coach Name : " + edt_Name.getText().toString().trim()
-                            + "\nCoach Age : " + Integer.parseInt(edt_Age.getText().toString().trim())
-                            + "\nCoach Gender : " + gender + "\nSubject Expert : " + selectedExpertSubjects
-                            + "\nCoach Occupation : " + occupation + "\nCoach Speciality : " + speciality
-                            + "\nCoach Education : " + selectedEdu + " (" + education + ")"
-                            + "\nSelected Groups : " + selectedGroupNames
-                            + "\nDate : " + date);
+                    dialogBuilder.setTitle(getString(R.string.formdatapreview));
+                    dialogBuilder.setMessage(getString(R.string.coachname) + edt_Name.getText().toString().trim()
+                            + "\n"+getString(R.string.coachage) + Integer.parseInt(edt_Age.getText().toString().trim())
+                            + "\n"+getString(R.string.coachgender)+ gender + "\n"+getString(R.string.subjectexpert) + selectedExpertSubjects
+                            + "\n"+getString(R.string.coachoccupation) + occupation + "\n"+getString(R.string.coachspeciality) + speciality
+                            + "\n"+getString(R.string.coacheducation) + selectedEdu + " (" + education + ")"
+                            + "\n"+getString(R.string.selectedgroup) + selectedGroupNames
+                            + "\n"+getString(R.string.date) + date);
 
-                    dialogBuilder.setPositiveButton("Correct", new DialogInterface.OnClickListener() {
+                    dialogBuilder.setPositiveButton(R.string.correct, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            btn_Submit.setText("Submit");
+                            btn_Submit.setText(R.string.submit);
                         }
                     });
-                    dialogBuilder.setNegativeButton("Wrong", new DialogInterface.OnClickListener() {
+                    dialogBuilder.setNegativeButton(R.string.wrong, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            btn_Submit.setText("Preview");
+                            btn_Submit.setText(R.string.preview);
                         }
                     });
                     AlertDialog b = dialogBuilder.create();
@@ -480,13 +483,13 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
             }
 
         } else {
-            Toast.makeText(this, "Please fill all the fields !!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.fillAllFields, Toast.LENGTH_SHORT).show();
         }
 
     }
 
     private void resetForm() {
-        btn_Submit.setText("Preview");
+        btn_Submit.setText(R.string.preview);
         //retrive all groups from  DB
         AllGroupsInDB.clear();
         AllGroupsInDB = AppDatabase.getDatabaseInstance(this).getGroupDao().getAllGroups();

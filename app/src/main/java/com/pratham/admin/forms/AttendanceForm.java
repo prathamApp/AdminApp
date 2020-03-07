@@ -141,7 +141,7 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
                 RadioButton selectedGender = (RadioButton) findViewById(selectedId);
                 String present = selectedGender.getText().toString();
                 int presentStatus = 0; // 0: Absent, 1: Present
-                if (present.equalsIgnoreCase("Yes"))
+                if (present.equalsIgnoreCase(getString(R.string.yes)))
                     presentStatus = 1;
                 else
                     presentStatus = 0;
@@ -159,32 +159,32 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
                 aObj.Present = presentStatus;
                 aObj.sentFlag = 0;
 
-                if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
+                if (btn_Submit.getText().toString().equalsIgnoreCase(getString(R.string.submit))) {
 
                     AppDatabase.getDatabaseInstance(this).getAttendanceDao().insertAttendance(Collections.singletonList(aObj));
-                    Toast.makeText(this, "Form Saved to Database !!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.formSavedtoDB, Toast.LENGTH_SHORT).show();
                     resetForm();
 
                 } else {
                     // Preview Dialog
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(AttendanceForm.this, android.R.style.Theme_Material_Light_Dialog);
                     dialogBuilder.setCancelable(false);
-                    dialogBuilder.setTitle("Form Data Preview");
+                    dialogBuilder.setTitle(R.string.formdatapreview);
 
-                    dialogBuilder.setMessage("Village Name : " + vName
-                            + "\nGroup Name : " + selectedGroupNames
-                            + "\nSelected Students : " + selectedStudentNames
-                            + "\nDate : " + date
-                            + "\nPresent : " + present);
+                    dialogBuilder.setMessage(getString(R.string.villagename) + vName
+                            + "\n"+getString(R.string.groupname) + selectedGroupNames
+                            + "\n"+getString(R.string.selectedstudents) + selectedStudentNames
+                            + "\n"+getString(R.string.date) + date
+                            + "\n"+getString(R.string.prsnt) + present);
 
-                    dialogBuilder.setPositiveButton("Correct", new DialogInterface.OnClickListener() {
+                    dialogBuilder.setPositiveButton(R.string.correct, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            btn_Submit.setText("Submit");
+                            btn_Submit.setText(R.string.submit);
                         }
                     });
-                    dialogBuilder.setNegativeButton("Wrong", new DialogInterface.OnClickListener() {
+                    dialogBuilder.setNegativeButton(R.string.wrong, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            btn_Submit.setText("Preview");
+                            btn_Submit.setText(R.string.preview);
                         }
                     });
                     AlertDialog b = dialogBuilder.create();
@@ -204,7 +204,7 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
             }
 
         } else {
-            Toast.makeText(this, "Please Fill All the Fields !!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.fillAllFields, Toast.LENGTH_SHORT).show();
         }
         BackupDatabase.backup(this);
     }
@@ -212,7 +212,7 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
     private void resetForm() {
         btn_SelectAll.setVisibility(View.GONE);
         btn_DeselectAll.setVisibility(View.GONE);
-        btn_Submit.setText("Preview");
+        btn_Submit.setText(R.string.preview);
         //retrive all groups from  DB
         AllGroupsInDB.clear();
         AllGroupsInDB = AppDatabase.getDatabaseInstance(this).getGroupDao().getAllGroups();
@@ -253,7 +253,7 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
 
     @OnClick(R.id.btn_DatePicker)
     public void startDatePicker(View view) {
-        btn_Submit.setText("Preview");
+        btn_Submit.setText(R.string.preview);
         DialogFragment newFragment = new DatePickerFragmentOne();
         newFragment.show(getFragmentManager(), "DatePicker");
     }
@@ -263,7 +263,7 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
         ArrayAdapter StdAdapter = new ArrayAdapter(AttendanceForm.this, android.R.layout.simple_spinner_dropdown_item, registeredStd);
         sp_Students.setAdapter(StdAdapter, true, onStdSelectedListener);
         selectedStdItems = new boolean[StdAdapter.getCount()];
-        sp_Students.setHint("Select Students");
+        sp_Students.setHint(getString(R.string.selectstudents));
         sp_Students.setHintTextColor(Color.BLACK);
         sp_Students.performClick();
     }
@@ -273,7 +273,7 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
         ArrayAdapter StdAdapter = new ArrayAdapter(AttendanceForm.this, android.R.layout.simple_spinner_dropdown_item, registeredStd);
         sp_Students.setAdapter(StdAdapter, false, onStdSelectedListener);
         selectedStdItems = new boolean[StdAdapter.getCount()];
-        sp_Students.setHint("Select Students");
+        sp_Students.setHint(getString(R.string.selectstudents));
         sp_Students.setHintTextColor(Color.BLACK);
         sp_Students.performClick();
     }
@@ -282,7 +282,7 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
 
         final List VillageName = new ArrayList();
         if (!villageList.isEmpty()) {
-            VillageName.add(new CustomGroup("Select Village"));
+            VillageName.add(new CustomGroup(getString(R.string.selectvillage)));
             for (int j = 0; j < villageList.size(); j++) {
                 CustomGroup customGroup = new CustomGroup(villageList.get(j).getVillageName(), villageList.get(j).getVillageId());
                 VillageName.add(customGroup);
@@ -298,7 +298,7 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
         sp_Village.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                btn_Submit.setText("Preview");
+                btn_Submit.setText(R.string.preview);
                 CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
                 vid = customGroup.getId();
                 vName = customGroup.getName();
@@ -335,7 +335,7 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
         sp_Groups.setAdapter(grpAdapter, false, onVGSelectedListener);
         // set initial selection
         selectedGroupItems = new boolean[grpAdapter.getCount()];
-        sp_Groups.setHint("Select Groups");
+        sp_Groups.setHint(getString(R.string.selectgroupssmall));
         sp_Groups.setHintTextColor(Color.BLACK);
         btn_SelectAll.setVisibility(View.GONE);
         btn_DeselectAll.setVisibility(View.GONE);
@@ -388,7 +388,7 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
         ArrayAdapter StdAdapter = new ArrayAdapter(AttendanceForm.this, android.R.layout.simple_spinner_dropdown_item, registeredStd);
         sp_Students.setAdapter(StdAdapter, false, onStdSelectedListener);
         selectedStdItems = new boolean[StdAdapter.getCount()];
-        sp_Students.setHint("Select Students");
+        sp_Students.setHint(getString(R.string.selectstudents));
         sp_Students.setHintTextColor(Color.BLACK);
         // show select/ deselect all button
         btn_SelectAll.setVisibility(View.VISIBLE);
@@ -400,7 +400,7 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
     private MultiSpinner.MultiSpinnerListener onStdSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
-            btn_Submit.setText("Preview");
+            btn_Submit.setText(R.string.preview);
             selectedStudents = "";
             selectedStudentNames = "";
             for (int i = 0; i < selected.length; i++) {

@@ -185,32 +185,32 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
                     commList.add(commObj);
                 }
 
-                if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
+                if (btn_Submit.getText().toString().equalsIgnoreCase(getString(R.string.submit))) {
                     AppDatabase.getDatabaseInstance(this).getCommunityDao().insertCommunity(commList);
-                    Toast.makeText(this, "Form Saved to Database !!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.formSavedtoDB, Toast.LENGTH_SHORT).show();
                     resetForm();
 
                 } else {
                     // Preview Dialog
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CourseEnrollmentForm.this, android.R.style.Theme_Material_Light_Dialog);
                     dialogBuilder.setCancelable(false);
-                    dialogBuilder.setTitle("Form Data Preview");
-                    dialogBuilder.setMessage("Village Name : " + villageName
-                            + "\nSelected Groups : " + selectedGroupNames
-                            + "\nSelected Courses : " + courseName
-                            + "\nSelected Topics : " + selectedTopicNames
-                            + "\nStart Date : " + btn_DatePicker.getText().toString().trim()
-                            + "\nCoach Name : " + selectedPCNames
-                            + "\nGroupType : " + Community);
+                    dialogBuilder.setTitle(R.string.formdatapreview);
+                    dialogBuilder.setMessage(getString(R.string.villagename) + villageName
+                            + "\n"+getString(R.string.selectgroupssmall)+" : " + selectedGroupNames
+                            + "\n"+getString(R.string.selectedcourses) + courseName
+                            + "\n"+getString(R.string.selectedtopics) + selectedTopicNames
+                            + "\n"+getString(R.string.stdate) + btn_DatePicker.getText().toString().trim()
+                            + "\n"+getString(R.string.coachname) + selectedPCNames
+                            + "\n"+getString(R.string.groupType) + Community);
 
-                    dialogBuilder.setPositiveButton("Correct", new DialogInterface.OnClickListener() {
+                    dialogBuilder.setPositiveButton(R.string.correct, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            btn_Submit.setText("Submit");
+                            btn_Submit.setText(R.string.submit);
                         }
                     });
-                    dialogBuilder.setNegativeButton("Wrong", new DialogInterface.OnClickListener() {
+                    dialogBuilder.setNegativeButton(R.string.wrong, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            btn_Submit.setText("Preview");
+                            btn_Submit.setText(R.string.preview);
                         }
                     });
                     AlertDialog b = dialogBuilder.create();
@@ -231,14 +231,14 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
                 e.printStackTrace();
             }
         } else {
-            Toast.makeText(this, "Please enter all the fields !!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.fillAllFields, Toast.LENGTH_SHORT).show();
         }
 
 
     }
 
     private void resetForm() {
-        btn_Submit.setText("Preview");
+        btn_Submit.setText(R.string.preview);
         //retrive all groups from  DB
         AllGroupsInDB.clear();
         AllGroupsInDB = AppDatabase.getDatabaseInstance(this).getGroupDao().getAllGroups();
@@ -280,7 +280,7 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
 
     @OnClick(R.id.btn_DatePicker)
     public void startDatePicker(View view) {
-        btn_Submit.setText("Preview");
+        btn_Submit.setText(R.string.preview);
         DialogFragment newFragment = new DatePickerFragmentOne();
         newFragment.show(getFragmentManager(), "DatePicker");
     }
@@ -288,7 +288,7 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
     private void populateVillages() {
         final List VillageName = new ArrayList();
         if (!villageList.isEmpty()) {
-            VillageName.add(new CustomGroup("Select Village"));
+            VillageName.add(new CustomGroup(getString(R.string.selectvillage)));
             for (int j = 0; j < villageList.size(); j++) {
                 CustomGroup customGroup = new CustomGroup(villageList.get(j).getVillageName(), villageList.get(j).getVillageId());
                 VillageName.add(customGroup);
@@ -300,7 +300,7 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
         sp_Village.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                btn_Submit.setText("Preview");
+                btn_Submit.setText(R.string.preview);
                 CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
                 vid = customGroup.getId();
                 villageName = customGroup.getName();
@@ -345,7 +345,7 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
         sp_Groups.setAdapter(grpAdapter, false, onVGSelectedListener);
         // set initial selection
         selectedGroupItems = new boolean[grpAdapter.getCount()];
-        sp_Groups.setHint("Select Groups");
+        sp_Groups.setHint(getString(R.string.selectgroup));
         sp_Groups.setHintTextColor(Color.BLACK);
         selectedGroups = "";
         selectedGroupNames = "";
@@ -355,7 +355,7 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
     private MultiSpinner.MultiSpinnerListener onVGSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
-            btn_Submit.setText("Preview");
+            btn_Submit.setText(R.string.preview);
             selectedGroupsArray = new ArrayList<>();
             selectedGroups = "";
             selectedGroupNames = "";
@@ -374,7 +374,7 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
     private void populateCourses() {
         final List CourseName = new ArrayList();
         if (!courseList.isEmpty()) {
-            CourseName.add(new CustomGroup("Select Course"));
+            CourseName.add(new CustomGroup(getString(R.string.selecttopics)));
             for (int j = 0; j < courseList.size(); j++) {
                 CustomGroup customGroup = new CustomGroup(courseList.get(j).getCourseName(), courseList.get(j).getCourseID());
                 CourseName.add(customGroup);
@@ -386,7 +386,7 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
         sp_Course.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                btn_Submit.setText("Preview");
+                btn_Submit.setText(R.string.preview);
                 CustomGroup customGroup = (CustomGroup) CourseName.get(pos);
                 courseID = "";
                 courseName = "";
@@ -428,14 +428,14 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
         ArrayAdapter subAdapter = new ArrayAdapter(CourseEnrollmentForm.this, android.R.layout.simple_spinner_dropdown_item, Topics);
         ms_sp_Topics.setAdapter(subAdapter, false, onSelectedListener);
         selectedItems = new boolean[subAdapter.getCount()];
-        ms_sp_Topics.setHint("Select Topics");
+        ms_sp_Topics.setHint(getString(R.string.selectcoach));
         ms_sp_Topics.setHintTextColor(Color.BLACK);
     }
 
     // Listener
     private MultiSpinner.MultiSpinnerListener onSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
-            btn_Submit.setText("Preview");
+            btn_Submit.setText(R.string.preview);
             selectedTopics = "";
             selectedTopicNames = "";
             // Do something here with the selected items
@@ -470,7 +470,7 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
         sp_SelectCoach.setAdapter(coachAdapter, false, onPCSelectedListener);
         // set initial selection
         selectedPCItems = new boolean[coachAdapter.getCount()];
-        sp_SelectCoach.setHint("Select Coach");
+        sp_SelectCoach.setHint(getString(R.string.selectcoach));
         sp_SelectCoach.setHintTextColor(Color.BLACK);
 
     }
@@ -479,7 +479,7 @@ public class CourseEnrollmentForm extends BaseActivity/* implements ConnectionRe
     private MultiSpinner.MultiSpinnerListener onPCSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
-            btn_Submit.setText("Preview");
+            btn_Submit.setText(R.string.preview);
             List<String> selectedPCArray = new ArrayList<>();
             selectedPC = "";
             selectedPCNames = "";

@@ -22,7 +22,7 @@
             android:fontFamily="monospace"
             android:gravity="center"
             android:padding="@dimen/_8sdp"
-            android:text="Coach Retention"
+            android:text="@string/title_coachRetentn"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/_20sdp"
             android:textStyle="bold" />
@@ -87,7 +87,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Drop Out"
+                        android:text="@string/dropout"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/_12sdp"
                         android:textStyle="bold" />
@@ -98,7 +98,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1.5"
                         android:checked="true"
-                        android:text="Yes"
+                        android:text="@string/yes"
                         android:textSize="@dimen/_12sdp" />
 
                     <RadioButton
@@ -107,7 +107,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:layout_weight="1.5"
-                        android:text="No"
+                        android:text="@string/no"
                         android:textSize="@dimen/_12sdp" />
 
                 </RadioGroup>
@@ -124,7 +124,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="End Date"
+                        android:text="@string/enddate"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/_12sdp"
                         android:textStyle="bold" />
@@ -153,7 +153,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_16sdp"
             android:background="@color/colorPrimaryDark"
-            android:text="Preview"
+            android:text="@string/preview"
             android:textAllCaps="true"
             android:textColor="#FFFFFF"
             android:textSize="@dimen/_12sdp"

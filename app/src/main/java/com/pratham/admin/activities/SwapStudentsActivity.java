@@ -165,7 +165,7 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
                 if (villageWiseGroups.size() == 0) {
                     groupNameList.add(new CustomGroup("NO GROUPS"));
                 } else {
-                    groupNameList.add(new CustomGroup("SELECT GROUPS"));
+                    groupNameList.add(new CustomGroup(getString(R.string.selectgroups)));
                     for (int i = 0; i < villageWiseGroups.size(); i++) {
                         if (villageWiseGroups.get(i).getGroupName() != null && (!"".equals(villageWiseGroups.get(i).getGroupName()))) {
                             groupNameList.add(new CustomGroup(villageWiseGroups.get(i).getGroupName(), villageWiseGroups.get(i).getGroupId()));
@@ -210,7 +210,7 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     CustomGroup customGroup = (CustomGroup) parent.getItemAtPosition(position);
                     selectedGroupNameLeftSpinner = customGroup.getName();
-                    if ((!selectedGroupNameLeftSpinner.equals("SELECT GROUPS")) && (!selectedGroupNameLeftSpinner.equals("NO GROUPS"))) {
+                    if ((!selectedGroupNameLeftSpinner.equals(getString(R.string.selectgroups))) && (!selectedGroupNameLeftSpinner.equals("NO GROUPS"))) {
                         recyclerView_leftSide.setVisibility(View.VISIBLE);
                         loadStudentGroupWiseToLeftRecycler(selectedGroupNameLeftSpinner, customGroup.getId());
                     } else {
@@ -266,7 +266,7 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
         if (idLeftGroupSpinner != null) {
             if (idLeftGroupSpinner.equals(idRightGroupSpinner)) {
                 AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                alertDialog.setTitle("Group is Already selected !!! ");
+                alertDialog.setTitle(R.string.grpAlreadySelected);
                 alertDialog.setCancelable(false);
                 alertDialog.setCanceledOnTouchOutside(false);
                 alertDialog.setIcon(R.drawable.ic_error_outline_black_24dp);
@@ -305,7 +305,7 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
     public void moveLeft() {
         if (validateGroupName()) {
             if (swappedRightSideStudents.size() == 0) {
-                Toast.makeText(this, "select a student for shifting", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.selectStudtoSwap, Toast.LENGTH_SHORT).show();
             } else {
                 DataChangedFlag = true;
                 //recyclerView_leftSide.scrollToPosition(0);
@@ -346,7 +346,7 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
                 CustomGroup customGroup = (CustomGroup) parent.getItemAtPosition(position);
                 selectedGroupNameRightSpinner = customGroup.getName();
 
-                if ((!selectedGroupNameRightSpinner.equals("SELECT GROUPS")) && (!selectedGroupNameRightSpinner.equals("NO GROUPS"))) {
+                if ((!selectedGroupNameRightSpinner.equals(getString(R.string.selectgroups))) && (!selectedGroupNameRightSpinner.equals("NO GROUPS"))) {
                     recyclerView_rightSide.setVisibility(View.VISIBLE);
                     loadStudentGroupWiseToRightRecycler(selectedGroupNameRightSpinner, customGroup.getId());
                 } else {
@@ -389,7 +389,7 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
 
         if (idRightGroupSpinner != null) if (idLeftGroupSpinner.equals(idRightGroupSpinner)) {
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle("Group is Already selected !!! ");
+            alertDialog.setTitle(R.string.grpAlreadySelected);
             alertDialog.setCancelable(false);
             alertDialog.setCanceledOnTouchOutside(false);
             alertDialog.setIcon(R.drawable.ic_error_outline_black_24dp);
@@ -427,7 +427,7 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
     public void moveRight() {
         if (validateGroupName()) {
             if (swappedStudents.size() == 0) {
-                Toast.makeText(this, "select a student for shifting", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.selectStudtoSwap, Toast.LENGTH_SHORT).show();
             } else {
                 DataChangedFlag = true;
                 for (int i = 0; i < swappedStudents.size(); i++) {
@@ -552,10 +552,10 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
                 customDialogShowOnlineChanges = new CustomDialogShowOnlineChanges(this, tempStorageList);
                 customDialogShowOnlineChanges.show();
             } else {
-                Toast.makeText(SwapStudentsActivity.this, "No Changes Available", Toast.LENGTH_LONG).show();
+                Toast.makeText(SwapStudentsActivity.this, R.string.noChngAvailable, Toast.LENGTH_LONG).show();
             }
         } else {
-            Toast.makeText(SwapStudentsActivity.this, "No Changes Available", Toast.LENGTH_LONG).show();
+            Toast.makeText(SwapStudentsActivity.this, R.string.noChngAvailable, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -579,7 +579,7 @@ public class SwapStudentsActivity extends BaseActivity implements OnCheckBoxSele
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("offlineSaveTime", new Utility().GetCurrentDateTime(false));
         editor.commit();
-        Toast.makeText(this, "saved offline", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.savedOffline, Toast.LENGTH_SHORT).show();
     }
 
     /*private void uploadAPI(String url, String json) {

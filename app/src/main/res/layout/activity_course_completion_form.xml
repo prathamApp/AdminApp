@@ -19,7 +19,7 @@
             android:fontFamily="monospace"
             android:gravity="center"
             android:padding="@dimen/_8sdp"
-            android:text="Course Completion"
+            android:text="@string/title_coachcmpltn"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/_20sdp"
             android:textStyle="bold" />
@@ -70,7 +70,7 @@
                 android:drawableLeft="@drawable/ic_warning"
                 android:gravity="center"
                 android:padding="@dimen/_8sdp"
-                android:text="No Courses/ Topics Available !!!"
+                android:text="@string/nocoursesavailable"
                 android:textColor="#FF0000"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold"
@@ -98,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
-                    android:text="Start Date"
+                    android:text="@string/startdate"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
@@ -124,7 +124,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
-                    android:text="End Date"
+                    android:text="@string/enddate"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
@@ -166,7 +166,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/_8sdp"
                         android:layout_weight="1"
-                        android:text="Was it an Event ?"
+                        android:text="@string/wasitevent"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/_12sdp"
                         android:textStyle="bold" />
@@ -178,7 +178,7 @@
                         android:layout_margin="@dimen/_8sdp"
                         android:layout_weight="1.5"
                         android:checked="true"
-                        android:text="Yes"
+                        android:text="@string/yes"
                         android:textSize="@dimen/_12sdp" />
 
                     <RadioButton
@@ -187,7 +187,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/_8sdp"
                         android:layout_weight="1.5"
-                        android:text="No"
+                        android:text="@string/no"
                         android:textSize="@dimen/_12sdp" />
 
                 </RadioGroup>
@@ -200,7 +200,7 @@
                     android:layout_margin="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:digits="0123456789"
-                    android:hint="no of parents present"
+                    android:hint="@string/noofparents"
                     android:inputType="number"
                     android:maxLength="2"
                     android:singleLine="true"
@@ -217,7 +217,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_16sdp"
             android:background="@color/colorPrimaryDark"
-            android:text="Preview"
+            android:text="@string/preview"
             android:textAllCaps="true"
             android:textColor="#FFFFFF"
             android:textSize="@dimen/_16sdp"

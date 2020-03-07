@@ -197,7 +197,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:background="@drawable/btn_style"
-                android:text="SAVE CHANGES"
+                android:text="@string/savechanges"
                 android:textColor="#ffffff" />
             <android.support.v4.widget.Space
                 android:layout_width="match_parent"

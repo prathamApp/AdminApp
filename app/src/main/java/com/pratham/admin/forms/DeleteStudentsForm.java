@@ -120,7 +120,7 @@ public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiv
             Student sObj = new Student();
             sObj.StudentId = selectedStudents;
 
-            if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
+            if (btn_Submit.getText().toString().equalsIgnoreCase(getString(R.string.submit))) {
                 // Push To Server
                 try {
                     if (internetIsAvailable) {
@@ -166,7 +166,7 @@ public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiv
                         });*/
 
                     } else {
-                        Toast.makeText(this, "Form Data NOT Pushed to Server as Internet isn't connected !!! ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.formNotPushed, Toast.LENGTH_SHORT).show();
                         resetForm();
                     }
                 } catch (Exception e) {
@@ -186,20 +186,20 @@ public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiv
                 // Preview Dialog
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(DeleteStudentsForm.this, android.R.style.Theme_Material_Light_Dialog);
                 dialogBuilder.setCancelable(false);
-                dialogBuilder.setTitle("Form Data Preview");
+                dialogBuilder.setTitle(R.string.formdatapreview);
 
-                dialogBuilder.setMessage("Village Name : " + villageName
-                        + "\nGroup Name : " + groupName
-                        + "\nSelected Students : " + selectedStudentsName);
+                dialogBuilder.setMessage(getString(R.string.villagename) + villageName
+                        + "\n"+getString(R.string.groupname) + groupName
+                        + "\n"+getString(R.string.selectedstudents) + selectedStudentsName);
 
-                dialogBuilder.setPositiveButton("Correct", new DialogInterface.OnClickListener() {
+                dialogBuilder.setPositiveButton(getString(R.string.correct), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        btn_Submit.setText("Submit");
+                        btn_Submit.setText(R.string.submit);
                     }
                 });
-                dialogBuilder.setNegativeButton("Wrong", new DialogInterface.OnClickListener() {
+                dialogBuilder.setNegativeButton(getString(R.string.wrong), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        btn_Submit.setText("Preview");
+                        btn_Submit.setText(R.string.preview);
                     }
                 });
                 AlertDialog b = dialogBuilder.create();
@@ -208,14 +208,14 @@ public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiv
 
 
         } else {
-            Toast.makeText(this, "Please Fill All the Fields !!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.fillAllFields, Toast.LENGTH_SHORT).show();
         }
 
     }
 
     private void resetForm() {
         checkConnection();
-        btn_Submit.setText("Preview");
+        btn_Submit.setText(R.string.preview);
         AllGroupsInDB.clear();
         AllStudentsInDB.clear();
         villageList.clear();
@@ -250,7 +250,7 @@ public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiv
 
         final List VillageName = new ArrayList();
         if (!villageList.isEmpty()) {
-            VillageName.add(new CustomGroup("Select Village"));
+            VillageName.add(new CustomGroup(getString(R.string.selectvillage)));
             for (int j = 0; j < villageList.size(); j++) {
                 CustomGroup customGroup = new CustomGroup(villageList.get(j).getVillageName(), villageList.get(j).getVillageId());
                 VillageName.add(customGroup);
@@ -265,7 +265,7 @@ public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiv
                 CustomGroup customGroup = (CustomGroup) VillageName.get(pos);
                 String vid = customGroup.getId();
                 villageName = customGroup.getName();
-                btn_Submit.setText("Preview");
+                btn_Submit.setText(R.string.preview);
                 // Populate Registered Groups Spinner
                 populateRegisteredGroups(vid);
             }
@@ -279,7 +279,7 @@ public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiv
     private void populateRegisteredGroups(String villageID) {
         // todo get registered grps
         registeredGRPs = new ArrayList();
-        registeredGRPs.add(new CustomGroup("Select Groups"));
+        registeredGRPs.add(new CustomGroup(getString(R.string.selectgroup)));
         if (AllGroupsInDB != null) {
             for (int i = 0; i < AllGroupsInDB.size(); i++) {
                 if (AllGroupsInDB.get(i).getVillageId().equals(villageID)) {
@@ -297,7 +297,7 @@ public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiv
                 String groupId = customGroup.getId();
                 groupName = "";
                 groupName = customGroup.getName();
-                btn_Submit.setText("Preview");
+                btn_Submit.setText(R.string.preview);
                 // Populate Students according to Group Spinner
                 populateStudents(groupId);
             }
@@ -330,7 +330,7 @@ public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiv
             ArrayAdapter StdAdapter = new ArrayAdapter(DeleteStudentsForm.this, android.R.layout.simple_spinner_dropdown_item, registeredStd);
             sp_Students.setAdapter(StdAdapter, false, onStdSelectedListener);
             selectedStdItems = new boolean[StdAdapter.getCount()];
-            sp_Students.setHint("Select Students");
+            sp_Students.setHint(getString(R.string.selectstudent));
             sp_Students.setHintTextColor(Color.BLACK);
 
         }
@@ -340,7 +340,7 @@ public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiv
     private MultiSpinner.MultiSpinnerListener onStdSelectedListener = new MultiSpinner.MultiSpinnerListener() {
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
-            btn_Submit.setText("Preview");
+            btn_Submit.setText(R.string.preview);
             selectedStudents = "";
             selectedStudentsName = "";
             selectedStdList = new ArrayList();
@@ -406,7 +406,7 @@ public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiv
                 AppDatabase.getDatabaseInstance(DeleteStudentsForm.this).getStudentDao().deleteStudentByID(selectedStdList.get(i).toString());
             }
 //            Toast.makeText(DeleteStudentsForm.this, "Form Data Pushed to Server !!!", Toast.LENGTH_SHORT).show();
-            Toast.makeText(DeleteStudentsForm.this, "Selected Students have been Deleted !!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(DeleteStudentsForm.this, R.string.selectedStudDelete, Toast.LENGTH_SHORT).show();
             //dialog.dismiss();
             resetForm();
         }
@@ -415,7 +415,7 @@ public class DeleteStudentsForm extends BaseActivity implements ConnectionReceiv
     @Override
     public void onError(ANError anError, String header) {
         if (header.equals("delete_Student")) {
-            Toast.makeText(DeleteStudentsForm.this, "Selected Students not Deleted as due to Network Issues !", Toast.LENGTH_LONG).show();
+            Toast.makeText(DeleteStudentsForm.this, R.string.selectedStudNotDelete, Toast.LENGTH_LONG).show();
             // dialog.dismiss();
             resetForm();
         }

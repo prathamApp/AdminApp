@@ -113,7 +113,7 @@ public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner,
             intent.putExtra("tabStatus", "Assign");
             startActivity(intent);
         } else {
-            Toast.makeText(context, "Connect to internet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.connectinternet, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -126,7 +126,7 @@ public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner,
             intent.putExtra("tabStatus", "Return");
             startActivity(intent);
         } else {
-            Toast.makeText(context, "Connect to internet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.connectinternet, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -140,7 +140,7 @@ public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner,
             intent.putExtra("tabStatus", "Replace");
             startActivity(intent);
         } else {
-            Toast.makeText(context, "Connect to internet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.connectinternet, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -152,7 +152,7 @@ public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner,
             intent.putExtra("CRLname", LoggedcrlName);
             startActivity(intent);
         } else {
-            Toast.makeText(context, "Connect to internet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.connectinternet, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -239,7 +239,7 @@ public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner,
             intent.putExtra("CRLname", LoggedcrlName);
             startActivity(intent);
         } else {
-            Toast.makeText(context, "Connect to internet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.connectinternet, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -273,7 +273,7 @@ public class ManageDevice extends BaseActivity implements DevicePrathamIdLisner,
     @Override
     public void onError(ANError anError, String header) {
         if (header.equals("loading_devises")) {
-            Toast.makeText(context, "check internet connection", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.chkInternet, Toast.LENGTH_SHORT).show();
         }
     }
 }

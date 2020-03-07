@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_12sdp"
         android:gravity="center"
-        android:text="Unable to Push Data!"
+        android:text="@string/unabletopush"
         android:textColor="@android:color/holo_red_light"
         android:textSize="@dimen/_14sdp"
         android:textStyle="bold" />
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
         android:gravity="center_horizontal"
-        android:text="Something went Wrong !\nPlease Check your network !"
+        android:text="@string/somethingwrong"
         android:textColor="@color/viewfinder_laser"
         android:textSize="@dimen/_12sdp" />
 

@@ -183,7 +183,7 @@ public class CourseCompletionForm extends BaseActivity implements DashRVClickLis
             RadioButton selectedEvent = (RadioButton) findViewById(selectedId);
             String event = selectedEvent.getText().toString();
             int isEvent;
-            if (event.equalsIgnoreCase("Yes"))
+            if (event.equalsIgnoreCase(getString(R.string.yes)))
                 isEvent = 1;
             else
                 isEvent = 0;
@@ -204,33 +204,33 @@ public class CourseCompletionForm extends BaseActivity implements DashRVClickLis
                 compObj.PresentParents = Integer.parseInt(edt_ParentCount.getText().toString().trim());
             compObj.sentFlag = 0;
 
-            if (btn_Submit.getText().toString().equalsIgnoreCase("Submit")) {
+            if (btn_Submit.getText().toString().equalsIgnoreCase(getString(R.string.submit))) {
                 AppDatabase.getDatabaseInstance(this).getCompletionDao().insertCompletion(Collections.singletonList(compObj));
-                Toast.makeText(this, "Form Submitted to DB !!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.formSubmittedtoDB, Toast.LENGTH_SHORT).show();
                 resetForm();
 
             } else {
                 // Preview Dialog
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CourseCompletionForm.this, android.R.style.Theme_Material_Light_Dialog);
                 dialogBuilder.setCancelable(false);
-                dialogBuilder.setTitle("Form Data Preview");
-                dialogBuilder.setMessage("Village Name : " + villageName
-                        + "\nGroup Name : " + groupName
-                        + "\nCourses : " + selectedCourseNames
-                        + "\nTopics : " + selectedTopicNames
-                        + "\nStart Date : " + btn_DatePicker.getText().toString()
-                        + "\nEnd Date : " + btn_DatePickerTwo.getText().toString()
-                        + "\nEvent : " + event
-                        + "\nNo of Parents Present : " + edt_ParentCount.getText().toString());
+                dialogBuilder.setTitle(getString(R.string.formdatapreview));
+                dialogBuilder.setMessage(getString(R.string.villagename) + villageName
+                        + "\n"+getString(R.string.groupname) + groupName
+                        + "\n"+getString(R.string.courses) + selectedCourseNames
+                        + "\n"+getString(R.string.topics) + selectedTopicNames
+                        + "\n"+getString(R.string.stdate) + btn_DatePicker.getText().toString()
+                        + "\n"+getString(R.string.eddate) + btn_DatePickerTwo.getText().toString()
+                        + "\n"+getString(R.string.event) + event
+                        + "\n"+getString(R.string.parentpresent) + edt_ParentCount.getText().toString());
 
-                dialogBuilder.setPositiveButton("Correct", new DialogInterface.OnClickListener() {
+                dialogBuilder.setPositiveButton(R.string.correct, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        btn_Submit.setText("Submit");
+                        btn_Submit.setText(R.string.submit);
                     }
                 });
-                dialogBuilder.setNegativeButton("Wrong", new DialogInterface.OnClickListener() {
+                dialogBuilder.setNegativeButton(R.string.wrong, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        btn_Submit.setText("Preview");
+                        btn_Submit.setText(R.string.preview);
                     }
                 });
                 AlertDialog b = dialogBuilder.create();
@@ -239,14 +239,14 @@ public class CourseCompletionForm extends BaseActivity implements DashRVClickLis
 
 
         } else {
-            Toast.makeText(this, "Please fill all the fields !!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.fillAllFields, Toast.LENGTH_SHORT).show();
         }
 
 
     }
 
     private void resetForm() {
-        btn_Submit.setText("Preview");
+        btn_Submit.setText(R.string.preview);
         uniqueCompletionID = UUID.randomUUID().toString();
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
         btn_DatePicker.setPadding(8, 8, 8, 8);
@@ -290,7 +290,7 @@ public class CourseCompletionForm extends BaseActivity implements DashRVClickLis
     private void populateVillages() {
         final List VillageName = new ArrayList();
         if (!villageList.isEmpty()) {
-            VillageName.add(new CustomGroup("Select Village"));
+            VillageName.add(new CustomGroup(getString(R.string.selectvillage)));
             for (int j = 0; j < villageList.size(); j++) {
                 CustomGroup customGroup = new CustomGroup(villageList.get(j).getVillageName(), villageList.get(j).getVillageId());
                 VillageName.add(customGroup);
@@ -320,7 +320,7 @@ public class CourseCompletionForm extends BaseActivity implements DashRVClickLis
     private void populateRegisteredGroups(String villageID) {
         // todo get registered grps
         registeredGRPs = new ArrayList();
-        registeredGRPs.add(new CustomGroup("Select Groups"));
+        registeredGRPs.add(new CustomGroup(getString(R.string.selectgroup)));
         if (AllGroupsInDB != null) {
             for (int i = 0; i < AllGroupsInDB.size(); i++) {
                 if (AllGroupsInDB.get(i).getVillageId().equals(villageID))

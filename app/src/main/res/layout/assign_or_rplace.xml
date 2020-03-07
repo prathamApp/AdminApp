@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_weight="1"
-                    android:text="Collect Tab"
+                    android:text="@string/collecttab"
                     android:textAlignment="center"
                     android:textSize="@dimen/_22sdp"
                     android:textStyle="bold" />
@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_weight="1"
-                    android:text="Assign Tab"
+                    android:text="@string/assigntablet"
                     android:textAlignment="center"
                     android:textSize="@dimen/_22sdp"
                     android:textStyle="bold" />

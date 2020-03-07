@@ -41,7 +41,6 @@ public class AddNewGroup extends BaseActivity {
     Utility util;
 //    boolean internetIsAvailable = false;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,16 +62,22 @@ public class AddNewGroup extends BaseActivity {
         uuid = UUID.randomUUID();
         randomUUIDGroup = uuid.toString();
 
+        btn_Submit = (Button) findViewById(R.id.btn_Submit);
+        btn_Clear = (Button) findViewById(R.id.btn_Clear);
+        edt_NewGroupName = (EditText) findViewById(R.id.edt_NewGroupName);
+
+        edt_NewGroupName.setHint(getString(R.string.newgroupname));
+
         states_spinner = (Spinner) findViewById(R.id.spinner_SelectState);
         //Get Villages Data for States AllSpinners
         List<String> States = new ArrayList<>();
         States.clear();
         States = AppDatabase.getDatabaseInstance(AddNewGroup.this).getVillageDao().getState();
-        States.add(0, "Select State");
+        States.add(0, getString(R.string.selectstate));
         //Creating the ArrayAdapter instance having the Villages list
         ArrayAdapter<String> StateAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, States);
         // Hint for AllSpinners
-        states_spinner.setPrompt("Select State");
+        states_spinner.setPrompt(getString(R.string.selectstate));
         states_spinner.setAdapter(StateAdapter);
 
         states_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -88,9 +93,6 @@ public class AddNewGroup extends BaseActivity {
             }
         });
 
-
-        edt_NewGroupName = (EditText) findViewById(R.id.edt_NewGroupName);
-
         // Generate Unique Device ID
         deviceID = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         /*//Device ID from Assign Groups
@@ -98,8 +100,6 @@ public class AddNewGroup extends BaseActivity {
         deviceIMEI = tManager.getDeviceId();
         final String devID = deviceIMEI;
 */
-        btn_Submit = (Button) findViewById(R.id.btn_Submit);
-        btn_Clear = (Button) findViewById(R.id.btn_Clear);
 
         btn_Submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,11 +157,11 @@ public class AddNewGroup extends BaseActivity {
         //Get Villages Data for Blocks AllSpinners
         Blocks.clear();
         Blocks = AppDatabase.getDatabaseInstance(AddNewGroup.this).getVillageDao().GetStatewiseBlock(selectedState);
-        Blocks.add(0, "Select Block");
+        Blocks.add(0, getString(R.string.selectblock));
         //Creating the ArrayAdapter instance having the Villages list
         ArrayAdapter<String> BlockAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, Blocks);
         // Hint for AllSpinners
-        blocks_spinner.setPrompt("Select Block");
+        blocks_spinner.setPrompt(getString(R.string.selectblock));
         blocks_spinner.setAdapter(BlockAdapter);
 
         blocks_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -186,7 +186,7 @@ public class AddNewGroup extends BaseActivity {
         BlocksVillages.clear();
         Village v = new Village();
         v.VillageId = "0";
-        v.VillageName = "Select Village";
+        v.VillageName = getString(R.string.selectvillage);
         BlocksVillages = AppDatabase.getDatabaseInstance(AddNewGroup.this).getVillageDao().GetVillages(selectedBlock);
         BlocksVillages.add(0, v);
 
@@ -197,7 +197,7 @@ public class AddNewGroup extends BaseActivity {
         //Creating the ArrayAdapter instance having the Villages list
         ArrayAdapter<Village> VillagesAdapter = new ArrayAdapter<Village>(this, R.layout.custom_spinner, SpinnerBlocksVillages);
         // Hint for AllSpinners
-        villages_spinner.setPrompt("Select Village");
+        villages_spinner.setPrompt(getString(R.string.selectvillage));
         villages_spinner.setAdapter(VillagesAdapter);
         villages_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
