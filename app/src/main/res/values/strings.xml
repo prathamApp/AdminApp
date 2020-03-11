@@ -509,12 +509,12 @@
     </string-array>
 
     <string-array name="array_numRecoSSpinner">
-    <item>Baseline (Number Recognition)</item>
-    <item>Beg</item>
-    <item>0&#8211;9</item>
-    <item>10&#8211;99</item>
-    <item>Sub</item>
-    <item>Div</item>
+        <item>Baseline (Number Recognition)</item>
+        <item>Beg</item>
+        <item>0&#8211;9</item>
+        <item>10&#8211;99</item>
+        <item>Sub</item>
+        <item>Div</item>
     </string-array>
 
     <string-array name="array_el_numRecoSSpinner">

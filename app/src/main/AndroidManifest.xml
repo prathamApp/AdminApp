@@ -48,11 +48,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-
+        <activity android:name=".forms.YouthInfoForm"></activity>
         <activity
             android:name=".activities.DeviceInformation"
             android:label="Device Information"
-            android:screenOrientation="sensorLandscape"/>
+            android:screenOrientation="sensorLandscape" />
         <activity
             android:name=".util.BaseActivity"
             android:screenOrientation="sensorLandscape" />
