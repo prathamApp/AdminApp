@@ -847,6 +847,11 @@ public class AddNewStudent extends BaseActivity{
                 selectedGender = (RadioButton) findViewById(selectedId);
                 gender = selectedGender.getText().toString();
 
+                if(gender.equals(getString(R.string.male)))
+                    gender = "Male";
+                else if(gender.equals(getString(R.string.female)))
+                    gender = "Female";
+
                 // get selected radio button from radioGroup
                 int selId = rg_SchoolType.getCheckedRadioButtonId();
                 // find the radio button by returned id

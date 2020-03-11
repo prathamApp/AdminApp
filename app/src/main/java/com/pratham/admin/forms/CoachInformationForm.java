@@ -413,6 +413,11 @@ public class CoachInformationForm extends BaseActivity/* implements ConnectionRe
                 RadioButton selectedGender = (RadioButton) findViewById(selectedId);
                 String gender = selectedGender.getText().toString();
 
+                if(gender.equals(getString(R.string.male)))
+                    gender = "Male";
+                else if(gender.equals(getString(R.string.female)))
+                    gender = "Female";
+
                 String date = btn_DatePicker.getText().toString().trim();
 
                 // DB Entry
