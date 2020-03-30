@@ -1,4 +1,4 @@
-package com.pratham.admin.activities;
+package com.pratham.admin.activities.DeviceInformation;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -12,24 +12,27 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.provider.Settings;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.Display;
 import android.widget.TextView;
 
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.modalclasses.MetaData;
+import com.pratham.admin.util.BaseActivity;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 
 import java.lang.reflect.Field;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+@EActivity(R.layout.activity_device_information)
+public class DeviceInformation extends BaseActivity implements DeviceInfoContract.DeviceInfoView {
 
-public class DeviceInformation extends AppCompatActivity {
-
-    @BindView(R.id.infocontent)
+    @ViewById(R.id.infocontent)
     TextView tv_infocontent;
 
     MetaData metaData;
@@ -38,13 +41,14 @@ public class DeviceInformation extends AppCompatActivity {
     private int osApiLevel;
     private long internalStorageSize;
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_device_information);
-        ButterKnife.bind(this);
+    @Bean(DeviceInfoPrsenter.class)
+    DeviceInfoContract.DeviceInfoPresenter deviceInfoPrsenter;
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    @AfterViews
+    public void initialize(){
+        deviceInfoPrsenter.setView(DeviceInformation.this);
+        deviceInfoPrsenter.populateDeviceInfo();
         initializeAppInfo();
     }
 
@@ -79,7 +83,10 @@ public class DeviceInformation extends AppCompatActivity {
         internalStorageSize = bytesAvailable / (1024 * 1024);
         String storage = String.valueOf(internalStorageSize);
         availStorage = storage+" MB";
+        Log.e("SSSSSSSs",availStorage);
+        showDeviceInfo(osApiLevel, availStorage);
     }
+
 
     //all device info
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -186,5 +193,11 @@ public class DeviceInformation extends AppCompatActivity {
         metaData.setKeys("model");
         metaData.setValue(model);
         AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
+    }
+
+    @Override
+    public void showDeviceInfo(int osApiLevl, String availStorag) {
+        osApiLevel=osApiLevl;
+        availStorage=availStorag;
     }
 }

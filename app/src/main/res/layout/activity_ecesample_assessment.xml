@@ -36,17 +36,6 @@
             android:orientation="horizontal"
             android:weightSum="3">
 
-            <!--Select State Drop Down List-->
-            <Spinner
-                android:id="@+id/sp_State"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="@dimen/_8sdp"
-                android:layout_weight="1"
-                android:background="@drawable/spinner_background_forms"
-                android:textAlignment="center" />
-
             <!--Select Block Drop Down List-->
             <Spinner
                 android:id="@+id/sp_Block"
@@ -71,17 +60,6 @@
                 android:background="@drawable/spinner_background_forms"
                 android:textAlignment="center" />
 
-        </LinearLayout>
-
-        <!--Spinners-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginRight="@dimen/_8sdp"
-            android:orientation="horizontal"
-            android:weightSum="3">
-
             <!--Select Groups-->
             <Spinner
                 android:id="@+id/sp_Groups"
@@ -93,6 +71,17 @@
                 android:layout_weight="1"
                 android:background="@drawable/spinner_background_forms"
                 android:textAlignment="center" />
+
+        </LinearLayout>
+
+        <!--Spinners-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
             <!--For Editing Existing Student-->
             <Spinner

@@ -30,10 +30,16 @@ import com.pratham.admin.modalclasses.TabletManageDevice;
 import com.pratham.admin.modalclasses.TabletStatus;
 import com.pratham.admin.modalclasses.TempStudent;
 import com.pratham.admin.modalclasses.Village;
+import com.pratham.admin.modalclasses.Youth;
 
 //import com.pratham.admin.modalclasses.CRLVisit;
 
-@Database(entities = {ECEAsmt.class, Attendance.class, CRL.class, CRLmd.class, /*CRLVisit.class,*/ Coach.class, Course.class, Community.class, Completion.class, Groups.class, Student.class, GroupSession.class, GroupVisit.class, Village.class, MetaData.class, TempStudent.class, TabTrack.class, TabletManageDevice.class, Modal_Log.class, TabletStatus.class, Aser.class}, version = 7, exportSchema = false)
+@Database(entities = {ECEAsmt.class, Attendance.class, CRL.class, CRLmd.class,
+        /*CRLVisit.class,*/ Coach.class, Course.class, Community.class,
+        Completion.class, Groups.class, Student.class, GroupSession.class,
+        GroupVisit.class, Village.class, MetaData.class, TempStudent.class,
+        TabTrack.class, TabletManageDevice.class, Modal_Log.class, TabletStatus.class,
+        Aser.class, Youth.class}, version = 8, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase DATABASEINSTANCE;
@@ -84,10 +90,12 @@ public abstract class AppDatabase extends RoomDatabase {
 
     //public abstract NotificationDao getNotificationDao();
 
+    public abstract YouthDao getYouthDao();
+
     public static AppDatabase getDatabaseInstance(Context context) {
         if (DATABASEINSTANCE == null)
             DATABASEINSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DB_NAME)
-                    .addMigrations(MIGRATION_6_7)
+                    .addMigrations(MIGRATION_7_8)
                     .allowMainThreadQueries()
                     .build();
         return DATABASEINSTANCE;
@@ -148,11 +156,12 @@ public abstract class AppDatabase extends RoomDatabase {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
             // Alter Queries for new columns as we don't want to lose existing data
-            database.execSQL("CREATE TABLE NotificationData(autoIdID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, transId TEXT, fromId TEXT"
-                    + ", fromName TEXT, toId TEXT, toName TEXT"
-                    + ", prathamId TEXT, qrId TEXT, serialId TEXT, receiveDate TEXT"
-                    + ", comment TEXT, damageType TEXT, isDamaged TEXT, textDesc TEXT"
-                    + ", dateAdded TEXT, pushStatus TEXT, lastPushDate TEXT)");
+            database.execSQL("CREATE TABLE Youth(youthId TEXT PRIMARY KEY NOT NULL, groupId TEXT, groupName TEXT"
+                    + ", firstName TEXT, middleName TEXT, lastName TEXT"
+                    + ", phoneNumber TEXT, guardianName TEXT, birthDate TEXT, gender TEXT"
+                    + ", maritalStatus TEXT, areyoustudying INTEGER NOT NULL, education TEXT, occupation TEXT"
+                    + ", haveSmartphone INTEGER NOT NULL, useSmartphone INTEGER NOT NULL, wantToJoin INTEGER NOT NULL"
+                    + ", createdBy TEXT, createdOn TEXT, sentFlag INTEGER NOT NULL, isDeleted INTEGER NOT NULL)");
         }
     };
 

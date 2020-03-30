@@ -33,18 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/_8sdp"
             android:orientation="horizontal"
-            android:weightSum="3">
-
-            <!--Select State Drop Down List-->
-            <Spinner
-                android:id="@+id/spinner_SelectState"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="@dimen/_8sdp"
-                android:layout_weight="1"
-                android:background="@drawable/spinner_background_forms"
-                android:textAlignment="center" />
+            android:weightSum="2">
 
             <!--Select Block Drop Down List-->
             <Spinner

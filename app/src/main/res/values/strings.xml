@@ -189,6 +189,20 @@
     <string name="selectedtopics">Selected Topics :&#160;</string>
     <string name="groupType">Group Type :&#160;</string>
 
+    <!--Youth Form-->
+    <string name="marital_status">Marital Status</string>
+    <string name="married">Married</string>
+    <string name="unmarried">Unmarried</string>
+    <string name="enterphone">Enter Phone No.</string>
+    <string name="rustudy">Are you Studying?</string>
+    <string name="haveSmartphone">Does anyone in your family have smartphone?</string>
+    <string name="useSmartphone">Do you use that smartphone?</string>
+    <string name="wantCourse">I want to join this course: </string>
+    <string name="personalandcomm">Personal and Community Health Management Part 1</string>
+    <string name="englishSpeak">English Speaking</string>
+    <string name="addyouth">Add Youth</string>
+    <string name="addnewyouth">Add New Youth</string>
+
     <!--Universal Tags-->
     <string name="selectstate">Select State</string>
     <string name="selectprogram">Select Program</string>
@@ -226,6 +240,7 @@
     <string name="groupvst">GroupVisits :&#160;</string>
     <string name="groupsesn">GroupSessions :&#160;</string>
     <string name="eceasmnt">ECE Assessments :&#160;</string>
+    <string name="youths">Youths :&#160;</string>
     <string name="logs">Logs :&#160;</string>
 
     <!--Custom Dialog-->
@@ -538,7 +553,13 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="change_log">&lt;b>&lt;i>&lt;font color=#FF0000>v1.8&lt;/font>&lt;/i>&lt;/b>&lt;br>
+    <string name="change_log">&lt;b>&lt;i>&lt;font color=#FF0000>v1.9&lt;/font>&lt;/i>&lt;/b>&lt;br>
+&#160; &#160; &#8226; &#160;New From added : Youth Form.&lt;br>
+&#160; &#160; &#8226; &#160;Device Information Added.&lt;br>&lt;br>
+&#160; &#160; &#8226; &#160;Versioning Details added with information regarding previous versions.&lt;br>&lt;br>
+&#160; &#160; &#8226; &#160;Multilanguage feature added.&lt;br>&lt;br>
+
+        &lt;b>&lt;i>&lt;font color=#FF0000>v1.8&lt;/font>&lt;/i>&lt;/b>&lt;br>
 &#160; &#160; &#8226; &#160;New Program added : Read India - Michelin.&lt;br>
 &#160; &#160; &#8226; &#160;UI bug-fixes.&lt;br>&lt;br>
 

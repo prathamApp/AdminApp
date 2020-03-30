@@ -54,7 +54,7 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
     private static final int TAKE_Thumbnail = 1;
     private static String TAG = "PermissionDemo";
     public boolean EndlineButtonClicked = false;
-    Spinner states_spinner, blocks_spinner, villages_spinner, groups_spinner, existingStudent_Spinner;
+    Spinner blocks_spinner, villages_spinner, groups_spinner, existingStudent_Spinner;
     TextView edt_Fname, edt_Mname, edt_Lname, edt_Age, tv_Gender;
     Button btn_Baseline_Submit, btn_Clear, btn_Capture;
     String GrpID;
@@ -116,7 +116,7 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
 
         initializeVariables();
         initializeClassSpinner();
-        populateStatesSpinner();
+        initializeState();
         initializeBaselineSpinner();
         initializeNumberRecoSpinner();
         initializeAserDate();
@@ -1463,14 +1463,13 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
             @Override
             public void onClick(View v) {
                 // Check AllSpinners Emptyness
-                int StatesSpinnerValue = states_spinner.getSelectedItemPosition();
                 int BlocksSpinnerValue = blocks_spinner.getSelectedItemPosition();
                 int VillagesSpinnerValue = villages_spinner.getSelectedItemPosition();
                 int GroupsSpinnerValue = groups_spinner.getSelectedItemPosition();
                 int ExistingSpinnerValue = existingStudent_Spinner.getSelectedItemPosition();
 
 
-                if (StatesSpinnerValue > 0 && BlocksSpinnerValue > 0 && VillagesSpinnerValue > 0 && GroupsSpinnerValue > 0 && ExistingSpinnerValue > 0) {
+                if (BlocksSpinnerValue > 0 && VillagesSpinnerValue > 0 && GroupsSpinnerValue > 0 && ExistingSpinnerValue > 0) {
                     // Photo updated validation
                     if (captureButtonPressed) {
 //                        Toast.makeText(EditStudent.this, "Photo Inserted Successfully !!!", Toast.LENGTH_SHORT).show();
@@ -1619,34 +1618,13 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
         sp_English.setAdapter(EnglishAdapter);
     }
 
-    private void populateStatesSpinner() {
-        //Get Villages Data for States AllSpinners
+    //Intialize State
+    private void initializeState() {
+        //Get Villages Data for States
         List<String> States = new ArrayList<>();
         States.clear();
         States = AppDatabase.getDatabaseInstance(EditStudent.this).getVillageDao().getState();
-        States.add(0, getString(R.string.selectstate));
-        //Creating the ArrayAdapter instance having the Villages list
-        ArrayAdapter<String> StateAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, States);
-        // Hint for AllSpinners
-        states_spinner.setPrompt(getString(R.string.selectstate));
-        states_spinner.setAdapter(StateAdapter);
-
-        states_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedState = states_spinner.getSelectedItem().toString();
-                populateBlock(selectedState);
-                btn_Capture.setVisibility(View.GONE);
-                groups_spinner.setSelection(0);
-                AserForm.setVisibility(View.GONE);
-                resetFormPartially();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        populateBlock(States.get(0));
     }
 
     private void initializeVariables() {
@@ -1657,7 +1635,6 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
         rb_Private = (RadioButton) findViewById(R.id.rb_Private);
         sp_English = (Spinner) findViewById(R.id.spinner_Engish);
         groups_spinner = (Spinner) findViewById(R.id.spinner_SelectGroups);
-        states_spinner = (Spinner) findViewById(R.id.spinner_SelectState);
         villages_spinner = (Spinner) findViewById(R.id.spinner_selectVillage);
         blocks_spinner = (Spinner) findViewById(R.id.spinner_SelectBlock);
         edt_Fname = (TextView) findViewById(R.id.edt_FirstName);
@@ -2044,7 +2021,6 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
         rg_SchoolType.clearCheck();
         sp_Class.setSelection(0);
         edt_GuardianName.setText("");
-        states_spinner.setSelection(0);
         blocks_spinner.setSelection(0);
         villages_spinner.setSelection(0);
         groups_spinner.setSelection(0);

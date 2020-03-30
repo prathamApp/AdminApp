@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.pratham.admin.R;
+import com.pratham.admin.activities.AddNewGroup.AddNewGroup_;
 import com.pratham.admin.forms.DeleteStudentsForm;
 import com.pratham.admin.util.BaseActivity;
 
@@ -80,7 +81,7 @@ public class Student_Management extends BaseActivity/* implements ConnectionRece
     }
 
     public void AddNewGroup(View view) {
-        Intent intent = new Intent(this, AddNewGroup.class);
+        Intent intent = new Intent(this, AddNewGroup_.class);
         intent.putExtra("CRLid", LoggedcrlId);
         intent.putExtra("CRLname", LoggedcrlName);
         intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);

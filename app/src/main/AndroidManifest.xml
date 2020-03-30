@@ -48,9 +48,16 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".forms.YouthInfoForm"></activity>
         <activity
-            android:name=".activities.DeviceInformation"
+            android:name=".forms.Youth.YouthInfoFormActivity_"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".forms.YouthInfoForm"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activities.DeviceInformation.DeviceInformation_"
             android:label="Device Information"
             android:screenOrientation="sensorLandscape" />
         <activity
@@ -92,7 +99,7 @@
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activities.AddNewGroup"
+            android:name=".activities.AddNewGroup.AddNewGroup_"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden" />
         <activity

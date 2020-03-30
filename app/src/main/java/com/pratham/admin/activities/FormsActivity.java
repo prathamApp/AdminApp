@@ -20,6 +20,9 @@ import com.pratham.admin.forms.CrlVisitForm;
 import com.pratham.admin.forms.DeleteStudentsForm;
 import com.pratham.admin.forms.GroupSessionForm;
 import com.pratham.admin.forms.GroupVisitForm;
+import com.pratham.admin.forms.Youth.YouthInfoFormActivity;
+import com.pratham.admin.forms.Youth.YouthInfoFormActivity_;
+import com.pratham.admin.forms.YouthInfoForm;
 import com.pratham.admin.interfaces.DashRVClickListener;
 import com.pratham.admin.modalclasses.DashboardItem;
 import com.pratham.admin.util.BaseActivity;
@@ -76,6 +79,7 @@ public class FormsActivity extends BaseActivity implements DashRVClickListener {
             DashboardItemList.add(new DashboardItem(getString(R.string.groupvisit), R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem(getString(R.string.courseenrollment), R.drawable.ic_form));
             DashboardItemList.add(new DashboardItem(getString(R.string.studentsattendance), R.drawable.ic_form));
+            DashboardItemList.add(new DashboardItem(getString(R.string.addyouth), R.drawable.ic_form));
         }
     }
 
@@ -134,6 +138,12 @@ public class FormsActivity extends BaseActivity implements DashRVClickListener {
             startActivity(intent);
         } else if (name.contains(getString(R.string.groupvisit))) {
             Intent intent = new Intent(FormsActivity.this, GroupVisitForm.class);
+            intent.putExtra("CRLid", LoggedcrlId);
+            intent.putExtra("CRLname", LoggedcrlName);
+            intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
+            startActivity(intent);
+        }else if (name.contains(getString(R.string.addyouth))) {
+            Intent intent = new Intent(FormsActivity.this, YouthInfoFormActivity_.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);

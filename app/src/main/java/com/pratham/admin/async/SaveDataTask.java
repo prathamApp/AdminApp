@@ -14,6 +14,7 @@ import com.pratham.admin.modalclasses.Completion;
 import com.pratham.admin.modalclasses.Course;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.Modal_Log;
+import com.pratham.admin.modalclasses.Youth;
 import com.pratham.admin.util.BackupDatabase;
 import com.pratham.admin.util.Utility;
 
@@ -29,12 +30,13 @@ public class SaveDataTask extends AsyncTask<Void, Integer, Void> {
     private List coachList;
     private List villageList;
     private List<Aser> aserList;
+    private List youthList;
     private Context context;
     private ProgressDialog dialog;
     private OnSavedData onSavedData;
 
     public SaveDataTask(Context context, OnSavedData onSavedData, List CRLList, List studentList, List groupsList,
-                        List villageList, List<Course> courseList, List<Coach> coachList, List<Community> communityList, List<Completion> completionList, List<Aser> aserList) {
+                        List villageList, List<Course> courseList, List<Coach> coachList, List<Community> communityList, List<Completion> completionList, List<Aser> aserList, List<Youth> youthList) {
         this.CRLList = CRLList;
         this.studentList = studentList;
         this.groupsList = groupsList;
@@ -46,6 +48,7 @@ public class SaveDataTask extends AsyncTask<Void, Integer, Void> {
         this.context = context;
         this.onSavedData = onSavedData;
         this.aserList = aserList;
+        this.youthList = youthList;
     }
 
     @Override
@@ -70,6 +73,7 @@ public class SaveDataTask extends AsyncTask<Void, Integer, Void> {
         AppDatabase.getDatabaseInstance(context).getCoachDao().insertCoach(coachList);
         AppDatabase.getDatabaseInstance(context).getVillageDao().insertAllVillages(villageList);
         AppDatabase.getDatabaseInstance(context).getAserDao().insertAllAserList(aserList);
+        AppDatabase.getDatabaseInstance(context).getYouthDao().insertAllYouths(youthList);
         AppDatabase.destroyInstance();
         BackupDatabase.backup(context);
 

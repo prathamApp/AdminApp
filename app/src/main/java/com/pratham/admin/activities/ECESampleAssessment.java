@@ -37,9 +37,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ECESampleAssessment extends BaseActivity implements RangeTimePickerDialog.ISelectedTime {
-    // Spinners
-    @BindView(R.id.sp_State)
-    Spinner sp_State;
     @BindView(R.id.sp_Block)
     Spinner sp_Block;
     @BindView(R.id.sp_Village)
@@ -104,9 +101,9 @@ public class ECESampleAssessment extends BaseActivity implements RangeTimePicker
         getSupportActionBar().hide();
         ButterKnife.bind(this);
 
+        initializeState();
         populateAsmtSpinnerValues();
         populateAsmtSpinner();
-        populateStatesSpinner();
     }
 
     private void populateAsmtSpinnerValues() {
@@ -125,29 +122,13 @@ public class ECESampleAssessment extends BaseActivity implements RangeTimePicker
         sp_OQ14.setAdapter(asmtAdapter);
     }
 
-    private void populateStatesSpinner() {
-
+    //Intialize State
+    private void initializeState() {
+        //Get Villages Data for States
         List<String> States = new ArrayList<>();
         States.clear();
         States = AppDatabase.getDatabaseInstance(ECESampleAssessment.this).getVillageDao().getState();
-        States.add(0, getString(R.string.selectstate));
-        ArrayAdapter<String> StateAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, States);
-        sp_State.setAdapter(StateAdapter);
-
-        sp_State.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedState = sp_State.getSelectedItem().toString();
-                populateBlock(selectedState);
-                resetFormPartially();
-                tv_MiddleName.setVisibility(View.VISIBLE);
-                tv_LastName.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        populateBlock(States.get(0));
     }
 
     public void populateBlock(String selectedState) {
@@ -403,7 +384,6 @@ public class ECESampleAssessment extends BaseActivity implements RangeTimePicker
     @OnClick(R.id.btn_Clear)
     public void reset(View view) {
 //        populateEmptyAsmtTypeSpinner();
-        sp_State.setSelection(0);
         sp_Block.setSelection(0);
         sp_Village.setSelection(0);
         sp_Groups.setSelection(0);
@@ -496,7 +476,7 @@ public class ECESampleAssessment extends BaseActivity implements RangeTimePicker
 
     // Data is filled correctly
     public boolean isValid() {
-        if (sp_State.getSelectedItemPosition() > 0 && sp_Block.getSelectedItemPosition() > 0 && sp_Village.getSelectedItemPosition() > 0
+        if (sp_Block.getSelectedItemPosition() > 0 && sp_Village.getSelectedItemPosition() > 0
                 && sp_Groups.getSelectedItemPosition() > 0 && sp_existingStudent.getSelectedItemPosition() > 0 && sp_AsmtType.getSelectedItemPosition() > 0
                 && !btn_DatePicker.getText().toString().contains("Date") && !btn_TimeRangePicker.getText().toString().contains("Time")
                 && sp_MatchingCards.getSelectedItemPosition() > 0 && sp_SequencingCards.getSelectedItemPosition() > 0

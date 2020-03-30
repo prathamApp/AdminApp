@@ -62,7 +62,7 @@ public class AddNewStudent extends BaseActivity{
     private static final int REQUEST_WRITE_STORAGE = 112;
     private static String TAG = "PermissionDemo";
     public boolean EndlineButtonClicked = false;
-    Spinner states_spinner, blocks_spinner, villages_spinner, groups_spinner, sp_Class;
+    Spinner blocks_spinner, villages_spinner, groups_spinner, sp_Class;
     EditText edt_Fname, edt_Mname, edt_Lname, edt_GuardianName;
     RadioGroup rg_Gender, rg_SchoolType;
     Button btn_Submit_Baseline, btn_Clear, btn_Capture, btn_BirthDatePicker;
@@ -111,7 +111,7 @@ public class AddNewStudent extends BaseActivity{
 
         initializeVariables();
         initializeClassSpinner();
-        initializeStatesSpinner();
+        initializeState();
         initializeBaselineSpinner();
         initializeNumberRecoSpinner();
         initializeAserDate();
@@ -864,14 +864,13 @@ public class AddNewStudent extends BaseActivity{
                     stdSchoolType = 2;
 
                 // Check AllSpinners Emptyness
-                int StatesSpinnerValue = states_spinner.getSelectedItemPosition();
                 int ClassSpinnerValue = sp_Class.getSelectedItemPosition();
                 int BlocksSpinnerValue = blocks_spinner.getSelectedItemPosition();
                 int VillagesSpinnerValue = villages_spinner.getSelectedItemPosition();
                 int GroupsSpinnerValue = groups_spinner.getSelectedItemPosition();
 
                 // Spinners Selection
-                if (StatesSpinnerValue > 0 && BlocksSpinnerValue > 0 && VillagesSpinnerValue > 0 && GroupsSpinnerValue > 0 && ClassSpinnerValue > 0) {
+                if (BlocksSpinnerValue > 0 && VillagesSpinnerValue > 0 && GroupsSpinnerValue > 0 && ClassSpinnerValue > 0) {
                     // Checking Emptyness
                     if ((!edt_Fname.getText().toString().isEmpty() || !edt_Lname.getText().toString().isEmpty())) {
                         // Validations
@@ -972,7 +971,7 @@ public class AddNewStudent extends BaseActivity{
                             try {
                                 AppDatabase.getDatabaseInstance(AddNewStudent.this).getStudentDao().insertStudent(stdObj);
                                 AppDatabase.getDatabaseInstance(AddNewStudent.this).getAserDao().insertAser(asr);
-                                Toast.makeText(AddNewStudent.this, "Record Inserted Successfully !!!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AddNewStudent.this, R.string.recInsertSuccess, Toast.LENGTH_SHORT).show();
                                 BackupDatabase.backup(AddNewStudent.this);
                                 resetFormPartially();
 
@@ -1061,7 +1060,6 @@ public class AddNewStudent extends BaseActivity{
         sp_BaselineLang = findViewById(R.id.spinner_BaselineLang);
         sp_English = findViewById(R.id.spinner_Engish);
         sp_Class = findViewById(R.id.sp_Class);
-        states_spinner = (Spinner) findViewById(R.id.spinner_SelectState);
         blocks_spinner = (Spinner) findViewById(R.id.spinner_SelectBlock);
         villages_spinner = (Spinner) findViewById(R.id.spinner_selectVillage);
         groups_spinner = (Spinner) findViewById(R.id.spinner_SelectGroups);
@@ -1142,31 +1140,13 @@ public class AddNewStudent extends BaseActivity{
         sp_BaselineLang.setAdapter(baselineAdapter);
     }
 
-    private void initializeStatesSpinner() {
-        //Get Villages Data for States AllSpinners
+    //Intialize State
+    private void initializeState() {
+        //Get Villages Data for States
         List<String> States = new ArrayList<>();
         States.clear();
         States = AppDatabase.getDatabaseInstance(AddNewStudent.this).getVillageDao().getState();
-        States.add(0, getString(R.string.selectstate));
-        //Creating the ArrayAdapter instance having the Villages list
-        ArrayAdapter<String> StateAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, States);
-        // Hint for AllSpinners
-        states_spinner.setPrompt(getString(R.string.selectstate));
-        states_spinner.setAdapter(StateAdapter);
-
-        states_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedState = states_spinner.getSelectedItem().toString();
-                populateBlock(selectedState);
-                groups_spinner.setSelection(0);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        populateBlock(States.get(0));
     }
 
     public void populateBlock(String selectedState) {
@@ -1274,7 +1254,6 @@ public class AddNewStudent extends BaseActivity{
     public void FormReset() {
         UUID uuStdid = UUID.randomUUID();
         randomUUIDStudent = uuStdid.toString();
-        states_spinner.setSelection(0);
         blocks_spinner.setSelection(0);
         sp_Class.setSelection(0);
         villages_spinner.setSelection(0);
