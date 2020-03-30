@@ -1,0 +1,606 @@
+<resources>
+    <string name="app_name">प्रथम एडमिन</string>
+    <string name="login">लॉग इन</string>
+    <string name="selectProgram">प्रोग्राम चुनें</string>
+    <string name="qrscan">स्कैन QR</string>
+    <string name="read_india">रीड इंडिया</string>
+    <string name="hybrid_learning">हाइब्रिड लर्निंग</string>
+    <string name="second_chance">सेकंड चांस</string>
+    <string name="ECE">इ सी इ</string>
+    <string name="pratham_institute">प्रथम इंस्टिट्यूट</string>
+    <string name="urbon_program">अर्बन प्रोग्राम</string>
+    <string name="hamara_gaon">हमारा गांव</string>
+    <string name="government_Partnership">गवर्नमेंट पार्टनरशिप</string>
+    <string name="KGBV">के जी बी वि</string>
+    <string name="DigitalSchoolProgram">डिजिटल स्कूल प्रोग्राम</string>
+    <string name="ReadIndiaMichelin">रीड इंडिया- मिचेलिन</string>
+
+    <!--Activity_Main-->
+    <string name="title_dashboard">डैशबोर्ड</string>
+    <string name="title_forms">फॉर्म्स</string>
+    <string name="title_StudentMngmnt">स्टूडेंट मैनेजमेंट</string>
+    <string name="title_MngDevice">मैनेज डिवाइस</string>
+    <string name="title_notification">नोटिफिकेशन्स</string>
+
+    <!--Activity_Main-->
+    <string name="program">प्रोग्राम :</string>
+    <string name="state">राज्य :</string>
+    <string name="village">गाँव :</string>
+    <string name="hnt_username">यूजरनेम</string>
+    <string name="hnt_password">पासवर्ड</string>
+    <string name="btn_login">लॉग इन करें</string>
+    <string name="btn_cleardata">क्लियर डाटा</string>
+
+    <!--Dashboard-->
+    <string name="forms">फॉर्म्स</string>
+    <string name="studentManagement">स्टूडेंट मैनेजमेंट</string>
+    <string name="pushdata">डेटा पुश करे</string>
+    <string name="managedevice">मैनेज डिवाइस</string>
+    <string name="notifications">नोटिफिकेशन</string>
+    <string name="deviceinfo">डिवाइस इन्फो</string>
+
+    <!--Forms-->
+    <string name="coachinformation">कोच की जानकारी</string>
+    <string name="coursecompletion">कोर्स पूरा करे</string>
+    <string name="coachretention">कोच रिटेंशन</string>
+    <string name="groupsession">समूह सत्र</string>
+    <string name="groupvisit">समूह दौरा</string>
+    <string name="courseenrollment">पाठ्यक्रम नामांकन</string>
+    <string name="studentsattendance">छात्र उपस्थिति</string>
+
+    <!--Student Management-->
+    <string name="addnewgroup">नया समूह जोड़ें</string>
+    <string name="addnewstudent">नया छात्र जोड़ें</string>
+    <string name="editstudent">छात्र संपादित करें</string>
+    <string name="deletestudent">छात्र हटा दें</string>
+    <string name="swapstudents">छात्रों को स्वैप करें</string>
+    <string name="eceassessment">इ सी इ मूल्यांकन</string>
+
+    <!--Manage Device-->
+    <string name="assigntablet">टैबलेट असाइन करें</string>
+    <string name="returntablet">टैबलेट वापस करें</string>
+    <string name="actionstatus">Action Status</string>
+    <string name="mydevices">मेरे उपकरण</string>
+    <string name="scanprathamid">प्रथम आयडी स्कैन करे</string>
+    <string name="replacetab">टैबलेट बदले</string>
+    <string name="collecttab">टैबलेट लीजिये</string>
+
+    <!--Add New Group-->
+    <string name="newgroupname">नया समूह नाम दर्ज करें</string>
+
+    <!--Add New Student and Edit Student-->
+    <string name="enterfirstname">पहला नाम दर्ज करें</string>
+    <string name="entermiddlename">मध्य नाम दर्ज करें</string>
+    <string name="enterlastname">उपनाम नाम दर्ज करें</string>
+    <string name="birthdate">जन्मदिन</string>
+    <string name="clas">कक्षा</string>
+    <string name="gender">लिंग</string>
+    <string name="male">पुरुष</string>
+    <string name="female">महिला</string>
+    <string name="enterguardianname">अभिभावक का नाम दर्ज करें</string>
+    <string name="schooltype">स्कूल का प्रकार</string>
+    <string name="government">सरकारी</string>
+    <string name="privat">निजी</string>
+    <string name="baselineinfo">आधारभूत जानकारी &#8212;&#8212;></string>
+    <string name="endline1">एंड लाइन १</string>
+    <string name="endline2">एंड लाइन २</string>
+    <string name="endline3">एंड लाइन ३</string>
+    <string name="endline4">एंड लाइन ४</string>
+
+    <string name="selectstudent">छात्र का चयन करें</string>
+    <string name="studentdetail">छात्र का विवरण</string>
+    <string name="firstname">पहला नाम</string>
+    <string name="middlename">मध्य नाम</string>
+    <string name="lastname">उपनाम</string>
+    <string name="age">आयु</string>
+
+    <!--ECE Sample Assessment-->
+    <string name="selectassesssmenttype">मूल्यांकन प्रकार चुनें</string>
+    <string name="basicdetails">बेसिक डिटेल्स</string>
+    <string name="selectdate">तारीख़ चुनें</string>
+    <string name="selecttime">समय चुनें</string>
+    <string name="activities">एक्टिविटीज</string>
+    <string name="worksheet">वर्कशीट</string>
+    <string name="oralquestions">मौखिक प्रश्न</string>
+
+    <!--Attendance-->
+    <string name="title_attendance">अटेंडेंस</string>
+    <string name="selectall">सेलेक्ट आल</string>
+    <string name="deselectall">डेसेलेक्ट आल</string>
+    <string name="present">प्रेजेंट</string>
+    <string name="yes">हाँ</string>
+    <string name="no">नहीं</string>
+    <string name="selectgroupssmall">समूह चुनें</string>
+    <string name="selectstudents">छात्र चुनें</string>
+    <string name="selectedstudents">चुनें हुए छात्र :&#160;</string>
+    <string name="prsnt">उपस्थित:&#160;</string>
+
+    <!--Coach Information-->
+    <string name="title_coachInfo">कोच इनफार्मेशन</string>
+    <string name="nameofcoach">कोच का नाम</string>
+    <string name="selectoccupation">व्यवसाय चुनें</string>
+    <string name="selecteducation">शिक्षा चुनें</string>
+    <string name="selectspeciality">विशेषता चुनें</string>
+    <string name="selectsubjectexpert">विषय विशेषज्ञ चुनें</string>
+    <string name="coachname">कोच का नाम :&#160;</string>
+    <string name="coachage">कोच आयु :&#160;</string>
+    <string name="coachgender">कोच जेंडर :&#160;</string>
+    <string name="coachoccupation">कोच व्यवसाय :&#160;</string>
+    <string name="coacheducation">कोच शिक्षा :&#160;</string>
+    <string name="coachspeciality">कोच विशेषता :&#160;</string>
+    <string name="subjectexpert">विषय विशेषज्ञ :&#160;</string>
+    <string name="selectedgroup">चुनें हुए समूह :&#160;</string>
+    <string name="date">दिनांक :&#160;</string>
+    <string name="select">चुनें</string>
+    <string name="plzmentionOther">कृपया अन्य का उल्लेख करें</string>
+    <string name="Okay">ठीक है</string>
+    <string name="Skip">छोड़कर आगे बढ़े</string>
+    <string name="lodingPleaseWait">लोड हो रहा है कृपया प्रतीक्षा करें...</string>
+    <string name="Exit">बाहर</string>
+    <string name="Cancel">रद्द करें</string>
+    <string name="sp_clas5">कक्षा ५</string>
+    <string name="sp_clas8">कक्षा ८</string>
+    <string name="sp_highSec">उच्च माध्यमिक</string>
+    <string name="sp_intmd">मध्यम</string>
+    <string name="sp_grad">ग्रेजुएट</string>
+    <string name="sp_postgrad">पोस्ट ग्रेजुएट</string>
+
+    <!--Course Completion-->
+    <string name="title_coachcmpltn">कोच कम्पलीशन</string>
+    <string name="nocoursesavailable">कोई पाठ्यक्रम / विषय उपलब्ध नहीं है !!!</string>
+    <string name="startdate">स्टार्ट डेट</string>
+    <string name="enddate">एंड डेट</string>
+    <string name="wasitevent">क्या यह इवेंट था ?</string>
+    <string name="noofparents">उपस्थित माता-पिता की संख्या</string>
+    <string name="villagename">गाँव का नाम :&#160;</string>
+    <string name="groupname">समूह का नाम :&#160;</string>
+    <string name="courses">कोर्सेज :&#160;</string>
+    <string name="topics">टॉपिक्स :&#160;</string>
+    <string name="stdate">स्टार्ट डेट :&#160;</string>
+    <string name="eddate">एंड डेट :&#160;</string>
+    <string name="event">इवेंट :&#160;</string>
+    <string name="parentpresent">उपस्थित माता-पिता की संख्या :&#160;</string>
+
+    <!--Coach Retention-->
+    <string name="title_coachRetentn">कोच रिटेंशन</string>
+    <string name="dropout">ड्राप आउट</string>
+    <string name="selectcoach">कोच चुनें</string>
+    <string name="drpout">ड्राप आउट :&#160;</string>
+
+
+    <!--Group Session and Group Visit-->
+    <string name="title_groupVisit">ग्रुप विजिट</string>
+    <string name="title_groupSession">ग्रुप सेशन</string>
+    <string name="selectvisitedgrp">विज़िट किए गए समूहों को चुनें</string>
+    <string name="helpingcoaches">उन कोचों का चयन करें जो अपने आवंटित समय में अपने समूह की मदद कर रहे थे</string>
+    <string name="workcrosschk">जिन समूहों का काम कोच द्वारा क्रॉसचेक किया गया था</string>
+    <string name="studentspresent">उपस्थित छात्रों की संख्या</string>
+    <string name="datevisited">डेट विजिटेड :&#160;</string>
+    <string name="observedgrp">Observed Group :&#160;</string>
+    <string name="studyinggrp">जो समूह अपने आवंटित समय पर अध्ययन कर रहे थे</string>
+
+    <!--Course Enrollment-->
+    <string name="title_courseEnrlmnt">कोच एनरोलमेंट</string>
+    <string name="selecttopics">टॉपिक चुनें</string>
+    <string name="communityorschool">समुदाय या स्कूल</string>
+    <string name="community">समुदाय</string>
+    <string name="school">स्कूल</string>
+    <string name="selectedcourses">चुनें हुए कोर्सेज़ :&#160;</string>
+    <string name="selectedtopics">चुनें हुए टॉपिक्स :&#160;</string>
+    <string name="groupType">ग्रुप का प्रकार :&#160;</string>
+
+    <!--Youth Form-->
+    <string name="marital_status">वैवाहिक स्थिति</string>
+    <string name="married">विवाहित</string>
+    <string name="unmarried">अविवाहित</string>
+    <string name="enterphone">फ़ोन नंबर दर्ज करें</string>
+    <string name="rustudy">क्या आप पढाई कर रहे हैं?</string>
+    <string name="haveSmartphone">क्या आपके परिवार में किसी के पास स्मार्टफोन है?</string>
+    <string name="useSmartphone">क्या आप उस स्मार्टफोन का इस्तेमाल करते हैं?</string>
+    <string name="wantCourse">मुझे इस कोर्स में प्रवेश लेना हैं : </string>
+    <string name="personalandcomm">व्यक्तिगत और सामुदायिक स्वास्थ्य प्रबंधन भाग 1</string>
+    <string name="englishSpeak">अंग्रेजी बोलना</string>
+    <string name="addyouth">यूथ जोडे</string>
+    <string name="addnewyouth">नया यूथ जोडे</string>
+
+    <!--Universal Tags-->
+    <string name="selectstate">राज्य चुनें</string>
+    <string name="selectprogram">प्रोग्राम चुनें</string>
+    <string name="selectblock">ब्लॉक चुनें</string>
+    <string name="selectvillage">गांव चुनें</string>
+    <string name="selectgroup">समूह चुनें</string>
+    <string name="selectgroups">समूहों को चुने</string>
+    <string name="submit">सबमिट</string>
+    <string name="clear">क्लियर</string>
+    <string name="preview">प्रीव्यू</string>
+    <string name="savechanges">परिवर्तन जतन करे</string>
+    <string name="formdatapreview">फॉर्म डाटा प्रीव्यू</string>
+    <string name="pulling">डेटा पुल हो रहा हैं&#8230;&#8230;&#8230;</string>
+    <string name="pullingCoaches">कोच पुल किये जा रहे हैं !!!</string>
+    <string name="pullingCourses">कोर्स पुल किये जा रहे हैं !!!</string>
+    <string name="pullingCoursesCmpl">कोर्स कम्पलीशन पुल किये जा रहे हैं !!!</string>
+    <string name="loadApiFail">API लोड नहीं हुए.</string>
+    <string name="pulldata">डेटा पुल करें</string>
+    <string name="savedata">डेटा जतन करें</string>
+    <string name="start">शुरू</string>
+    <string name="end">ख़त्म</string>
+    <string name="accept">स्वीकार करें</string>
+    <string name="close">बंद करें</string>
+    <string name="plzselectprogram">कृपया प्रोग्राम चुनें</string>
+    <string name="plzselectvlg">कृपया गाँव चुनें</string>
+
+    <!--Push Data Preview-->
+    <string name="attendance">अटेंडेंस :&#160;</string>
+    <string name="coaches">कोचेस :&#160;</string>
+    <string name="communities">कम्युनिटीज :&#160;</string>
+    <string name="completions">कम्पलीशन :&#160;</string>
+    <string name="students">स्टूडेंट्स :&#160;</string>
+    <string name="asers">असर्स :&#160;</string>
+    <string name="groups">ग्रुप्स :&#160;</string>
+    <string name="groupvst">ग्रुप विजिट :&#160;</string>
+    <string name="groupsesn">ग्रुप सेशन :&#160;</string>
+    <string name="eceasmnt">इ सी इ असेसमेंट :&#160;</string>
+    <string name="youths">यूथ्स :&#160;</string>
+    <string name="logs">लॉग्स :&#160;</string>
+
+    <!--Custom Dialog-->
+    <string name="uploadChange">क्या आप निम्नलिखित परिवर्तन अपलोड करना चाहते हैं?</string>
+    <string name="totalStudents">कुल छात्र :&#160;</string>
+    <string name="totalchanges">कुल परिवर्तन:&#160;</string>
+    <string name="totalchangedCrl">कुल परिवर्तित CRL\'s :&#160;</string>
+    <string name="clearChanges">क्लियर चेंजेस</string>
+    <string name="pushToServer">सर्वर पर पुश करें</string>
+
+    <!--App Failure Dialog-->
+    <string name="unabletopush">डेटा पुश करने में असमर्थ !</string>
+    <string name="somethingwrong">कुछ गलत हो गया !\n कृपया अपना नेटवर्क जांचें !</string>
+
+    <!--Toasts-->
+    <string name="connectinternet">इंटरनेट से कनेक्ट करें</string>
+    <string name="noInterntCon">इंटरनेट कनेक्शन मौजूद नहीं है</string>
+    <string name="pushSuccess">सफलतापूर्वक पुश किया गया</string>
+    <string name="chkInternet">इंटरनेट कनेक्शन चेक करें</string>
+    <string name="formSubmittedtoDB">फॉर्म को डेटाबेस में सबमिट किया गया हैं!!!</string>
+    <string name="fillAllFields">कृपया सभी फ़ील्ड भरें !!!</string>
+    <string name="selectAllFields">कृपया सभी फ़ील्ड चुनें !!!</string>
+    <string name="selectStudtoSwap">स्थानांतरण के लिए एक छात्र का चयन करें</string>
+    <string name="noChngAvailable">कोई परिवर्तन उपलब्ध नहीं है</string>
+    <string name="savedOffline">ऑफ़लाइन सेव किया गया हैं</string>
+    <string name="formSavedtoDB">फॉर्म को डेटाबेस में सेव किया गया हैं!!!</string>
+    <string name="formNotPushed">इंटरनेट से कनेक्ट नहीं होने के कारण फॉर्म डेटा सर्वर पे पुश नहीं किया गया !!!</string>
+    <string name="selectedStudDelete">चुनें हुए छात्रों को हटा दिया गया है !!!</string>
+    <string name="selectedStudNotDelete">चुनें हुए छात्र नेटवर्क मुद्दों के कारण हटाए नहीं गए !</string>
+    <string name="datapushfailed">डेटा पुश विफल रहा. पुनः प्रयास करें</string>
+    <string name="noNewDataPush">पुश करने के लिए कोई नया डेटा नहीं मिला !</string>
+    <string name="invalidQR">अवैध क्यू आर कोड !!!</string>
+    <string name="youNeedCamPermsn">आपको कैमरा अनुमति की आवश्यकता है</string>
+    <string name="insertedSuccessfuly">सफलतापूर्वक सम्मिलित किया गया</string>
+    <string name="scanQrorEnterSid">स्कैन क्यू आर या सीरियल आईडी दर्ज करें</string>
+    <string name="fillAllDetails">सभी विवरण भरें</string>
+    <string name="selectDamageType">डैमेज टाइप चुनें</string>
+    <string name="pleasepulldata">कृपया डेटा पुल करें</string>
+    <string name="recInsertFailed">रिकॉर्ड इन्सर्ट नहीं हुआ !!!</string>
+    <string name="enterValidInput">कृपया मान्य इनपुट दर्ज करें !!!</string>
+    <string name="fillAllBaselineFld">कृपया सभी बेसलाइन फ़ील्ड भरें !</string>
+    <string name="baselineUpdated">बेसलाइन अपडेट हो गई हैं !</string>
+    <string name="baselineInsertFailed">बेसलाइन प्रविष्टि विफल !</string>
+    <string name="recInsertSuccess">रिकॉर्ड सफलतापूर्वक सम्मिलित किया गया !!!</string>
+    <string name="sorrynodatafound">क्षमा करें कोई डेटा नहीं मिला !!!</string>
+    <string name="recordsavedtodb">रिकॉर्ड डेटाबेस मैं जतन किया गया !</string>
+    <string name="recordupdatetodb">रिकॉर्ड सफलतापूर्वक अपडेट किया गया !</string>
+
+
+    <!--Alert Dialog-->
+    <string name="alert">अलर्ट</string>
+    <string name="denyPermission">अनुमतियों को अस्वीकार करने से एप्लिकेशन फ़ैल हो सकता है.</string>
+    <string name="upgradeApp">अपने ऐप को अपग्रेड करें !</string>
+    <string name="plzUpgradeApp">नई सुविधाओं का उपयोग करने के लिए कृपया अपने ऐप को अपग्रेड करें.</string>
+    <string name="upgrade">अपग्रेड</string>
+    <string name="dataPreview">डेटा प्रीव्यू</string>
+    <string name="pushDataPreview">पुश डेटा प्रीव्यू</string>
+    <string name="confirm">कन्फर्म</string>
+    <string name="uploading">अपलोड हो रहा हैं ...</string>
+    <string name="invalidCredential">अवैध यूजरनेम या पासवर्ड</string>
+    <string name="noCrlAvailable">कोई CRLs उपलब्ध नहीं हैं</string>
+    <string name="appReqCamPermsn">ऐप को QR कोड को स्कैन करने के लिए कैमरा अनुमति की आवश्यकता है</string>
+    <string name="warning">वार्निंग</string>
+    <string name="correct">सही</string>
+    <string name="wrong">गलत</string>
+    <string name="qrAlreadyScand">यह QR पहले से ही स्कैन किया गया है। क्या आप डेटा बदलना चाहते हैं?</string>
+    <string name="grpAlreadySelected">समूह पहले से ही चयनित है !!!</string>
+    <string name="plzfillallform">कृपया पूरा फार्म भरें</string>
+    <string name="collectedserialid">कलेक्टेड या एसाइन्ड सीरियल ID अलग अलग होना चाहिए</string>
+    <string name="collectedprathamid">कलेक्टेड या एसाइन्ड प्रथम ID अलग अलग होना चाहिए</string>
+    <string name="noNotificationFound">कोई नोटिफिकेशन नही मिला</string>
+    <string name="loadingNotification">नोटिफिकेशन्स लोड हो रहे हैं..</string>
+
+
+    <string-array name="india_states">
+        <item>SELECT STATE</item>
+        <item>Andhra Pradesh(AP)</item>
+        <item>Arunachal Pradesh(AR)</item>
+        <item>Assam(AS)</item>
+        <item>Bihar(BR)</item>
+        <item>Chhattisgarh(CG)</item>
+        <item>Goa(GO)</item>
+        <item>Gujarat(GJ)</item>
+        <item>Haryana(HR)</item>
+        <item>Himachal Pradesh(HP)</item>
+        <item>Jammu and kashmir(JK)</item>
+        <item>Jharkhand(JH)</item>
+        <item>Karnataka(KN)</item>
+        <item>Kerala(KL)</item>
+        <item>Madhya Pradesh(MP)</item>
+        <item>Maharashtra(MH)</item>
+        <item>Manipur(MN)</item>
+        <item>Meghalaya(MG)</item>
+        <item>Mizoram(MZ)</item>
+        <item>Nagaland(NG)</item>
+        <item>Orissa(OD)</item>
+        <item>Punjab(PB)</item>
+        <item>Rajasthan(RJ)</item>
+        <item>Sikkim(SK)</item>
+        <item>Tamil Nadu(TN)</item>
+        <item>Telangana(TS)</item>
+        <item>Tripura(TR)</item>
+        <item>Uttarakhand(UK)</item>
+        <item>Uttar Pradesh(UP)</item>
+        <item>West Bengal(WB)</item>
+        <item>Andaman and Nicobar Islands(AN)</item>
+        <item>Chandigarh(CH)</item>
+        <item>Dadra and Nagar Haveli(DN)</item>
+        <item>Daman and Diu(DD)</item>
+        <item>Delhi(DL)</item>
+        <item>Lakshadweep(LD)</item>
+        <item>Pondicherry(PY)</item>
+    </string-array>
+
+    <string-array name="india_states_shortcode">
+        <item>SELECT STATE</item>
+        <item>AP</item>
+        <item>AR</item>
+        <item>AS</item>
+        <item>BR</item>
+        <item>CG</item>
+        <item>GO</item>
+        <item>GJ</item>
+        <item>HR</item>
+        <item>HP</item>
+        <item>JK</item>
+        <item>JH</item>
+        <item>KN</item>
+        <item>KL</item>
+        <item>MP</item>
+        <item>MH</item>
+        <item>MN</item>
+        <item>MG</item>
+        <item>MZ</item>
+        <item>NG</item>
+        <item>OD</item>
+        <item>PB</item>
+        <item>RJ</item>
+        <item>SK</item>
+        <item>TN</item>
+        <item>TS</item>
+        <item>TR</item>
+        <item>UK</item>
+        <item>UP</item>
+        <item>WB</item>
+        <item>AN</item>
+        <item>CH</item>
+        <item>DN</item>
+        <item>DD</item>
+        <item>DL</item>
+        <item>LD</item>
+        <item>PY</item>
+    </string-array>
+
+    <string-array name="village">
+        <item>SELECT VILLAGE</item>
+    </string-array>
+    <string-array name="block">
+        <item>SELECT BLOCK</item>
+    </string-array>
+
+
+    <string-array name="array_Occupation">
+        <item>व्यवसाय चुनें</item>
+        <item>Army</item>
+        <item>Artist</item>
+        <item>Bank</item>
+        <item>Central Govt.</item>
+        <item>Electrician</item>
+        <item>Farmer</item>
+        <item>Gardener</item>
+        <item>Hospital</item>
+        <item>Housewife</item>
+        <item>Mechanic</item>
+        <item>Own Business</item>
+        <item>Plumber</item>
+        <item>Police</item>
+        <item>Post Office</item>
+        <item>Retired</item>
+        <item>State Govt.</item>
+        <item>Teacher</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="array_Speciality">
+        <item>विशेषता चुनें</item>
+        <item>Art</item>
+        <item>Dancer</item>
+        <item>Musician</item>
+        <item>None</item>
+        <item>Potter</item>
+        <item>Singer</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="array_Subject_Expert">
+        <item>English</item>
+        <item>Language</item>
+        <item>Maths</item>
+        <item>Science</item>
+        <item>None</item>
+    </string-array>
+
+    <string-array name="array_Education">
+        <item>शिक्षा चुनें</item>
+        <item>No</item>
+        <item>कक्षा ५</item>
+        <item>कक्षा ८</item>
+        <item>उच्च माध्यमिक</item>
+        <item>मध्यम</item>
+        <item>ग्रेजुएट</item>
+        <item>पोस्ट ग्रेजुएट</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="array_Programs">
+        <item>Select Program</item>
+        <item>H - Learning</item>
+        <item>Read India</item>
+        <item>Pratham Institutes</item>
+        <item>Second Chance</item>
+        <item>Urban programme</item>
+        <item>Hamara Gaon</item>
+        <item>Government Partnership</item>
+        <item>KGBV</item>
+
+        <!--<item>Others</item>-->
+    </string-array>
+
+    <string-array name="array_isDamged">
+        <item>Is Damaged?</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="array_damgeType">
+        <item>Select Damage Type</item>
+        <item>Glass Broken</item>
+        <item>Battery Problem</item>
+        <item>Display Problem</item>
+        <item>SD card Slot damage</item>
+        <item>Charging Slot damage</item>
+        <item>Other?, pleas specify</item>
+    </string-array>
+
+    <string-array name="array_Class">
+        <item>कक्षा</item>
+        <item>१</item>
+        <item>२</item>
+        <item>३</item>
+        <item>४</item>
+        <item>५</item>
+        <item>६</item>
+        <item>७</item>
+        <item>८</item>
+        <item>९</item>
+        <item>१०</item>
+        <item>११</item>
+        <item>१२</item>
+        <item>आंगनवाड़ी</item> <!--value = -1-->
+        <item>पूर्व-स्कूल</item> <!--value = -2-->
+        <item>बालवाड़ी</item> <!--value = -3-->
+        <item>ड्रॉप आउट</item> <!--value = -4-->
+        <item>नॉट एनरोलड</item> <!--value = -5-->
+    </string-array>
+
+    <string-array name="array_asmtType">
+        <item>Select Assessment Type</item>
+        <item>Baseline</item>
+        <item>Endline 1</item>
+        <item>Endline 2</item>
+        <item>Endline 3</item>
+        <item>Endline 4</item>
+    </string-array>
+
+    <string-array name="array_asmt_status">
+        <item>Not Attempted</item> <!--value = 1-->
+        <item>Can Do</item> <!--value = 2-->
+        <item>Need Help</item> <!--value = 3-->
+    </string-array>
+
+    <string-array name="array_numRecoSSpinner">
+        <item>बेसलाइन (संख्या पहचान)</item>
+        <item>Beg</item>
+        <item>0&#8211;9</item>
+        <item>10&#8211;99</item>
+        <item>Sub</item>
+        <item>Div</item>
+    </string-array>
+
+    <string-array name="array_el_numRecoSSpinner">
+        <item>Number Recognition</item>
+        <item>Beg</item>
+        <item>0&#8211;9</item>
+        <item>10&#8211;99</item>
+        <item>Sub</item>
+        <item>Div</item>
+    </string-array>
+
+    <string-array name="array_englishAdapter">
+        <item>बेसलाइन (English)</item>
+        <item>Beg</item>
+        <item>Capital Letter</item>
+        <item>Small Letter</item>
+        <item>Word</item>
+        <item>Sentence</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="change_log">&lt;b>&lt;i>&lt;font color=#FF0000>v1.9&lt;/font>&lt;/i>&lt;/b>&lt;br>
+&#160; &#160; &#8226; &#160;New From added : Youth Form.&lt;br>
+&#160; &#160; &#8226; &#160;Device Information Added.&lt;br>
+&#160; &#160; &#8226; &#160;Versioning Details added with information regarding previous versions.&lt;br>
+&#160; &#160; &#8226; &#160;Multilanguage feature added.&lt;br>&lt;br>
+
+        &lt;b>&lt;i>&lt;font color=#FF0000>v1.8&lt;/font>&lt;/i>&lt;/b>&lt;br>
+&#160; &#160; &#8226; &#160;New Program added : Read India - Michelin.&lt;br>
+&#160; &#160; &#8226; &#160;UI bug-fixes.&lt;br>&lt;br>
+
+&lt;b>&lt;i>&lt;font color=#FF0000>v1.7.1&lt;/font>&lt;/i>&lt;/b>&lt;br>
+&#160; &#160; &#8226; &#160;LastName field issue from AddStudent section is resolved.&lt;br>&lt;br>
+
+&lt;b>&lt;i>&lt;font color=#FF0000>v1.6&lt;/font>&lt;/i>&lt;/b>&lt;br>
+&#160; &#160; &#8226; &#160;Swap student issue fixed and stability improvements.&lt;br>&lt;br>
+
+&lt;b>&lt;i>&lt;font color=#FF0000>v1.5&lt;/font>&lt;/i>&lt;/b>&lt;br>
+&#160; &#160; &#8226; &#160;New program added : Digital School Program.&lt;br>&lt;br>
+
+&lt;b>&lt;i>&lt;font color=#FF0000>v1.4&lt;/font>&lt;/i>&lt;/b>&lt;br>
+&#160; &#160; &#8226; &#160;Updated UI and overall usability of the app.&lt;br>
+&#160; &#160; &#8226; &#160;Manage devices module will now work only when the device is online.&lt;br>
+&#160; &#160; &#8226; &#160;Metadata is added in replace and assign while pushing data.&lt;br>
+&#160; &#160; &#8226; &#160;Auto data push on login.&lt;br>&lt;br>
+
+&lt;b>&lt;i>&lt;font color=#FF0000>v1.1&lt;/font>&lt;/i>&lt;/b>&lt;br>
+&#160; &#160; &#8226; &#160;Implemented Standard Time Format.&lt;br>
+&#160; &#160; &#8226; &#160;Input and date time fixes.&lt;br>
+&#160; &#160; &#8226; &#160;New ECE Assessment Form in Student Management.&lt;br>
+&#160; &#160; &#8226; &#160;Edit Student UI Update.&lt;br>
+&#160; &#160; &#8226; &#160;New Class options for Adding/ Editing Student.&lt;br>
+&#160; &#160; &#8226; &#160;Responsive Time Range Picker&lt;br>&lt;br>
+
+&lt;b>&lt;i>&lt;font color=#FF0000>v1.0.9&lt;/font>&lt;/i>&lt;/b>&lt;br>
+&#160; &#160; &#8226; &#160;Add class options (Dropout= -4,Pre-School= -2,Not Enrolled= -5)&lt;br>&lt;br>
+
+&lt;b>&lt;i>&lt;font color=#FF0000>v1.0.8&lt;/font>&lt;/i>&lt;/b>&lt;br>
+&#160; &#160; &#8226; &#160;Improvements in Student Forms.</string>
+
+    <!--Device Information-->
+    <string name="apkVersion">&lt;b>&lt;i>&lt;font color=#FF0000>Apk Version :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+    <string name="wifiMac">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Wifi-MAC :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+    <string name="deviceId">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Device ID :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+    <string name="serialId">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Serial ID :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+    <string name="versionId">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Version Name :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+    <string name="versionNumber">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Version Number :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+    <string name="apiLevel">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Api Level :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+    <string name="screenResolution">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Screen Resolution :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+    <string name="manufactureName">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Manufacture Name :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+    <string name="model">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Model :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+    <string name="availableStorage">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Available Storage :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+
+</resources>

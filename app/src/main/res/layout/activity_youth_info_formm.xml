@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        tools:context="com.pratham.admin.forms.Youth.YouthInfoFormActivity">
+
+        <!--Title-->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:background="@drawable/custom_border"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:padding="@dimen/_8sdp"
+            android:text="@string/addnewyouth"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/_18sdp"
+            android:textStyle="bold" />
+
+        <!--Spinners-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <!--Select Block Drop Down List-->
+            <Spinner
+                android:id="@+id/spinner_SelectBlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinner_SelectState"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_weight="1"
+                android:background="@drawable/spinner_background_forms"
+                android:textAlignment="center" />
+
+            <!--Village Drop Down List-->
+            <Spinner
+                android:id="@+id/spinner_selectVillage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinner_SelectBlock"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_weight="1"
+                android:background="@drawable/spinner_background_forms"
+                android:textAlignment="center" />
+
+            <!--Select Groups-->
+            <Spinner
+                android:id="@+id/spinner_SelectGroups"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinner_selectVillage"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:layout_weight="1"
+                android:background="@drawable/spinner_background_forms"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:background="@drawable/custom_border"
+            android:orientation="vertical">
+
+            <!--Name-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_8sdp"
+                android:orientation="horizontal"
+                android:weightSum="5">
+
+                <EditText
+                    android:id="@+id/edt_FirstName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:hint="@string/enterfirstname"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords"
+                    android:nextFocusDown="@+id/edt_MiddleName"
+                    android:nextFocusForward="@+id/edt_MiddleName"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textColorHint="@color/text_hint"
+                    android:textSize="@dimen/_12sdp" />
+
+                <EditText
+                    android:id="@+id/edt_MiddleName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_weight="1.5"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:hint="@string/entermiddlename"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords"
+                    android:nextFocusDown="@+id/edt_LastName"
+                    android:nextFocusForward="@+id/edt_LastName"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textColorHint="@color/text_hint"
+                    android:textSize="@dimen/_12sdp" />
+
+                <EditText
+                    android:id="@+id/edt_LastName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_weight="2"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:hint="@string/enterlastname"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords"
+                    android:nextFocusDown="@+id/edt_GuardianName"
+                    android:nextFocusForward="@+id/edt_GuardianName"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textColorHint="@color/text_hint"
+                    android:textSize="@dimen/_12sdp" />
+
+            </LinearLayout>
+
+            <!--Guardian Name, PhoneNo-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="3">
+                <!--Guardian Name-->
+
+                <EditText
+                    android:id="@+id/edt_Phonenumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:hint="@string/enterphone"
+                    android:inputType="phone"
+                    android:maxLength="12"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textColorHint="@color/text_hint"
+                    android:textSize="@dimen/_12sdp" />
+
+                <EditText
+                    android:id="@+id/edt_GuardianName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:hint="@string/enterguardianname"
+                    android:inputType="textCapWords"
+                    android:maxLength="30"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textColorHint="@color/text_hint"
+                    android:textSize="@dimen/_12sdp" />
+
+                <Button
+                    android:id="@+id/btn_BirthDatePicker"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:background="@color/button"
+                    android:drawableLeft="@android:drawable/ic_menu_my_calendar"
+                    android:drawablePadding="@dimen/_4sdp"
+                    android:text="@string/birthdate"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/_12sdp" />
+
+            </LinearLayout>
+
+            <!--BirthDate, Gender-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <!--Radio Button to Select Gender-->
+                <RadioGroup
+                    android:id="@+id/rg_Gender"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_marginBottom="@dimen/_8sdp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/gender"
+                        android:textColor="@color/button"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/rb_Male"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:text="@string/male"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/rb_Female"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:layout_weight="1"
+                        android:text="@string/female"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                </RadioGroup>
+
+                <RadioGroup
+                    android:id="@+id/rg_marital_status"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.1"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/marital_status"
+                        android:textColor="@color/button"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/rb_married"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:text="@string/married"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/rb_unmarried"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:layout_weight="1"
+                        android:text="@string/unmarried"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                </RadioGroup>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:background="@drawable/custom_border"
+            android:orientation="vertical">
+            <!--Are you studying-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RadioGroup
+                    android:id="@+id/rg_rustudy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:text="@string/rustudy"
+                        android:textColor="@color/button"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/rb_rus_yes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:layout_weight="0.5"
+                        android:checked="true"
+                        android:text="@string/yes"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/rb_rus_no"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:layout_weight="0.5"
+                        android:text="@string/no"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <!--Education Drop Down List-->
+                <Spinner
+                    android:id="@+id/spinner_education"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/spinner_background_forms"
+                    android:textAlignment="center" />
+
+                <!--Occupation Drop Down List-->
+                <Spinner
+                    android:id="@+id/spinner_occupation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/spinner_background_forms"
+                    android:textAlignment="center" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:background="@drawable/custom_border"
+            android:orientation="vertical">
+
+            <!--Anyone Have Smartphone-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RadioGroup
+                    android:id="@+id/rg_haveSmartphone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:layout_weight="2"
+                        android:text="@string/haveSmartphone"
+                        android:textColor="@color/button"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/rb_yesSmartphone"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:layout_weight="0.5"
+                        android:checked="true"
+                        android:text="@string/yes"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/rb_noSmartphone"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:layout_weight="0.5"
+                        android:text="@string/no"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                </RadioGroup>
+            </LinearLayout>
+
+            <!--Do you use Smartphone-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RadioGroup
+                    android:id="@+id/rg_useSmartphone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:layout_weight="2"
+                        android:text="@string/useSmartphone"
+                        android:textColor="@color/button"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/rb_yesUseSmartphone"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:layout_weight="0.5"
+                        android:checked="true"
+                        android:text="@string/yes"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/rb_noUseSmartphone"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:layout_weight="0.5"
+                        android:text="@string/no"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                </RadioGroup>
+            </LinearLayout>
+
+            <!--I want to join-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/_8sdp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_4sdp"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:text="@string/wantCourse"
+                    android:textColor="@color/button"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
+
+                <RadioGroup
+                    android:id="@+id/rg_iwanttojoin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <RadioButton
+                        android:id="@+id/rb_personal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:checked="true"
+                        android:text="@string/personalandcomm"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold"
+                        android:layout_weight="1"/>
+
+                    <RadioButton
+                        android:id="@+id/rb_engSpeak"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:text="@string/englishSpeak"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold"
+                        android:layout_weight="1"/>
+
+                </RadioGroup>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--Photo-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="3">
+
+            <Button
+                android:id="@+id/btn_Capture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_weight="1"
+                android:background="@color/button"
+                android:text="Take Photo"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="150dp"
+                android:layout_height="100dp"
+                android:layout_below="@+id/btn_Capture"
+                android:layout_weight="2"
+                android:src="@drawable/avatar" />
+
+        </LinearLayout>
+
+        <!--Submit, Clear-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <Button
+                android:id="@+id/btn_Submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/album_title"
+                android:text="@string/submit"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_Clear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_weight="2"
+                android:background="@color/album_title"
+                android:text="@string/clear"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
