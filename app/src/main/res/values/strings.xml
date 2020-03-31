@@ -203,6 +203,13 @@
     <string name="addyouth">Add Youth</string>
     <string name="addnewyouth">Add New Youth</string>
 
+    <!--Catcho Activity-->
+    <string name="oops">Oops, Something went wrong!!</string>
+    <string name="sorryabtthat">Sorry about that. Press the register report button to send us the error.</string>
+    <string name="registerreport">Register Report</string>
+
+
+
     <!--Universal Tags-->
     <string name="selectstate">Select State</string>
     <string name="selectprogram">Select Program</string>
@@ -555,9 +562,9 @@
 
     <string name="change_log">&lt;b>&lt;i>&lt;font color=#FF0000>v1.9&lt;/font>&lt;/i>&lt;/b>&lt;br>
 &#160; &#160; &#8226; &#160;New From added : Youth Form.&lt;br>
-&#160; &#160; &#8226; &#160;Device Information Added.&lt;br>&lt;br>
-&#160; &#160; &#8226; &#160;Versioning Details added with information regarding previous versions.&lt;br>&lt;br>
-&#160; &#160; &#8226; &#160;Multilanguage feature added.&lt;br>&lt;br>
+&#160; &#160; &#8226; &#160;Device Information Added.&lt;br>
+&#160; &#160; &#8226; &#160;Versioning Details added with information regarding previous versions.&lt;br>
+&#160; &#160; &#8226; &#160;Multilanguage feature added.&lt;br>
 
         &lt;b>&lt;i>&lt;font color=#FF0000>v1.8&lt;/font>&lt;/i>&lt;/b>&lt;br>
 &#160; &#160; &#8226; &#160;New Program added : Read India - Michelin.&lt;br>

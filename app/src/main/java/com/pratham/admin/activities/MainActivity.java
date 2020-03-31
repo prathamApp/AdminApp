@@ -967,6 +967,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
         AppDatabase.getDatabaseInstance(this).getGroupSessionDao().deleteAllGroupSession();
         AppDatabase.getDatabaseInstance(this).getGroupVisitDao().deleteAllGroupVisit();
         AppDatabase.getDatabaseInstance(this).getLogDao().deleteLogs();
+        AppDatabase.getDatabaseInstance(this).getYouthDao().deleteAllYouths();
         AppDatabase.destroyInstance();
         SharedPreferences preferences = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();

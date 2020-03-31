@@ -203,6 +203,11 @@
     <string name="addyouth">यूथ जोडे</string>
     <string name="addnewyouth">नया यूथ जोडे</string>
 
+    <!--Catcho Activity-->
+    <string name="oops">Oops, Something went wrong!!</string>
+    <string name="sorryabtthat">Sorry about that. Press the register report button to send us the error.</string>
+    <string name="registerreport">Register Report</string>
+
     <!--Universal Tags-->
     <string name="selectstate">राज्य चुनें</string>
     <string name="selectprogram">प्रोग्राम चुनें</string>

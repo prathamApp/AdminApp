@@ -189,6 +189,11 @@
             android:name=".activities.CatchoTransparentActivity"
             android:screenOrientation="sensorLandscape" />
 
+        <activity
+            android:name=".custom.ProcessPhoenix"
+            android:process=":phoenix"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
         <receiver
             android:name=".util.ConnectionReceiver"
             android:enabled="true">
