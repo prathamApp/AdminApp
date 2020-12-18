@@ -16,6 +16,7 @@ import android.text.Html;
 import android.util.Log;
 import android.view.Display;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
@@ -35,11 +36,7 @@ public class DeviceInformation extends BaseActivity implements DeviceInfoContrac
     @ViewById(R.id.infocontent)
     TextView tv_infocontent;
 
-    MetaData metaData;
-    private String deviceID, apkVersion, serialID, WiFiMac,
-            osVersionName, osVersionNum, availStorage, resolution, manufacturer, model;
-    private int osApiLevel;
-    private long internalStorageSize;
+    private String apkVersion, resolution;
 
     @Bean(DeviceInfoPrsenter.class)
     DeviceInfoContract.DeviceInfoPresenter deviceInfoPrsenter;
@@ -48,45 +45,8 @@ public class DeviceInformation extends BaseActivity implements DeviceInfoContrac
     @AfterViews
     public void initialize(){
         deviceInfoPrsenter.setView(DeviceInformation.this);
-        deviceInfoPrsenter.populateDeviceInfo();
         initializeAppInfo();
     }
-
-    //for getting os versionName and ApiLevel
-    private void osversion(){
-        osVersionNum = Build.VERSION.RELEASE;
-
-        Field[] fields = Build.VERSION_CODES.class.getFields();
-        for (Field field : fields) {
-            osVersionName = field.getName();
-            osApiLevel = -1;
-
-            try {
-                osApiLevel = field.getInt(new Object());
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    //for getting internal available storage
-    private void getStorage(){
-        StatFs stat = new StatFs(Environment.getDataDirectory().getPath());
-        long bytesAvailable;
-        if (android.os.Build.VERSION.SDK_INT >=
-                android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            bytesAvailable = stat.getBlockSizeLong() * stat.getAvailableBlocksLong();
-        }
-        else {
-            bytesAvailable = (long)stat.getBlockSize() * (long)stat.getAvailableBlocks();
-        }
-        internalStorageSize = bytesAvailable / (1024 * 1024);
-        String storage = String.valueOf(internalStorageSize);
-        availStorage = storage+" MB";
-        Log.e("SSSSSSSs",availStorage);
-        showDeviceInfo(osApiLevel, availStorage);
-    }
-
 
     //all device info
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -97,13 +57,6 @@ public class DeviceInformation extends BaseActivity implements DeviceInfoContrac
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-
-        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        WifiInfo wInfo = wifiManager.getConnectionInfo();
-        WiFiMac = wInfo.getMacAddress();
-
-        osversion();
-        getStorage();
 
         //screen resolution
         Display display = getWindowManager().getDefaultDisplay();
@@ -117,87 +70,28 @@ public class DeviceInformation extends BaseActivity implements DeviceInfoContrac
         Configuration config = getBaseContext().getResources().getConfiguration();
         resolution= "W "+strwidth+" x H "+strheight+" pixels dpi:"+config.densityDpi;
 
-        //Model details
-        manufacturer = Build.MANUFACTURER;
-        model = Build.MODEL;
-
-        //get deviceID and serialID
-        deviceID = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-        serialID = android.os.Build.SERIAL;
-
-        //displaying all value in textView
-        tv_infocontent.setText(Html.fromHtml(getString(R.string.apkVersion) + apkVersion +
-                getString(R.string.wifiMac) + WiFiMac +
-                getString(R.string.deviceId) + deviceID +
-                getString(R.string.serialId) + serialID +
-                getString(R.string.versionId) + osVersionName+
-                getString(R.string.versionNumber) + osVersionNum+
-                getString(R.string.apiLevel)+ osApiLevel +
-                getString(R.string.screenResolution) + resolution+
-                getString(R.string.manufactureName) + manufacturer +
-                getString(R.string.model) + model +
-                getString(R.string.availableStorage) + internalStorageSize+ " MB"
-        ));
-
-        addMetadata();
-    }
-
-    //add information to metadata table
-    private void addMetadata(){
-        metaData = new MetaData();
-        metaData.setKeys("DeviceID");
-        metaData.setValue(deviceID);
-        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
-
-        metaData = new MetaData();
-        metaData.setKeys("SerialID");
-        metaData.setValue(serialID);
-        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
-
-        metaData = new MetaData();
-        metaData.setKeys("WiFiMac");
-        metaData.setValue(WiFiMac);
-        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
-
-        metaData = new MetaData();
-        metaData.setKeys("osVersionNum");
-        metaData.setValue(osVersionNum);
-        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
-
-        metaData = new MetaData();
-        metaData.setKeys("osVersionName");
-        metaData.setValue(osVersionName);
-        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
-
-        metaData = new MetaData();
-        metaData.setKeys("osApiLevel");
-        metaData.setValue(String.valueOf(osApiLevel));
-        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
-
-        metaData = new MetaData();
-        metaData.setKeys("internalAvailableStorage");
-        metaData.setValue(availStorage);
-        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
-
-        metaData = new MetaData();
-        metaData.setKeys("screenResolution");
-        metaData.setValue(resolution);
-        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
-
-        metaData = new MetaData();
-        metaData.setKeys("manufacturer");
-        metaData.setValue(manufacturer);
-        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
-
-        metaData = new MetaData();
-        metaData.setKeys("model");
-        metaData.setValue(model);
-        AppDatabase.getDatabaseInstance(this).getMetaDataDao().insertMetadata(metaData);
+        deviceInfoPrsenter.populateDeviceInfo(resolution);
+        deviceInfoPrsenter.addMetaData();
     }
 
     @Override
-    public void showDeviceInfo(int osApiLevl, String availStorag) {
-        osApiLevel=osApiLevl;
-        availStorage=availStorag;
+    public void showDeviceInfo(int api, String osVnum, String osVname, String availStorag, String wifi, String devId,
+                               String serId, String manuf, String mod, String resol) {
+        String apkVer = apkVersion;
+
+        //displaying all value in textView
+        tv_infocontent.setText(Html.fromHtml(getString(R.string.apkVersion) + apkVer +
+                getString(R.string.wifiMac) + wifi +
+                getString(R.string.deviceId) + devId +
+                getString(R.string.serialId) + serId +
+                getString(R.string.versionId) + osVname+
+                getString(R.string.versionNumber) + osVnum+
+                getString(R.string.apiLevel)+ api +
+                getString(R.string.screenResolution) + resol+
+                getString(R.string.manufactureName) + manuf +
+                getString(R.string.model) + mod +
+                getString(R.string.availableStorage) + availStorag
+        ));
+
     }
 }

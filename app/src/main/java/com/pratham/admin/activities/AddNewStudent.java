@@ -107,7 +107,7 @@ public class AddNewStudent extends BaseActivity{
         setContentView(R.layout.activity_add_new_student);
         getSupportActionBar().hide();
 
-        EventBus.getDefault().register(AddNewStudent.this);
+        //EventBus.getDefault().register(AddNewStudent.this);
 
         initializeVariables();
         initializeClassSpinner();

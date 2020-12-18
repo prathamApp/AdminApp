@@ -42,6 +42,7 @@ import com.pratham.admin.modalclasses.Coach;
 import com.pratham.admin.modalclasses.Community;
 import com.pratham.admin.modalclasses.Completion;
 import com.pratham.admin.modalclasses.ECEAsmt;
+import com.pratham.admin.modalclasses.EventMessage;
 import com.pratham.admin.modalclasses.GroupSession;
 import com.pratham.admin.modalclasses.GroupVisit;
 import com.pratham.admin.modalclasses.Groups;
@@ -57,6 +58,8 @@ import com.pratham.admin.util.PermissionResult;
 import com.pratham.admin.util.PermissionUtils;
 import com.pratham.admin.util.Utility;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.jsoup.Jsoup;
 
 import java.util.ArrayList;
@@ -91,6 +94,8 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
     TextView engLang;
     @BindView(R.id.tv_hindi)
     TextView hinLang;
+    @BindView(R.id.tv_updateApp)
+    TextView updateApp;
 
     String lastOfflineSavedDate;
     String crlName;
@@ -114,6 +119,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+//        Toast.makeText(this, "New Version", Toast.LENGTH_SHORT).show();
         if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
             String[] permissionArray = new String[]{PermissionUtils.Manifest_WRITE_EXTERNAL_STORAGE, PermissionUtils.Manifest_CAMERA, PermissionUtils.Manifest_ACCESS_FINE_LOCATION};
             if (!isPermissionsGranted(MainActivity.this, permissionArray))
@@ -188,6 +194,28 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
         }
     }
 
+    @Subscribe
+    public void onMessageEvent(EventMessage eventMessage){
+        if(eventMessage.getMessage().equalsIgnoreCase("GOT")){
+            EventMessage startUpdate = new EventMessage();
+            startUpdate.setMessage("CHECK_UPDATE");
+            EventBus.getDefault().post(startUpdate);
+        }else if(eventMessage.getMessage().equalsIgnoreCase("UPDATE_AVAILABLE")) {
+            Log.e("#","AVAILABLE");
+            showUpdateButton();
+        }
+    }
+
+    public void showUpdateButton() {
+        updateApp.setVisibility(View.VISIBLE);
+        updateApp.setOnClickListener(v -> {
+            EventMessage startUpdate = new EventMessage();
+            startUpdate.setMessage("START_UPDATE");
+            EventBus.getDefault().post(startUpdate);
+            updateApp.setVisibility(View.GONE);
+        });
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -225,7 +253,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
                 internetIsAvailable = false;
             } else {
                 internetIsAvailable = true;
-                checkVersion();
+                //checkVersion();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -285,8 +313,8 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
 
     @Override
     public void onResponse(String response, String header) {
-        if (isUpdateClicked)
-            updateApp();
+        /*if (isUpdateClicked)
+            updateApp();*/
     }
 
     private void updateApp() {
@@ -370,7 +398,6 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
         }
         // Force Update Code
         if ((!currentVersion.equals(latestVersion)) && latestVersion != null) {
-
 
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Material_Light_Dialog);
             dialogBuilder.setCancelable(false);
@@ -505,7 +532,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
                                     && (stdObj.size() == 0) && (aserObj.size() == 0) && (grpObj.size() == 0) && (ECEAsmtObj.size() == 0) && (LogObj.size() == 0)
                                 /*&& (CRLVisitObj.size() == 0)*/) {
                                 // No Data Available
-                                updateApp();
+                                //updateApp();
                                 Toast.makeText(MainActivity.this, R.string.noNewDataPush, Toast.LENGTH_LONG).show();
                                 Log.d("json not pushed:::", json);
                                 if (pd.isShowing())
@@ -665,7 +692,8 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
                     AppDatabase.destroyInstance();
                     crlName = Crl.get(i).getFirstName() + " " + Crl.get(i).getLastName(); //+ " (" + Crl.get(i).getCRLId() + ")";
                     this.crlID = Crl.get(i).getCRLId();
-                    showDialog(Crl.get(i).getFirstName() + " " + Crl.get(i).getLastName());
+                    //showDialog();
+                    pushDataOnLogin();
 
                     userPass = true;
                     break;
@@ -694,7 +722,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
         }
     }
 
-    private void showDialog(String crlName) {
+    private void showDialog() {
         //todo push data when crl logs in
         pushDataOnLogin();
 
@@ -753,7 +781,6 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
 //            String json = gson.toJson(mainList);
                 String json = "{ \"ManageDevicesJSON\":" + "" + "[]"
                         + ",\"MetaData\":" + "" + metaData + "}";
-                Log.d("@@@@@", json);
 
 
                 /*Gson gson = new Gson();
@@ -816,8 +843,9 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
                                 if (pd.isShowing())
                                     pd.dismiss();
                             } else {*/
-                    pd.dismiss();
+//                    pd.dismiss();
                     NetworkCalls.getNetworkCallsInstance(MainActivity.this).postRequest(MainActivity.this, APIs.ReplaceTab, "uploading...", json, "push_forms");
+                    pd.dismiss();
                                /* AndroidNetworking.post(PushForms).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
                                     @Override
                                     public void onResponse(String response) {

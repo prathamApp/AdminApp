@@ -1,4 +1,4 @@
-package com.pratham.admin.forms;
+package com.pratham.admin.forms.AttendanceForm;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
@@ -29,6 +29,11 @@ import com.pratham.admin.util.CustomGroup;
 import com.pratham.admin.util.DatePickerFragmentOne;
 import com.pratham.admin.util.Utility;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -39,25 +44,26 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+@EActivity(R.layout.activity_attendance_form)
 public class AttendanceForm extends BaseActivity /*implements ConnectionReceiverListener */ {
 
-    @BindView(R.id.sp_Village)
+    @ViewById(R.id.sp_Village)
     Spinner sp_Village;
-    @BindView(R.id.sp_Groups)
+    @ViewById(R.id.sp_Groups)
     MultiSpinner sp_Groups;
-    @BindView(R.id.sp_Students)
+    @ViewById(R.id.sp_Students)
     MultiSpinner sp_Students;
-    @BindView(R.id.btn_Submit)
+    @ViewById(R.id.btn_Submit)
     Button btn_Submit;
-    @BindView(R.id.btn_SelectAll)
+    @ViewById(R.id.btn_SelectAll)
     Button btn_SelectAll;
-    @BindView(R.id.btn_DeselectAll)
+    @ViewById(R.id.btn_DeselectAll)
     Button btn_DeselectAll;
-    @BindView(R.id.btn_DatePicker)
+    @ViewById(R.id.btn_DatePicker)
     Button btn_DatePicker;
-    @BindView(R.id.rg_Present)
+    @ViewById(R.id.rg_Present)
     RadioGroup rg_Present;
-    @BindView(R.id.rb_Yes)
+    @ViewById(R.id.rb_Yes)
     RadioButton rb_Yes;
     String uniqueAttendanceID = "";
 
@@ -88,11 +94,8 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
     String selectedGroupNames = "";
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_attendance_form);
-        ButterKnife.bind(this);
+    @AfterViews
+    public void initializeVariables() {
         getSupportActionBar().hide();
 
         // Generate Random UUID
@@ -126,10 +129,9 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
         // Set Default Todays date
         btn_DatePicker.setText(new Utility().GetCurrentDate().toString());
         btn_DatePicker.setPadding(8, 8, 8, 8);
-
     }
 
-    @OnClick(R.id.btn_Submit)
+    @Click(R.id.btn_Submit)
     public void saveForm(View view) {
         if ((sp_Village.getSelectedItemPosition() > 0) && (selectedGroups.trim().length() > 0)
                 && (selectedStudents.trim().length() > 0)) {
@@ -251,14 +253,14 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
     }
 
 
-    @OnClick(R.id.btn_DatePicker)
+    @Click(R.id.btn_DatePicker)
     public void startDatePicker(View view) {
         btn_Submit.setText(R.string.preview);
         DialogFragment newFragment = new DatePickerFragmentOne();
         newFragment.show(getFragmentManager(), "DatePicker");
     }
 
-    @OnClick(R.id.btn_SelectAll)
+    @Click(R.id.btn_SelectAll)
     public void selectAll(View view) {
         ArrayAdapter StdAdapter = new ArrayAdapter(AttendanceForm.this, android.R.layout.simple_spinner_dropdown_item, registeredStd);
         sp_Students.setAdapter(StdAdapter, true, onStdSelectedListener);
@@ -268,7 +270,7 @@ public class AttendanceForm extends BaseActivity /*implements ConnectionReceiver
         sp_Students.performClick();
     }
 
-    @OnClick(R.id.btn_DeselectAll)
+    @Click(R.id.btn_DeselectAll)
     public void deselectAll(View view) {
         ArrayAdapter StdAdapter = new ArrayAdapter(AttendanceForm.this, android.R.layout.simple_spinner_dropdown_item, registeredStd);
         sp_Students.setAdapter(StdAdapter, false, onStdSelectedListener);

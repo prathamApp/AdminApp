@@ -147,7 +147,7 @@
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".forms.AttendanceForm"
+            android:name=".forms.AttendanceForm.AttendanceForm_"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden" />
         <activity

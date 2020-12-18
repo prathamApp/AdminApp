@@ -25,6 +25,10 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 dependencies {
@@ -64,7 +68,6 @@ dependencies {
     //error log
     implementation 'net.alhazmy13.catcho:library:1.1.0'
     // Time Range Picker
-    implementation 'org.greenrobot:eventbus:3.1.1'
 
 //    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 
@@ -79,6 +82,11 @@ dependencies {
 
     implementation 'com.android.support:support-annotations:28.0.0'
     //androidAnnotations
-    annotationProcessor "org.androidannotations:androidannotations:4.6.0"
-    implementation "org.androidannotations:androidannotations-api:4.6.0"
+    annotationProcessor "org.androidannotations:androidannotations:4.7.0"
+    implementation "org.androidannotations:androidannotations-api:4.7.0"
+
+    //in app update
+    implementation 'com.google.android.play:core:1.7.3'
+
+    implementation 'org.greenrobot:eventbus:3.2.0'
 }

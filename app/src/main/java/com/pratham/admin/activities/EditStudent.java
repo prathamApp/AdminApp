@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -112,7 +113,7 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
         setContentView(R.layout.activity_edit_student);
         getSupportActionBar().hide();
 
-        EventBus.getDefault().register(EditStudent.this);
+        //EventBus.getDefault().register(EditStudent.this);
 
         initializeVariables();
         initializeClassSpinner();
@@ -1484,12 +1485,16 @@ public class EditStudent extends BaseActivity/* implements ConnectionReceiverLis
 
                     if ((langSpin > 0 || numSpin > 0 || engSpin > 0) || classSpin > 0 && !edt_GuardianName.getText().toString().isEmpty() && (rb_Govt.isChecked() || rb_Private.isChecked())) {
 
+                        String schoolType="";
                         // get selected radio button from radioGroup
                         int selId = rg_SchoolType.getCheckedRadioButtonId();
+
                         // find the radio button by returned id
                         selectedSchoolType = (RadioButton) findViewById(selId);
-                        String schoolType = selectedSchoolType.getText().toString();
-                        int stdSchoolType = 0;
+                        if(!(selId==-1)){ //app was crashing before on submit click(10 oct 20)
+                            schoolType = selectedSchoolType.getText().toString();
+                        }
+                        int stdSchoolType=0;
                         if (schoolType.equalsIgnoreCase("Government"))
                             stdSchoolType = 1;
                         else if (schoolType.equalsIgnoreCase("Private"))

@@ -33,22 +33,22 @@ public class NetworkCalls {
 
     //push data(json) to url      used in Activity_QRScan,AssignTabletMD
     public void postRequest(final NetworkCallListener networkCallListener, String url, String msg, String json, final String header) {
-        dialog = new ProgressDialog(mContext);
+/*        dialog = new ProgressDialog(mContext);
         dialog.setTitle(msg);
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
+        dialog.show();*/
         AndroidNetworking.post(url).setContentType("application/json").addStringBody(json).build().getAsString(new StringRequestListener() {
             @Override
             public void onResponse(String response) {
                 networkCallListener.onResponse(response, header);
-                dialog.dismiss();
+                //dialog.dismiss();
             }
 
             @Override
             public void onError(ANError anError) {
                 networkCallListener.onError(anError, header);
-                dialog.dismiss();
+                //dialog.dismiss();
             }
         });
     }

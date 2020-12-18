@@ -1,10 +1,14 @@
 package com.pratham.admin.activities.DeviceInformation;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
-import android.util.Log;
+import android.provider.Settings;
+import android.support.annotation.RequiresApi;
 
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.modalclasses.MetaData;
@@ -20,8 +24,8 @@ public class DeviceInfoPrsenter implements DeviceInfoContract.DeviceInfoPresente
     DeviceInfoContract.DeviceInfoView deviceInfoView;
 
     MetaData metaData;
-    private String deviceID, apkVersion, serialID, WiFiMac,
-            osVersionName, osVersionNum, availStorage, resolution, manufacturer, model;
+    private String deviceID, serialID, WiFiMac,
+            osVersionName, osVersionNum, availStorage, manufacturer, model, resolution;
     private int osApiLevel;
     private long internalStorageSize;
 
@@ -29,10 +33,12 @@ public class DeviceInfoPrsenter implements DeviceInfoContract.DeviceInfoPresente
         this.context=context;
     }
 
+    @SuppressLint("NewApi")
     @Override
-    public void populateDeviceInfo() {
-        //osversion();
-        //getStorage();
+    public void populateDeviceInfo(String res) {
+        resolution=res;
+        osversion();
+        getStorage();
     }
 
     @Override
@@ -40,7 +46,7 @@ public class DeviceInfoPrsenter implements DeviceInfoContract.DeviceInfoPresente
         this.deviceInfoView=deviceInfoView;
     }
 
-    /*@Override
+    @Override
     public void addMetaData() {
         metaData = new MetaData();
         metaData.setKeys("DeviceID");
@@ -92,9 +98,9 @@ public class DeviceInfoPrsenter implements DeviceInfoContract.DeviceInfoPresente
         metaData.setValue(model);
         AppDatabase.getDatabaseInstance(context).getMetaDataDao().insertMetadata(metaData);
 
-    }*/
+    }
 
-    /*//for getting os versionName and ApiLevel
+    //for getting os versionName and ApiLevel
     private void osversion(){
         osVersionNum = Build.VERSION.RELEASE;
 
@@ -111,7 +117,8 @@ public class DeviceInfoPrsenter implements DeviceInfoContract.DeviceInfoPresente
         }
     }
 
-    //for getting internal available storage
+    //for getting internal available storage and device info
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void getStorage(){
         StatFs stat = new StatFs(Environment.getDataDirectory().getPath());
         long bytesAvailable;
@@ -125,8 +132,20 @@ public class DeviceInfoPrsenter implements DeviceInfoContract.DeviceInfoPresente
         internalStorageSize = bytesAvailable / (1024 * 1024);
         String storage = String.valueOf(internalStorageSize);
         availStorage = storage+" MB";
-        Log.e("SSSSSSSs",availStorage);
-        deviceInfoView.showDeviceInfo(osApiLevel, availStorage);
+
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wInfo = wifiManager.getConnectionInfo();
+        WiFiMac = wInfo.getMacAddress();
+
+
+        //Model details
+        manufacturer = Build.MANUFACTURER;
+        model = Build.MODEL;
+
+        //get deviceID and serialID
+        deviceID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        serialID = android.os.Build.SERIAL;
+        deviceInfoView.showDeviceInfo(osApiLevel, osVersionNum, osVersionName, availStorage, WiFiMac, deviceID, serialID,
+                manufacturer, model, resolution);
     }
-*/
 }

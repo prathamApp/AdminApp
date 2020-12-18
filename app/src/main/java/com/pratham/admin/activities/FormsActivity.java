@@ -1,17 +1,14 @@
 package com.pratham.admin.activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.pratham.admin.R;
 import com.pratham.admin.adapters.DashRVDataAdapter;
-import com.pratham.admin.forms.AttendanceForm;
+import com.pratham.admin.forms.AttendanceForm.AttendanceForm_;
 import com.pratham.admin.forms.CoachInformationForm;
 import com.pratham.admin.forms.CoachRetentionForm;
 import com.pratham.admin.forms.CourseCompletionForm;
@@ -20,9 +17,7 @@ import com.pratham.admin.forms.CrlVisitForm;
 import com.pratham.admin.forms.DeleteStudentsForm;
 import com.pratham.admin.forms.GroupSessionForm;
 import com.pratham.admin.forms.GroupVisitForm;
-import com.pratham.admin.forms.Youth.YouthInfoFormActivity;
 import com.pratham.admin.forms.Youth.YouthInfoFormActivity_;
-import com.pratham.admin.forms.YouthInfoForm;
 import com.pratham.admin.interfaces.DashRVClickListener;
 import com.pratham.admin.modalclasses.DashboardItem;
 import com.pratham.admin.util.BaseActivity;
@@ -125,7 +120,7 @@ public class FormsActivity extends BaseActivity implements DashRVClickListener {
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
             startActivity(intent);
         } else if (name.contains(getString(R.string.studentsattendance))) {
-            Intent intent = new Intent(FormsActivity.this, AttendanceForm.class);
+            Intent intent = new Intent(FormsActivity.this, AttendanceForm_.class);
             intent.putExtra("CRLid", LoggedcrlId);
             intent.putExtra("CRLname", LoggedcrlName);
             intent.putExtra("CRLnameSwapStd", LoggedCRLnameSwapStd);
