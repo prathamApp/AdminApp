@@ -78,6 +78,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
 
     @BindView(R.id.userName)
     EditText userName;
+
     @BindView(R.id.password)
     EditText password;
 
