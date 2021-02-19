@@ -72,6 +72,7 @@
     <string name="enterfirstname">पहला नाम दर्ज करें</string>
     <string name="entermiddlename">मध्य नाम दर्ज करें</string>
     <string name="enterlastname">उपनाम नाम दर्ज करें</string>
+    <string name="enterMoNumber">मोबाइल नंबर दर्ज करें</string>
     <string name="birthdate">जन्मदिन</string>
     <string name="clas">कक्षा</string>
     <string name="gender">लिंग</string>
@@ -293,6 +294,7 @@
     <string name="sorrynodatafound">क्षमा करें कोई डेटा नहीं मिला !!!</string>
     <string name="recordsavedtodb">रिकॉर्ड डेटाबेस मैं जतन किया गया !</string>
     <string name="recordupdatetodb">रिकॉर्ड सफलतापूर्वक अपडेट किया गया !</string>
+    <string name="enterValidMoNumber">कृपया मान्य 10 अंकों का मोबाइल नंबर दर्ज करें !!!</string>
 
 
     <!--Alert Dialog-->
@@ -491,27 +493,46 @@
         <item>Other?, pleas specify</item>
     </string-array>
 
+    <!-- <string-array name="array_Class">
+         <item>कक्षा</item>
+         <item>१</item>
+         <item>२</item>
+         <item>३</item>
+         <item>४</item>
+         <item>५</item>
+         <item>६</item>
+         <item>७</item>
+         <item>८</item>
+         <item>९</item>
+         <item>१०</item>
+         <item>११</item>
+         <item>१२</item>
+         <item>आंगनवाड़ी</item> &lt;!&ndash;value = -1&ndash;&gt;
+         <item>पूर्व-स्कूल</item> &lt;!&ndash;value = -2&ndash;&gt;
+         <item>बालवाड़ी</item> &lt;!&ndash;value = -3&ndash;&gt;
+         <item>ड्रॉप आउट</item> &lt;!&ndash;value = -4&ndash;&gt;
+         <item>नॉट एनरोलड</item> &lt;!&ndash;value = -5&ndash;&gt;
+     </string-array>-->
     <string-array name="array_Class">
-        <item>कक्षा</item>
-        <item>१</item>
-        <item>२</item>
-        <item>३</item>
-        <item>४</item>
-        <item>५</item>
-        <item>६</item>
-        <item>७</item>
-        <item>८</item>
-        <item>९</item>
-        <item>१०</item>
-        <item>११</item>
-        <item>१२</item>
-        <item>आंगनवाड़ी</item> <!--value = -1-->
-        <item>पूर्व-स्कूल</item> <!--value = -2-->
-        <item>बालवाड़ी</item> <!--value = -3-->
-        <item>ड्रॉप आउट</item> <!--value = -4-->
-        <item>नॉट एनरोलड</item> <!--value = -5-->
+        <item>Class</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>Anganwadi</item> <!--value = -1-->
+        <item>Pre-School</item> <!--value = -2-->
+        <item>Balwadi</item> <!--value = -3-->
+        <item>Dropout</item> <!--value = -4-->
+        <item>Not Enrolled</item> <!--value = -5-->
     </string-array>
-
     <string-array name="array_asmtType">
         <item>Select Assessment Type</item>
         <item>Baseline</item>
@@ -608,4 +629,41 @@
     <string name="model">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Model :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
     <string name="availableStorage">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Available Storage :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
 
+
+    <string-array name="phone_type">
+        <item>फ़ोन का प्रकार चुनें</item>
+        <item>रेगुलर फ़ोन</item>
+        <item>फीचर फ़ोन</item>
+        <item>स्मार्ट फ़ोन</item>
+        <item>कोई नही</item>
+    </string-array>
+    <!--    codes reffer from angshala sheet shared by kumar-->
+    <string-array name="phone_type_constants">
+        <item>-1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>0</item>
+    </string-array>
+
+    <string-array name="relation_with_phone_owner">
+        <item>फ़ोन के मालिक से  सम्बन्ध चुनें</item>
+        <item>अभि‍भावक</item>
+        <item>भाई/ बहन</item>
+        <item>पडोसी</item>
+    </string-array>
+    <!--    codes reffer from angshala sheet shared by kumar-->
+    <string-array name="relation_with_phone_owner_constants">
+        <item>-1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="birth_date">जन्मदिन</string>
+    <string name="validationMessage">10 अंकों का वैध मोबाइल नंबर लिखें</string>
+    <string name="select_phone_type">कृपया फ़ोन का प्रकार चुनें</string>
+    <string name="selectBirthDate">कृपया  जन्मतिथि चुनें</string>
+    <string name="Invalid_class">अमान्य वर्ग</string>
+    <string name="select_phone_owner">कृपया फ़ोन के मालिक से  सम्बन्ध चुनें</string>
 </resources>

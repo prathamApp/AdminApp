@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 
 import com.pratham.admin.R;
+import com.pratham.admin.modalclasses.EventMessageGreenRobot;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -41,25 +42,42 @@ public class BirthDatePickerFragment extends DialogFragment implements DatePicke
         this.year = year;
         this.month = monthofyear + 1;
         this.day = dayOfMonth;
-
+        String date;
         Button btn = (Button) getActivity().findViewById(R.id.btn_BirthDatePicker);
 
         if (this.month < 10 && this.day < 10) {
+            date = "0" + dayOfMonth + "-0" + month + "-" + year;
             if (btn != null)
-                btn.setText("0" + dayOfMonth + "-0" + month + "-" + year);
-            EventBus.getDefault().post("0" + dayOfMonth + "-0" + month + "-" + year);
+                btn.setText(date);
+            EventMessageGreenRobot eventMessage = new EventMessageGreenRobot();
+            eventMessage.setMessage(date);
+            eventMessage.setId("BIRTHDATE");
+            EventBus.getDefault().post(eventMessage);
         } else if (this.month < 10) {
+            date = "" + dayOfMonth + "-0" + month + "-" + year;
             if (btn != null)
-                btn.setText("" + dayOfMonth + "-0" + month + "-" + year);
-            EventBus.getDefault().post("" + dayOfMonth + "-0" + month + "-" + year);
+                btn.setText(date);
+            EventMessageGreenRobot eventMessage = new EventMessageGreenRobot();
+            eventMessage.setMessage(date);
+            eventMessage.setId("BIRTHDATE");
+            EventBus.getDefault().post(eventMessage);
         } else if (this.day < 10) {
+            date = "0" + dayOfMonth + "-" + month + "-" + year;
             if (btn != null)
-                btn.setText("0" + dayOfMonth + "-" + month + "-" + year);
-            EventBus.getDefault().post("0" + dayOfMonth + "-" + month + "-" + year);
+                btn.setText(date);
+            EventMessageGreenRobot eventMessage = new EventMessageGreenRobot();
+            eventMessage.setMessage(date);
+            eventMessage.setId("BIRTHDATE");
+            EventBus.getDefault().post(eventMessage);
         } else {
+            date="" + dayOfMonth + "-" + month + "-" + year;
             if (btn != null)
-                btn.setText("" + dayOfMonth + "-" + month + "-" + year);
-            EventBus.getDefault().post("" + dayOfMonth + "-" + month + "-" + year);
+                btn.setText(date);
+
+            EventMessageGreenRobot eventMessage = new EventMessageGreenRobot();
+            eventMessage.setMessage(date);
+            eventMessage.setId("BIRTHDATE");
+            EventBus.getDefault().post(eventMessage);
         }
     }
 }

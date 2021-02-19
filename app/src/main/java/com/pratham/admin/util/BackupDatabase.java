@@ -23,7 +23,7 @@ public class BackupDatabase {
         try {
             File sd = new File(Environment.getExternalStorageDirectory() + "/PrathamBackups" + "/.PrathamAdmin");
             if (!sd.exists())
-                sd.mkdir();
+                sd.mkdirs();
 
             if (sd.canWrite()) {
                 File currentDB = mContext.getDatabasePath(DB_NAME);

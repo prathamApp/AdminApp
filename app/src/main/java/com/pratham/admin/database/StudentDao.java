@@ -57,6 +57,6 @@ public interface StudentDao {
     @Query("DELETE FROM Student WHERE GroupId=:grpID")
     public void deleteDeletedGrpsStdRecords(String grpID);
 
-    @Query("update Student set Stud_Class=:stdClass,GuardianName=:guardianName,SchoolType=:stdSchoolType, sentFlag=:sentFlag WHERE StudentId=:StudentUniqID")
-    public void UpdateStudent(String stdClass, String guardianName, int stdSchoolType, int sentFlag, String StudentUniqID);
+    @Query("update Student set Stud_Class=:stdClass,GuardianName=:guardianName,SchoolType=:stdSchoolType,DOB=:DOB,Age=:Age,Gender=:gender,phoneType=:phoneType,relation_with_phone_owner=:relation_with_phone_owner,phoneNo=:moNumber, sentFlag=:sentFlag WHERE StudentId=:StudentUniqID")
+    public void UpdateStudent(String stdClass, String guardianName, String stdSchoolType, String DOB, String Age, String gender, String phoneType, String relation_with_phone_owner, String moNumber, int sentFlag, String StudentUniqID);
 }

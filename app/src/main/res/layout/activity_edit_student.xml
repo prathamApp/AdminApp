@@ -169,16 +169,80 @@
                     android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
+            <!-- phone type phone number-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="@dimen/_8sdp"
+                android:orientation="horizontal">
 
+                <Spinner
+                    android:id="@+id/phone_type"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:background="@drawable/spinner_background_forms"
+                    android:entries="@array/phone_type" />
+
+                <Spinner
+                    android:id="@+id/relation_with_phone_owner"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:background="@drawable/spinner_background_forms"
+                    android:entries="@array/relation_with_phone_owner" />
+
+                <EditText
+                    android:id="@+id/edt_moNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_weight="1"
+                    android:hint="@string/enterMoNumber"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:nextFocusDown="@+id/edt_GuardianName"
+                    android:nextFocusForward="@+id/edt_GuardianName"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textColorHint="@color/text_hint"
+                    android:textSize="@dimen/_12sdp" />
+            </LinearLayout>
             <!--Age, stdClass, Gender-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/_8sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
-                android:orientation="horizontal"
-                android:weightSum="3">
-
+                android:orientation="horizontal">
+                <!--birth Date-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_2sdp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:text="@string/select_birth"
+                    android:textColor="@color/button"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
+                <Button
+                    android:id="@+id/btn_BirthDatePicker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/button"
+                    android:drawableLeft="@android:drawable/ic_menu_my_calendar"
+                    android:drawablePadding="@dimen/_4sdp"
+                    android:text="@string/birth_date"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/_12sdp" />
                 <!--Class Spinner-->
                 <Spinner
                     android:id="@+id/sp_Class"
@@ -212,6 +276,7 @@
                     android:layout_weight="1"
                     android:digits="0123456789"
                     android:gravity="center"
+                    android:visibility="gone"
                     android:hint="@string/gender"
                     android:inputType="number"
                     android:singleLine="true"
@@ -288,7 +353,60 @@
 
             </LinearLayout>
 
+            <!--Guardian Name, School Type-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="2">
+                <!--Radio Button to Select Gender-->
+                <RadioGroup
+                    android:id="@+id/rg_Gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/gender"
+                        android:textColor="@color/button"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/rb_Male"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:text="@string/male"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/rb_Female"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:layout_weight="1"
+                        android:text="@string/female"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                </RadioGroup>
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+            </LinearLayout>
         </LinearLayout>
 
 

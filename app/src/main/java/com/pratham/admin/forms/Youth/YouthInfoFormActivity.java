@@ -145,7 +145,7 @@ public class YouthInfoFormActivity extends BaseActivity implements YouthInfoForm
         if (BlocksSpinnerValue > 0 && VillagesSpinnerValue > 0 && GroupsSpinnerValue > 0) {
             // Checking if edittexts are empty
             if ((!edt_Fname.getText().toString().isEmpty() || !edt_Lname.getText().toString().isEmpty())) {
-                // Validations
+                // Validationsf
                 if ((edt_Fname.getText().toString().matches("[a-zA-Z.? ]*")) && (edt_Lname.getText().toString().matches("[a-zA-Z.? ]*"))
                         && (edt_Mname.getText().toString().matches("[a-zA-Z.? ]*"))
                         && (!btn_BirthDatePicker.getText().toString().equals(getString(R.string.birthdate))) && (!edt_GuardianName.getText().toString().isEmpty())) {

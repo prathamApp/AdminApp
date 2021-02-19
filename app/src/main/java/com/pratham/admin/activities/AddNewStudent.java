@@ -33,6 +33,7 @@ import com.pratham.admin.ApplicationController;
 import com.pratham.admin.R;
 import com.pratham.admin.database.AppDatabase;
 import com.pratham.admin.modalclasses.Aser;
+import com.pratham.admin.modalclasses.EventMessageGreenRobot;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.Modal_Log;
 import com.pratham.admin.modalclasses.Student;
@@ -43,7 +44,6 @@ import com.pratham.admin.util.BirthDatePickerFragment;
 import com.pratham.admin.util.DatePickerFragment;
 import com.pratham.admin.util.Utility;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
@@ -56,17 +56,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class AddNewStudent extends BaseActivity{
+public class AddNewStudent extends BaseActivity {
 
     private static final int TAKE_Thumbnail = 1;
     private static final int REQUEST_WRITE_STORAGE = 112;
     private static String TAG = "PermissionDemo";
     public boolean EndlineButtonClicked = false;
-    Spinner blocks_spinner, villages_spinner, groups_spinner, sp_Class;
-    EditText edt_Fname, edt_Mname, edt_Lname, edt_GuardianName;
+    Spinner blocks_spinner, villages_spinner, groups_spinner, sp_Class, phone_type, relation_with_phone_owner;
+    EditText edt_Fname, edt_Mname, edt_Lname, edt_GuardianName, edt_moNumber;
     RadioGroup rg_Gender, rg_SchoolType;
     Button btn_Submit_Baseline, btn_Clear, btn_Capture, btn_BirthDatePicker;
     RadioButton rb_Male, rb_Female, rb_Govt, rb_Private;
+    TextView edt_Age;
     String GrpID;
     List<String> Blocks = new ArrayList<>();
     int vilID;
@@ -100,7 +101,24 @@ public class AddNewStudent extends BaseActivity{
             btn_EndlineDatePicker.setText(msg);
         }
     }
-
+    @Subscribe
+    public void onEvent(EventMessageGreenRobot eventMessageGreenRobot) {
+        if (eventMessageGreenRobot.getId().equalsIgnoreCase("BIRTHDATE")) {
+            btn_BirthDatePicker.setText(eventMessageGreenRobot.getMessage());
+            String DOB = btn_BirthDatePicker.getText().toString();
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+            String stdAge = "-1";
+            try {
+                cal.setTime(sdf.parse(btn_BirthDatePicker.getText().toString()));
+                stdAge = "" + Integer.parseInt(Integer.toString(calculateAge(cal.getTimeInMillis())));
+            } catch (ParseException e) {
+                Toast.makeText(AddNewStudent.this, "something went wrong", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+            edt_Age.setText("Age : " + stdAge);
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +135,7 @@ public class AddNewStudent extends BaseActivity{
         initializeAserDate();
         initializeBirthDate();
         initializeEnglishSpinner();
-
+        initializePhoneNumberSpinner();
         sp_English.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
@@ -843,25 +861,42 @@ public class AddNewStudent extends BaseActivity{
             public void onClick(View v) {
                 // get selected radio button from radioGroup
                 int selectedId = rg_Gender.getCheckedRadioButtonId();
+                int genderId = rg_Gender.getCheckedRadioButtonId();
                 // find the radio button by returned id
                 selectedGender = (RadioButton) findViewById(selectedId);
-                gender = selectedGender.getText().toString();
+               // gender = selectedGender.getText().toString();
 
-                if(gender.equals(getString(R.string.male)))
+                if (genderId == rb_Male.getId()) {
                     gender = "Male";
-                else if(gender.equals(getString(R.string.female)))
+                } else if (genderId == rb_Female.getId()) {
                     gender = "Female";
+                }
+
+               /* if (gender.equals(getString(R.string.male)))
+                    gender = "Male";
+                else if (gender.equals(getString(R.string.female)))
+                    gender = "Female";*/
 
                 // get selected radio button from radioGroup
                 int selId = rg_SchoolType.getCheckedRadioButtonId();
                 // find the radio button by returned id
                 selectedSchoolType = (RadioButton) findViewById(selId);
                 String schoolType = selectedSchoolType.getText().toString();
-                int stdSchoolType = 0;
-                if (schoolType.equalsIgnoreCase(getString(R.string.government)))
+                String stdSchoolType = "0";
+               /* if (schoolType.equalsIgnoreCase(getString(R.string.government)))
                     stdSchoolType = 1;
                 else if (schoolType.equalsIgnoreCase(getString(R.string.privat)))
-                    stdSchoolType = 2;
+                    stdSchoolType = 2;*/
+
+
+                if (selId==rb_Govt.getId())
+                    stdSchoolType = "1";
+                else if (selId==rb_Private.getId())
+                    stdSchoolType = "2";
+
+
+
+
 
                 // Check AllSpinners Emptyness
                 int ClassSpinnerValue = sp_Class.getSelectedItemPosition();
@@ -876,7 +911,7 @@ public class AddNewStudent extends BaseActivity{
                         // Validations
                         if ((edt_Fname.getText().toString().matches("[a-zA-Z.? ]*")) && (edt_Lname.getText().toString().matches("[a-zA-Z.? ]*"))
                                 && (edt_Mname.getText().toString().matches("[a-zA-Z.? ]*"))
-                                && (!btn_BirthDatePicker.getText().toString().contains("Birth")) && (!edt_GuardianName.getText().toString().isEmpty())) {
+                                && (!btn_BirthDatePicker.getText().toString().equalsIgnoreCase(getString(R.string.birth_date))) && (!edt_GuardianName.getText().toString().isEmpty())) {
 
                             Calendar cal = Calendar.getInstance();
                             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
@@ -967,29 +1002,33 @@ public class AddNewStudent extends BaseActivity{
                             asr.WSub = WS;
                             asr.sentFlag = 0;
                             asr.CreatedOn = new Utility().GetCurrentDateTime(false);
+                            String moNumber = edt_moNumber.getText().toString();
+                            if (validatePhoneDetails()) {
+                                stdObj.phoneNo = moNumber;
+                                stdObj.phoneType = getPhoneType();
+                                stdObj.relation_with_phone_owner = getRelationWithPhoneOwner();
+                                try {
+                                    AppDatabase.getDatabaseInstance(AddNewStudent.this).getStudentDao().insertStudent(stdObj);
+                                    AppDatabase.getDatabaseInstance(AddNewStudent.this).getAserDao().insertAser(asr);
+                                    Toast.makeText(AddNewStudent.this, R.string.recInsertSuccess, Toast.LENGTH_SHORT).show();
+                                    BackupDatabase.backup(AddNewStudent.this);
+                                    resetFormPartially();
 
-                            try {
-                                AppDatabase.getDatabaseInstance(AddNewStudent.this).getStudentDao().insertStudent(stdObj);
-                                AppDatabase.getDatabaseInstance(AddNewStudent.this).getAserDao().insertAser(asr);
-                                Toast.makeText(AddNewStudent.this, R.string.recInsertSuccess, Toast.LENGTH_SHORT).show();
-                                BackupDatabase.backup(AddNewStudent.this);
-                                resetFormPartially();
+                                } catch (Exception e) {
+                                    Modal_Log log = new Modal_Log();
+                                    log.setCurrentDateTime(new Utility().GetCurrentDate());
+                                    log.setErrorType("ERROR");
+                                    log.setExceptionMessage(e.getMessage());
+                                    log.setExceptionStackTrace(e.getStackTrace().toString());
+                                    log.setMethodName("AddNewStudent" + "_" + "Submit");
+                                    log.setDeviceId("");
+                                    AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
+                                    BackupDatabase.backup(ApplicationController.getInstance());
 
-                            } catch (Exception e) {
-                                Modal_Log log = new Modal_Log();
-                                log.setCurrentDateTime(new Utility().GetCurrentDate());
-                                log.setErrorType("ERROR");
-                                log.setExceptionMessage(e.getMessage());
-                                log.setExceptionStackTrace(e.getStackTrace().toString());
-                                log.setMethodName("AddNewStudent" + "_" + "Submit");
-                                log.setDeviceId("");
-                                AppDatabase.getDatabaseInstance(ApplicationController.getInstance()).getLogDao().insertLog(log);
-                                BackupDatabase.backup(ApplicationController.getInstance());
-
-                                e.printStackTrace();
-                                Toast.makeText(AddNewStudent.this, R.string.recInsertFailed, Toast.LENGTH_SHORT).show();
+                                    e.printStackTrace();
+                                    Toast.makeText(AddNewStudent.this, R.string.recInsertFailed, Toast.LENGTH_SHORT).show();
+                                }
                             }
-
                         } else {
                             Toast.makeText(AddNewStudent.this, R.string.enterValidInput, Toast.LENGTH_SHORT).show();
                         }
@@ -1010,6 +1049,98 @@ public class AddNewStudent extends BaseActivity{
         });
     }
 
+    private String getRelationWithPhoneOwner() {
+        int pos = relation_with_phone_owner.getSelectedItemPosition();
+        String[] relation_with_phone_owner = getResources().getStringArray(R.array.relation_with_phone_owner_constants);
+        if (pos > 0) {
+            return relation_with_phone_owner[pos];
+        } else {
+            return "";
+        }
+    }
+
+    private String getPhoneType() {
+        int pos = phone_type.getSelectedItemPosition();
+        String[] phoneTypeConstants = getResources().getStringArray(R.array.phone_type_constants);
+        if (pos > 0) {
+            return phoneTypeConstants[pos];
+        } else {
+            return "";
+        }
+    }
+
+    private boolean validatePhoneDetails() {
+        int position = phone_type.getSelectedItemPosition();
+        if (position != 0) {
+            if (position == 4) {
+                // if phone not available
+                return true;
+            } else {
+                String moNumber = edt_moNumber.getText().toString();
+                if (isValidRelationWithPhoneOwner() && isValidMobile(moNumber)) {
+                    // if phone  available and details also filled
+                    return true;
+                } else {
+                    // if phone  available but details also not filled
+                    return false;
+                }
+            }
+        } else {
+            Toast.makeText(this, R.string.select_phone_type, Toast.LENGTH_SHORT).show();
+            // if item not selected
+            return false;
+        }
+    }
+
+    private boolean isValidRelationWithPhoneOwner() {
+        int pos = relation_with_phone_owner.getSelectedItemPosition();
+        if (pos > 0) {
+            return true;
+        } else {
+            Toast.makeText(this, R.string.select_phone_owner, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
+    private void initializePhoneNumberSpinner() {
+        phone_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                if (position > 0 && position != 4) {
+                    enablePhoneFields();
+                } else {
+                    disablePhoneFields();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void enablePhoneFields() {
+        relation_with_phone_owner.setSelection(0);
+        relation_with_phone_owner.setEnabled(true);
+        edt_moNumber.setEnabled(true);
+    }
+
+    private void disablePhoneFields() {
+        edt_moNumber.setText("");
+        edt_moNumber.setEnabled(false);
+        relation_with_phone_owner.setSelection(0);
+        relation_with_phone_owner.setEnabled(false);
+    }
+
+    private boolean isValidMobile(String phone) {
+        if (phone.length() == 10) {
+            return true;
+        } else {
+            Toast.makeText(this, R.string.validationMessage, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
 
     int calculateAge(long date) {
         Calendar dob = Calendar.getInstance();
@@ -1026,17 +1157,21 @@ public class AddNewStudent extends BaseActivity{
         edt_Fname.getText().clear();
         edt_Mname.getText().clear();
         edt_Lname.getText().clear();
+        edt_moNumber.getText().clear();
+        edt_Age.setText("");
         edt_GuardianName.getText().clear();
         imgView.setImageDrawable(null);
         UUID uuStdid = UUID.randomUUID();
         randomUUIDStudent = uuStdid.toString();
         EndlineButtonClicked = false;
-        btn_BirthDatePicker.setText("Birth Date");
+        btn_BirthDatePicker.setText(getString(R.string.birth_date));
         btn_DatePicker.setText(util.GetCurrentDate().toString());
         sp_Class.setSelection(0);
         sp_BaselineLang.setSelection(0);
         sp_NumberReco.setSelection(0);
         sp_English.setSelection(0);
+        relation_with_phone_owner.setSelection(0);
+        phone_type.setSelection(0);
         setDefaults();
     }
 
@@ -1072,6 +1207,9 @@ public class AddNewStudent extends BaseActivity{
         edt_Fname = (EditText) findViewById(R.id.edt_FirstName);
         edt_Mname = (EditText) findViewById(R.id.edt_MiddleName);
         edt_Lname = (EditText) findViewById(R.id.edt_LastName);
+        phone_type = (Spinner) findViewById(R.id.phone_type);
+        relation_with_phone_owner = (Spinner) findViewById(R.id.relation_with_phone_owner);
+        edt_moNumber = (EditText) findViewById(R.id.edt_moNumber);
         edt_GuardianName = (EditText) findViewById(R.id.edt_GuardianName);
         rg_Gender = (RadioGroup) findViewById(R.id.rg_Gender);
         rg_SchoolType = (RadioGroup) findViewById(R.id.rg_SchoolType);
@@ -1087,6 +1225,7 @@ public class AddNewStudent extends BaseActivity{
         btn_Endline3 = findViewById(R.id.btn_Endline3);
         btn_Endline4 = findViewById(R.id.btn_Endline4);
         AserForm = findViewById(R.id.AserForm);
+        edt_Age = findViewById(R.id.age);
     }
 
     private void initializeAserDate() {
@@ -1258,14 +1397,16 @@ public class AddNewStudent extends BaseActivity{
         sp_Class.setSelection(0);
         villages_spinner.setSelection(0);
         groups_spinner.setSelection(0);
+        edt_Age.setText("");
         edt_Fname.getText().clear();
         edt_Mname.getText().clear();
         edt_Lname.getText().clear();
+        edt_moNumber.getText().clear();
         edt_GuardianName.getText().clear();
         sp_BaselineLang.setSelection(0);
         sp_NumberReco.setSelection(0);
         btn_DatePicker.setText(util.GetCurrentDate().toString());
-        btn_BirthDatePicker.setText("Birth Date");
+        btn_BirthDatePicker.setText(getString(R.string.birth_date));
         imgView.setImageDrawable(null);
         EndlineButtonClicked = false;
         setDefaults();

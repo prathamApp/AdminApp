@@ -48,7 +48,7 @@ public class DeviceInfoPrsenter implements DeviceInfoContract.DeviceInfoPresente
 
     @Override
     public void addMetaData() {
-        metaData = new MetaData();
+       /* metaData = new MetaData();
         metaData.setKeys("DeviceID");
         metaData.setValue(deviceID);
         AppDatabase.getDatabaseInstance(context).getMetaDataDao().insertMetadata(metaData);
@@ -96,7 +96,7 @@ public class DeviceInfoPrsenter implements DeviceInfoContract.DeviceInfoPresente
         metaData = new MetaData();
         metaData.setKeys("model");
         metaData.setValue(model);
-        AppDatabase.getDatabaseInstance(context).getMetaDataDao().insertMetadata(metaData);
+        AppDatabase.getDatabaseInstance(context).getMetaDataDao().insertMetadata(metaData);*/
 
     }
 

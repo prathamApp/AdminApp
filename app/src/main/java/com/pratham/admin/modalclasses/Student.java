@@ -21,6 +21,7 @@ public class Student {
     @SerializedName("Class")
     public String Stud_Class;
 
+    //running Age calculated
     @SerializedName("Age")
     public String Age;
 
@@ -55,11 +56,18 @@ public class Student {
     public String DOB;
 
     @SerializedName("SchoolType")
-    public int SchoolType;
+    public String SchoolType;
     @SerializedName("GuardianName")
     public String GuardianName;
 
+    @SerializedName("PhoneType")
+    public String phoneType;
 
+    @SerializedName("PhoneNumber")
+    public String phoneNo;
+
+    @SerializedName("PhoneOwner")
+    public String relation_with_phone_owner;
     // new methods
     public Student() {
     }
@@ -201,5 +209,45 @@ public class Student {
 
     public void setDOB(String DOB) {
         this.DOB = DOB;
+    }
+
+    public String getPhoneNo() {
+        return phoneNo;
+    }
+
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
+    }
+
+    public String getSchoolType() {
+        return SchoolType;
+    }
+
+    public void setSchoolType(String schoolType) {
+        SchoolType = schoolType;
+    }
+
+    public String getGuardianName() {
+        return GuardianName;
+    }
+
+    public void setGuardianName(String guardianName) {
+        GuardianName = guardianName;
+    }
+
+    public String getPhoneType() {
+        return phoneType;
+    }
+
+    public void setPhoneType(String phoneType) {
+        this.phoneType = phoneType;
+    }
+
+    public String getRelation_with_phone_owner() {
+        return relation_with_phone_owner;
+    }
+
+    public void setRelation_with_phone_owner(String relation_with_phone_owner) {
+        this.relation_with_phone_owner = relation_with_phone_owner;
     }
 }

@@ -7,12 +7,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
-import com.google.android.play.core.appupdate.testing.FakeAppUpdateManager;
 import com.google.android.play.core.install.InstallState;
 import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
@@ -20,7 +18,6 @@ import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import com.pratham.admin.ApplicationController;
-import com.pratham.admin.BuildConfig;
 import com.pratham.admin.activities.CatchoTransparentActivity;
 import com.pratham.admin.interfaces.ConnectionReceiverListener;
 import com.pratham.admin.modalclasses.EventMessage;
@@ -29,7 +26,6 @@ import net.alhazmy13.catcho.library.Catcho;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 public class BaseActivity extends AppCompatActivity implements ConnectionReceiverListener {
     ConnectionReceiver connectivityReceiver;
@@ -85,7 +81,7 @@ public class BaseActivity extends AppCompatActivity implements ConnectionReceive
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        Log.e("#","onStart");
+        Log.e("#", "onStart");
         EventMessage message = new EventMessage();
         message.setMessage("GOT");
         EventBus.getDefault().post(message);
@@ -104,10 +100,10 @@ public class BaseActivity extends AppCompatActivity implements ConnectionReceive
     }
 
     @Subscribe
-    public void onEvent(@NonNull EventMessage eventMessage){
-        if(eventMessage.getMessage().equalsIgnoreCase("CHECK_UPDATE")) {
+    public void onEvent(@NonNull EventMessage eventMessage) {
+        if (eventMessage.getMessage().equalsIgnoreCase("CHECK_UPDATE")) {
             checkForUpdate();
-        }else if(eventMessage.getMessage().equalsIgnoreCase("START_UPDATE")){
+        } else if (eventMessage.getMessage().equalsIgnoreCase("START_UPDATE")) {
             startUpdate();
         }
     }
@@ -148,14 +144,14 @@ public class BaseActivity extends AppCompatActivity implements ConnectionReceive
             InstallStateUpdatedListener() {
                 @Override
                 public void onStateUpdate(InstallState state) {
-                    if (state.installStatus() == InstallStatus.DOWNLOADED){
+                    if (state.installStatus() == InstallStatus.DOWNLOADED) {
                         //CHECK THIS if AppUpdateType.FLEXIBLE, otherwise you can skip
                         //send message if update is downloaded
                         Log.e("#", "InstallStateUpdated: state: " + state.installStatus());
                         appUpdateManager.completeUpdate();
-                    } else if (state.installStatus() == InstallStatus.INSTALLED){
+                    } else if (state.installStatus() == InstallStatus.INSTALLED) {
                         Log.e("#", "InstallStateInstalled: state: " + state.installStatus());
-                        if (appUpdateManager != null){
+                        if (appUpdateManager != null) {
                             appUpdateManager.unregisterListener(installStateUpdatedListener);
                         }
 
@@ -165,7 +161,7 @@ public class BaseActivity extends AppCompatActivity implements ConnectionReceive
                 }
             };
 
-    public void startUpdate(){
+    public void startUpdate() {
         // Start an update.
         try {
             appUpdateManager.startUpdateFlowForResult(

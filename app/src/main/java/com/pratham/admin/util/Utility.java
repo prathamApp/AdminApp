@@ -1,11 +1,19 @@
 package com.pratham.admin.util;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.content.res.Configuration;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.os.Build;
+import android.os.Environment;
+import android.os.StatFs;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 
 import com.pratham.admin.ApplicationController;
 import com.pratham.admin.activities.CatchoTransparentActivity;
@@ -16,6 +24,7 @@ import com.pratham.admin.modalclasses.Modal_Log;
 import net.alhazmy13.catcho.library.Catcho;
 
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -196,5 +205,117 @@ public class Utility {
         if (checkInternetDialog != null) {
             checkInternetDialog.dismiss();
         }
+    }
+
+    public static String getDeviceName() {
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        if (model.startsWith(manufacturer)) {
+            return capitalize(model);
+        } else {
+            return capitalize(manufacturer) + " " + model;
+        }
+    }
+
+    private static String capitalize(String s) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+        char first = s.charAt(0);
+        if (Character.isUpperCase(first)) {
+            return s;
+        } else {
+            return Character.toUpperCase(first) + s.substring(1);
+        }
+    }
+    public static String getDeviceSerialID() {
+        return Build.SERIAL;
+    }
+
+    public static String getWifiMac(Context context) {
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wInfo = wifiManager.getConnectionInfo();
+        String macAddress = wInfo.getMacAddress();
+        return macAddress;
+    }
+
+    public static String getOSVersion() {
+//        String osVersionNum = Build.VERSION.RELEASE;
+        String osVersionName = "";
+
+        Field[] fields = Build.VERSION_CODES.class.getFields();
+        for (Field field : fields) {
+            osVersionName = field.getName();
+//            int osApiLevel = -1;
+
+            try {
+//                osApiLevel = field.getInt(new Object());
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
+        return osVersionName;
+    }
+    public static String getAndroidOSVersion() {
+        return Build.VERSION.RELEASE;
+    }
+    public static int getApiLevel() {
+        int osApiLevel = -1;
+        Field[] fields = Build.VERSION_CODES.class.getFields();
+        for (Field field : fields) {
+            try {
+                osApiLevel = field.getInt(new Object());
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
+        return osApiLevel;
+    }
+
+    public static String getInternalStorageStatus() {
+        StatFs stat = new StatFs(Environment.getDataDirectory().getPath());
+        long bytesAvailable, internalStorageSize;
+        bytesAvailable = stat.getBlockSizeLong() * stat.getAvailableBlocksLong();
+        internalStorageSize = bytesAvailable / (1024 * 1024);
+        String storage = String.valueOf(internalStorageSize);
+        return "" + storage + " MB";
+    }
+
+    public static String getDeviceResolution(Activity context) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        context.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        Configuration config = context.getResources().getConfiguration();
+        String strwidth = String.valueOf(width);
+        String strheight = String.valueOf(height);
+
+        String resolution = strwidth + "px x " + strheight + "px (" + config.densityDpi + " dpi)";
+        return resolution;
+    }
+
+    public static String getDeviceManufacturer() {
+        return "" + Build.MANUFACTURER;
+    }
+    public static String getDeviceModel() {
+        return "" + Build.MODEL;
+    }
+
+    public static String getAppVersion(Context context) {
+        PackageInfo pInfo = null;
+        String verCode = "";
+        try {
+            pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            verCode = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return verCode;
     }
 }

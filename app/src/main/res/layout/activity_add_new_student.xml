@@ -79,8 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_8sdp"
-            android:orientation="horizontal"
-            android:weightSum="5">
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/edt_FirstName"
@@ -131,20 +130,60 @@
                 android:textColor="#000000"
                 android:textColorHint="@color/text_hint"
                 android:textSize="@dimen/_12sdp" />
-
         </LinearLayout>
+        <!-- phone type phone number-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
+            <Spinner
+                android:id="@+id/phone_type"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_weight="1"
+                android:background="@drawable/spinner_background_forms"
+                android:entries="@array/phone_type" />
+
+            <Spinner
+                android:id="@+id/relation_with_phone_owner"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_weight="1"
+                android:background="@drawable/spinner_background_forms"
+                android:entries="@array/relation_with_phone_owner" />
+
+            <EditText
+                android:id="@+id/edt_moNumber"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_weight="1"
+                android:hint="@string/enterMoNumber"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="10"
+                android:nextFocusDown="@+id/edt_GuardianName"
+                android:nextFocusForward="@+id/edt_GuardianName"
+                android:singleLine="true"
+                android:textColor="#000000"
+                android:textColorHint="@color/text_hint"
+                android:textSize="@dimen/_12sdp" />
+        </LinearLayout>
         <!--Age, stdClass, Gender-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="5">
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/edt_Age"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="2"
@@ -163,14 +202,14 @@
 
             <Button
                 android:id="@+id/btn_BirthDatePicker"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="2"
                 android:background="@color/button"
                 android:drawableLeft="@android:drawable/ic_menu_my_calendar"
                 android:drawablePadding="@dimen/_4sdp"
-                android:text="@string/birthdate"
+                android:text="@string/birth_date"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/_12sdp" />
@@ -179,36 +218,32 @@
             <!--Class Spinner-->
             <Spinner
                 android:id="@+id/sp_Class"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_weight="2"
                 android:background="@drawable/spinner_background_forms"
                 android:entries="@array/array_Class" />
 
-            <EditText
-                android:id="@+id/edt_Class"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/age"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_8sdp"
-                android:layout_weight="2"
-                android:digits="0123456789"
-                android:hint="Enter Class"
-                android:inputType="number"
-                android:maxLength="2"
+                android:layout_weight="1"
                 android:singleLine="true"
+                android:text="Age"
                 android:textColor="#000000"
                 android:textColorHint="@color/text_hint"
-                android:textSize="@dimen/_12sdp"
-                android:visibility="gone" />
+                android:textSize="@dimen/_12sdp" />
 
 
             <!--Radio Button to Select Gender-->
             <RadioGroup
                 android:id="@+id/rg_Gender"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="5"
                 android:orientation="horizontal"
                 android:weightSum="3">
 

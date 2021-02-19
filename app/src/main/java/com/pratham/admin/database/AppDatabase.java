@@ -6,9 +6,8 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
+import android.util.Log;
 
-import com.pratham.admin.Service.MyService;
-import com.pratham.admin.activities.Notification.Notification;
 import com.pratham.admin.modalclasses.Aser;
 import com.pratham.admin.modalclasses.Attendance;
 import com.pratham.admin.modalclasses.CRL;
@@ -23,7 +22,6 @@ import com.pratham.admin.modalclasses.GroupVisit;
 import com.pratham.admin.modalclasses.Groups;
 import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.modalclasses.Modal_Log;
-import com.pratham.admin.modalclasses.NotificationData;
 import com.pratham.admin.modalclasses.Student;
 import com.pratham.admin.modalclasses.TabTrack;
 import com.pratham.admin.modalclasses.TabletManageDevice;
@@ -39,12 +37,13 @@ import com.pratham.admin.modalclasses.Youth;
         Completion.class, Groups.class, Student.class, GroupSession.class,
         GroupVisit.class, Village.class, MetaData.class, TempStudent.class,
         TabTrack.class, TabletManageDevice.class, Modal_Log.class, TabletStatus.class,
-        Aser.class, Youth.class}, version = 8, exportSchema = false)
+        Aser.class, Youth.class}, version = AppDatabase.DB_VERSION, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase DATABASEINSTANCE;
 
     public static final String DB_NAME = "prathamDb";
+    public static final int DB_VERSION = 9;
 
     public abstract ECEAsmtDao getECEAsmtDao();
 
@@ -96,6 +95,7 @@ public abstract class AppDatabase extends RoomDatabase {
         if (DATABASEINSTANCE == null)
             DATABASEINSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DB_NAME)
                     .addMigrations(MIGRATION_7_8)
+                    .addMigrations(MIGRATION_8_9)
                     .allowMainThreadQueries()
                     .build();
         return DATABASEINSTANCE;
@@ -162,6 +162,22 @@ public abstract class AppDatabase extends RoomDatabase {
                     + ", maritalStatus TEXT, areyoustudying INTEGER NOT NULL, education TEXT, occupation TEXT"
                     + ", haveSmartphone INTEGER NOT NULL, useSmartphone INTEGER NOT NULL, wantToJoin INTEGER NOT NULL"
                     + ", createdBy TEXT, createdOn TEXT, sentFlag INTEGER NOT NULL, isDeleted INTEGER NOT NULL)");
+        }
+    };
+    static final Migration MIGRATION_8_9 = new Migration(8, 9) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE Student ADD COLUMN 'phoneNo' TEXT ");
+            database.execSQL("ALTER TABLE Student ADD COLUMN 'phoneType' TEXT ");
+            database.execSQL("ALTER TABLE Student ADD COLUMN 'relation_with_phone_owner' TEXT ");
+
+            //for change schooltype int to string
+            database.execSQL("CREATE TABLE `StudentNew` (`GroupId` TEXT, `GroupName` TEXT, `FullName` TEXT, `Stud_Class` TEXT, `Age` TEXT, `Gender` TEXT, `sentFlag` INTEGER NOT NULL, `StudentId` TEXT NOT NULL, `FirstName` TEXT, `MiddleName` TEXT, `LastName` TEXT, `CreatedBy` TEXT, `CreatedOn` TEXT, `UpdatedDate` TEXT, `DOB` TEXT, `SchoolType` TEXT, `GuardianName` TEXT, `phoneType` TEXT, `phoneNo` TEXT, `relation_with_phone_owner` TEXT, PRIMARY KEY(`StudentId`))");
+            database.execSQL("INSERT INTO StudentNew (GroupId, GroupName, FullName,Stud_Class,Age,Gender,sentFlag,StudentId,FirstName,MiddleName,LastName,CreatedBy,CreatedOn,UpdatedDate,DOB,SchoolType,GuardianName,phoneType,phoneNo,relation_with_phone_owner) SELECT GroupId, GroupName, FullName,Stud_Class,Age,Gender,sentFlag,StudentId,FirstName,MiddleName,LastName,CreatedBy,CreatedOn,UpdatedDate,DOB,SchoolType,GuardianName,phoneType,phoneNo,relation_with_phone_owner FROM Student");
+            database.execSQL("DROP TABLE Student");
+            database.execSQL("ALTER TABLE StudentNew RENAME TO Student");
+            Log.d("VROM", "Migration_8_9");
+
         }
     };
 

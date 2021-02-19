@@ -7,17 +7,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -107,11 +105,11 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
     private final int KEY_PERMISSION = 200;
 
     boolean isUpdateClicked = false;
-
+    Context context;
     Locale myLocale;
     String currentLanguage = "en", currentLang;
-    String hindiLang="hi";
-    String englishLang="en";
+    String hindiLang = "hi";
+    String englishLang = "en";
 
 
     @Override
@@ -119,7 +117,8 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
+        context = MainActivity.this;
+        addMetaData();
 //        Toast.makeText(this, "New Version", Toast.LENGTH_SHORT).show();
         if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
             String[] permissionArray = new String[]{PermissionUtils.Manifest_WRITE_EXTERNAL_STORAGE, PermissionUtils.Manifest_CAMERA, PermissionUtils.Manifest_ACCESS_FINE_LOCATION};
@@ -138,7 +137,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
             SharedPreferences preferences = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
             String version = preferences.getString("version", "null");
             if (!versionName.equals(version)) {
-                clearData();
+              //  clearData();
                 SharedPreferences sharedPref = this.getSharedPreferences("prathamInfo", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("version", versionName);
@@ -157,9 +156,82 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
 
             e.printStackTrace();
             Toast.makeText(ApplicationController.getInstance(), "On Exception data cleared", Toast.LENGTH_SHORT).show();
-            clearData();
+           clearData();
         }
     }
+
+
+    public void addMetaData() {
+        MetaData metaData;
+
+        metaData = new MetaData();
+        metaData.setKeys("DeviceName");
+        metaData.setValue(Utility.getDeviceName());
+        AppDatabase.getDatabaseInstance(context).getMetaDataDao().insertMetadata(metaData);
+
+
+        metaData = new MetaData();
+        metaData.setKeys("DeviceID");
+        metaData.setValue("" + Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
+        AppDatabase.getDatabaseInstance(context).getMetaDataDao().insertMetadata(metaData);
+
+        metaData = new MetaData();
+        metaData.setKeys("SerialID");
+        metaData.setValue(Utility.getDeviceSerialID());
+        AppDatabase.getDatabaseInstance(context).getMetaDataDao().insertMetadata(metaData);
+
+        metaData = new MetaData();
+        metaData.setKeys("WiFiMac");
+        metaData.setValue(Utility.getWifiMac(context));
+        AppDatabase.getDatabaseInstance(context).getMetaDataDao().insertMetadata(metaData);
+
+        metaData = new MetaData();
+        metaData.setKeys("osVersionNum");
+        metaData.setValue(Utility.getAndroidOSVersion());
+        AppDatabase.getDatabaseInstance(context).getMetaDataDao().insertMetadata(metaData);
+
+        metaData = new MetaData();
+        metaData.setKeys("osVersionName");
+        metaData.setValue(Utility.getOSVersion());
+        AppDatabase.getDatabaseInstance(context).getMetaDataDao().insertMetadata(metaData);
+
+        metaData = new MetaData();
+        metaData.setKeys("osApiLevel");
+        metaData.setValue("" + Utility.getApiLevel());
+        AppDatabase.getDatabaseInstance(context).getMetaDataDao().insertMetadata(metaData);
+
+        metaData = new MetaData();
+        metaData.setKeys("internalAvailableStorage");
+        metaData.setValue(Utility.getInternalStorageStatus());
+        AppDatabase.getDatabaseInstance(context).getMetaDataDao().insertMetadata(metaData);
+
+        metaData = new MetaData();
+        metaData.setKeys("screenResolution");
+        metaData.setValue(Utility.getDeviceResolution(this));
+        AppDatabase.getDatabaseInstance(context).getMetaDataDao().insertMetadata(metaData);
+
+        metaData = new MetaData();
+        metaData.setKeys("manufacturer");
+        metaData.setValue(Utility.getDeviceManufacturer());
+        AppDatabase.getDatabaseInstance(context).getMetaDataDao().insertMetadata(metaData);
+
+        metaData = new MetaData();
+        metaData.setKeys("model");
+        metaData.setValue(Utility.getDeviceModel());
+        AppDatabase.getDatabaseInstance(context).getMetaDataDao().insertMetadata(metaData);
+
+        metaData = new MetaData();
+        metaData.setKeys("apkVersion");
+        metaData.setValue(Utility.getAppVersion(this));
+        AppDatabase.getDatabaseInstance(context).getMetaDataDao().insertMetadata(metaData);
+
+        metaData = new MetaData();
+        metaData.setKeys("DBVersion");
+        metaData.setValue(""+AppDatabase.DB_VERSION);
+        AppDatabase.getDatabaseInstance(context).getMetaDataDao().insertMetadata(metaData);
+
+    }
+
 
     public void askCompactPermissions(String permissions[], PermissionResult permissionResult) {
         permissionsAsk = permissions;
@@ -196,13 +268,13 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
     }
 
     @Subscribe
-    public void onMessageEvent(EventMessage eventMessage){
-        if(eventMessage.getMessage().equalsIgnoreCase("GOT")){
+    public void onMessageEvent(EventMessage eventMessage) {
+        if (eventMessage.getMessage().equalsIgnoreCase("GOT")) {
             EventMessage startUpdate = new EventMessage();
             startUpdate.setMessage("CHECK_UPDATE");
             EventBus.getDefault().post(startUpdate);
-        }else if(eventMessage.getMessage().equalsIgnoreCase("UPDATE_AVAILABLE")) {
-            Log.e("#","AVAILABLE");
+        } else if (eventMessage.getMessage().equalsIgnoreCase("UPDATE_AVAILABLE")) {
+            Log.e("#", "AVAILABLE");
             showUpdateButton();
         }
     }
@@ -225,7 +297,6 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
         password.setText("pratham");*/
         /*userName.setText("pravinthorat");
         password.setText("pratham123");*/
-
 
 
         userName.setText("");
@@ -299,7 +370,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
     private void showPermissionWarningDilog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(getString(R.string.alert));
-        alertDialogBuilder.setMessage("" + "\n"+R.string.denyPermission);
+        alertDialogBuilder.setMessage("" + "\n" + R.string.denyPermission);
 
         alertDialogBuilder.setPositiveButton("Ok", new android.content.DialogInterface.OnClickListener() {
             @Override
@@ -618,7 +689,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
                 dialogBuilder.setNegativeButton("Cancel", new android.content.DialogInterface.OnClickListener() {
                     public void onClick(android.content.DialogInterface dialog, int whichButton) {
                         dialog.dismiss();
-                        isUpdateClicked=false;
+                        isUpdateClicked = false;
                     }
                 });
 
@@ -966,6 +1037,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
             e.printStackTrace();
         }
     }
+
     private String addMetaDataToJson() {
 
         MetaData metaData = new MetaData();
@@ -1019,12 +1091,12 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
     }
 
     @OnClick(R.id.tv_english)
-    public void setEngLang(){
-        setNewLocale(this,LocaleManager.ENGLISH);
+    public void setEngLang() {
+        setNewLocale(this, LocaleManager.ENGLISH);
     }
 
     @OnClick(R.id.tv_hindi)
-    public void setHinLang(){
+    public void setHinLang() {
         setNewLocale(this, LocaleManager.HINDI);
     }
 

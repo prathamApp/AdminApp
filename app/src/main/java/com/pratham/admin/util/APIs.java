@@ -16,7 +16,8 @@ public class APIs {
 
     public static final String pullVillagesServerURL = "http://www.hlearning.openiscool.org/api/village/get?programId=";
     public static final String pullGroupsServerURL = "http://www.devtab.openiscool.org/api/Group?programid=";
-    public static final String pullStudentsServerURL = "http://www.devtab.openiscool.org/api/studentinfov2?programid=";
+   // public static final String pullStudentsServerURL = "http://www.devtab.openiscool.org/api/studentinfov2?programid=";
+    public static final String pullStudentsServerURL = "http://www.devtab.openiscool.org/api/studentinfov2_1?programid=";
     public static final String pullCrlsServerURL = "http://www.swap.prathamcms.org/api/UserList?programId=";
     public static final String pullAserURL = "http://devtab.openiscool.org/api/AserVillage?programid=";
     public static final String pullYouthsServerURL = "http://swap.prathamcms.org/api/HLYouth/GetHLYouthInfo?ProgramId=";

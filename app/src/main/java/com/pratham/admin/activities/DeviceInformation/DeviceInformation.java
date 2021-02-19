@@ -1,34 +1,22 @@
 package com.pratham.admin.activities.DeviceInformation;
 
-import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Point;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.os.Environment;
-import android.os.StatFs;
-import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.text.Html;
-import android.util.Log;
 import android.view.Display;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pratham.admin.R;
-import com.pratham.admin.database.AppDatabase;
-import com.pratham.admin.modalclasses.MetaData;
 import com.pratham.admin.util.BaseActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
-
-import java.lang.reflect.Field;
 
 @EActivity(R.layout.activity_device_information)
 public class DeviceInformation extends BaseActivity implements DeviceInfoContract.DeviceInfoView {
@@ -43,7 +31,7 @@ public class DeviceInformation extends BaseActivity implements DeviceInfoContrac
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @AfterViews
-    public void initialize(){
+    public void initialize() {
         deviceInfoPrsenter.setView(DeviceInformation.this);
         initializeAppInfo();
     }
@@ -68,7 +56,7 @@ public class DeviceInformation extends BaseActivity implements DeviceInfoContrac
         String strheight = String.valueOf(height);
 
         Configuration config = getBaseContext().getResources().getConfiguration();
-        resolution= "W "+strwidth+" x H "+strheight+" pixels dpi:"+config.densityDpi;
+        resolution = "W " + strwidth + " x H " + strheight + " pixels dpi:" + config.densityDpi;
 
         deviceInfoPrsenter.populateDeviceInfo(resolution);
         deviceInfoPrsenter.addMetaData();
@@ -84,10 +72,10 @@ public class DeviceInformation extends BaseActivity implements DeviceInfoContrac
                 getString(R.string.wifiMac) + wifi +
                 getString(R.string.deviceId) + devId +
                 getString(R.string.serialId) + serId +
-                getString(R.string.versionId) + osVname+
-                getString(R.string.versionNumber) + osVnum+
-                getString(R.string.apiLevel)+ api +
-                getString(R.string.screenResolution) + resol+
+                getString(R.string.versionId) + osVname +
+                getString(R.string.versionNumber) + osVnum +
+                getString(R.string.apiLevel) + api +
+                getString(R.string.screenResolution) + resol +
                 getString(R.string.manufactureName) + manuf +
                 getString(R.string.model) + mod +
                 getString(R.string.availableStorage) + availStorag

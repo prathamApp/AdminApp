@@ -72,6 +72,7 @@
     <string name="enterfirstname">Enter First Name</string>
     <string name="entermiddlename">Enter Middle Name</string>
     <string name="enterlastname">Enter Last Name</string>
+    <string name="enterMoNumber">Enter Mobile number</string>
     <string name="birthdate">BirthDate</string>
     <string name="clas">Class</string>
     <string name="gender">Gender</string>
@@ -79,6 +80,7 @@
     <string name="female">Female</string>
     <string name="enterguardianname">Enter Guardian\'s Name</string>
     <string name="schooltype">School Type</string>
+    <string name="select_birth">Select \n birth date</string>
     <string name="government">Government</string>
     <string name="privat">Private</string>
     <string name="baselineinfo">Baseline Information &#8212;&#8212;></string>
@@ -93,6 +95,8 @@
     <string name="middlename">Middle Name</string>
     <string name="lastname">Last Name</string>
     <string name="age">Age</string>
+
+
 
     <!--ECE Sample Assessment-->
     <string name="selectassesssmenttype">Select Assessment Type</string>
@@ -209,7 +213,6 @@
     <string name="registerreport">Register Report</string>
 
 
-
     <!--Universal Tags-->
     <string name="selectstate">Select State</string>
     <string name="selectprogram">Select Program</string>
@@ -289,6 +292,7 @@
     <string name="pleasepulldata">Please pull Data</string>
     <string name="recInsertFailed">Record Insertion Failed !!!</string>
     <string name="enterValidInput">Please Enter Valid Input !!!</string>
+    <string name="enterValidMoNumber">Please Enter Valid 10 digit Mobile Number !!!</string>
     <string name="fillAllBaselineFld">Please fill all Baseline fields !</string>
     <string name="baselineUpdated">Baseline Updated !</string>
     <string name="baselineInsertFailed">Baseline Insertion Failed !</string>
@@ -611,5 +615,44 @@
     <string name="manufactureName">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Manufacture Name :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
     <string name="model">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Model :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
     <string name="availableStorage">&lt;br>&lt;b>&lt;i>&lt;font color=#FF0000>Available Storage :  &#160;&lt;/font>&lt;/i>&lt;/b></string>
+
+
+
+    <string-array name="phone_type">
+        <item>select phone type</item>
+        <item>Regular Phone</item>
+        <item>Feature Phone</item>
+        <item>Smart Phone</item>
+        <item>None</item>
+    </string-array>
+    <!--    codes reffer from angshala sheet shared by kumar-->
+    <string-array name="phone_type_constants">
+        <item>-1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>0</item>
+    </string-array>
+
+    <string-array name="relation_with_phone_owner">
+        <item>select Relation with phone owner</item>
+        <item>Guardian</item>
+        <item>Sibling</item>
+        <item>Neighbour </item>
+    </string-array>
+    <!--    codes reffer from angshala sheet shared by kumar-->
+    <string-array name="relation_with_phone_owner_constants">
+        <item>-1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="validationMessage">Enter 10 digit valid mobile number</string>
+    <string name="select_phone_type">please select phone type</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="selectBirthDate">please select Birth Date</string>
+    <string name="Invalid_class">Invalid class</string>
+    <string name="select_phone_owner">select relation with phone owner</string>
 
 </resources>
