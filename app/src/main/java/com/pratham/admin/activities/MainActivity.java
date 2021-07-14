@@ -74,6 +74,7 @@ import static com.pratham.admin.util.ActivityManagePermission.isPermissionsGrant
 
 public class MainActivity extends BaseActivity implements DialogInterface, ConnectionReceiverListener, PermissionResult, NetworkCallListener {
 
+    //v2
     @BindView(R.id.userName)
     EditText userName;
 
