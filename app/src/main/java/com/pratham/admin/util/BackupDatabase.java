@@ -21,9 +21,9 @@ public class BackupDatabase {
 
     public static void backup(Context mContext) {
         try {
-            File sd = new File(Environment.getExternalStorageDirectory() + "/PrathamBackups" + "/.PrathamAdmin");
+            File sd = new File(Environment.getExternalStorageDirectory() + "/PrathamBackups" );
             if (!sd.exists())
-                sd.mkdirs();
+                sd.mkdir();
 
             if (sd.canWrite()) {
                 File currentDB = mContext.getDatabasePath(DB_NAME);
@@ -50,7 +50,7 @@ public class BackupDatabase {
             log.setMethodName("BackupDatabase" + "_" + "backup");
             log.setDeviceId("");
             AppDatabase.getDatabaseInstance(mContext).getLogDao().insertLog(log);
-            BackupDatabase.backup(mContext);
+         //   BackupDatabase.backup(mContext);
 
         }
     }

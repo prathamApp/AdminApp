@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -113,6 +114,11 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
 
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -121,7 +127,7 @@ public class MainActivity extends BaseActivity implements DialogInterface, Conne
         addMetaData();
 //        Toast.makeText(this, "New Version", Toast.LENGTH_SHORT).show();
         if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
-            String[] permissionArray = new String[]{PermissionUtils.Manifest_WRITE_EXTERNAL_STORAGE, PermissionUtils.Manifest_CAMERA, PermissionUtils.Manifest_ACCESS_FINE_LOCATION};
+            String[] permissionArray = new String[]{ PermissionUtils.Manifest_READ_EXTERNAL_STORAGE,PermissionUtils.Manifest_WRITE_EXTERNAL_STORAGE, PermissionUtils.Manifest_CAMERA, PermissionUtils.Manifest_ACCESS_FINE_LOCATION};
             if (!isPermissionsGranted(MainActivity.this, permissionArray))
                 askCompactPermissions(permissionArray, this);
         }
